@@ -8,6 +8,7 @@ import { MoneroSeed } from './monero'
 
 
 export class SEEDS {
+
   private static dictionary: Record<string, any> = {
     [AlgorandSeed.client()]: AlgorandSeed,
     [BIP39Seed.client()]: BIP39Seed,
