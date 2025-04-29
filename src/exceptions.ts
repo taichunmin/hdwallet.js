@@ -23,6 +23,8 @@ export class EntropyError extends CustomError { }
 
 export class MnemonicError extends CustomError { }
 
+export class SeedError extends CustomError { }
+
 export class ChecksumError extends CustomError { }
 
 export class NetworkError extends CustomError { }
