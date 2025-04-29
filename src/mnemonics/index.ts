@@ -27,39 +27,38 @@ import {
   MONERO_MNEMONIC_LANGUAGES
 } from './monero/mnemonic'
 
-// type MnemonicClass = typeof IMnemonic & { name(): string }
 
-// export class MNEMONICS {
-//   private static dictionary: Record<string, MnemonicClass> = {
-//     [AlgorandMnemonic.name()]: AlgorandMnemonic,
-//     [BIP39Mnemonic.name()]: BIP39Mnemonic,
-//     [ElectrumV1Mnemonic.name()]: ElectrumV1Mnemonic,
-//     [ElectrumV2Mnemonic.name()]: ElectrumV2Mnemonic,
-//     [MoneroMnemonic.name()]: MoneroMnemonic
-//   }
+export class MNEMONICS {
+  private static dictionary: Record<string, any> = {
+    [AlgorandMnemonic.client()]: AlgorandMnemonic,
+    [BIP39Mnemonic.client()]: BIP39Mnemonic,
+    [ElectrumV1Mnemonic.client()]: ElectrumV1Mnemonic,
+    [ElectrumV2Mnemonic.client()]: ElectrumV2Mnemonic,
+    [MoneroMnemonic.client()]: MoneroMnemonic
+  }
 
-//   static names(): string[] {
-//     return Object.keys(this.dictionary)
-//   }
+  static clients(): string[] {
+    return Object.keys(this.dictionary)
+  }
 
-//   static classes(): MnemonicClass[] {
-//     return Object.values(this.dictionary)
-//   }
+  static classes(): IMnemonic[] {
+    return Object.values(this.dictionary)
+  }
 
-//   static mnemonic(name: string): MnemonicClass {
-//     if (!this.isMnemonic(name)) {
-//       throw new MnemonicError(
-//         'Invalid mnemonic name',
-//         { expected: this.names(), got: name }
-//       )
-//     }
-//     return this.dictionary[name]
-//   }
+  static mnemonic(name: string): IMnemonic {
+    if (!this.isMnemonic(name)) {
+      throw new MnemonicError(
+        'Invalid mnemonic name',
+        { expected: this.clients(), got: name }
+      )
+    }
+    return this.dictionary[name]
+  }
 
-//   static isMnemonic(name: string): boolean {
-//     return this.names().includes(name)
-//   }
-// }
+  static isMnemonic(name: string): boolean {
+    return this.clients().includes(name)
+  }
+}
 
 export {
   IMnemonic,
