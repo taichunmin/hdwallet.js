@@ -8,7 +8,7 @@ import { EntropyError } from "../exceptions";
 
 export class ENTROPIES {
 
-  static dictionary: Record<string, any> = {
+  static dictionary: Record<string, typeof IEntropy> = {
     [AlgorandEntropy.client()]: AlgorandEntropy,
     [BIP39Entropy.client()]: BIP39Entropy,
     [ElectrumV1Entropy.client()]: ElectrumV1Entropy,
@@ -20,11 +20,11 @@ export class ENTROPIES {
     return Object.keys(this.dictionary);
   }
 
-  static classes(): IEntropy[] {
+  static classes(): typeof IEntropy[] {
     return Object.values(this.dictionary);
   }
 
-  static entropy(name: string): IEntropy {
+  static entropy(name: string): typeof IEntropy {
     if (!this.isEntropy(name)) {
       throw new EntropyError(`Invalid entropy name: ${name}. Expected one of ${this.clients().join(", ")}`);
     }
