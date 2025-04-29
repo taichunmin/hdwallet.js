@@ -55,12 +55,12 @@ export class ElectrumV2Mnemonic extends IMnemonic {
 
   static wordBitLength = 11;
 
-  static wordsListCount: number[] = [
+  static wordsList: number[] = [
     ELECTRUM_V2_MNEMONIC_WORDS.TWELVE,
     ELECTRUM_V2_MNEMONIC_WORDS.TWENTY_FOUR
   ];
 
-  static wordsToStrength: Record<number, number> = {
+  static wordsToEntropyStrength: Record<number, number> = {
     12: ELECTRUM_V2_ENTROPY_STRENGTHS.ONE_HUNDRED_THIRTY_TWO,
     24: ELECTRUM_V2_ENTROPY_STRENGTHS.TWO_HUNDRED_SIXTY_FOUR
   };
@@ -99,14 +99,14 @@ export class ElectrumV2Mnemonic extends IMnemonic {
         maxAttempts: BigInt("1" + "0".repeat(60))
     }
   ): ElectrumV2Mnemonic {
-    if (!this.wordsListCount.includes(count)) {
+    if (!this.wordsList.includes(count)) {
       throw new MnemonicError("Invalid mnemonic words number", {
-        expected: this.wordsListCount,
+        expected: this.wordsList,
         got: count,
       });
     }
     const entropyBytes = ElectrumV2Entropy.generate(
-      this.wordsToStrength[count]
+      this.wordsToEntropyStrength[count]
     );
     return this.fromEntropy(
       entropyBytes, language, option
@@ -276,9 +276,9 @@ export class ElectrumV2Mnemonic extends IMnemonic {
     }
 
     const words = this.normalize(mnemonic);
-    if (!this.wordsListCount.includes(words.length)) {
+    if (!this.wordsList.includes(words.length)) {
       throw new MnemonicError("Invalid mnemonic words count", {
-        expected: this.wordsListCount,
+        expected: this.wordsList,
         got: words.length,
       });
     }

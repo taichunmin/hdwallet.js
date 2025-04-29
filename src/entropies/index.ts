@@ -1,16 +1,14 @@
+import { IEntropy } from "./ientropy";
 import { AlgorandEntropy, ALGORAND_ENTROPY_STRENGTHS } from "./algorand";
 import { BIP39Entropy, BIP39_ENTROPY_STRENGTHS } from "./bip39";
 import { ElectrumV1Entropy, ELECTRUM_V1_ENTROPY_STRENGTHS } from "./electrum/v1";
 import { ElectrumV2Entropy, ELECTRUM_V2_ENTROPY_STRENGTHS } from "./electrum/v2";
 import { MoneroEntropy, MONERO_ENTROPY_STRENGTHS } from "./monero";
-import { IEntropy } from "./ientropy";
 import { EntropyError } from "../exceptions";
-
-type EntropyConstructor = new (entropy: Uint8Array | string) => IEntropy;
 
 export class ENTROPIES {
 
-  static dictionary: Record<string, EntropyConstructor> = {
+  static dictionary: Record<string, typeof IEntropy> = {
     [AlgorandEntropy.client()]: AlgorandEntropy,
     [BIP39Entropy.client()]: BIP39Entropy,
     [ElectrumV1Entropy.client()]: ElectrumV1Entropy,
@@ -22,11 +20,11 @@ export class ENTROPIES {
     return Object.keys(this.dictionary);
   }
 
-  static classes(): EntropyConstructor[] {
+  static classes(): typeof IEntropy[] {
     return Object.values(this.dictionary);
   }
 
-  static entropy(name: string): EntropyConstructor {
+  static entropy(name: string): typeof IEntropy {
     if (!this.isEntropy(name)) {
       throw new EntropyError(`Invalid entropy name: ${name}. Expected one of ${this.clients().join(", ")}`);
     }
@@ -36,4 +34,13 @@ export class ENTROPIES {
   static isEntropy(name: string): boolean {
     return this.clients().includes(name);
   }
+}
+
+export {
+  IEntropy,
+  AlgorandEntropy, ALGORAND_ENTROPY_STRENGTHS,
+  BIP39Entropy, BIP39_ENTROPY_STRENGTHS,
+  ElectrumV1Entropy, ELECTRUM_V1_ENTROPY_STRENGTHS,
+  ElectrumV2Entropy, ELECTRUM_V2_ENTROPY_STRENGTHS,
+  MoneroEntropy, MONERO_ENTROPY_STRENGTHS
 }

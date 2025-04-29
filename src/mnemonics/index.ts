@@ -1,34 +1,16 @@
 import { MnemonicError } from '../exceptions'
 import { IMnemonic } from './imnemonic'
+import { AlgorandMnemonic, ALGORAND_MNEMONIC_WORDS, ALGORAND_MNEMONIC_LANGUAGES } from './algorand/mnemonic'
+import { BIP39Mnemonic, BIP39_MNEMONIC_WORDS, BIP39_MNEMONIC_LANGUAGES } from './bip39/mnemonic'
+import { ElectrumV1Mnemonic, ELECTRUM_V1_MNEMONIC_WORDS, ELECTRUM_V1_MNEMONIC_LANGUAGES } from './electrum/v1/mnemonic'
 import {
-  AlgorandMnemonic,
-  ALGORAND_MNEMONIC_WORDS,
-  ALGORAND_MNEMONIC_LANGUAGES
-} from './algorand/mnemonic'
-import {
-  BIP39Mnemonic,
-  BIP39_MNEMONIC_WORDS,
-  BIP39_MNEMONIC_LANGUAGES
-} from './bip39/mnemonic'
-import {
-  ElectrumV1Mnemonic,
-  ELECTRUM_V1_MNEMONIC_WORDS,
-  ELECTRUM_V1_MNEMONIC_LANGUAGES
-} from './electrum/v1/mnemonic'
-import {
-  ElectrumV2Mnemonic,
-  ELECTRUM_V2_MNEMONIC_WORDS,
-  ELECTRUM_V2_MNEMONIC_LANGUAGES,
-  ELECTRUM_V2_MNEMONIC_TYPES
+  ElectrumV2Mnemonic, ELECTRUM_V2_MNEMONIC_WORDS, ELECTRUM_V2_MNEMONIC_LANGUAGES, ELECTRUM_V2_MNEMONIC_TYPES
 } from './electrum/v2/mnemonic'
-import {
-  MoneroMnemonic,
-  MONERO_MNEMONIC_WORDS,
-  MONERO_MNEMONIC_LANGUAGES
-} from './monero/mnemonic'
+import { MoneroMnemonic, MONERO_MNEMONIC_WORDS, MONERO_MNEMONIC_LANGUAGES } from './monero/mnemonic'
 
 
 export class MNEMONICS {
+
   private static dictionary: Record<string, any> = {
     [AlgorandMnemonic.client()]: AlgorandMnemonic,
     [BIP39Mnemonic.client()]: BIP39Mnemonic,
@@ -62,21 +44,9 @@ export class MNEMONICS {
 
 export {
   IMnemonic,
-  AlgorandMnemonic,
-  ALGORAND_MNEMONIC_WORDS,
-  ALGORAND_MNEMONIC_LANGUAGES,
-  BIP39Mnemonic,
-  BIP39_MNEMONIC_WORDS,
-  BIP39_MNEMONIC_LANGUAGES,
-  ElectrumV1Mnemonic,
-  ELECTRUM_V1_MNEMONIC_WORDS,
-  ELECTRUM_V1_MNEMONIC_LANGUAGES,
-  ElectrumV2Mnemonic,
-  ELECTRUM_V2_MNEMONIC_WORDS,
-  ELECTRUM_V2_MNEMONIC_LANGUAGES,
-  ELECTRUM_V2_MNEMONIC_TYPES,
-  MoneroMnemonic,
-  MONERO_MNEMONIC_WORDS,
-  MONERO_MNEMONIC_LANGUAGES,
-  MnemonicError
+  AlgorandMnemonic, ALGORAND_MNEMONIC_WORDS, ALGORAND_MNEMONIC_LANGUAGES,
+  BIP39Mnemonic, BIP39_MNEMONIC_WORDS, BIP39_MNEMONIC_LANGUAGES,
+  ElectrumV1Mnemonic, ELECTRUM_V1_MNEMONIC_WORDS, ELECTRUM_V1_MNEMONIC_LANGUAGES,
+  ElectrumV2Mnemonic, ELECTRUM_V2_MNEMONIC_WORDS, ELECTRUM_V2_MNEMONIC_LANGUAGES, ELECTRUM_V2_MNEMONIC_TYPES,
+  MoneroMnemonic, MONERO_MNEMONIC_WORDS, MONERO_MNEMONIC_LANGUAGES
 }
