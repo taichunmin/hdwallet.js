@@ -46,7 +46,7 @@ export abstract class IMnemonic {
   }
 
   static client(): string {
-    throw new Error("Must override name()");
+    throw new Error("Must override client()");
   }
 
   mnemonic(): string {

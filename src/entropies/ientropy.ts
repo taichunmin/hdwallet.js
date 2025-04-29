@@ -26,7 +26,7 @@ export abstract class IEntropy {
   }
 
   static client(): string {
-    return "IEntropy"
+    throw new Error("Must override client()");
   }
 
   entropy(): string {
