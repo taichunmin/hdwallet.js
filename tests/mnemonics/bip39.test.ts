@@ -1,6 +1,6 @@
 import { BIP39Entropy, BIP39_ENTROPY_STRENGTHS } from "../../src/entropies/bip39";
 import { BIP39_MNEMONIC_LANGUAGES, BIP39_MNEMONIC_WORDS, BIP39Mnemonic } from "../../src/mnemonics/bip39/mnemonic";
-import { MnemonicError, ChecksumError } from "../../src/exceptions";
+import {MnemonicError, ChecksumError, EntropyError} from "../../src/exceptions";
 import { getBytes } from "../../src/utils";
 
 describe("BIP39Mnemonic", (): void => {
@@ -76,6 +76,6 @@ describe("BIP39Mnemonic", (): void => {
   it("encode() should throw on unsupported entropy lengths", (): void => {
     expect((): string => BIP39Mnemonic.encode(
         "00".repeat(100 / 4), BIP39_MNEMONIC_LANGUAGES.ENGLISH
-    )).toThrowError(/Unsupported entropy length/);
+    )).toThrowError(EntropyError);
   });
 });

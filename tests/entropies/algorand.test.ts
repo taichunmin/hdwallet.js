@@ -2,8 +2,7 @@ import {ALGORAND_ENTROPY_STRENGTHS, AlgorandEntropy} from "../../src/entropies/a
 
 describe("AlgorandEntropy", () => {
   it("should generate a hex string of the correct length for all supported strengths", () => {
-    for (let i = 0; i < AlgorandEntropy.strengths.length; i++) {
-      const strength = AlgorandEntropy.strengths[i];
+    for (const strength of AlgorandEntropy.strengths) {
       const entropy = AlgorandEntropy.generate(strength);
       expect(typeof entropy).toBe("string");
       expect(entropy.length).toBe(strength / 4);
