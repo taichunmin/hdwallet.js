@@ -1,19 +1,17 @@
-// ecc_example.ts
-
 import {
+  // Secp256k1
   SLIP10Secp256k1ECC,
   SLIP10Secp256k1Point,
   SLIP10Secp256k1PublicKey,
   SLIP10Secp256k1PrivateKey,
+  // Nist256p1
   SLIP10Nist256p1ECC,
   SLIP10Nist256p1Point,
   SLIP10Nist256p1PublicKey,
   SLIP10Nist256p1PrivateKey,
-} from '../src/ecc/slip10';
+} from '../src/ecc';
 import { ECCS, validateAndGetPublicKey } from '../src/ecc';
 import { hexToBytes } from '../src/utils';
-import {IEllipticCurveCryptography} from "../src/ecc/iecc";
-import {IPublicKey} from "../src/ecc/ipublic_key";
 
 /**
  * Demonstration of SLIP10 Secp256k1 and Nist256p1 ECC operations in TypeScript

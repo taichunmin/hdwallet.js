@@ -1,9 +1,10 @@
 import * as elliptic from "elliptic";
-
-import { IPrivateKey } from "../../iprivate_key";
-import { IPublicKey } from "../../ipublic_key";
+import {
+  IPrivateKey,
+  IPublicKey,
+  SLIP10Secp256k1PublicKey
+} from "../../";
 import { SLIP10_SECP256K1_CONST } from "../../../const";
-import { SLIP10Secp256k1PublicKey } from "./public_key";
 
 const ec = new elliptic.ec("secp256k1");
 type KeyPair = elliptic.ec.KeyPair;

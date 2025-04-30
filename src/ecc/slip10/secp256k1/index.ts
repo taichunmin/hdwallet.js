@@ -1,10 +1,13 @@
-import { IEllipticCurveCryptography } from "../../iecc";
 import { SLIP10Secp256k1Point } from "./point";
 import { SLIP10Secp256k1PublicKey } from "./public_key";
 import { SLIP10Secp256k1PrivateKey } from "./private_key";
-import { IPoint } from "../../ipoint";
-import {IPublicKey} from "../../ipublic_key";
-import {IPrivateKey} from "../../iprivate_key";
+import {
+  IPublicKey,
+  IPrivateKey,
+  IPoint,
+  IEllipticCurveCryptography
+} from "../../";
+import {  } from "../../iprivate_key";
 
 export class SLIP10Secp256k1ECC extends IEllipticCurveCryptography {
 

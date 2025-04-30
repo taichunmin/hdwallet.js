@@ -1,6 +1,6 @@
 import * as elliptic from "elliptic";
 import BN from "bn.js";
-import { IPoint } from "../../ipoint";
+import { IPoint } from "../../";
 import { SLIP10_SECP256K1_CONST } from "../../../const";
 
 

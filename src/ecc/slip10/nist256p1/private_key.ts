@@ -1,7 +1,9 @@
 import * as elliptic from "elliptic";
-import { IPrivateKey } from "../../iprivate_key";
-import { IPublicKey } from "../../ipublic_key";
-import { SLIP10Nist256p1PublicKey } from "./public_key";
+import {
+  SLIP10Nist256p1PublicKey,
+  IPublicKey,
+  IPrivateKey
+} from "../../";
 import { SLIP10_SECP256K1_CONST } from "../../../const";
 
 

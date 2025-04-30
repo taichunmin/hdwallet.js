@@ -1,12 +1,22 @@
 import { IEllipticCurveCryptography } from "./iecc";
 import { IPublicKey } from "./ipublic_key";
+import {IPoint} from "./ipoint";
+import {IPrivateKey} from "./iprivate_key";
 import { getBytes } from "../utils";
 import { ECCError, PublicKeyError } from "../exceptions";
-import {
-  SLIP10Secp256k1ECC,
-  SLIP10Nist256p1ECC
-} from "./slip10";
 
+import {
+  // Secp256k1
+  SLIP10Secp256k1ECC,
+  SLIP10Secp256k1Point,
+  SLIP10Secp256k1PublicKey,
+  SLIP10Secp256k1PrivateKey,
+  // Nist256p1
+  SLIP10Nist256p1ECC,
+  SLIP10Nist256p1Point,
+  SLIP10Nist256p1PublicKey,
+  SLIP10Nist256p1PrivateKey,
+} from './slip10';
 
 export class ECCS {
 
@@ -73,6 +83,22 @@ export function validateAndGetPublicKey(
 }
 
 export {
-    SLIP10Secp256k1ECC,
-    SLIP10Nist256p1ECC
+  // interfaces/abstract classes
+  IPublicKey,
+  IPoint,
+  IPrivateKey,
+  IEllipticCurveCryptography,
+
+  // Secp256k1
+  SLIP10Secp256k1ECC,
+  SLIP10Secp256k1Point,
+  SLIP10Secp256k1PublicKey,
+  SLIP10Secp256k1PrivateKey,
+
+  // Nist256p1
+  SLIP10Nist256p1ECC,
+  SLIP10Nist256p1Point,
+  SLIP10Nist256p1PublicKey,
+  SLIP10Nist256p1PrivateKey,
+
 }

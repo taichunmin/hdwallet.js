@@ -1,7 +1,9 @@
 import * as elliptic from "elliptic";
-import { IPoint } from "../../ipoint";
-import { IPublicKey } from "../../ipublic_key";
-import { SLIP10Secp256k1Point } from "./point";
+import {
+  IPoint,
+  IPublicKey,
+  SLIP10Secp256k1Point
+} from "../../";
 import { SLIP10_SECP256K1_CONST } from "../../../const";
 
 
