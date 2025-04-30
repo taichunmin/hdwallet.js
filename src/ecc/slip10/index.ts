@@ -13,3 +13,11 @@ export {
     SLIP10Nist256p1PublicKey,
     SLIP10Nist256p1PrivateKey
 } from "./nist256p1";
+
+//
+export {
+  SLIP10Ed25519ECC,
+  SLIP10Ed25519Point,
+  SLIP10Ed25519PublicKey,
+  SLIP10Ed25519PrivateKey
+} from "./ed25519";

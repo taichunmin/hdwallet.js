@@ -16,6 +16,11 @@ import {
   SLIP10Nist256p1Point,
   SLIP10Nist256p1PublicKey,
   SLIP10Nist256p1PrivateKey,
+  //Ed25519
+  SLIP10Ed25519ECC,
+  SLIP10Ed25519Point,
+  SLIP10Ed25519PublicKey,
+  SLIP10Ed25519PrivateKey
 } from './slip10';
 
 export class ECCS {
@@ -23,6 +28,7 @@ export class ECCS {
   private static dictionary: Record<string, typeof IEllipticCurveCryptography> = {
     [SLIP10Secp256k1ECC.NAME]: SLIP10Secp256k1ECC,
     [SLIP10Nist256p1ECC.NAME]: SLIP10Nist256p1ECC,
+    [SLIP10Ed25519ECC.NAME]: SLIP10Ed25519ECC
   };
 
   public static names(): string[] {
@@ -101,4 +107,9 @@ export {
   SLIP10Nist256p1PublicKey,
   SLIP10Nist256p1PrivateKey,
 
+  //Ed25519
+  SLIP10Ed25519ECC,
+  SLIP10Ed25519Point,
+  SLIP10Ed25519PublicKey,
+  SLIP10Ed25519PrivateKey
 }
