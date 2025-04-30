@@ -1,11 +1,13 @@
-interface OptionsInterface {
+// SPDX-License-Identifier: MIT
+
+export interface ErrorOptionsInterface {
   expected?: any; got?: any; detail?: string;
 }
 
-export class CustomError extends Error {
+export class BaseError extends Error {
 
   constructor(
-    message: string, options?: OptionsInterface
+    message: string, options?: ErrorOptionsInterface
   ) {
     if (options?.expected && options?.got && options?.detail) {
       super(`${message}, (expected: ${options?.expected} | got: ${options?.got}) ${options?.detail}`);
@@ -19,16 +21,22 @@ export class CustomError extends Error {
   }
 }
 
-export class EntropyError extends CustomError { }
+export class EntropyError extends BaseError { }
 
-export class MnemonicError extends CustomError { }
+export class MnemonicError extends BaseError { }
 
-export class SeedError extends CustomError { }
+export class SeedError extends BaseError { }
 
-export class ECCError extends CustomError { }
+export class ECCError extends BaseError { }
 
-export class PublicKeyError extends CustomError { }
+export class PublicKeyError extends BaseError { }
 
-export class ChecksumError extends CustomError { }
+export class ChecksumError extends BaseError { }
 
-export class NetworkError extends CustomError { }
+export class NetworkError extends BaseError { }
+
+export class AddressError extends BaseError { }
+
+export class CryptocurrencyError extends BaseError { }
+
+export class SymbolError extends BaseError { }
