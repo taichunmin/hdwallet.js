@@ -56,7 +56,7 @@ export class MoneroMnemonic extends IMnemonic {
 
   static wordBitLength: number = 11;
 
-  static wordsListCount: number[] = [
+  static wordsList: number[] = [
     MONERO_MNEMONIC_WORDS.TWELVE,
     MONERO_MNEMONIC_WORDS.THIRTEEN,
     MONERO_MNEMONIC_WORDS.TWENTY_FOUR,
@@ -116,12 +116,17 @@ export class MoneroMnemonic extends IMnemonic {
     language: string,
     options: MnemonicOptionsInterface = {}
   ): MoneroMnemonic {
-    if (!this.wordsListCount.includes(count)) {
+    if (!this.wordsList.includes(count)) {
       throw new MnemonicError(
         "Invalid word count",
-        { expected: this.wordsListCount, got: count }
+        { expected: this.wordsList, got: count }
       );
     }
+
+    if (this.checksumWordCounts.includes(count) && !options.checksum) {
+      options = { ...options, checksum: true };
+    }
+
     const strength = this.wordsToStrength[count];
     const entropyBytes = MoneroEntropy.generate(strength);
     const phrase = this.encode(entropyBytes, language, options);
@@ -195,10 +200,10 @@ export class MoneroMnemonic extends IMnemonic {
   ): string {
     const words = this.normalize(input);
     const count = words.length;
-    if (!this.wordsListCount.includes(count)) {
+    if (!this.wordsList.includes(count)) {
       throw new MnemonicError(
         "Invalid word count",
-        { expected: this.wordsListCount, got: count }
+        { expected: this.wordsList, got: count }
       );
     }
 

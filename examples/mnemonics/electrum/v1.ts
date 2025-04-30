@@ -14,7 +14,7 @@ function runExample() {
   // const entropyHex = ElectrumV1Entropy.generate(
   //     ELECTRUM_V1_ENTROPY_STRENGTHS.TWO_HUNDRED_FIFTY_SIX
   // );
-  const entropyHex = "4cc810b7c9151c1ec569aebb2a470dad";
+  const entropyHex = "724bf9ce32db1baa801761c4f11fe901";
   console.log("Entropy (hex):", entropyHex);
 
   // 2) Convert entropy → mnemonic phrase

@@ -32,7 +32,7 @@ export class ElectrumV1Mnemonic extends IMnemonic {
 
   static wordsListNumber = 1626;
 
-  static wordsListCount: number[] = [
+  static wordsList: number[] = [
     ELECTRUM_V1_MNEMONIC_WORDS.TWELVE,
   ];
 
@@ -60,9 +60,9 @@ export class ElectrumV1Mnemonic extends IMnemonic {
     language: string,
     options: MnemonicOptionsInterface = {}
   ): ElectrumV1Mnemonic {
-    if (!this.wordsListCount.includes(count)) {
+    if (!this.wordsList.includes(count)) {
       throw new MnemonicError("Invalid mnemonic words number", {
-        expected: this.wordsListCount,
+        expected: this.wordsList,
         got: count,
       });
     }
@@ -125,9 +125,9 @@ export class ElectrumV1Mnemonic extends IMnemonic {
 
     const words = this.normalize(mnemonic);
     const count = words.length;
-    if (!this.wordsListCount.includes(count)) {
+    if (!this.wordsList.includes(count)) {
       throw new MnemonicError("Invalid mnemonic words count", {
-        expected: this.wordsListCount,
+        expected: this.wordsList,
         got: count,
       });
     }

@@ -19,7 +19,7 @@ function runExample() {
   // const entropyHex = ElectrumV2Entropy.generate(
   //     ELECTRUM_V2_ENTROPY_STRENGTHS.TWO_HUNDRED_FIFTY_SIX
   // );
-  const entropyHex = "0c3a7d6111221a9a9f3f309ee2680aaa97";
+  const entropyHex = "0c3a7d6111221a9a9f3f309ee2680ac4b0";
   console.log("Entropy (hex):", entropyHex);
 
   // 2) Convert entropy → mnemonic phrase
@@ -27,13 +27,13 @@ function runExample() {
   //     ELECTRUM_V2_MNEMONIC_WORDS.TWENTY_FIVE, ELECTRUM_V2_MNEMONIC_LANGUAGES.ENGLISH
   // );
   const mnemonicObj = ElectrumV2Mnemonic.fromEntropy(
-      entropyHex, ELECTRUM_V2_MNEMONIC_LANGUAGES.SPANISH, { mnemonicType: ELECTRUM_V2_MNEMONIC_TYPES.STANDARD }
+      entropyHex, ELECTRUM_V2_MNEMONIC_LANGUAGES.ENGLISH, { mnemonicType: ELECTRUM_V2_MNEMONIC_TYPES.STANDARD_2FA }
   );
   console.log("Mnemonic phrase:", mnemonicObj.mnemonic());
 
   // 3) Decode mnemonic back → entropy bytes
   const decodedBytes = ElectrumV2Mnemonic.decode(
-      mnemonicObj.mnemonic(), { mnemonicType: ELECTRUM_V2_MNEMONIC_TYPES.STANDARD }
+      mnemonicObj.mnemonic(), { mnemonicType: ELECTRUM_V2_MNEMONIC_TYPES.STANDARD_2FA }
   );
   // const decodedBytes = ElectrumV2Mnemonic.decode(
   //     "inform attitude erode wheat december virtual husband skin sea deny already satoshi ghost evolve crouch cheese flag twenty arm utility alter riot roof ability grace"
