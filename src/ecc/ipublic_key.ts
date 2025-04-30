@@ -2,7 +2,12 @@ import { IPoint } from "./ipoint";
 
 
 export abstract class IPublicKey {
-  public static client(): string {
+
+  publicKey: any;
+
+  constructor(publicKey: any) { this.publicKey = publicKey; }
+
+  public static curve(): string {
     throw new Error("Must override client()");
   }
 

@@ -5,67 +5,73 @@ import {
   SLIP10Secp256k1Point,
   SLIP10Secp256k1PublicKey,
   SLIP10Secp256k1PrivateKey,
-} from '../src/ecc/slip10/secp256k1';
+  SLIP10Nist256p1ECC,
+  SLIP10Nist256p1Point,
+  SLIP10Nist256p1PublicKey,
+  SLIP10Nist256p1PrivateKey,
+} from '../src/ecc/slip10';
 import { ECCS, validateAndGetPublicKey } from '../src/ecc';
 import { hexToBytes } from '../src/utils';
+import {IEllipticCurveCryptography} from "../src/ecc/iecc";
+import {IPublicKey} from "../src/ecc/ipublic_key";
 
 /**
- * Demonstration of SLIP10 Secp256k1 ECC operations in TypeScript
+ * Demonstration of SLIP10 Secp256k1 and Nist256p1 ECC operations in TypeScript
  */
 function runEcExamples(): void {
-  console.log('=== ECC Example: SLIP10 Secp256k1 ===\n');
+  console.log('=== ECC Example: SLIP10 Secp256k1 ===');
 
-  // Curve metadata
+  // Secp256k1 metadata
   console.log(`Curve Name  : ${SLIP10Secp256k1ECC.NAME}`);
-  console.log(`Curve Order : 0x${SLIP10Secp256k1ECC.ORDER.toString(16)}\n`);
+  console.log(`Curve Order : 0x${SLIP10Secp256k1ECC.ORDER.toString(16)}`);
 
   // Generator point
-  const G = SLIP10Secp256k1ECC.GENERATOR;
-  console.log('Generator G:');
-  console.log(`  x = 0x${G.x().toString(16)}`);
-  console.log(`  y = 0x${G.y().toString(16)}\n`);
+  const G1 = SLIP10Secp256k1ECC.GENERATOR;
+  console.log('Generator G (Secp256k1):');
+  console.log(`  x = 0x${G1.x().toString(16)}`);
+  console.log(`  y = 0x${G1.y().toString(16)}`);
 
-  // Example private key (hex)
-  const privHex = 'b66022fff8b6322f8b8fa444d6d097457b6b9e7bb05add5b75f9c827df7bd3b6';
-  const privBytes = hexToBytes(privHex);
-  const privKey = SLIP10Secp256k1PrivateKey.fromBytes(privBytes);
-  console.log(`Private Key (hex) : ${privHex}`);
+  // Secp256k1 key pair example
+  const secpPrivHex = 'b66022fff8b6322f8b8fa444d6d097457b6b9e7bb05add5b75f9c827df7bd3b6';
+  const secpPriv = SLIP10Secp256k1PrivateKey.fromBytes(hexToBytes(secpPrivHex));
+  console.log(`Secp256k1 Private: ${secpPrivHex}`);
+  const secpPub = secpPriv.publicKey();
+  console.log(`Secp256k1 Public (compressed): ${Buffer.from(secpPub.rawCompressed()).toString('hex')}`);
+  console.log(`Secp256k1 Public (uncompressed): ${Buffer.from(secpPub.rawUncompressed()).toString('hex')}`);
 
-  // Derive public key
-  const pubKey = privKey.publicKey();
-  const compHex = Buffer.from(pubKey.rawCompressed()).toString('hex');
-  const uncompHex = Buffer.from(pubKey.rawUncompressed()).toString('hex');
-  console.log(`Public Key (compressed)   : ${compHex}`);
-  console.log(`Public Key (uncompressed) : ${uncompHex}\n`);
+  // Nist256p1 demonstration using provided JSON data
+  console.log('=== ECC Example: SLIP10 Nist256p1 ===');
 
-  // Parse point from public key
-  const P = SLIP10Secp256k1Point.fromBytes(pubKey.rawCompressed());
-  console.log('Point from Public Key:');
-  console.log(`  x = 0x${P.x().toString(16)}`);
-  console.log(`  y = 0x${P.y().toString(16)}\n`);
+  // Nist256p1 metadata
+  console.log(`Curve Name  : ${SLIP10Nist256p1ECC.NAME}`);
+  console.log(`Curve Order : 0x${SLIP10Nist256p1ECC.ORDER.toString(16)}`);
 
-  // Scalar multiplication
-  const k = BigInt(3);
-  const kG = G.multiply(k);
-  console.log('3 * G:');
-  console.log(`  x = 0x${kG.x().toString(16)}`);
-  console.log(`  y = 0x${kG.y().toString(16)}\n`);
+  // Generator point for Nist256p1
+  const G2 = SLIP10Nist256p1ECC.GENERATOR;
+  console.log('Generator G (Nist256p1):');
+  console.log(`  x = 0x${G2.x().toString(16)}`);
+  console.log(`  y = 0x${G2.y().toString(16)}`);
 
-  // Commutativity check
-  const twoG = G.multiply(BigInt(2));
-  const sum1 = G.add(twoG);
-  const sum2 = twoG.add(G);
-  const sumHex1 = Buffer.from(sum1.rawEncoded()).toString('hex');
-  const sumHex2 = Buffer.from(sum2.rawEncoded()).toString('hex');
-  console.log(`(G + 2G) === (2G + G)? ${sumHex1 === sumHex2}\n`);
+  // Provided example data
+  const nistPrivHex = 'f79495fda777197ce73551bcd8e162ceca19167575760d3cc2bced4bf2a213dc';
+  const nistPriv = SLIP10Nist256p1PrivateKey.fromBytes(hexToBytes(nistPrivHex));
+  console.log(`Nist256p1 Private: ${nistPrivHex}`);
 
-  // Lookup via ECCS
-  const eccClass = ECCS.ecc(SLIP10Secp256k1ECC.NAME);
-  console.log(`Lookup ECC by name: ${eccClass.NAME}\n`);
+  // Derive public key from example
+  const nistPub = nistPriv.publicKey();
+  console.log(`Nist256p1 Public (uncompressed): ${Buffer.from(nistPub.rawUncompressed()).toString('hex')}`);
+  console.log(`Nist256p1 Public (compressed)  : ${Buffer.from(nistPub.rawCompressed()).toString('hex')}`);
 
-  // Validate public key
-  const validated = validateAndGetPublicKey(pubKey.rawCompressed(), SLIP10Secp256k1PublicKey);
-  console.log(`Validated PublicKey instance: ${validated instanceof SLIP10Secp256k1PublicKey}\n`);
+  // Validate lookup and validation utilities
+  const ecc1 = ECCS.ecc(SLIP10Secp256k1ECC.NAME);
+  console.log(`Lookup Secp256k1: ${ecc1.NAME}`);
+  const valid1 = validateAndGetPublicKey(secpPub.rawCompressed(), SLIP10Secp256k1PublicKey);
+  console.log(`Validated Secp256k1 public: ${valid1 instanceof SLIP10Secp256k1PublicKey}`);
+
+  const ecc2 = ECCS.ecc(SLIP10Nist256p1ECC.NAME);
+  console.log(`Lookup Nist256p1: ${ecc2.NAME}`);
+  const valid2 = validateAndGetPublicKey(nistPub.rawCompressed(), SLIP10Nist256p1PublicKey);
+  console.log(`Validated Nist256p1 public: ${valid2 instanceof SLIP10Nist256p1PublicKey}`);
 }
 
 runEcExamples();

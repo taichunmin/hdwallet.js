@@ -1,5 +1,10 @@
 export abstract class IPoint {
-  public static client(): string {
+
+  point: any;
+
+  constructor(point: any) { this.point = point; }
+
+  public static curve(): string {
     throw new Error("Must override client()");
   }
 

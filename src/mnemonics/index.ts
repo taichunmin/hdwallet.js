@@ -11,7 +11,7 @@ import { MoneroMnemonic, MONERO_MNEMONIC_WORDS, MONERO_MNEMONIC_LANGUAGES } from
 
 export class MNEMONICS {
 
-  private static dictionary: Record<string, any> = {
+  private static dictionary: Record<string, typeof IMnemonic> = {
     [AlgorandMnemonic.client()]: AlgorandMnemonic,
     [BIP39Mnemonic.client()]: BIP39Mnemonic,
     [ElectrumV1Mnemonic.client()]: ElectrumV1Mnemonic,
@@ -23,11 +23,11 @@ export class MNEMONICS {
     return Object.keys(this.dictionary)
   }
 
-  static classes(): IMnemonic[] {
+  static classes(): typeof IMnemonic[] {
     return Object.values(this.dictionary)
   }
 
-  static mnemonic(name: string): IMnemonic {
+  static mnemonic(name: string): typeof IMnemonic {
     if (!this.isMnemonic(name)) {
       throw new MnemonicError(
         'Invalid mnemonic name',

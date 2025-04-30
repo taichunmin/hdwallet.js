@@ -4,13 +4,15 @@ import { getBytes } from "../utils";
 import { ECCError, PublicKeyError } from "../exceptions";
 import {
   SLIP10Secp256k1ECC,
+  SLIP10Nist256p1ECC
 } from "./slip10";
 
 
 export class ECCS {
 
-  private static dictionary: Record<string, IEllipticCurveCryptography> = {
-    [SLIP10Secp256k1ECC.NAME] : SLIP10Secp256k1ECC,
+  private static dictionary: Record<string, typeof IEllipticCurveCryptography> = {
+    [SLIP10Secp256k1ECC.NAME]: SLIP10Secp256k1ECC,
+    [SLIP10Nist256p1ECC.NAME]: SLIP10Nist256p1ECC,
   };
 
   public static names(): string[] {
@@ -18,12 +20,12 @@ export class ECCS {
   }
 
 
-  public static classes(): IEllipticCurveCryptography[] {
+  public static classes(): typeof IEllipticCurveCryptography[] {
     return Object.values(this.dictionary);
   }
 
 
-  public static ecc(name: string): IEllipticCurveCryptography {
+  public static ecc(name: string): typeof IEllipticCurveCryptography {
     if (!this.isECC(name)) {
       throw new ECCError(
         `Invalid ECC name: ${name}`,
@@ -42,10 +44,7 @@ export class ECCS {
 
 export function validateAndGetPublicKey(
   publicKey: Uint8Array | string | IPublicKey,
-  publicKeyCls: {
-    name(): string;
-    fromBytes(bytes: Uint8Array): IPublicKey;
-  }
+  publicKeyCls: typeof IPublicKey
 ): IPublicKey {
   try {
     if (publicKey instanceof Uint8Array) {
@@ -57,11 +56,11 @@ export function validateAndGetPublicKey(
     }
     if (!(publicKey instanceof (<any>publicKeyCls))) {
       // wrong instance type
-      const eccClass = ECCS.ecc(publicKeyCls.name());
+      const eccClass = ECCS.ecc(publicKeyCls.curve());
 
       throw new PublicKeyError(
         `Invalid ${(<any>eccClass).NAME} public key instance`,
-        { expected: publicKeyCls.name(), got: publicKey.constructor.name }
+        { expected: publicKeyCls.curve(), got: publicKey.constructor.name }
       );
     }
     return publicKey as IPublicKey;
@@ -74,5 +73,6 @@ export function validateAndGetPublicKey(
 }
 
 export {
-    SLIP10Secp256k1ECC
+    SLIP10Secp256k1ECC,
+    SLIP10Nist256p1ECC
 }

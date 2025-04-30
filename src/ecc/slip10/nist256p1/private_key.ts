@@ -1,31 +1,29 @@
 import * as elliptic from "elliptic";
-
 import { IPrivateKey } from "../../iprivate_key";
 import { IPublicKey } from "../../ipublic_key";
+import { SLIP10Nist256p1PublicKey } from "./public_key";
 import { SLIP10_SECP256K1_CONST } from "../../../const";
-import { SLIP10Secp256k1PublicKey } from "./public_key";
 
-const ec = new elliptic.ec("secp256k1");
+
+const ec = new elliptic.ec("p256");
 type KeyPair = elliptic.ec.KeyPair;
 
-
-export class SLIP10Secp256k1PrivateKey extends IPrivateKey {
+export class SLIP10Nist256p1PrivateKey extends IPrivateKey {
 
   constructor(privateKey: KeyPair) { super(privateKey); }
 
   public static curve(): string {
-    return "SLIP10-Secp256k1";
+    return "SLIP10-Nist256p1";
   }
 
-  public static fromBytes(bytes: Uint8Array): IPrivateKey {
+  public static fromBytes(bytes: Uint8Array): SLIP10Nist256p1PrivateKey {
     if (bytes.length !== SLIP10_SECP256K1_CONST.PRIVATE_KEY_BYTE_LENGTH) {
       throw new Error("Invalid private key bytes length");
     }
-
     try {
       const kp = ec.keyFromPrivate(Buffer.from(bytes));
-      return new SLIP10Secp256k1PrivateKey(kp);
-    } catch (err) {
+      return new SLIP10Nist256p1PrivateKey(kp);
+    } catch {
       throw new Error("Invalid private key bytes");
     }
   }
@@ -35,8 +33,12 @@ export class SLIP10Secp256k1PrivateKey extends IPrivateKey {
   }
 
   public raw(): Uint8Array {
-    const privHex = this.privateKey.getPrivate().toString(16).padStart(SLIP10_SECP256K1_CONST.PRIVATE_KEY_BYTE_LENGTH * 2, '0');
-    return Uint8Array.from(Buffer.from(privHex, 'hex'));
+    const privBN = this.privateKey.getPrivate();
+    const hex = privBN.toString(16).padStart(
+      SLIP10_SECP256K1_CONST.PRIVATE_KEY_BYTE_LENGTH * 2,
+      '0'
+    );
+    return Uint8Array.from(Buffer.from(hex, 'hex'));
   }
 
   public underlyingObject(): any {
@@ -44,7 +46,7 @@ export class SLIP10Secp256k1PrivateKey extends IPrivateKey {
   }
 
   public publicKey(): IPublicKey {
-    const pubPoint = this.privateKey.getPublic();
-    return new SLIP10Secp256k1PublicKey(pubPoint);
+    const pubPt = this.privateKey.getPublic();
+    return new SLIP10Nist256p1PublicKey(pubPt);
   }
 }

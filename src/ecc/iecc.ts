@@ -4,10 +4,10 @@ import { IPrivateKey } from "./iprivate_key";
 
 
 export abstract class IEllipticCurveCryptography {
-  public static NAME: string;
-  public static ORDER: bigint;
-  public static GENERATOR: IPoint;
-  public static POINT: IPoint;
-  public static PUBLIC_KEY: typeof IPublicKey;
-  public static PRIVATE_KEY: typeof IPrivateKey;
+  static NAME: string;
+  static ORDER: bigint;
+  static GENERATOR: IPoint;
+  static POINT: typeof IPoint;
+  static PUBLIC_KEY: typeof IPublicKey;
+  static PRIVATE_KEY: typeof IPrivateKey;
 }

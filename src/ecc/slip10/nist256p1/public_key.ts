@@ -1,35 +1,34 @@
 import * as elliptic from "elliptic";
 import { IPoint } from "../../ipoint";
 import { IPublicKey } from "../../ipublic_key";
-import { SLIP10Secp256k1Point } from "./point";
+import { SLIP10Nist256p1Point } from "./point";
 import { SLIP10_SECP256K1_CONST } from "../../../const";
 
 
-const ec = new elliptic.ec("secp256k1");
+const ec = new elliptic.ec("p256");
 type BasePoint = elliptic.curve.base.BasePoint;
 
-
-export class SLIP10Secp256k1PublicKey extends IPublicKey {
+export class SLIP10Nist256p1PublicKey extends IPublicKey {
 
   constructor(publicKey: BasePoint) { super(publicKey); }
 
   public static curve(): string {
-    return "SLIP10-Secp256k1";
+    return "SLIP10-Nist256p1";
   }
 
   public static fromBytes(bytes: Uint8Array): IPublicKey {
     try {
       const keyPair = ec.keyFromPublic(Buffer.from(bytes));
-      const pubPoint = keyPair.getPublic();
-      return new SLIP10Secp256k1PublicKey(pubPoint);
+      const base = keyPair.getPublic();
+      return new SLIP10Nist256p1PublicKey(base);
     } catch {
       throw new Error("Invalid public key bytes");
     }
   }
 
   public static fromPoint(pt: IPoint): IPublicKey {
-    const base = (pt as SLIP10Secp256k1Point).underlyingObject() as BasePoint;
-    return new SLIP10Secp256k1PublicKey(base);
+    const base = (pt as SLIP10Nist256p1Point).underlyingObject() as BasePoint;
+    return new SLIP10Nist256p1PublicKey(base);
   }
 
   public static compressedLength(): number {
@@ -45,7 +44,8 @@ export class SLIP10Secp256k1PublicKey extends IPublicKey {
   }
 
   public rawCompressed(): Uint8Array {
-    return new Uint8Array(this.publicKey.encodeCompressed());
+    const arr = this.publicKey.encode("array", true) as number[];
+    return new Uint8Array(arr);
   }
 
   public rawUncompressed(): Uint8Array {
@@ -58,6 +58,6 @@ export class SLIP10Secp256k1PublicKey extends IPublicKey {
   }
 
   public point(): IPoint {
-    return new SLIP10Secp256k1Point(this.publicKey);
+    return new SLIP10Nist256p1Point(this.publicKey);
   }
 }

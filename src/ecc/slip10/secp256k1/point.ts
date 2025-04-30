@@ -7,14 +7,11 @@ import { SLIP10_SECP256K1_CONST } from "../../../const";
 const ec = new elliptic.ec("secp256k1");
 type BasePoint = elliptic.curve.base.BasePoint;
 
-export class SLIP10Secp256k1Point implements IPoint {
-  private readonly point: BasePoint;
+export class SLIP10Secp256k1Point extends IPoint {
 
-  constructor(point: BasePoint) {
-    this.point = point;
-  }
+  constructor(point: BasePoint) { super(point); }
 
-  public static client(): string {
+  public static curve(): string {
     return "SLIP10-Secp256k1";
   }
 
