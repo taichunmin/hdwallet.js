@@ -1,17 +1,18 @@
 import {ELECTRUM_V1_ENTROPY_STRENGTHS, ElectrumV1Entropy} from "../../../src/entropies/electrum/v1";
 import { hexToBytes } from "../../../src/utils";
+import jsonData from "../../data/json/entropies.json"
 
 describe("ElectrumV1Entropy", () => {
   it("should accept valid hex entropy", () => {
-    const entropyHex = "000102030405060708090A0B0C0D0E0F";
-    expect(ElectrumV1Entropy.isValid(entropyHex)).toBe(true);
+    const entropy: string = jsonData['Electrum-V1']['128']['entropy'];
+    expect(ElectrumV1Entropy.isValid(entropy)).toBe(true);
   });
 
   it("should store correct byte array", () => {
-    const entropyHex = "0f0e0d0c0b0a09080706050403020100";
-    const entropy = new ElectrumV1Entropy(entropyHex);
-    const bytes = hexToBytes(entropyHex);
-    expect(entropy.entropy()).toEqual(entropyHex);
+    const entropy: string = jsonData['Electrum-V1']['128']['entropy'];
+    const electrumv1Entropy = new ElectrumV1Entropy(entropy);
+    const bytes = hexToBytes(entropy);
+    expect(electrumv1Entropy.entropy()).toEqual(entropy);
   });
 
   it("should throw error on invalid hex format", () => {
