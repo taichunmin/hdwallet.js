@@ -3,63 +3,60 @@
 import { NetworkError } from './exceptions';
 import { bytesToInteger } from './utils';
 
-/**
- * Base class for dynamically constructing nested namespaces.
- */
+
 export class NestedNamespace {
-  constructor(data: Set<string> | Array<any> | Record<string, any>) {
+
+  [key: string]: any;
+
+  constructor(data: Set<string> | any[] | Record<string, any>) {
     if (data instanceof Set) {
       data.forEach(item => {
-        (this as any)[item] = item;
+        this[item] = item;
       });
     } else if (Array.isArray(data)) {
       data.forEach(item => {
-        if (typeof item === 'object' && !Array.isArray(item)) {
+        if (item != null && typeof item === 'object' && !Array.isArray(item)) {
           Object.entries(item).forEach(([key, value]) => {
-            (this as any)[key] = typeof value === 'object'
-              ? new NestedNamespace(value as any)
+            this[key] = (value != null && typeof value === 'object')
+              ? new NestedNamespace(value)
               : value;
           });
         } else {
-          (this as any)[item] = item;
+          this[item] = item;
         }
       });
     } else {
       Object.entries(data).forEach(([key, value]) => {
-        (this as any)[key] = typeof value === 'object'
-          ? new NestedNamespace(value as any)
+        this[key] = (value != null && typeof value === 'object')
+          ? new NestedNamespace(value)
           : value;
       });
     }
   }
 }
 
-/** SLIP10-ED25519 Constants. */
-export const SLIP10_ED25519_CONST = {
-  PRIVATE_KEY_BYTE_LENGTH: 32 as const,
-  PUBLIC_KEY_PREFIX: Buffer.from([0x00]) as Buffer,
-  PUBLIC_KEY_BYTE_LENGTH: 32 as const,
-};
+export const SLIP10_ED25519_CONST: Record<string, any> = {
+  PRIVATE_KEY_BYTE_LENGTH: 32,
+  PUBLIC_KEY_PREFIX: Buffer.from([0x00]),
+  PUBLIC_KEY_BYTE_LENGTH: 32
+} as const;
 
-/** KHOLAW-ED25519 Constants (extends SLIP10-ED25519). */
-export const KHOLAW_ED25519_CONST = {
+export const KHOLAW_ED25519_CONST: Record<string, any> = {
   ...SLIP10_ED25519_CONST,
-  PRIVATE_KEY_BYTE_LENGTH: 64 as const,
-};
+  PRIVATE_KEY_BYTE_LENGTH: 64
+} as const;
 
-/** SLIP10-SECP256K1 Constants. */
-export const SLIP10_SECP256K1_CONST = {
-  POINT_COORDINATE_BYTE_LENGTH: 32 as const,
-  PRIVATE_KEY_BYTE_LENGTH: 32 as const,
-  PRIVATE_KEY_UNCOMPRESSED_PREFIX: 0x00 as const,
-  PRIVATE_KEY_COMPRESSED_PREFIX: 0x01 as const,
-  PUBLIC_KEY_UNCOMPRESSED_PREFIX: Buffer.from([0x04]) as Buffer,
-  PUBLIC_KEY_COMPRESSED_BYTE_LENGTH: 33 as const,
-  PUBLIC_KEY_UNCOMPRESSED_BYTE_LENGTH: 65 as const,
-  CHECKSUM_BYTE_LENGTH: 4 as const,
-};
+export const SLIP10_SECP256K1_CONST: Record<string, any> = {
+  POINT_COORDINATE_BYTE_LENGTH: 32,
+  PRIVATE_KEY_BYTE_LENGTH: 32,
+  PRIVATE_KEY_UNCOMPRESSED_PREFIX: 0x00,
+  PRIVATE_KEY_COMPRESSED_PREFIX: 0x01,
+  PUBLIC_KEY_UNCOMPRESSED_PREFIX: Buffer.from([0x04]),
+  PUBLIC_KEY_COMPRESSED_BYTE_LENGTH: 33,
+  PUBLIC_KEY_UNCOMPRESSED_BYTE_LENGTH: 65,
+  CHECKSUM_BYTE_LENGTH: 4
+} as const;
 
-/** Information container with optional fields. */
 export class Info extends NestedNamespace {
   SOURCE_CODE?: string;
   WHITEPAPER?: string;
@@ -69,14 +66,12 @@ export class Info extends NestedNamespace {
   }
 }
 
-/** Witness versions mapping. */
 export class WitnessVersions extends NestedNamespace {
   getWitnessVersion(address: string): number | undefined {
     return (this as any)[address.toUpperCase()];
   }
 }
 
-/** Generic namespace for entropy values. */
 export class Entropies extends NestedNamespace {
   getEntropies(): string[] {
     return Object.values(this as any) as string[];
@@ -122,7 +117,6 @@ export class AddressPrefixes extends NestedNamespace {
   }
 }
 
-/** Supported networks and lookup methods. */
 export class Networks extends NestedNamespace {
   isNetwork(network: string): boolean {
     return this.getNetworks().includes(network.toLowerCase());
@@ -138,9 +132,8 @@ export class Networks extends NestedNamespace {
   }
 }
 
-export class Params extends NestedNamespace {}
+export class Params extends NestedNamespace { }
 
-/** Extended key version utilities. */
 export class ExtendedKeyVersions extends NestedNamespace {
   isVersion(version: Buffer): boolean {
     return Object.values(this as any).includes(bytesToInteger(version));
@@ -157,31 +150,28 @@ export class ExtendedKeyVersions extends NestedNamespace {
   }
 }
 
-export class XPrivateKeyVersions extends ExtendedKeyVersions {}
-export class XPublicKeyVersions extends ExtendedKeyVersions {}
+export class XPrivateKeyVersions extends ExtendedKeyVersions { }
 
-/** Public key types. */
-export enum PUBLIC_KEY_TYPES {
-  UNCOMPRESSED = 'uncompressed',
-  COMPRESSED = 'compressed',
-}
+export class XPublicKeyVersions extends ExtendedKeyVersions { }
 
-/** WIF (Wallet Import Format) types. */
-export enum WIF_TYPES {
-  WIF = 'wif',
-  WIF_COMPRESSED = 'wif-compressed',
-}
+export const PUBLIC_KEY_TYPES = {
+  UNCOMPRESSED: 'uncompressed',
+  COMPRESSED: 'compressed'
+} as const;
 
-/** BIP141 semantics. */
-export enum SEMANTICS {
-  P2WPKH = 'p2wpkh',
-  P2WPKH_IN_P2SH = 'p2wpkh-in-p2sh',
-  P2WSH = 'p2wsh',
-  P2WSH_IN_P2SH = 'p2wsh-in-p2sh',
-}
+export const WIF_TYPES: Record<string, any> = {
+  WIF: 'wif',
+  WIF_COMPRESSED: 'wif-compressed'
+} as const;
 
-/** Electrum-V2 modes. */
-export enum MODES {
-  STANDARD = 'standard',
-  SEGWIT = 'segwit',
-}
+export const SEMANTICS: Record<string, any> = {
+  P2WPKH: 'p2wpkh',
+  P2WPKH_IN_P2SH: 'p2wpkh-in-p2sh',
+  P2WSH: 'p2wsh',
+  P2WSH_IN_P2SH: 'p2wsh-in-p2sh'
+} as const;
+
+export const MODES: Record<string, any> = {
+  STANDARD: 'standard',
+  SEGWIT: 'segwit'
+} as const;
