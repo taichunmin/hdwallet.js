@@ -25,6 +25,10 @@ export class MnemonicError extends CustomError { }
 
 export class SeedError extends CustomError { }
 
+export class ECCError extends CustomError { }
+
+export class PublicKeyError extends CustomError { }
+
 export class ChecksumError extends CustomError { }
 
 export class NetworkError extends CustomError { }

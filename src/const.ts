@@ -49,7 +49,6 @@ export const KHOLAW_ED25519_CONST = {
 
 /** SLIP10-SECP256K1 Constants. */
 export const SLIP10_SECP256K1_CONST = {
-  USE: 'coincurve' as 'coincurve' | 'ecdsa',
   POINT_COORDINATE_BYTE_LENGTH: 32 as const,
   PRIVATE_KEY_BYTE_LENGTH: 32 as const,
   PRIVATE_KEY_UNCOMPRESSED_PREFIX: 0x00 as const,
