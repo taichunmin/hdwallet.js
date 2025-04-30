@@ -17,13 +17,17 @@ export class SLIP10Ed25519PublicKey extends IPublicKey {
 
   public static fromBytes(bytes: Uint8Array): IPublicKey {
     let data = bytes;
-    const prefixLen = SLIP10_ED25519_CONST.PUBLIC_KEY_PREFIX.length;
+    const prefix = SLIP10_ED25519_CONST.PUBLIC_KEY_PREFIX;
     if (
-      data.length === SLIP10_ED25519_CONST.PUBLIC_KEY_BYTE_LENGTH + prefixLen &&
-      data[0] === SLIP10_ED25519_CONST.PUBLIC_KEY_PREFIX[0]
+      data.length === prefix.length + SLIP10_ED25519_CONST.PUBLIC_KEY_BYTE_LENGTH &&
+      data[0] === prefix[0]
     ) {
-      data = data.slice(prefixLen);
+      data = data.slice(prefix.length);
     }
+    if (data.length !== SLIP10_ED25519_CONST.PUBLIC_KEY_BYTE_LENGTH) {
+      throw new Error("Invalid public key bytes length");
+    }
+
     try {
       const hex = Buffer.from(data).toString("hex");
       const pt = ec.decodePoint(hex) as EdwardsPoint;
@@ -34,8 +38,9 @@ export class SLIP10Ed25519PublicKey extends IPublicKey {
     }
   }
 
-  public static fromPoint(pt: IPoint): IPublicKey {
-    return SLIP10Ed25519PublicKey.fromBytes((pt as SLIP10Ed25519Point).rawEncoded());
+  public static fromPoint(point: IPoint): IPublicKey {
+    const raw = (point as any).rawEncoded() as Uint8Array;
+    return SLIP10Ed25519PublicKey.fromBytes(raw);
   }
 
   public static compressedLength(): number {
@@ -51,13 +56,14 @@ export class SLIP10Ed25519PublicKey extends IPublicKey {
   }
 
   public rawCompressed(): Uint8Array {
-    const arr = this.publicKey.encode("array", true) as number[];
-    return new Uint8Array(arr);
+    return new Uint8Array([
+      ...SLIP10_ED25519_CONST.PUBLIC_KEY_PREFIX,
+      ...ec.encodePoint(this.publicKey)
+    ]);
   }
 
   public rawUncompressed(): Uint8Array {
-    const arr = this.publicKey.encode("array", false) as number[];
-    return new Uint8Array(arr);
+    return this.rawCompressed();
   }
 
   public point(): IPoint {
