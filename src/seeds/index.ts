@@ -1,4 +1,4 @@
-import { ISeed } from './iseed'
+import { SeedOptionsInterface, ISeed } from './iseed'
 import { SeedError } from '../exceptions'
 import { AlgorandSeed } from './algorand'
 import { BIP39Seed } from './bip39'
@@ -9,7 +9,7 @@ import { MoneroSeed } from './monero'
 
 export class SEEDS {
 
-  private static dictionary: Record<string, any> = {
+  private static dictionary: Record<string, typeof ISeed> = {
     [AlgorandSeed.client()]: AlgorandSeed,
     [BIP39Seed.client()]: BIP39Seed,
     [CardanoSeed.client()]: CardanoSeed,
@@ -22,11 +22,11 @@ export class SEEDS {
     return Object.keys(this.dictionary)
   }
 
-  static classes(): ISeed[] {
+  static classes(): typeof ISeed[] {
     return Object.values(this.dictionary)
   }
 
-  static seed(name: string): string {
+  static seed(name: string): typeof ISeed {
     if (!this.isSeed(name)) {
       throw new SeedError(
         'Invalid seed name', { expected: this.clients(), got: name }
@@ -41,6 +41,7 @@ export class SEEDS {
 }
 
 export {
+  SeedOptionsInterface,
   ISeed,
   AlgorandSeed,
   BIP39Seed,

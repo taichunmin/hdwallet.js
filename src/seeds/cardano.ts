@@ -3,7 +3,7 @@ import { IMnemonic, BIP39Mnemonic } from '../mnemonics'
 import { blake2b256 } from '../crypto'
 import { getBytes, bytesToString } from '../utils'
 import { MnemonicError, SeedError } from '../exceptions'
-import { ISeed, BIP39Seed } from './'
+import { SeedOptionsInterface, ISeed, BIP39Seed } from './'
 
 
 export class CardanoTypes {
@@ -31,21 +31,17 @@ export class CardanoTypes {
 export class CardanoSeed extends ISeed {
   private _cardanoType: string
 
-  constructor(
-    seed: string,
-    cardanoType: string = CardanoTypes.BYRON_ICARUS,
-    passphrase?: string
-  ) {
-    super(seed, { cardanoType, passphrase })
+  constructor(seed: string, options: SeedOptionsInterface = {cardanoType: CardanoTypes.BYRON_ICARUS}) {
+    super(seed, options)
 
-    if (!CardanoTypes.isCardanoType(cardanoType)) {
+    if (options.cardanoType && !CardanoTypes.isCardanoType(options.cardanoType)) {
       throw new SeedError(
         'Invalid Cardano type',
-        { expected: CardanoTypes.getCardanoTypes(), got: cardanoType }
+        { expected: CardanoTypes.getCardanoTypes(), got: options.cardanoType }
       )
     }
-
-    this._cardanoType = cardanoType
+  
+    this._cardanoType = options.cardanoType ?? CardanoTypes.BYRON_ICARUS
   }
 
   static client(): string {

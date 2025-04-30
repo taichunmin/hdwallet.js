@@ -75,6 +75,11 @@ function runSeedExamples() {
   const moneroSeed = MoneroSeed.fromMnemonic(moneroPhrase)
   console.log(`MoneroSeed.fromMnemonic => ${moneroSeed}`)
 
+  // Monero from class
+  const moneroClass = SEEDS.seed("Monero")
+  const moneroSeedFromClass = moneroClass.fromMnemonic(moneroPhrase)
+  console.log(`MoneroSeed.fromMnemonic => ${moneroSeedFromClass}`)
+
 }
 
 runSeedExamples()

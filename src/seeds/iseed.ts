@@ -1,9 +1,14 @@
 import { IMnemonic } from '../mnemonics';
 
+export interface SeedOptionsInterface {
+  cardanoType?: string;
+  passphrase?: string;
+}
+
 export abstract class ISeed {
   protected _seed: string;
 
-  constructor(seed: string, options: Record<string, any> = {}) {
+  constructor(seed: string, options: SeedOptionsInterface = {}) {
     this._seed = seed;
   }
 
