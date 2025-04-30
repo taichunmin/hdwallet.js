@@ -10,7 +10,11 @@ import {
   // Ed25519
   SLIP10Ed25519ECC,
   SLIP10Ed25519PublicKey,
-  SLIP10Ed25519PrivateKey
+  SLIP10Ed25519PrivateKey,
+  // Ed25519-Monero
+  SLIP10Ed25519MoneroECC,
+  SLIP10Ed25519MoneroPublicKey,
+  SLIP10Ed25519MoneroPrivateKey
 } from '../src/ecc';
 import { ECCS, validateAndGetPublicKey } from '../src/ecc';
 import { hexToBytes } from '../src/utils';
@@ -79,21 +83,36 @@ function runEcExamples(): void {
   console.log(`Ed25519 Public (compressed)  : ${Buffer.from(edPub.rawCompressed()).toString('hex')}`);
   console.log(`Ed25519 Public (uncompressed): ${Buffer.from(edPub.rawUncompressed()).toString('hex')}`);
 
-  // Validation and lookup utilities
-  const ecc1 = ECCS.ecc(SLIP10Secp256k1ECC.NAME);
-  console.log(`Lookup Secp256k1     : ${ecc1.NAME}`);
-  const valid1 = validateAndGetPublicKey(secpPub.rawCompressed(), SLIP10Secp256k1PublicKey);
-  console.log(`Validated Secp256k1  : ${valid1 instanceof SLIP10Secp256k1PublicKey}`);
+  console.log('\n=== ECC Example: SLIP10 Ed25519-Monero ===');
 
-  const ecc2 = ECCS.ecc(SLIP10Nist256p1ECC.NAME);
-  console.log(`Lookup Nist256p1     : ${ecc2.NAME}`);
-  const valid2 = validateAndGetPublicKey(nistPub.rawCompressed(), SLIP10Nist256p1PublicKey);
-  console.log(`Validated Nist256p1  : ${valid2 instanceof SLIP10Nist256p1PublicKey}`);
+  // Ed25519-Monero metadata
+  console.log(`Curve Name   : ${SLIP10Ed25519MoneroECC.NAME}`);
+  console.log(`Curve Order  : 0x${SLIP10Ed25519MoneroECC.ORDER.toString(16)}`);
 
-  const ecc3 = ECCS.ecc(SLIP10Ed25519ECC.NAME);
-  console.log(`Lookup Ed25519       : ${ecc3.NAME}`);
-  const valid3 = validateAndGetPublicKey(edPub.rawCompressed(), SLIP10Ed25519PublicKey);
-  console.log(`Validated Ed25519    : ${valid3 instanceof SLIP10Ed25519PublicKey}`);
+  // Generator point for Ed25519-Monero
+  const G4 = SLIP10Ed25519MoneroECC.GENERATOR;
+  console.log('Generator G (Ed25519-Monero):');
+  console.log(`  x = 0x${G4.x().toString(16)}`);
+  console.log(`  y = 0x${G4.y().toString(16)}`);
+
+  // Ed25519-Monero key pair example
+  const edMoneroPrivHex = 'bb37794073e5094ebbfcfa070e9254fe6094b56e7cccb094a2304c5eccccdc07';
+  const edMoneroPriv = SLIP10Ed25519MoneroPrivateKey.fromBytes(hexToBytes(edMoneroPrivHex));
+  console.log(`Ed25519-Monero Private: ${edMoneroPrivHex}`);
+  const edMoneroPub = edMoneroPriv.publicKey();
+  console.log(`Ed25519-Monero Public: ${Buffer.from(edMoneroPub.rawCompressed()).toString('hex')}`);
+
+  // Point coordinates from decode
+  const P4 = edMoneroPub.point();
+  console.log('Ed25519-Monero Point:');
+  console.log(`  x = ${P4.x().toString()}`);
+  console.log(`  y = ${P4.y().toString()}`);
+
+  // Validation and lookup for Monero
+  const ecc4 = ECCS.ecc(SLIP10Ed25519MoneroECC.NAME);
+  console.log(`Lookup Ed25519-Monero    : ${ecc4.NAME}`);
+  const valid4 = validateAndGetPublicKey(edMoneroPub.rawCompressed(), SLIP10Ed25519MoneroPublicKey);
+  console.log(`Validated Ed25519-Monero : ${valid4 instanceof SLIP10Ed25519MoneroPublicKey}`);
 }
 
 runEcExamples();
