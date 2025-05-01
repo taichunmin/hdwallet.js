@@ -29,3 +29,11 @@ export {
   SLIP10Ed25519MoneroPublicKey,
   SLIP10Ed25519MoneroPrivateKey
 } from "./ed25519/monero";
+
+// Blake2b implementations
+export {
+  SLIP10Blake2bECC,
+  SLIP10Blake2bPoint,
+  SLIP10Blake2bPublicKey,
+  SLIP10Blake2bPrivateKey
+} from "./blake2b";

@@ -25,7 +25,12 @@ import {
   SLIP10Ed25519MoneroECC,
   SLIP10Ed25519MoneroPoint,
   SLIP10Ed25519MoneroPublicKey,
-  SLIP10Ed25519MoneroPrivateKey
+  SLIP10Ed25519MoneroPrivateKey,
+  // Blake2b implementations
+  SLIP10Ed25519Blake2bECC,
+  SLIP10Ed25519Blake2bPoint,
+  SLIP10Ed25519Blake2bPublicKey,
+  SLIP10Ed25519Blake2bPrivateKey
 } from './slip10';
 
 export class ECCS {
@@ -34,7 +39,8 @@ export class ECCS {
     [SLIP10Secp256k1ECC.NAME]: SLIP10Secp256k1ECC,
     [SLIP10Nist256p1ECC.NAME]: SLIP10Nist256p1ECC,
     [SLIP10Ed25519ECC.NAME]: SLIP10Ed25519ECC,
-    [SLIP10Ed25519MoneroECC.NAME]: SLIP10Ed25519MoneroECC
+    [SLIP10Ed25519MoneroECC.NAME]: SLIP10Ed25519MoneroECC,
+    [SLIP10Ed25519Blake2bECC.NAME]: SLIP10Ed25519Blake2bECC
   };
 
   public static names(): string[] {
@@ -123,5 +129,11 @@ export {
   SLIP10Ed25519MoneroECC,
   SLIP10Ed25519MoneroPoint,
   SLIP10Ed25519MoneroPublicKey,
-  SLIP10Ed25519MoneroPrivateKey
+  SLIP10Ed25519MoneroPrivateKey,
+
+  // Blake2b implementations
+  SLIP10Ed25519Blake2bECC,
+  SLIP10Ed25519Blake2bPoint,
+  SLIP10Ed25519Blake2bPublicKey,
+  SLIP10Ed25519Blake2bPrivateKey
 }
