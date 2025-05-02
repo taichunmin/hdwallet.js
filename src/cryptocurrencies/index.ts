@@ -2,12 +2,18 @@
 
 import { ICryptocurrency } from './icryptocurrency';
 import { Bitcoin } from './bitcoin';
+import { Ethereum } from './ethereum';
+import { Cosmos } from './cosmos';
+import { XinFin } from './xinfin';
 import { CryptocurrencyError, SymbolError } from '../exceptions';
 
 export class CRYPTOCURRENCIES {
 
   private static readonly dictionary: Record<string, typeof ICryptocurrency> = {
     [Bitcoin.NAME]: Bitcoin,
+    [Ethereum.NAME]: Ethereum,
+    [Cosmos.NAME]: Cosmos,
+    [XinFin.NAME]: XinFin,
   };
 
   static getNames(): string[] {
@@ -47,4 +53,7 @@ export function getCryptocurrency(symbol: string): typeof ICryptocurrency {
 export {
   ICryptocurrency,
   Bitcoin,
+  Ethereum,
+  Cosmos,
+  XinFin
 };

@@ -1,0 +1,68 @@
+// SPDX-License-Identifier: MIT
+
+import { CoinTypes } from '../slip44';
+import { SLIP10Secp256k1ECC } from '../ecc';
+import {
+  Info,
+  Entropies,
+  Mnemonics,
+  Seeds,
+  HDs,
+  Addresses,
+  Networks,
+  Params,
+  XPrivateKeyVersions,
+  XPublicKeyVersions
+} from '../const';
+import { ICryptocurrency, INetwork } from './icryptocurrency';
+
+export class Mainnet implements INetwork {
+
+  static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
+    P2PKH: 0x0488ade4
+  });
+  static XPUBLIC_KEY_VERSIONS = new XPublicKeyVersions({
+    P2PKH: 0x0488b21e
+  });
+  static WIF_PREFIX: number = 0x80;
+}
+
+export class XinFin implements ICryptocurrency {
+
+  static NAME: string = 'XinFin';
+  static SYMBOL: string = 'XDC';
+  static INFO = new Info({
+    SOURCE_CODE: 'https://github.com/XinFinOrg/XDPoSChain',
+    WHITEPAPER: 'https://xinfin.org/docs/whitepaper-tech.pdf',
+    WEBSITES: [
+        'https://www.xdc.org',
+        'https://www.xinfin.org'
+    ]
+  });
+  static ECC = SLIP10Secp256k1ECC;
+  static COIN_TYPE = CoinTypes.XinFin;
+  static NETWORKS = new Networks({
+    MAINNET: Mainnet
+  });
+  static DEFAULT_NETWORK = XinFin.NETWORKS.MAINNET;
+  static ENTROPIES = new Entropies([
+      'BIP39'
+  ]);
+  static MNEMONICS = new Mnemonics([
+      'BIP39'
+  ]);
+  static SEEDS = new Seeds([
+      'BIP39'
+  ]);
+  static HDS = new HDs([
+      'BIP32', 'BIP44'
+  ]);
+  static DEFAULT_HD = XinFin.HDS.BIP44;
+  static ADDRESSES = new Addresses({
+    XINFIN: 'XinFin'
+  });
+  static DEFAULT_ADDRESS = XinFin.ADDRESSES.XINFIN;
+  static PARAMS = new Params({
+    ADDRESS_PREFIX: 'xdc'
+  });
+}

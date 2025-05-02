@@ -60,7 +60,7 @@ export abstract class ICryptocurrency {
   static INFO: Info;
   static ECC: new (...args: any[]) => IEllipticCurveCryptography;
   static COIN_TYPE: number;
-  static SUPPORT_BIP38: boolean = false;
+  static SUPPORT_BIP38?: boolean = false;
   static NETWORKS: Networks;
   static DEFAULT_NETWORK: typeof INetwork;
   static ENTROPIES: Entropies;
@@ -75,7 +75,7 @@ export abstract class ICryptocurrency {
   static ADDRESS_PREFIXES?: AddressPrefixes;
   static DEFAULT_ADDRESS_PREFIX?: string;
   static PARAMS?: Params;
-  static DEFAULT_SEMANTIC: string = 'p2pkh';
+  static DEFAULT_SEMANTIC?: string = 'p2pkh';
 
   // /**
   //  * Return the default BIP44 derivation path for the given network.
