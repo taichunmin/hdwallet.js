@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MIT
 
 import {MnemonicError,  EntropyError} from "../../src/exceptions";
 import { getBytes } from "../../src/utils";

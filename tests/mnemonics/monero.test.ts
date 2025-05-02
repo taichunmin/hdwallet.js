@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MIT
+
 import {MnemonicError,  EntropyError} from "../../src/exceptions";
 import { getBytes } from "../../src/utils";
 import {MONERO_MNEMONIC_LANGUAGES, MONERO_MNEMONIC_WORDS, MoneroMnemonic} from "../../src/mnemonics";

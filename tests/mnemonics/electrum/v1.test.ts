@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MIT
+
 import { ElectrumV1Entropy} from "../../../src/entropies";
 import { ElectrumV1Mnemonic, ELECTRUM_V1_MNEMONIC_LANGUAGES, ELECTRUM_V1_MNEMONIC_WORDS } from "../../../src/mnemonics";
 import {EntropyError, MnemonicError} from "../../../src/exceptions";

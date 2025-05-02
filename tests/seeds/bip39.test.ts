@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MIT
+
 import {BIP39Seed} from "../../src/seeds";
 import {MnemonicError} from "../../src/exceptions";
 import jsonData from "../data/json/seeds.json";

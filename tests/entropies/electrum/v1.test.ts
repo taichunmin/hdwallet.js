@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MIT
+
 import {ELECTRUM_V1_ENTROPY_STRENGTHS, ElectrumV1Entropy} from "../../../src/entropies/electrum/v1";
 import { hexToBytes } from "../../../src/utils";
 import jsonData from "../../data/json/entropies.json"

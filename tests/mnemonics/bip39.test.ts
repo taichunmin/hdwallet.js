@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MIT
+
 import { BIP39Entropy, BIP39_ENTROPY_STRENGTHS } from "../../src/entropies/bip39";
 import { BIP39_MNEMONIC_LANGUAGES, BIP39_MNEMONIC_WORDS, BIP39Mnemonic } from "../../src/mnemonics/bip39/mnemonic";
 import {MnemonicError, ChecksumError, EntropyError} from "../../src/exceptions";

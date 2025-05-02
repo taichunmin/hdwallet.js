@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MIT
+
 import {ALGORAND_ENTROPY_STRENGTHS, AlgorandEntropy} from "../../src/entropies/algorand";
 
 describe("AlgorandEntropy", () => {

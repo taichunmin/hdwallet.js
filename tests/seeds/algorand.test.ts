@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MIT
+
 import {AlgorandSeed} from "../../src/seeds";
 import {MnemonicError} from "../../src/exceptions";
 import jsonData from "../data/json/seeds.json";

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MIT
+
 import { BIP39Entropy, BIP39_ENTROPY_STRENGTHS } from "../../src/entropies/bip39";
 
 describe("BIP39Entropy", () => {

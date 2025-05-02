@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MIT
+
 import {MONERO_ENTROPY_STRENGTHS, MoneroEntropy} from "../../src/entropies/monero";
 
 describe("MoneroEntropy", () => {
