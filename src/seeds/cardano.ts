@@ -54,8 +54,8 @@ export class CardanoSeed extends ISeed {
 
   static fromMnemonic(
     mnemonic: string | IMnemonic,
-    passphrase?: string,
-    cardanoType: string = CardanoTypes.BYRON_ICARUS
+    cardanoType: string = CardanoTypes.BYRON_ICARUS,
+    passphrase?: string
   ): string {
     switch (cardanoType) {
       case CardanoTypes.BYRON_ICARUS:

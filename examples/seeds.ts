@@ -36,14 +36,14 @@ function runSeedExamples() {
   // Cardano Byron Ledger
   const cardanonBLedger = CardanoSeed.fromMnemonic(
     bip39Phrase,
-    passphrase,
-    CardanoTypes.BYRON_LEDGER
+    CardanoTypes.BYRON_LEDGER,
+    passphrase
   )
   console.log(`CardanoSeed.fromMnemonic (Byron Ledger) => ${cardanonBLedger}`)
 
   // Cardano Byron Legacy
   const cardanoBLegacy = CardanoSeed.fromMnemonic(
-    bip39Phrase,
+    "hurry cement chunk movie obtain jealous sphere ticket eight still usage hint",
     CardanoTypes.BYRON_LEGACY
   )
   console.log(`CardanoSeed.fromMnemonic (Byron Legacy) => ${cardanoBLegacy}`)
@@ -58,8 +58,8 @@ function runSeedExamples() {
   // Cardano Shelley Ledger
   const cardanoShelley = CardanoSeed.fromMnemonic(
     bip39Phrase,
-    passphrase,
-    CardanoTypes.SHELLEY_LEDGER
+    CardanoTypes.SHELLEY_LEDGER,
+    passphrase
   )
   console.log(`CardanoSeed.fromMnemonic (Shelley Ledger) => ${cardanoShelley}`)
 
