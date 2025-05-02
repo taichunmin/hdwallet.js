@@ -8,6 +8,7 @@ export interface AddressOptionsInterface {
   scriptAddressPrefix?: number;
   publicKeyType?: "uncompressed" | "compressed";
   witnessVersion?: number;
+  skipChecksumEncode?: boolean;
   alphabet?: string;
 }
 

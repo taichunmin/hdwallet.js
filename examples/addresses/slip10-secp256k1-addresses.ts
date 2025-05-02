@@ -9,11 +9,14 @@ import {
   P2WPKHAddress,
   P2WPKHInP2SHAddress,
   P2WSHAddress,
-  P2WSHInP2SHAddress
+  P2WSHInP2SHAddress,
+  EthereumAddress,
+  CosmosAddress,
+  XinFinAddress
 } from "../../src/addresses";
 import { PUBLIC_KEY_TYPES } from "../../src/const";
 import { bytesToString } from "../../src/utils";
-import { Bitcoin } from '../../src/cryptocurrencies';
+import { Bitcoin, Cosmos } from '../../src/cryptocurrencies';
 
 
 const PRIVATE_KEY: IPrivateKey = SLIP10Secp256k1PrivateKey.fromBytes(
@@ -30,7 +33,7 @@ console.log("Compressed Public Key:", bytesToString(PUBLIC_KEY.rawCompressed()),
 
 const p2pkhAddress: string = P2PKHAddress.encode(PUBLIC_KEY, {
   publicKeyAddressPrefix: Bitcoin.NETWORKS.MAINNET.PUBLIC_KEY_ADDRESS_PREFIX,
-  publicKeyType: PUBLIC_KEY_TYPES.COMPRESSED
+  publicKeyType: PUBLIC_KEY_TYPES.UNCOMPRESSED
 });
 const p2pkhAddressHash: string = P2PKHAddress.decode(p2pkhAddress, {
   publicKeyAddressPrefix: Bitcoin.NETWORKS.MAINNET.PUBLIC_KEY_ADDRESS_PREFIX
@@ -92,3 +95,27 @@ const p2wshInP2SHAddressHash: string = P2WSHInP2SHAddress.decode(p2wshInP2SHAddr
   scriptAddressPrefix: Bitcoin.NETWORKS.MAINNET.SCRIPT_ADDRESS_PREFIX
 });
 console.log("P2WSH-In-P2SH Address:", p2wshInP2SHAddress, p2wshInP2SHAddressHash);
+
+const ethereumAddress: string = EthereumAddress.encode(PUBLIC_KEY, {
+  skipChecksumEncode: false
+});
+const ethereumAddressHash: string = EthereumAddress.decode(ethereumAddress, {
+  skipChecksumEncode: false
+});
+console.log("Ethereum Address:", ethereumAddress, ethereumAddressHash);
+
+const cosmosAddress: string = CosmosAddress.encode(PUBLIC_KEY, {
+  hrp: Cosmos.NETWORKS.MAINNET.HRP
+});
+const cosmosAddressHash: string = CosmosAddress.decode(cosmosAddress, {
+  hrp: Cosmos.NETWORKS.MAINNET.HRP
+});
+console.log("Cosmos Address:", cosmosAddress, cosmosAddressHash);
+
+const xinfinAddress: string = XinFinAddress.encode(PUBLIC_KEY, {
+  skipChecksumEncode: false
+});
+const xinfinAddressHash: string = XinFinAddress.decode(xinfinAddress, {
+  skipChecksumEncode: false
+});
+console.log("XinFin Address:", xinfinAddress, xinfinAddressHash);

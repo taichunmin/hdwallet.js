@@ -8,6 +8,9 @@ import { P2WPKHAddress } from './p2wpkh';
 import { P2WPKHInP2SHAddress } from './p2wpkh-in-p2sh';
 import { P2WSHAddress } from './p2wsh';
 import { P2WSHInP2SHAddress } from './p2wsh-in-p2sh';
+import { EthereumAddress } from './ethereum';
+import { CosmosAddress } from './cosmos';
+import { XinFinAddress } from './xinfin';
 import { AddressError } from '../exceptions';
 
 export class ADDRESSES {
@@ -19,7 +22,10 @@ export class ADDRESSES {
     [P2WPKHAddress.getName()]: P2WPKHAddress,
     [P2WPKHInP2SHAddress.getName()]: P2WPKHInP2SHAddress,
     [P2WSHAddress.getName()]: P2WSHAddress,
-    [P2WSHInP2SHAddress.getName()]: P2WSHInP2SHAddress
+    [P2WSHInP2SHAddress.getName()]: P2WSHInP2SHAddress,
+    [EthereumAddress.getName()]: EthereumAddress,
+    [CosmosAddress.getName()]: CosmosAddress,
+    [XinFinAddress.getName()]: XinFinAddress,
   };
 
   public static getNames(): string[] {
@@ -52,5 +58,8 @@ export {
   P2WPKHAddress,
   P2WPKHInP2SHAddress,
   P2WSHAddress,
-  P2WSHInP2SHAddress
+  P2WSHInP2SHAddress,
+  EthereumAddress,
+  CosmosAddress,
+  XinFinAddress
 };
