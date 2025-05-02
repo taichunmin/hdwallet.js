@@ -3,6 +3,11 @@
 import { IAddress } from './iaddress';
 import { P2PKHAddress } from './p2pkh';
 import { P2SHAddress } from './p2sh';
+import { P2TRAddress } from './p2tr';
+import { P2WPKHAddress } from './p2wpkh';
+import { P2WPKHInP2SHAddress } from './p2wpkh-in-p2sh';
+import { P2WSHAddress } from './p2wsh';
+import { P2WSHInP2SHAddress } from './p2wsh-in-p2sh';
 import { AddressError } from '../exceptions';
 
 export class ADDRESSES {
@@ -10,6 +15,11 @@ export class ADDRESSES {
   private static readonly dictionary: Record<string, typeof IAddress> = {
     [P2PKHAddress.getName()]: P2PKHAddress,
     [P2SHAddress.getName()]: P2SHAddress,
+    [P2TRAddress.getName()]: P2TRAddress,
+    [P2WPKHAddress.getName()]: P2WPKHAddress,
+    [P2WPKHInP2SHAddress.getName()]: P2WPKHInP2SHAddress,
+    [P2WSHAddress.getName()]: P2WSHAddress,
+    [P2WSHInP2SHAddress.getName()]: P2WSHInP2SHAddress
   };
 
   public static getNames(): string[] {
@@ -37,5 +47,10 @@ export class ADDRESSES {
 export {
   IAddress,
   P2PKHAddress,
-  P2SHAddress
+  P2SHAddress,
+  P2TRAddress,
+  P2WPKHAddress,
+  P2WPKHInP2SHAddress,
+  P2WSHAddress,
+  P2WSHInP2SHAddress
 };

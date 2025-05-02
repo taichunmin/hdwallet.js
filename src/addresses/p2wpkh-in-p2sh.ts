@@ -1,0 +1,45 @@
+// SPDX-License-Identifier: MIT
+
+import { Buffer } from 'buffer';
+import { ensureString, checkEncode } from '../libs/base58';
+import { PUBLIC_KEY_TYPES } from '../const';
+import { IPublicKey, SLIP10Secp256k1PublicKey, validateAndGetPublicKey } from '../ecc';
+import { hash160 } from '../crypto';
+import { getBytes, integerToBytes, bytesToString } from '../utils';
+import { AddressOptionsInterface, IAddress } from './iaddress';
+import { P2SHAddress } from './p2sh';
+
+export class P2WPKHInP2SHAddress extends P2SHAddress implements IAddress {
+
+  static getName(): string {
+    return 'P2WPKH-In-P2SH';
+  }
+
+  static encode(
+    publicKey: Buffer | string | IPublicKey, options: AddressOptionsInterface = {
+      scriptAddressPrefix: this.scriptAddressPrefix,
+      publicKeyType: PUBLIC_KEY_TYPES.COMPRESSED,
+      alphabet: this.alphabet
+    }
+  ): string {
+
+    const prefixValue = options.scriptAddressPrefix ?? this.scriptAddressPrefix;
+    const prefixBytes = integerToBytes(prefixValue);
+
+    const pk = validateAndGetPublicKey(publicKey, SLIP10Secp256k1PublicKey);
+
+    const rawPubBytes =
+      options.publicKeyType === PUBLIC_KEY_TYPES.UNCOMPRESSED
+        ? pk.rawUncompressed() : pk.rawCompressed();
+
+    const pubKeyHash = hash160(rawPubBytes);
+    const redeemScript = getBytes(
+        '0014' + bytesToString(pubKeyHash)
+    );
+    const scriptHash = hash160(redeemScript);
+
+    const alphabet = options.alphabet ?? this.alphabet;
+
+    return ensureString(checkEncode(Buffer.concat([prefixBytes, scriptHash]), alphabet));
+  }
+}

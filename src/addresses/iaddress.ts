@@ -1,12 +1,13 @@
 // SPDX-License-Identifier: MIT
 
 import { IPublicKey } from '../ecc';
-import { PUBLIC_KEY_TYPES } from '../const';
 
 export interface AddressOptionsInterface {
+  hrp?: string,
   publicKeyAddressPrefix?: number;
   scriptAddressPrefix?: number;
-  publicKeyType?: PUBLIC_KEY_TYPES;
+  publicKeyType?: "uncompressed" | "compressed";
+  witnessVersion?: number;
   alphabet?: string;
 }
 
