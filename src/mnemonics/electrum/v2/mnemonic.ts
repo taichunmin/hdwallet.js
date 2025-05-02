@@ -3,7 +3,7 @@ import { IMnemonic, MnemonicOptionsInterface } from "../../imnemonic";
 import { IEntropy } from "../../../entropies/ientropy";
 import { ElectrumV2Entropy, ELECTRUM_V2_ENTROPY_STRENGTHS,} from "../../../entropies/electrum/v2";
 import { hmacSha512 } from "../../../crypto";
-import { CustomError as BaseError, EntropyError, MnemonicError } from "../../../exceptions";
+import { BaseError, EntropyError, MnemonicError } from "../../../exceptions";
 import {
   getBytes,
   integerToBytes,
