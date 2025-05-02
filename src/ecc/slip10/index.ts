@@ -32,8 +32,8 @@ export {
 
 // Blake2b implementations
 export {
-  SLIP10Blake2bECC,
-  SLIP10Blake2bPoint,
-  SLIP10Blake2bPublicKey,
-  SLIP10Blake2bPrivateKey
-} from "./blake2b";
+  SLIP10Ed25519Blake2bECC,
+  SLIP10Ed25519Blake2bPoint,
+  SLIP10Ed25519Blake2bPublicKey,
+  SLIP10Ed25519Blake2bPrivateKey
+} from "./ed25519/blake2b";
