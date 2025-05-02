@@ -4,16 +4,7 @@ import { createCipheriv, createDecipheriv, createHash, createHmac, pbkdf2Sync } 
 import crc from 'crc';
 import { keccak256 as keccak256Hash } from 'js-sha3';
 import { SLIP10_SECP256K1_CONST } from './const';
-import { toBuffer } from './utils';
-
-function integerToBytes(num: number, bytes: number): Buffer {
-  const buf = Buffer.alloc(bytes);
-  for (let i = bytes - 1; i >= 0; i--) {
-    buf[i] = num & 0xff;
-    num >>>= 8;
-  }
-  return buf;
-}
+import { toBuffer, integerToBytes } from './utils';
 
 export function hmacSha256(key: Buffer | Uint8Array | string, data: Buffer | Uint8Array | string): Buffer {
   return createHmac('sha256', toBuffer(key))
@@ -153,12 +144,12 @@ export function hash160(data: Buffer | Uint8Array | string): Buffer {
 
 export function crc32(data: Buffer | Uint8Array | string): Buffer {
   const n = crc.crc32(toBuffer(data)) >>> 0;
-  return integerToBytes(n, 4);
+  return toBuffer(integerToBytes(n, 4));
 }
 
 export function xmodemCrc(data: Buffer | Uint8Array | string): Buffer {
   const n = crc.crc16xmodem(toBuffer(data)) & 0xffff;
-  return integerToBytes(n, 2);
+  return toBuffer(integerToBytes(n, 2));
 }
 
 export function pbkdf2HmacSha512(
