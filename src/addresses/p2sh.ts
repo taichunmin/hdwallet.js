@@ -10,8 +10,10 @@ import { AddressError } from '../exceptions';
 import { bytesToString, getBytes, integerToBytes, toBuffer } from '../utils';
 import { AddressOptionsInterface, IAddress } from './iaddress';
 
-
 export class P2SHAddress implements IAddress {
+
+  static scriptAddressPrefix: number = Bitcoin.NETWORKS.MAINNET.SCRIPT_ADDRESS_PREFIX;
+  static alphabet: string = Bitcoin.PARAMS.ALPHABET;
 
   static getName(): string {
     return 'P2SH';
@@ -19,21 +21,16 @@ export class P2SHAddress implements IAddress {
 
   static encode(
     publicKey: Buffer | string | IPublicKey, options: AddressOptionsInterface = {
-      publicKeyAddressPrefix: Bitcoin.NETWORKS.MAINNET.SCRIPT_ADDRESS_PREFIX,
+      scriptAddressPrefix: this.scriptAddressPrefix,
       publicKeyType: PUBLIC_KEY_TYPES.COMPRESSED,
-      alphabet: Bitcoin.PARAMS.ALPHABET
+      alphabet: this.alphabet
     }
   ): string {
 
-    if (options.scriptAddressPrefix == null) {
-      throw new AddressError('Missing required option: scriptAddressPrefix');
-    }
-    const prefixValue = options.scriptAddressPrefix;
+    const prefixValue = options.scriptAddressPrefix ?? this.scriptAddressPrefix;
     const prefixBytes = integerToBytes(prefixValue);
 
-    const pk = validateAndGetPublicKey(
-      publicKey, SLIP10Secp256k1PublicKey
-    );
+    const pk = validateAndGetPublicKey(publicKey, SLIP10Secp256k1PublicKey);
 
     const rawBytes =
       options.publicKeyType === PUBLIC_KEY_TYPES.UNCOMPRESSED
@@ -45,24 +42,21 @@ export class P2SHAddress implements IAddress {
     const scriptHash = hash160(redeemScript);
 
     const payload = Buffer.concat([prefixBytes, scriptHash]);
-    const alphabet = options.alphabet ?? Bitcoin.PARAMS.ALPHABET;
+    const alphabet = options.alphabet ?? this.alphabet;
     return ensureString(checkEncode(payload, alphabet));
   }
 
   static decode(
     address: string, options: AddressOptionsInterface = {
-      publicKeyAddressPrefix: Bitcoin.NETWORKS.MAINNET.SCRIPT_ADDRESS_PREFIX,
-      alphabet: Bitcoin.PARAMS.ALPHABET
+      scriptAddressPrefix: this.scriptAddressPrefix,
+      alphabet: this.alphabet
     }
   ): string {
 
-    if (options.scriptAddressPrefix == null) {
-      throw new AddressError('Missing required option: scriptAddressPrefix');
-    }
-    const prefixValue = options.scriptAddressPrefix;
+    const prefixValue = options.scriptAddressPrefix ?? this.scriptAddressPrefix;
     const prefixBytes = toBuffer(integerToBytes(prefixValue));
 
-    const alphabet = options.alphabet ?? Bitcoin.PARAMS.ALPHABET;
+    const alphabet = options.alphabet ?? this.alphabet;
     const decoded = checkDecode(address, alphabet);
 
     const expectedLen = prefixBytes.length + 20;

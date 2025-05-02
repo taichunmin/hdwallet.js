@@ -10,8 +10,10 @@ import { AddressError } from '../exceptions';
 import { bytesToString, integerToBytes, toBuffer } from '../utils';
 import { AddressOptionsInterface, IAddress } from './iaddress';
 
-
 export class P2PKHAddress implements IAddress {
+
+  static publicKeyAddressPrefix: number = Bitcoin.NETWORKS.MAINNET.PUBLIC_KEY_ADDRESS_PREFIX;
+  static alphabet: string = Bitcoin.PARAMS.ALPHABET;
 
   static getName(): string {
     return 'P2PKH';
@@ -19,21 +21,16 @@ export class P2PKHAddress implements IAddress {
 
   static encode(
     publicKey: Buffer | string | IPublicKey, options: AddressOptionsInterface = {
-      publicKeyAddressPrefix: Bitcoin.NETWORKS.MAINNET.PUBLIC_KEY_ADDRESS_PREFIX,
+      publicKeyAddressPrefix: this.publicKeyAddressPrefix,
       publicKeyType: PUBLIC_KEY_TYPES.COMPRESSED,
-      alphabet: Bitcoin.PARAMS.ALPHABET
+      alphabet: this.alphabet
     }
   ): string {
 
-    if (options.publicKeyAddressPrefix == null) {
-      throw new AddressError('Missing required option: publicKeyAddressPrefix');
-    }
-    const prefixValue = options.publicKeyAddressPrefix;
+    const prefixValue = options.publicKeyAddressPrefix ?? this.publicKeyAddressPrefix;
     const prefixBytes = integerToBytes(prefixValue);
 
-    const pk = validateAndGetPublicKey(
-      publicKey, SLIP10Secp256k1PublicKey
-    );
+    const pk = validateAndGetPublicKey(publicKey, SLIP10Secp256k1PublicKey);
 
     const rawPubBytes =
       options.publicKeyType === PUBLIC_KEY_TYPES.UNCOMPRESSED
@@ -41,24 +38,21 @@ export class P2PKHAddress implements IAddress {
 
     const pubKeyHash = hash160(toBuffer(rawPubBytes));
     const payload = Buffer.concat([prefixBytes, pubKeyHash]);
-    const alphabet = options.alphabet ?? Bitcoin.PARAMS.ALPHABET;
+    const alphabet = options.alphabet ?? this.alphabet;
     return ensureString(checkEncode(payload, alphabet));
   }
 
   static decode(
     address: string, options: AddressOptionsInterface = {
-      publicKeyAddressPrefix: Bitcoin.NETWORKS.MAINNET.PUBLIC_KEY_ADDRESS_PREFIX,
-      alphabet: Bitcoin.PARAMS.ALPHABET
+      publicKeyAddressPrefix: this.publicKeyAddressPrefix,
+      alphabet: this.alphabet
     }
   ): string {
 
-    if (options.publicKeyAddressPrefix == null) {
-      throw new AddressError('Missing required option: publicKeyAddressPrefix');
-    }
-    const prefixValue = options.publicKeyAddressPrefix;
+    const prefixValue = options.publicKeyAddressPrefix ?? this.publicKeyAddressPrefix;
     const prefixBytes = toBuffer(integerToBytes(prefixValue));
 
-    const alphabet = options.alphabet ?? Bitcoin.PARAMS.ALPHABET;
+    const alphabet = options.alphabet ?? this.alphabet;
     const decoded = checkDecode(address, alphabet);
 
     const expectedLen = prefixBytes.length + 20;
