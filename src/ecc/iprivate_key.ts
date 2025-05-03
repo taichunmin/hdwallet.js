@@ -1,5 +1,6 @@
-import { IPublicKey } from "./ipublic_key";
+// SPDX-License-Identifier: MIT
 
+import { IPublicKey } from './ipublic_key';
 
 export abstract class IPrivateKey {
 
@@ -7,23 +8,25 @@ export abstract class IPrivateKey {
 
   constructor(privateKey: any) { this.privateKey = privateKey; }
 
-  public static curve(): string {
-    throw new Error("Must override client()");
+  static getName(): string {
+    throw new Error('Must override getName()');
   }
 
-  public static fromBytes(bytes: Uint8Array): IPrivateKey {
-    throw new Error("Must override fromBytes()");
+  static fromBytes(bytes: Uint8Array): IPrivateKey {
+    throw new Error('Must override fromBytes()');
   }
 
-  public abstract raw(): Uint8Array;
-  public abstract publicKey(): IPublicKey;
-  public abstract underlyingObject(): any;
+  abstract raw(): Uint8Array;
 
-  public static size(): number {
-      throw new Error("Must override size()");
+  abstract publicKey(): IPublicKey;
+
+  abstract underlyingObject(): any;
+
+  static size(): number {
+      throw new Error('Must override size()');
   }
 
-  public static isValidBytes(bytes: Uint8Array): boolean {
+  static isValidBytes(bytes: Uint8Array): boolean {
     try {
       this.fromBytes(bytes);
       return true;

@@ -1,7 +1,8 @@
-import { IPoint } from "./ipoint";
-import { IPublicKey } from "./ipublic_key";
-import { IPrivateKey } from "./iprivate_key";
+// SPDX-License-Identifier: MIT
 
+import { IPoint } from './ipoint';
+import { IPublicKey } from './ipublic_key';
+import { IPrivateKey } from './iprivate_key';
 
 export abstract class IEllipticCurveCryptography {
   static NAME: string;

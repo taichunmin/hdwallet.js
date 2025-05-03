@@ -1,5 +1,6 @@
-import { IPoint } from "./ipoint";
+// SPDX-License-Identifier: MIT
 
+import { IPoint } from './ipoint';
 
 export abstract class IPublicKey {
 
@@ -7,32 +8,35 @@ export abstract class IPublicKey {
 
   constructor(publicKey: any) { this.publicKey = publicKey; }
 
-  public static curve(): string {
-    throw new Error("Must override client()");
+  static getName(): string {
+    throw new Error('Must override getName()');
   }
 
-  public static fromBytes(bytes: Uint8Array): IPublicKey {
-    throw new Error("Must override fromBytes()");
+  static fromBytes(bytes: Uint8Array): IPublicKey {
+    throw new Error('Must override fromBytes()');
   }
 
-  public static fromPoint(point: IPoint): IPublicKey {
-    throw new Error("Must override fromPoint()");
+  static fromPoint(point: IPoint): IPublicKey {
+    throw new Error('Must override fromPoint()');
   }
 
-  public abstract rawCompressed(): Uint8Array;
-  public abstract rawUncompressed(): Uint8Array;
-  public abstract point(): IPoint;
-  public abstract underlyingObject(): any;
+  abstract rawCompressed(): Uint8Array;
 
-  public static compressedLength(): number {
-    throw new Error("Must override compressedLength()");
+  abstract rawUncompressed(): Uint8Array;
+
+  abstract point(): IPoint;
+
+  abstract underlyingObject(): any;
+
+  static compressedLength(): number {
+    throw new Error('Must override compressedLength()');
   }
 
-  public static uncompressedLength(): number {
-    throw new Error("Must override uncompressedLength()");
+  static uncompressedLength(): number {
+    throw new Error('Must override uncompressedLength()');
   }
 
-  public static isValidBytes(bytes: Uint8Array): boolean {
+  static isValidBytes(bytes: Uint8Array): boolean {
     try {
       this.fromBytes(bytes);
       return true;
@@ -41,7 +45,7 @@ export abstract class IPublicKey {
     }
   }
 
-  public static isValidPoint(point: IPoint): boolean {
+  static isValidPoint(point: IPoint): boolean {
     try {
       this.fromPoint(point);
       return true;

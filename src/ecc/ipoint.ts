@@ -1,29 +1,31 @@
+// SPDX-License-Identifier: MIT
+
 export abstract class IPoint {
 
   point: any;
 
   constructor(point: any) { this.point = point; }
 
-  public static curve(): string {
-    throw new Error("Must override client()");
+  static getName(): string {
+    throw new Error('Must override getName()');
   }
 
-  public static fromBytes(bytes: Uint8Array): IPoint {
-    throw new Error("Must override fromBytes()");
+  static fromBytes(bytes: Uint8Array): IPoint {
+    throw new Error('Must override fromBytes()');
   }
 
-  public static fromCoordinates(x: bigint, y: bigint): IPoint {
-    throw new Error("Must override fromCoordinates()");
+  static fromCoordinates(x: bigint, y: bigint): IPoint {
+    throw new Error('Must override fromCoordinates()');
   }
 
-  public abstract x(): bigint;
-  public abstract y(): bigint;
-  public abstract raw(): Uint8Array;
-  public abstract rawEncoded(): Uint8Array;
-  public abstract rawDecoded(): Uint8Array;
-  public abstract underlyingObject(): any;
-  public abstract add(point: IPoint): IPoint;
-  public abstract radd(point: IPoint): IPoint;
-  public abstract multiply(scalar: bigint): IPoint;
-  public abstract rmul(scalar: bigint): IPoint;
+  abstract x(): bigint;
+  abstract y(): bigint;
+  abstract raw(): Uint8Array;
+  abstract rawEncoded(): Uint8Array;
+  abstract rawDecoded(): Uint8Array;
+  abstract underlyingObject(): any;
+  abstract add(point: IPoint): IPoint;
+  abstract radd(point: IPoint): IPoint;
+  abstract multiply(scalar: bigint): IPoint;
+  abstract rmul(scalar: bigint): IPoint;
 }
