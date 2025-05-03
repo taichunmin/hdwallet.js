@@ -1,32 +1,32 @@
-import * as elliptic from "elliptic";
+// SPDX-License-Identifier: MIT
+
+import * as elliptic from 'elliptic';
+
 import {
-  SLIP10Nist256p1PublicKey,
-  IPublicKey,
-  IPrivateKey
-} from "../../";
-import { SLIP10_SECP256K1_CONST } from "../../../const";
+  IPublicKey, IPrivateKey, SLIP10Nist256p1PublicKey
+} from '../../index';
+import { SLIP10_SECP256K1_CONST } from '../../../const';
 
-
-const ec = new elliptic.ec("p256");
+const ec = new elliptic.ec('p256');
 type KeyPair = elliptic.ec.KeyPair;
 
 export class SLIP10Nist256p1PrivateKey extends IPrivateKey {
 
   constructor(privateKey: KeyPair) { super(privateKey); }
 
-  public static curve(): string {
-    return "SLIP10-Nist256p1";
+  public static getName(): string {
+    return 'SLIP10-Nist256p1';
   }
 
   public static fromBytes(bytes: Uint8Array): SLIP10Nist256p1PrivateKey {
     if (bytes.length !== SLIP10_SECP256K1_CONST.PRIVATE_KEY_BYTE_LENGTH) {
-      throw new Error("Invalid private key bytes length");
+      throw new Error('Invalid private key bytes length');
     }
     try {
       const kp = ec.keyFromPrivate(Buffer.from(bytes));
       return new SLIP10Nist256p1PrivateKey(kp);
     } catch {
-      throw new Error("Invalid private key bytes");
+      throw new Error('Invalid private key bytes');
     }
   }
 

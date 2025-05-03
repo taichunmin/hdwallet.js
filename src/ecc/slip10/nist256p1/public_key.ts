@@ -1,21 +1,22 @@
-import * as elliptic from "elliptic";
+// SPDX-License-Identifier: MIT
+
+import * as elliptic from 'elliptic';
+
 import {
-    IPoint,
-    IPublicKey,
-    SLIP10Nist256p1Point
-} from "../../";
-import { SLIP10_SECP256K1_CONST } from "../../../const";
+    IPoint, IPublicKey, SLIP10Nist256p1Point
+} from '../../index';
+import { SLIP10_SECP256K1_CONST } from '../../../const';
 
 
-const ec = new elliptic.ec("p256");
+const ec = new elliptic.ec('p256');
 type BasePoint = elliptic.curve.base.BasePoint;
 
 export class SLIP10Nist256p1PublicKey extends IPublicKey {
 
   constructor(publicKey: BasePoint) { super(publicKey); }
 
-  public static curve(): string {
-    return "SLIP10-Nist256p1";
+  public static getName(): string {
+    return 'SLIP10-Nist256p1';
   }
 
   public static fromBytes(bytes: Uint8Array): IPublicKey {
@@ -24,7 +25,7 @@ export class SLIP10Nist256p1PublicKey extends IPublicKey {
       const base = keyPair.getPublic();
       return new SLIP10Nist256p1PublicKey(base);
     } catch {
-      throw new Error("Invalid public key bytes");
+      throw new Error('Invalid public key bytes');
     }
   }
 
@@ -46,12 +47,12 @@ export class SLIP10Nist256p1PublicKey extends IPublicKey {
   }
 
   public rawCompressed(): Uint8Array {
-    const arr = this.publicKey.encode("array", true) as number[];
+    const arr = this.publicKey.encode('array', true) as number[];
     return new Uint8Array(arr);
   }
 
   public rawUncompressed(): Uint8Array {
-    const arr = this.publicKey.encode("array", false) as number[];
+    const arr = this.publicKey.encode('array', false) as number[];
     return new Uint8Array(arr);
   }
 

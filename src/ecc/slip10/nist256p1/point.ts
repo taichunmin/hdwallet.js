@@ -1,19 +1,20 @@
-import * as elliptic from "elliptic";
-import BN from "bn.js";
-import { IPoint } from "../../";
-import { SLIP10_SECP256K1_CONST } from "../../../const";
+// SPDX-License-Identifier: MIT
 
+import * as elliptic from 'elliptic';
+import BN from 'bn.js';
 
-const ec = new elliptic.ec("p256");
+import { IPoint } from '../../index';
+import { SLIP10_SECP256K1_CONST } from '../../../const';
+
+const ec = new elliptic.ec('p256');
 type BasePoint = elliptic.curve.base.BasePoint;
-
 
 export class SLIP10Nist256p1Point extends IPoint {
 
   constructor(point: BasePoint) { super(point); }
 
-  public static curve(): string {
-    return "SLIP10-Nist256p1";
+  public static getName(): string {
+    return 'SLIP10-Nist256p1';
   }
 
   public static fromBytes(bytes: Uint8Array): SLIP10Nist256p1Point {
@@ -29,7 +30,7 @@ export class SLIP10Nist256p1Point extends IPoint {
         const y = BigInt(new BN(yBytes).toString(10));
         return SLIP10Nist256p1Point.fromCoordinates(x, y);
       }
-      throw new Error("Invalid point bytes");
+      throw new Error('Invalid point bytes');
     }
   }
 
@@ -57,12 +58,12 @@ export class SLIP10Nist256p1Point extends IPoint {
   }
 
   public rawEncoded(): Uint8Array {
-    const arr = this.point.encode("array", true) as number[];
+    const arr = this.point.encode('array', true) as number[];
     return new Uint8Array(arr);
   }
 
   public rawDecoded(): Uint8Array {
-    const arr = this.point.encode("array", false) as number[];
+    const arr = this.point.encode('array', false) as number[];
     return new Uint8Array(arr[0] === 4 ? arr.slice(1) : arr);
   }
 
