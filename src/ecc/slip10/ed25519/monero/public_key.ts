@@ -1,33 +1,41 @@
-import * as elliptic from "elliptic";
-import { IPublicKey, IPoint } from "../../../";
-import { SLIP10_ED25519_CONST } from "../../../../const";
-import { SLIP10Ed25519MoneroPoint } from "./point";
-import { SLIP10Ed25519PublicKey } from "../../";
+// SPDX-License-Identifier: MIT
 
-const ec = new elliptic.eddsa("ed25519");
+import * as elliptic from 'elliptic';
+
+import { IPublicKey, IPoint } from '../../../index';
+import { SLIP10_ED25519_CONST } from '../../../../const';
+import { SLIP10Ed25519MoneroPoint } from './point';
+import { SLIP10Ed25519PublicKey } from '../../index';
+
+const ec = new elliptic.eddsa('ed25519');
 
 export class SLIP10Ed25519MoneroPublicKey extends SLIP10Ed25519PublicKey {
-  public static curve(): string {
-    return "SLIP10-Ed25519-Monero";
+
+  static getName(): string {
+    return 'SLIP10-Ed25519-Monero';
   }
 
-  public static compressedLength(): number {
+  static fromBytes(bytes: Uint8Array): IPublicKey {
+    return super.fromBytes(bytes) as SLIP10Ed25519MoneroPublicKey;
+  }
+
+  static compressedLength(): number {
     return SLIP10_ED25519_CONST.PUBLIC_KEY_BYTE_LENGTH;
   }
 
-  public static uncompressedLength(): number {
+  static uncompressedLength(): number {
     return this.compressedLength();
   }
 
-  public rawCompressed(): Uint8Array {
-    return ec.encodePoint(this.publicKey);
+  rawCompressed(): Uint8Array {
+    return new Uint8Array(ec.encodePoint(this.publicKey));
   }
 
-  public rawUncompressed(): Uint8Array {
+  rawUncompressed(): Uint8Array {
     return this.rawCompressed();
   }
 
-  public point(): IPoint {
+  point(): IPoint {
     return new SLIP10Ed25519MoneroPoint(this.publicKey);
   }
 }
