@@ -14,11 +14,11 @@ export class SLIP10Nist256p1PrivateKey extends IPrivateKey {
 
   constructor(privateKey: KeyPair) { super(privateKey); }
 
-  public static getName(): string {
+  static getName(): string {
     return 'SLIP10-Nist256p1';
   }
 
-  public static fromBytes(bytes: Uint8Array): SLIP10Nist256p1PrivateKey {
+  static fromBytes(bytes: Uint8Array): SLIP10Nist256p1PrivateKey {
     if (bytes.length !== SLIP10_SECP256K1_CONST.PRIVATE_KEY_BYTE_LENGTH) {
       throw new Error('Invalid private key bytes length');
     }
@@ -30,11 +30,11 @@ export class SLIP10Nist256p1PrivateKey extends IPrivateKey {
     }
   }
 
-  public static size(): number {
+  static size(): number {
     return SLIP10_SECP256K1_CONST.PRIVATE_KEY_BYTE_LENGTH;
   }
 
-  public raw(): Uint8Array {
+  raw(): Uint8Array {
     const privBN = this.privateKey.getPrivate();
     const hex = privBN.toString(16).padStart(
       SLIP10_SECP256K1_CONST.PRIVATE_KEY_BYTE_LENGTH * 2,
@@ -43,11 +43,11 @@ export class SLIP10Nist256p1PrivateKey extends IPrivateKey {
     return Uint8Array.from(Buffer.from(hex, 'hex'));
   }
 
-  public underlyingObject(): any {
+  underlyingObject(): any {
     return this.privateKey;
   }
 
-  public publicKey(): IPublicKey {
+  publicKey(): IPublicKey {
     const pubPt = this.privateKey.getPublic();
     return new SLIP10Nist256p1PublicKey(pubPt);
   }
