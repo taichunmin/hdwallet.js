@@ -3,6 +3,7 @@
 import { createCipheriv, createDecipheriv, createHash, createHmac, pbkdf2Sync } from 'crypto';
 import crc from 'crc';
 import { keccak256 as keccak256Hash } from 'js-sha3';
+import { blake2b as nobleBlake2b } from '@noble/hashes/blake2b';
 import { SLIP10_SECP256K1_CONST } from './const';
 import { toBuffer, integerToBytes } from './utils';
 
@@ -18,39 +19,33 @@ export function hmacSha512(key: Buffer | Uint8Array | string, data: Buffer | Uin
     .digest();
 }
 
-export function blake2bSync(
-  data: Buffer | Uint8Array | string,
-  digestSize: number,
-  key: Buffer = Buffer.alloc(0),
-  salt: Buffer = Buffer.alloc(0)
-): Buffer {
-  // By typing this as Blake2Options, TS will pick the 'blake2b512' overload.
-  const opts = {
-    outputLength: digestSize, key, salt
-  };
-  return createHash("blake2b512", opts)
-    .update(data)
-    .digest();
-}
-
-export function blake2b(
+function blake2b(
   data: Buffer | Uint8Array | string,
   digestSize: number,
   key: Buffer | Uint8Array | string = Buffer.alloc(0),
-  salt: Buffer | Uint8Array | string = Buffer.alloc(0)
+  salt: Buffer | Uint8Array | string = Buffer.alloc(0),
+  personalize?: Buffer | Uint8Array | string
 ): Buffer {
-  const dataBuf = toBuffer(data);
-  const keyBuf = toBuffer(key);
-  const saltBuf = toBuffer(salt);
-  return blake2bSync(dataBuf, digestSize, keyBuf, saltBuf);
+  const msg = toBuffer(data);
+  const k   = toBuffer(key);
+  const s   = toBuffer(salt);
+  const p   = personalize ? toBuffer(personalize) : undefined;
+
+  const hash = nobleBlake2b(msg, {
+    dkLen: digestSize,
+    key: k.length > 0 ? k : undefined,
+    salt: s.length > 0 ? s : undefined,
+    personalize: p,
+  });
+  return Buffer.from(hash);
 }
 
 export function blake2b32(data: Buffer | Uint8Array | string, key?: Buffer | Uint8Array | string, salt?: Buffer | Uint8Array | string): Buffer {
-  return blake2b(data, 4, key, salt);
+  return blake2b(data,  4, key, salt);
 }
 
 export function blake2b40(data: Buffer | Uint8Array | string, key?: Buffer | Uint8Array | string, salt?: Buffer | Uint8Array | string): Buffer {
-  return blake2b(data, 5, key, salt);
+  return blake2b(data,  5, key, salt);
 }
 
 export function blake2b160(data: Buffer | Uint8Array | string, key?: Buffer | Uint8Array | string, salt?: Buffer | Uint8Array | string): Buffer {

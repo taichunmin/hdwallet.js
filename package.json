@@ -15,6 +15,7 @@
   "license": "MIT",
   "type": "commonjs",
   "devDependencies": {
+    "@noble/hashes": "^1.8.0",
     "@types/cbor": "^5.0.1",
     "@types/crc": "^3.8.3",
     "@types/elliptic": "^6.4.18",

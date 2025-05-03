@@ -98,7 +98,7 @@ export class CardanoSeed extends ISeed {
       throw new MnemonicError(`Invalid ${this.client()} mnemonic words`)
     }
     const decoded = BIP39Mnemonic.decode(phrase)
-    const rawBytes = getBytes(decoded)
+    const rawBytes = Buffer.from(decoded, 'hex');
     const cborBytes = cborEncode(rawBytes)
     const hash = blake2b256(cborBytes)
     return bytesToString(hash)
