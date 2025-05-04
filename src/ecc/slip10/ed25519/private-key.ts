@@ -2,29 +2,32 @@
 
 import * as elliptic from 'elliptic';
 
-import { IPrivateKey, IPublicKey } from '../../';
+import { IPrivateKey, IPublicKey } from '../../index';
 import { SLIP10_ED25519_CONST } from '../../../const';
-import { SLIP10Ed25519PublicKey } from './public_key';
+import { SLIP10Ed25519PublicKey } from './public-key';
+import { OptionsPrivateKey } from '../../iprivate-key';
 
 const ec = new elliptic.eddsa('ed25519');
 type EdDSAKeyPair = elliptic.eddsa.KeyPair;
 
 export class SLIP10Ed25519PrivateKey extends IPrivateKey {
   
-  constructor(privateKey: EdDSAKeyPair) {
-    super(privateKey);
+  constructor(
+      privateKey: EdDSAKeyPair, options: OptionsPrivateKey = { }
+  ) {
+    super(privateKey, options);
   }
 
   static getName(): string {
     return 'SLIP10-Ed25519';
   }
 
-  static fromBytes(bytes: Uint8Array): IPrivateKey {
-    if (bytes.length !== SLIP10_ED25519_CONST.PRIVATE_KEY_BYTE_LENGTH) {
+  static fromBytes(privateKey: Uint8Array): IPrivateKey {
+    if (privateKey.length !== SLIP10_ED25519_CONST.PRIVATE_KEY_BYTE_LENGTH) {
       throw new Error('Invalid private key bytes length');
     }
     try {
-      const kp = ec.keyFromSecret(Buffer.from(bytes));
+      const kp = ec.keyFromSecret(Buffer.from(privateKey));
       return new this(kp);
     } catch {
       throw new Error('Invalid private key bytes');

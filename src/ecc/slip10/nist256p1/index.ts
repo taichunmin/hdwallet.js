@@ -6,8 +6,8 @@ import {
     IEllipticCurveCryptography, IPoint, IPublicKey, IPrivateKey
 } from '../../index';
 import { SLIP10Nist256p1Point } from './point';
-import { SLIP10Nist256p1PublicKey } from './public_key';
-import { SLIP10Nist256p1PrivateKey } from './private_key';
+import { SLIP10Nist256p1PublicKey } from './public-key';
+import { SLIP10Nist256p1PrivateKey } from './private-key';
 
 const ec = new elliptic.ec('p256');
 

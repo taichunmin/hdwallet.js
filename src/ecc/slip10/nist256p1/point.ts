@@ -11,7 +11,9 @@ type BasePoint = elliptic.curve.base.BasePoint;
 
 export class SLIP10Nist256p1Point extends IPoint {
 
-  constructor(point: BasePoint) { super(point); }
+  constructor(point: BasePoint) {
+    super(point);
+  }
 
   static getName(): string {
     return 'SLIP10-Nist256p1';

@@ -13,7 +13,9 @@ type BasePoint = elliptic.curve.base.BasePoint;
 
 export class SLIP10Nist256p1PublicKey extends IPublicKey {
 
-  constructor(publicKey: BasePoint) { super(publicKey); }
+  constructor(publicKey: BasePoint) {
+    super(publicKey);
+  }
 
   static getName(): string {
     return 'SLIP10-Nist256p1';

@@ -4,7 +4,9 @@ export abstract class IPoint {
 
   point: any;
 
-  constructor(point: any) { this.point = point; }
+  protected constructor(point: any) {
+    this.point = point;
+  }
 
   static getName(): string {
     throw new Error('Must override getName()');

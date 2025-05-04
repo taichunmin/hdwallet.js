@@ -2,13 +2,13 @@
 
 import * as elliptic from 'elliptic';
 
-import { IPrivateKey, IPublicKey, SLIP10Ed25519MoneroPublicKey } from '../../index';
+import { IPrivateKey, IPublicKey } from '../../index';
 import { KHOLAW_ED25519_CONST } from '../../../const';
 import { SLIP10Ed25519PrivateKey } from '../../slip10';
 import { KholawEd25519PublicKey } from './public-key';
 import { OptionsPrivateKey } from '../../iprivate-key';
-import { bytesToString } from '../../../utils';
 import { pointScalarMulBase } from '../../../libs/ed25519-utils';
+import { bytesToString } from '../../../utils';
 
 const ec = new elliptic.eddsa('ed25519');
 type EdDSAKeyPair = elliptic.eddsa.KeyPair;
@@ -32,6 +32,7 @@ export class KholawEd25519PrivateKey extends SLIP10Ed25519PrivateKey {
   }
 
   static fromBytes(bytes: Uint8Array): IPrivateKey {
+
     if (bytes.length !== KHOLAW_ED25519_CONST.PRIVATE_KEY_BYTE_LENGTH) {
       throw new Error('Invalid private key bytes length');
     }

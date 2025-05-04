@@ -3,10 +3,10 @@
 import {
   IEllipticCurveCryptography, IPoint, IPublicKey, IPrivateKey
 } from '../../../index';
-import { SLIP10Ed25519ECC } from '../../';
+import { SLIP10Ed25519ECC } from '../index';
 import { SLIP10Ed25519MoneroPoint } from './point';
-import { SLIP10Ed25519MoneroPublicKey } from './public_key';
-import { SLIP10Ed25519MoneroPrivateKey } from './private_key';
+import { SLIP10Ed25519MoneroPublicKey } from './public-key';
+import { SLIP10Ed25519MoneroPrivateKey } from './private-key';
 
 export class SLIP10Ed25519MoneroECC extends IEllipticCurveCryptography {
   static NAME: string = 'SLIP10-Ed25519-Monero';

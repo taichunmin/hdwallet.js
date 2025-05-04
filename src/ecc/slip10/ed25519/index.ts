@@ -4,8 +4,8 @@ import {
   IEllipticCurveCryptography, IPoint, IPublicKey, IPrivateKey
 } from '../../index';
 import { SLIP10Ed25519Point } from './point';
-import { SLIP10Ed25519PublicKey } from './public_key';
-import { SLIP10Ed25519PrivateKey } from './private_key';
+import { SLIP10Ed25519PublicKey } from './public-key';
+import { SLIP10Ed25519PrivateKey } from './private-key';
 
 
 export class SLIP10Ed25519ECC extends IEllipticCurveCryptography {

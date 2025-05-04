@@ -6,7 +6,9 @@ export abstract class IPublicKey {
 
   publicKey: any;
 
-  constructor(publicKey: any) { this.publicKey = publicKey; }
+  protected constructor(publicKey: any) {
+    this.publicKey = publicKey;
+  }
 
   static getName(): string {
     throw new Error('Must override getName()');

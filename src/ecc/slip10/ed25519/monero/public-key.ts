@@ -8,8 +8,13 @@ import { SLIP10Ed25519MoneroPoint } from './point';
 import { SLIP10Ed25519PublicKey } from '../../index';
 
 const ec = new elliptic.eddsa('ed25519');
+type EdwardsPoint = elliptic.curve.edwards.EdwardsPoint;
 
 export class SLIP10Ed25519MoneroPublicKey extends SLIP10Ed25519PublicKey {
+
+  constructor(publicKey: EdwardsPoint) {
+    super(publicKey);
+  }
 
   static getName(): string {
     return 'SLIP10-Ed25519-Monero';

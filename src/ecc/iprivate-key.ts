@@ -1,12 +1,22 @@
 // SPDX-License-Identifier: MIT
 
-import { IPublicKey } from './ipublic_key';
+import { IPublicKey } from './ipublic-key';
+
+export interface OptionsPrivateKey {
+  extendedKey?: Uint8Array;
+}
 
 export abstract class IPrivateKey {
 
   privateKey: any;
+  options: OptionsPrivateKey;
 
-  constructor(privateKey: any) { this.privateKey = privateKey; }
+  protected constructor(
+    privateKey: any, options: OptionsPrivateKey = { }
+  ) {
+    this.privateKey = privateKey;
+    this.options = options;
+  }
 
   static getName(): string {
     throw new Error('Must override getName()');

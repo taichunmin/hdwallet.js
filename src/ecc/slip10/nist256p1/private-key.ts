@@ -12,7 +12,9 @@ type KeyPair = elliptic.ec.KeyPair;
 
 export class SLIP10Nist256p1PrivateKey extends IPrivateKey {
 
-  constructor(privateKey: KeyPair) { super(privateKey); }
+  constructor(privateKey: KeyPair) {
+    super(privateKey);
+  }
 
   static getName(): string {
     return 'SLIP10-Nist256p1';
