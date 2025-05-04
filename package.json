@@ -34,6 +34,7 @@
     "crc": "^4.3.2",
     "elliptic": "^6.6.1",
     "js-sha3": "^0.9.3",
-    "sodium-native": "^5.0.1"
+    "sodium-native": "^5.0.1",
+    "tweetnacl-blake2b": "^1.0.1"
   }
 }
