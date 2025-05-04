@@ -272,20 +272,64 @@ export function binaryStringToBytes(
   return new Uint8Array(Buffer.from(hex, "hex"));
 }
 
-export function isAllBytesEqual(...arrays: Uint8Array[] | Buffer[]): boolean {
+/**
+ * Returns true if every input (all of the same type) is equal:
+ *  - strings, numbers or booleans compared with `===`
+ *  - Buffer/Uint8Array/ArrayBuffer/TypedArray/DataView by length + byte-by-byte
+ * If any two inputs differ in type, returns false.
+ */
+export function isAllEqual(
+  ...inputs: (Uint8Array | Buffer | ArrayBuffer | ArrayBufferView | string | number | boolean)[]
+): boolean {
+  if (inputs.length < 2) return true;
 
-  if (arrays.length < 2) return true;
+  // classify into a simple type tag
+  const getTag = (v: unknown): string => {
+    if (typeof v === 'string')   return 'string';
+    if (typeof v === 'number')   return 'number';
+    if (typeof v === 'boolean')  return 'boolean';
+    if (v instanceof Uint8Array) return 'uint8array';
+    if (Buffer.isBuffer(v))      return 'buffer';
+    if (v instanceof ArrayBuffer) return 'arraybuffer';
+    if (ArrayBuffer.isView(v))   return 'view';
+    return 'unknown';
+  };
 
-  const [first, ...rest] = arrays;
-  const len = first.byteLength;
-  // quick length check
-  if (rest.some(a => a.byteLength !== len)) {
-    return false;
+  const firstTag = getTag(inputs[0]);
+  if (firstTag === 'unknown') return false;
+
+  // all must share the same tag
+  for (const v of inputs.slice(1)) {
+    if (getTag(v) !== firstTag) return false;
   }
-  // compare each array to `first`
-  return rest.every(a =>
-    a.every((byte, i) => byte === first[i])
-  );
+
+  // primitive equality
+  if (firstTag === 'string' || firstTag === 'number' || firstTag === 'boolean') {
+    const first = inputs[0] as string | number | boolean;
+    return inputs.every(v => v === first);
+  }
+
+  // byte-array equality
+  const normalize = (v: any): Uint8Array => {
+    if (v instanceof Uint8Array) return v;
+    if (Buffer.isBuffer(v))      return Uint8Array.from(v);
+    if (v instanceof ArrayBuffer) return new Uint8Array(v);
+    // any TypedArray or DataView
+    const view = v as ArrayBufferView;
+    return new Uint8Array(view.buffer, view.byteOffset, view.byteLength);
+  };
+
+  const firstArr = normalize(inputs[0]);
+  const len = firstArr.byteLength;
+
+  return inputs.slice(1).every(item => {
+    const arr = normalize(item);
+    if (arr.byteLength !== len) return false;
+    for (let i = 0; i < len; i++) {
+      if (arr[i] !== firstArr[i]) return false;
+    }
+    return true;
+  });
 }
 
 /**
