@@ -8,25 +8,20 @@ import {
 import { SLIP10_SECP256K1_CONST } from '../../../const';
 
 const ec = new elliptic.ec('secp256k1');
-type KeyPair = elliptic.ec.KeyPair;
 
 export class SLIP10Secp256k1PrivateKey extends IPrivateKey {
 
-  constructor(privateKey: KeyPair) {
-    super(privateKey);
-  }
-
-  static getName(): string {
+  getName(): string {
     return 'SLIP10-Secp256k1';
   }
 
-  static fromBytes(bytes: Uint8Array): IPrivateKey {
-    if (bytes.length !== SLIP10_SECP256K1_CONST.PRIVATE_KEY_BYTE_LENGTH) {
+  static fromBytes(privateKey: Uint8Array): IPrivateKey {
+    if (privateKey.length !== SLIP10_SECP256K1_CONST.PRIVATE_KEY_BYTE_LENGTH) {
       throw new Error('Invalid private key bytes length');
     }
 
     try {
-      const kp = ec.keyFromPrivate(Buffer.from(bytes));
+      const kp = ec.keyFromPrivate(Buffer.from(privateKey));
       return new SLIP10Secp256k1PrivateKey(kp);
     } catch (err) {
       throw new Error('Invalid private key bytes');
@@ -38,7 +33,9 @@ export class SLIP10Secp256k1PrivateKey extends IPrivateKey {
   }
 
   raw(): Uint8Array {
-    const privHex = this.privateKey.getPrivate().toString(16).padStart(SLIP10_SECP256K1_CONST.PRIVATE_KEY_BYTE_LENGTH * 2, '0');
+    const privHex = this.privateKey.getPrivate().toString(16).padStart(
+        SLIP10_SECP256K1_CONST.PRIVATE_KEY_BYTE_LENGTH * 2, '0'
+    );
     return Uint8Array.from(Buffer.from(privHex, 'hex'));
   }
 

@@ -11,23 +11,18 @@ type BasePoint = elliptic.curve.base.BasePoint;
 
 export class SLIP10Nist256p1Point extends IPoint {
 
-  constructor(point: BasePoint) {
-    super(point);
-  }
-
-  static getName(): string {
+  getName(): string {
     return 'SLIP10-Nist256p1';
   }
 
-  static fromBytes(bytes: Uint8Array): SLIP10Nist256p1Point {
-    const len = bytes.length;
+  static fromBytes(point: Uint8Array): SLIP10Nist256p1Point {
     try {
-      const keyPair = ec.keyFromPublic(Buffer.from(bytes));
+      const keyPair = ec.keyFromPublic(Buffer.from(point));
       return new SLIP10Nist256p1Point(keyPair.getPublic());
     } catch {
-      if (len === SLIP10_SECP256K1_CONST.POINT_COORDINATE_BYTE_LENGTH * 2) {
-        const xBytes = bytes.slice(0, SLIP10_SECP256K1_CONST.POINT_COORDINATE_BYTE_LENGTH);
-        const yBytes = bytes.slice(SLIP10_SECP256K1_CONST.POINT_COORDINATE_BYTE_LENGTH);
+      if (point.length === SLIP10_SECP256K1_CONST.POINT_COORDINATE_BYTE_LENGTH * 2) {
+        const xBytes = point.slice(0, SLIP10_SECP256K1_CONST.POINT_COORDINATE_BYTE_LENGTH);
+        const yBytes = point.slice(SLIP10_SECP256K1_CONST.POINT_COORDINATE_BYTE_LENGTH);
         const x = BigInt(new BN(xBytes).toString(10));
         const y = BigInt(new BN(yBytes).toString(10));
         return SLIP10Nist256p1Point.fromCoordinates(x, y);
@@ -56,7 +51,7 @@ export class SLIP10Nist256p1Point extends IPoint {
   }
 
   raw(): Uint8Array {
-    return this.rawDecoded();
+    return this.rawEncoded();
   }
 
   rawEncoded(): Uint8Array {
@@ -67,25 +62,5 @@ export class SLIP10Nist256p1Point extends IPoint {
   rawDecoded(): Uint8Array {
     const arr = this.point.encode('array', false) as number[];
     return new Uint8Array(arr[0] === 4 ? arr.slice(1) : arr);
-  }
-
-  add(other: IPoint): SLIP10Nist256p1Point {
-    const p = (other as SLIP10Nist256p1Point).underlyingObject() as BasePoint;
-    const sum = this.point.add(p) as BasePoint;
-    return new SLIP10Nist256p1Point(sum);
-  }
-
-  radd(other: IPoint): SLIP10Nist256p1Point {
-    return this.add(other);
-  }
-
-  multiply(scalar: bigint): SLIP10Nist256p1Point {
-    const bn = new BN(scalar.toString());
-    const prod = this.point.mul(bn) as BasePoint;
-    return new SLIP10Nist256p1Point(prod);
-  }
-
-  rmul(scalar: bigint): SLIP10Nist256p1Point {
-    return this.multiply(scalar);
   }
 }

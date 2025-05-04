@@ -8,24 +8,19 @@ import {
 import { SLIP10_SECP256K1_CONST } from '../../../const';
 
 const ec = new elliptic.ec('p256');
-type KeyPair = elliptic.ec.KeyPair;
 
 export class SLIP10Nist256p1PrivateKey extends IPrivateKey {
 
-  constructor(privateKey: KeyPair) {
-    super(privateKey);
-  }
-
-  static getName(): string {
+  getName(): string {
     return 'SLIP10-Nist256p1';
   }
 
-  static fromBytes(bytes: Uint8Array): SLIP10Nist256p1PrivateKey {
-    if (bytes.length !== SLIP10_SECP256K1_CONST.PRIVATE_KEY_BYTE_LENGTH) {
+  static fromBytes(privateKey: Uint8Array): SLIP10Nist256p1PrivateKey {
+    if (privateKey.length !== SLIP10_SECP256K1_CONST.PRIVATE_KEY_BYTE_LENGTH) {
       throw new Error('Invalid private key bytes length');
     }
     try {
-      const kp = ec.keyFromPrivate(Buffer.from(bytes));
+      const kp = ec.keyFromPrivate(Buffer.from(privateKey));
       return new SLIP10Nist256p1PrivateKey(kp);
     } catch {
       throw new Error('Invalid private key bytes');

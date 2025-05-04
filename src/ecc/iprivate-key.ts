@@ -11,19 +11,23 @@ export abstract class IPrivateKey {
   privateKey: any;
   options: OptionsPrivateKey;
 
-  protected constructor(
+  constructor(
     privateKey: any, options: OptionsPrivateKey = { }
   ) {
     this.privateKey = privateKey;
     this.options = options;
   }
 
-  static getName(): string {
+  getName(): string {
     throw new Error('Must override getName()');
   }
 
-  static fromBytes(bytes: Uint8Array): IPrivateKey {
+  static fromBytes(privateKey: Uint8Array): IPrivateKey {
     throw new Error('Must override fromBytes()');
+  }
+
+  static size(): number {
+    throw new Error('Must override size()');
   }
 
   abstract raw(): Uint8Array;
@@ -31,10 +35,6 @@ export abstract class IPrivateKey {
   abstract publicKey(): IPublicKey;
 
   abstract underlyingObject(): any;
-
-  static size(): number {
-      throw new Error('Must override size()');
-  }
 
   static isValidBytes(bytes: Uint8Array): boolean {
     try {

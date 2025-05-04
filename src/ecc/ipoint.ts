@@ -4,15 +4,13 @@ export abstract class IPoint {
 
   point: any;
 
-  protected constructor(point: any) {
+  constructor(point: any) {
     this.point = point;
   }
 
-  static getName(): string {
-    throw new Error('Must override getName()');
-  }
+  abstract getName(): string;
 
-  static fromBytes(bytes: Uint8Array): IPoint {
+  static fromBytes(point: Uint8Array): IPoint {
     throw new Error('Must override fromBytes()');
   }
 
@@ -21,13 +19,14 @@ export abstract class IPoint {
   }
 
   abstract x(): bigint;
+
   abstract y(): bigint;
+
   abstract raw(): Uint8Array;
+
   abstract rawEncoded(): Uint8Array;
+
   abstract rawDecoded(): Uint8Array;
+
   abstract underlyingObject(): any;
-  abstract add(point: IPoint): IPoint;
-  abstract radd(point: IPoint): IPoint;
-  abstract multiply(scalar: bigint): IPoint;
-  abstract rmul(scalar: bigint): IPoint;
 }

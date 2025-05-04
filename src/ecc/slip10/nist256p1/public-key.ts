@@ -13,17 +13,13 @@ type BasePoint = elliptic.curve.base.BasePoint;
 
 export class SLIP10Nist256p1PublicKey extends IPublicKey {
 
-  constructor(publicKey: BasePoint) {
-    super(publicKey);
-  }
-
-  static getName(): string {
+  getName(): string {
     return 'SLIP10-Nist256p1';
   }
 
-  static fromBytes(bytes: Uint8Array): IPublicKey {
+  static fromBytes(publicKey: Uint8Array): IPublicKey {
     try {
-      const keyPair = ec.keyFromPublic(Buffer.from(bytes));
+      const keyPair = ec.keyFromPublic(Buffer.from(publicKey));
       const base = keyPair.getPublic();
       return new SLIP10Nist256p1PublicKey(base);
     } catch {
@@ -31,8 +27,8 @@ export class SLIP10Nist256p1PublicKey extends IPublicKey {
     }
   }
 
-  static fromPoint(pt: IPoint): IPublicKey {
-    const base = (pt as SLIP10Nist256p1Point).underlyingObject() as BasePoint;
+  static fromPoint(point: IPoint): IPublicKey {
+    const base = (point as SLIP10Nist256p1Point).underlyingObject() as BasePoint;
     return new SLIP10Nist256p1PublicKey(base);
   }
 

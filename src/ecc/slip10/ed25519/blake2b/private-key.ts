@@ -7,13 +7,9 @@ import { IPrivateKey, IPublicKey, SLIP10Ed25519Blake2bPublicKey } from '../../..
 import { SLIP10_ED25519_CONST } from '../../../../const';
 
 export class SLIP10Ed25519Blake2bPrivateKey extends IPrivateKey {
-  
-  constructor(privateKey: SignKeyPair) {
-    super(privateKey);
-  }
 
-  static getName(): string {
-    return 'SLIP10-Ed25519';
+  getName(): string {
+    return 'SLIP10-Ed25519-Blake2b';
   }
 
   static fromBytes(privateKey: Uint8Array): IPrivateKey {

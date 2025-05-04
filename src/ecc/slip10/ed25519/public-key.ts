@@ -11,16 +11,12 @@ type EdwardsPoint = elliptic.curve.edwards.EdwardsPoint;
 
 export class SLIP10Ed25519PublicKey extends IPublicKey {
 
-  constructor(publicKey: EdwardsPoint) {
-    super(publicKey);
-  }
-
-  static getName(): string {
+  getName(): string {
     return 'SLIP10-Ed25519';
   }
 
-  static fromBytes(bytes: Uint8Array): IPublicKey {
-    let data = bytes;
+  static fromBytes(publicKey: Uint8Array): IPublicKey {
+    let data = publicKey;
     const prefix = SLIP10_ED25519_CONST.PUBLIC_KEY_PREFIX;
     if (
       data.length === prefix.length + SLIP10_ED25519_CONST.PUBLIC_KEY_BYTE_LENGTH &&
@@ -44,7 +40,7 @@ export class SLIP10Ed25519PublicKey extends IPublicKey {
 
   static fromPoint(point: IPoint): IPublicKey {
     const raw = (point as any).rawEncoded() as Uint8Array;
-    return SLIP10Ed25519PublicKey.fromBytes(raw);
+    return this.fromBytes(raw);
   }
 
   static compressedLength(): number {

@@ -27,17 +27,17 @@ export class KholawEd25519PrivateKey extends SLIP10Ed25519PrivateKey {
     super(privateKey, options);
   }
 
-  static getName(): string {
+  getName(): string {
     return 'Kholaw-Ed25519';
   }
 
-  static fromBytes(bytes: Uint8Array): IPrivateKey {
+  static fromBytes(privateKey: Uint8Array): IPrivateKey {
 
-    if (bytes.length !== KHOLAW_ED25519_CONST.PRIVATE_KEY_BYTE_LENGTH) {
+    if (privateKey.length !== KHOLAW_ED25519_CONST.PRIVATE_KEY_BYTE_LENGTH) {
       throw new Error('Invalid private key bytes length');
     }
-    const privateKeyBytes = bytes.slice(0, SLIP10Ed25519PrivateKey.size());
-    const extendedKeyBytes = bytes.slice(SLIP10Ed25519PrivateKey.size());
+    const privateKeyBytes = privateKey.slice(0, SLIP10Ed25519PrivateKey.size());
+    const extendedKeyBytes = privateKey.slice(SLIP10Ed25519PrivateKey.size());
     const kp = ec.keyFromSecret(Buffer.from(privateKeyBytes));
     return new KholawEd25519PrivateKey(kp, { extendedKey: extendedKeyBytes });
   }

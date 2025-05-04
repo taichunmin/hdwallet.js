@@ -5,20 +5,12 @@ import * as elliptic from 'elliptic';
 import { IPrivateKey, IPublicKey } from '../../index';
 import { SLIP10_ED25519_CONST } from '../../../const';
 import { SLIP10Ed25519PublicKey } from './public-key';
-import { OptionsPrivateKey } from '../../iprivate-key';
 
 const ec = new elliptic.eddsa('ed25519');
-type EdDSAKeyPair = elliptic.eddsa.KeyPair;
 
 export class SLIP10Ed25519PrivateKey extends IPrivateKey {
-  
-  constructor(
-      privateKey: EdDSAKeyPair, options: OptionsPrivateKey = { }
-  ) {
-    super(privateKey, options);
-  }
 
-  static getName(): string {
+  getName(): string {
     return 'SLIP10-Ed25519';
   }
 

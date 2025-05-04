@@ -5,6 +5,7 @@ import { IPublicKey } from './ipublic-key';
 import { IPrivateKey } from './iprivate-key';
 
 export abstract class IEllipticCurveCryptography {
+
   static NAME: string;
   static ORDER: bigint;
   static GENERATOR: IPoint;

@@ -87,8 +87,9 @@ export function validateAndGetPublicKey(
     }
     if (!(publicKey instanceof (<any>publicKeyCls))) {
       throw new PublicKeyError(
-        `Invalid ${publicKeyCls.getName()} key instance`, {
-          expected: publicKeyCls.getName(), got: publicKey.constructor.name
+        `Invalid public key instance`, {
+          expected: publicKeyCls.constructor.name,
+          got: publicKey.constructor.name
         }
       );
     }

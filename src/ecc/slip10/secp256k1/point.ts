@@ -11,34 +11,29 @@ type BasePoint = elliptic.curve.base.BasePoint;
 
 export class SLIP10Secp256k1Point extends IPoint {
 
-  constructor(point: BasePoint) {
-    super(point);
-  }
-
-  static getName(): string {
+  getName(): string {
     return 'SLIP10-Secp256k1';
   }
 
-  static fromBytes(bytes: Uint8Array): IPoint {
-    const len = bytes.length;
+  static fromBytes(point: Uint8Array): IPoint {
 
-    if (len === SLIP10_SECP256K1_CONST.PUBLIC_KEY_UNCOMPRESSED_BYTE_LENGTH) {
-      const keyPair = ec.keyFromPublic(Buffer.from(bytes));
+    if (point.length === SLIP10_SECP256K1_CONST.PUBLIC_KEY_UNCOMPRESSED_BYTE_LENGTH) {
+      const keyPair = ec.keyFromPublic(Buffer.from(point));
       const pubPoint = keyPair.getPublic();
       return new SLIP10Secp256k1Point(pubPoint);
     }
 
-    if (len === SLIP10_SECP256K1_CONST.PUBLIC_KEY_UNCOMPRESSED_BYTE_LENGTH - 1) {
-      const full = new Uint8Array(1 + len);
+    if (point.length === SLIP10_SECP256K1_CONST.PUBLIC_KEY_UNCOMPRESSED_BYTE_LENGTH - 1) {
+      const full = new Uint8Array(1 + point.length);
       full[0] = 0x04;
-      full.set(bytes, 1);
+      full.set(point, 1);
       const keyPair = ec.keyFromPublic(Buffer.from(full));
       const pubPoint = keyPair.getPublic();
       return new SLIP10Secp256k1Point(pubPoint);
     }
 
-    if (len === SLIP10_SECP256K1_CONST.PUBLIC_KEY_COMPRESSED_BYTE_LENGTH) {
-      const keyPair = ec.keyFromPublic(Buffer.from(bytes));
+    if (point.length === SLIP10_SECP256K1_CONST.PUBLIC_KEY_COMPRESSED_BYTE_LENGTH) {
+      const keyPair = ec.keyFromPublic(Buffer.from(point));
       const pubPoint = keyPair.getPublic();
       return new SLIP10Secp256k1Point(pubPoint);
     }
@@ -65,7 +60,7 @@ export class SLIP10Secp256k1Point extends IPoint {
   }
 
   raw(): Uint8Array {
-    return this.rawDecoded();
+    return this.rawEncoded();
   }
 
   rawEncoded(): Uint8Array {
@@ -75,25 +70,5 @@ export class SLIP10Secp256k1Point extends IPoint {
   rawDecoded(): Uint8Array {
     const encoded = this.point.encode('array', false) as number[];
     return new Uint8Array(encoded.slice(1));
-  }
-
-  add(point: IPoint): IPoint {
-    const other = (point as SLIP10Secp256k1Point).underlyingObject() as BasePoint;
-    const sum = this.point.add(other) as BasePoint;
-    return new SLIP10Secp256k1Point(sum);
-  }
-
-  radd(point: IPoint): IPoint {
-    return this.add(point);
-  }
-
-  multiply(scalar: bigint): IPoint {
-    const bn = new BN(scalar.toString());
-    const prod = this.point.mul(bn) as BasePoint;
-    return new SLIP10Secp256k1Point(prod);
-  }
-
-  rmul(scalar: bigint): IPoint {
-    return this.multiply(scalar);
   }
 }

@@ -6,15 +6,15 @@ export abstract class IPublicKey {
 
   publicKey: any;
 
-  protected constructor(publicKey: any) {
+  constructor(publicKey: any) {
     this.publicKey = publicKey;
   }
 
-  static getName(): string {
+  getName(): string {
     throw new Error('Must override getName()');
   }
 
-  static fromBytes(bytes: Uint8Array): IPublicKey {
+  static fromBytes(publicKey: Uint8Array): IPublicKey {
     throw new Error('Must override fromBytes()');
   }
 

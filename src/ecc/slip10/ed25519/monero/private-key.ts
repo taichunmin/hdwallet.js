@@ -2,27 +2,18 @@
 
 import * as elliptic from 'elliptic';
 
-import { IPrivateKey, IPublicKey } from '../../../index';
+import { IPublicKey } from '../../../index';
 import { SLIP10Ed25519PrivateKey } from '../../index';
 import { SLIP10Ed25519MoneroPublicKey } from './public-key';
 import { pointScalarMulBase } from '../../../../libs/ed25519-utils';
 import { bytesToString } from '../../../../utils';
 
 const ec = new elliptic.eddsa('ed25519');
-type EdDSAKeyPair = elliptic.eddsa.KeyPair;
 
 export class SLIP10Ed25519MoneroPrivateKey extends SLIP10Ed25519PrivateKey {
 
-  constructor(privateKey: EdDSAKeyPair) {
-    super(privateKey);
-  }
-
-  static getName(): string {
+  getName(): string {
     return 'SLIP10-Ed25519-Monero';
-  }
-
-  static fromBytes(bytes: Uint8Array): IPrivateKey {
-    return super.fromBytes(bytes) as SLIP10Ed25519MoneroPrivateKey;
   }
 
   publicKey(): IPublicKey {
