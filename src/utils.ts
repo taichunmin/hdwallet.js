@@ -272,6 +272,22 @@ export function binaryStringToBytes(
   return new Uint8Array(Buffer.from(hex, "hex"));
 }
 
+export function isAllBytesEqual(...arrays: Uint8Array[] | Buffer[]): boolean {
+
+  if (arrays.length < 2) return true;
+
+  const [first, ...rest] = arrays;
+  const len = first.byteLength;
+  // quick length check
+  if (rest.some(a => a.byteLength !== len)) {
+    return false;
+  }
+  // compare each array to `first`
+  return rest.every(a =>
+    a.every((byte, i) => byte === first[i])
+  );
+}
+
 /**
  * Generate a random passphrase of ASCII letters and digits.
  */
