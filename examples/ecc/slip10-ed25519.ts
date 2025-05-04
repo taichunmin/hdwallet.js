@@ -6,58 +6,118 @@ import {
   IPrivateKey,
   ECCS,
   SLIP10Ed25519ECC,
+  SLIP10Ed25519Point,
   SLIP10Ed25519PublicKey,
   SLIP10Ed25519PrivateKey,
   validateAndGetPublicKey
 } from '../../src/ecc';
-import { hexToBytes, bytesToString, isAllBytesEqual } from '../../src/utils';
+import { hexToBytes, bytesToString, isAllEqual } from '../../src/utils';
 
 const ecc: typeof IEllipticCurveCryptography = ECCS.ecc(SLIP10Ed25519ECC.NAME);
 
-const privateKey = hexToBytes('bb37794073e5094ebbfcfa070e9254fe6094b56e7cccb094a2304c5eccccdc07');
+const keys = {
+    ecc: 'SLIP10-Ed25519',
+    privateKey: hexToBytes('bb37794073e5094ebbfcfa070e9254fe6094b56e7cccb094a2304c5eccccdc07'),
+    publicKey: {
+        uncompressed: hexToBytes('00d14696583ee9144878635b557d515a502b04366818dfe7765737746b4f57978d'),
+        compressed: hexToBytes('00d14696583ee9144878635b557d515a502b04366818dfe7765737746b4f57978d')
+    },
+    point: {
+        raw: hexToBytes('d14696583ee9144878635b557d515a502b04366818dfe7765737746b4f57978d'),
+        x: BigInt('35008547582340824597639173221735807482318787407965447203743372716499096148063'),
+        y: BigInt('6147463531448180337884122237947428143499725886130497179241919515820002002641')
+    }
+}
 
-const slip10Ed25519PrivateKey: IPrivateKey = SLIP10Ed25519PrivateKey.fromBytes(privateKey);
-const eccSLIP10Ed25519PrivateKey: IPrivateKey = ecc.PRIVATE_KEY.fromBytes(privateKey);
-
-const slip10Ed25519PublicKey: IPublicKey = slip10Ed25519PrivateKey.publicKey();
-const eccSLIP10Ed25519PublicKey: IPublicKey = eccSLIP10Ed25519PrivateKey.publicKey();
-
-console.log('ECC:', SLIP10Ed25519ECC.NAME);
-console.log('Private Key:', bytesToString(slip10Ed25519PrivateKey.raw()));
-console.log('Public Key - Uncompressed:', bytesToString(slip10Ed25519PublicKey.rawUncompressed()));
-console.log('Public Key - Compressed:', bytesToString(slip10Ed25519PublicKey.rawCompressed()));
-
-const uncompressed: IPublicKey = validateAndGetPublicKey(
-    slip10Ed25519PublicKey.rawUncompressed(), SLIP10Ed25519PublicKey
-);
-const compressed: IPublicKey = validateAndGetPublicKey(
-    slip10Ed25519PublicKey.rawCompressed(), SLIP10Ed25519PublicKey
-);
+const slip10Ed25519PrivateKey: IPrivateKey = SLIP10Ed25519PrivateKey.fromBytes(keys.privateKey);
+const eccSLIP10Ed25519PrivateKey: IPrivateKey = ecc.PRIVATE_KEY.fromBytes(keys.privateKey);
 
 console.log(
-    uncompressed instanceof SLIP10Ed25519PublicKey,
-    compressed instanceof SLIP10Ed25519PublicKey,
-    isAllBytesEqual(
-        uncompressed.rawUncompressed(),
-        slip10Ed25519PublicKey.rawUncompressed(),
-        eccSLIP10Ed25519PublicKey.rawUncompressed(),
-        SLIP10Ed25519PublicKey.fromBytes(
-            uncompressed.rawUncompressed()
-        ).rawUncompressed(),
-        ecc.PUBLIC_KEY.fromBytes(
-            uncompressed.rawUncompressed()
-        ).rawUncompressed()
-    ),
-    isAllBytesEqual(
-        compressed.rawCompressed(),
-        slip10Ed25519PublicKey.rawCompressed(),
-        eccSLIP10Ed25519PublicKey.rawCompressed(),
-        SLIP10Ed25519PublicKey.fromBytes(
-            uncompressed.rawCompressed()
-        ).rawCompressed(),
-        ecc.PUBLIC_KEY.fromBytes(
-            uncompressed.rawCompressed()
-        ).rawCompressed()
+    'Private Key:',
+    ecc.NAME === slip10Ed25519PrivateKey.getName(),
+    slip10Ed25519PrivateKey instanceof SLIP10Ed25519PrivateKey,
+    eccSLIP10Ed25519PrivateKey instanceof SLIP10Ed25519PrivateKey,
+    isAllEqual(
+        slip10Ed25519PrivateKey.raw(),
+        eccSLIP10Ed25519PrivateKey.raw(),
+        keys.privateKey
     )
 );
 
+const rawSLIP10Ed25519Point = SLIP10Ed25519Point.fromBytes(keys.point.raw)
+const coordinatesSLIP10Ed25519Point = SLIP10Ed25519Point.fromCoordinates(keys.point.x, keys.point.y)
+
+console.log(
+    'Point:',
+    rawSLIP10Ed25519Point instanceof SLIP10Ed25519Point,
+    coordinatesSLIP10Ed25519Point instanceof SLIP10Ed25519Point,
+    isAllEqual(
+        rawSLIP10Ed25519Point.raw(),
+        coordinatesSLIP10Ed25519Point .raw(),
+        ecc.POINT.fromBytes(keys.point.raw).raw(),
+        ecc.POINT.fromCoordinates(keys.point.x, keys.point.y).raw(),
+        keys.point.raw
+    )
+);
+
+const slip10Ed25519PublicKey: IPublicKey = slip10Ed25519PrivateKey.publicKey();
+const eccSLIP10Ed25519PublicKey: IPublicKey = eccSLIP10Ed25519PrivateKey.publicKey();
+const uncompressedPublicKey: IPublicKey = validateAndGetPublicKey(keys.publicKey.uncompressed, SLIP10Ed25519PublicKey);
+const compressedPublicKey: IPublicKey = validateAndGetPublicKey(keys.publicKey.compressed, SLIP10Ed25519PublicKey);
+
+console.log(
+    '(Uncompressed) Public Key:',
+    slip10Ed25519PublicKey instanceof SLIP10Ed25519PublicKey,
+    eccSLIP10Ed25519PublicKey instanceof SLIP10Ed25519PublicKey,
+    uncompressedPublicKey instanceof SLIP10Ed25519PublicKey,
+    isAllEqual(
+        uncompressedPublicKey.rawUncompressed(),
+        slip10Ed25519PublicKey.rawUncompressed(),
+        eccSLIP10Ed25519PublicKey.rawUncompressed(),
+        SLIP10Ed25519PublicKey.fromBytes(keys.publicKey.uncompressed).rawUncompressed(),
+        SLIP10Ed25519PublicKey.fromPoint(rawSLIP10Ed25519Point).rawUncompressed(),
+        ecc.PUBLIC_KEY.fromBytes(keys.publicKey.uncompressed).rawUncompressed(),
+        ecc.PUBLIC_KEY.fromPoint(coordinatesSLIP10Ed25519Point).rawUncompressed(),
+        keys.publicKey.uncompressed
+    )
+);
+
+console.log(
+    '(Compressed) Public Key:',
+    slip10Ed25519PublicKey instanceof SLIP10Ed25519PublicKey,
+    eccSLIP10Ed25519PublicKey instanceof SLIP10Ed25519PublicKey,
+    compressedPublicKey instanceof SLIP10Ed25519PublicKey,
+    isAllEqual(
+        compressedPublicKey.rawCompressed(),
+        slip10Ed25519PublicKey.rawCompressed(),
+        eccSLIP10Ed25519PublicKey.rawCompressed(),
+        SLIP10Ed25519PublicKey.fromBytes(keys.publicKey.compressed).rawCompressed(),
+        SLIP10Ed25519PublicKey.fromPoint(rawSLIP10Ed25519Point).rawCompressed(),
+        ecc.PUBLIC_KEY.fromBytes(keys.publicKey.compressed).rawCompressed(),
+        ecc.PUBLIC_KEY.fromPoint(coordinatesSLIP10Ed25519Point).rawCompressed(),
+        keys.publicKey.compressed
+    )
+);
+
+console.log(
+    'ECC:',
+    isAllEqual(
+        SLIP10Ed25519ECC.NAME,
+        ecc.NAME,
+        slip10Ed25519PrivateKey.getName(),
+        eccSLIP10Ed25519PrivateKey.getName(),
+        rawSLIP10Ed25519Point.getName(),
+        coordinatesSLIP10Ed25519Point.getName(),
+        slip10Ed25519PublicKey.getName(),
+        eccSLIP10Ed25519PublicKey.getName(),
+        keys.ecc
+    ), '\n'
+);
+
+console.log('Elliptic Curve Cryptography:', keys.ecc);
+console.log('Private Key:', bytesToString(keys.privateKey));
+console.log('Point:', bytesToString(keys.point.raw));
+console.log('    x:', keys.point.x);
+console.log('    y:', keys.point.y);
+console.log('(Uncompressed) Public Key:', bytesToString(keys.publicKey.uncompressed));
+console.log('(Compressed) Public Key:', bytesToString(keys.publicKey.compressed));
