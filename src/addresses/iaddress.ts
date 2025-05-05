@@ -4,6 +4,8 @@ import { IPublicKey } from '../ecc';
 
 export interface AddressOptionsInterface {
   hrp?: string,
+  addressPrefix?: string;
+  addressType?: string;
   publicKeyAddressPrefix?: number;
   scriptAddressPrefix?: number;
   publicKeyType?: "uncompressed" | "compressed";

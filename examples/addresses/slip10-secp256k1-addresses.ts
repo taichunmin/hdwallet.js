@@ -12,12 +12,14 @@ import {
   P2WSHInP2SHAddress,
   EthereumAddress,
   CosmosAddress,
-  XinFinAddress
+  XinFinAddress,
+  TronAddress,
+  RippleAddress,
+  FilecoinAddress
 } from "../../src/addresses";
 import { PUBLIC_KEY_TYPES } from "../../src/const";
 import { bytesToString } from "../../src/utils";
-import { Bitcoin, Cosmos } from '../../src/cryptocurrencies';
-
+import { Bitcoin, Cosmos, Filecoin } from '../../src/cryptocurrencies';
 
 const PRIVATE_KEY: IPrivateKey = SLIP10Secp256k1PrivateKey.fromBytes(
   Buffer.from(
@@ -29,7 +31,6 @@ console.log("Private Key:", bytesToString(PRIVATE_KEY.raw()));
 const PUBLIC_KEY: IPublicKey = PRIVATE_KEY.publicKey();
 console.log("Uncompressed Public Key:", bytesToString(PUBLIC_KEY.rawUncompressed()));
 console.log("Compressed Public Key:", bytesToString(PUBLIC_KEY.rawCompressed()), "\n");
-
 
 const p2pkhAddress: string = P2PKHAddress.encode(PUBLIC_KEY, {
   publicKeyAddressPrefix: Bitcoin.NETWORKS.MAINNET.PUBLIC_KEY_ADDRESS_PREFIX,
@@ -119,3 +120,27 @@ const xinfinAddressHash: string = XinFinAddress.decode(xinfinAddress, {
   skipChecksumEncode: false
 });
 console.log("XinFin Address:", xinfinAddress, xinfinAddressHash);
+
+const tronAddress: string = TronAddress.encode(PUBLIC_KEY);
+const tronAddressHash: string = TronAddress.decode(tronAddress);
+console.log("Tron Address:", tronAddress, tronAddressHash);
+
+const rippleAddress: string = RippleAddress.encode(PUBLIC_KEY);
+const rippleAddressHash: string = RippleAddress.decode(rippleAddress);
+console.log("Ripple Address:", rippleAddress, rippleAddressHash);
+
+const secp256k1FilecoinAddress: string = FilecoinAddress.encode(PUBLIC_KEY, {
+  addressType: Filecoin.ADDRESS_TYPES.SECP256K1
+});
+const secp256k1FilecoinAddressHash: string = FilecoinAddress.decode(secp256k1FilecoinAddress, {
+  addressType: Filecoin.ADDRESS_TYPES.SECP256K1
+});
+console.log("(Secp256k1) Filecoin Address:", secp256k1FilecoinAddress, secp256k1FilecoinAddressHash);
+
+const blsFilecoinAddress: string = FilecoinAddress.encode(PUBLIC_KEY, {
+  addressType: Filecoin.ADDRESS_TYPES.BLS
+});
+const blsFilecoinAddressHash: string = FilecoinAddress.decode(blsFilecoinAddress, {
+  addressType: Filecoin.ADDRESS_TYPES.BLS
+});
+console.log("(BLX) Filecoin Address:", blsFilecoinAddress, blsFilecoinAddressHash);

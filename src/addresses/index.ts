@@ -11,7 +11,10 @@ import { P2WSHInP2SHAddress } from './p2wsh-in-p2sh';
 import { EthereumAddress } from './ethereum';
 import { CosmosAddress } from './cosmos';
 import { XinFinAddress } from './xinfin';
+import { TronAddress } from './tron';
 import { AddressError } from '../exceptions';
+import { RippleAddress } from './ripple';
+import { FilecoinAddress } from './filecoin';
 
 export class ADDRESSES {
 
@@ -26,6 +29,9 @@ export class ADDRESSES {
     [EthereumAddress.getName()]: EthereumAddress,
     [CosmosAddress.getName()]: CosmosAddress,
     [XinFinAddress.getName()]: XinFinAddress,
+    [TronAddress.getName()]: TronAddress,
+    [RippleAddress.getName()]: RippleAddress,
+    [FilecoinAddress.getName()]: FilecoinAddress,
   };
 
   public static getNames(): string[] {
@@ -61,5 +67,8 @@ export {
   P2WSHInP2SHAddress,
   EthereumAddress,
   CosmosAddress,
-  XinFinAddress
+  XinFinAddress,
+  TronAddress,
+  RippleAddress,
+  FilecoinAddress,
 };
