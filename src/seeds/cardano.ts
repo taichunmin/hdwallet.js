@@ -4,44 +4,22 @@ import { blake2b256 } from '../crypto'
 import { getBytes, bytesToString } from '../utils'
 import { MnemonicError, SeedError } from '../exceptions'
 import { SeedOptionsInterface, ISeed, BIP39Seed } from './'
-
-
-export class CardanoTypes {
-  static BYRON_ICARUS = 'byron-icarus'
-  static BYRON_LEDGER = 'byron-ledger'
-  static BYRON_LEGACY = 'byron-legacy'
-  static SHELLEY_ICARUS = 'shelley-icarus'
-  static SHELLEY_LEDGER = 'shelley-ledger'
-
-  static getCardanoTypes(): string[] {
-    return [
-      CardanoTypes.BYRON_ICARUS,
-      CardanoTypes.BYRON_LEDGER,
-      CardanoTypes.BYRON_LEGACY,
-      CardanoTypes.SHELLEY_ICARUS,
-      CardanoTypes.SHELLEY_LEDGER,
-    ]
-  }
-
-  static isCardanoType(type: string): boolean {
-    return this.getCardanoTypes().includes(type)
-  }
-}
+import { Cardano } from '../cryptocurrencies'
 
 export class CardanoSeed extends ISeed {
   private _cardanoType: string
 
-  constructor(seed: string, options: SeedOptionsInterface = {cardanoType: CardanoTypes.BYRON_ICARUS}) {
+  constructor(seed: string, options: SeedOptionsInterface = {cardanoType: Cardano.TYPES.BYRON_ICARUS}) {
     super(seed, options)
 
-    if (options.cardanoType && !CardanoTypes.isCardanoType(options.cardanoType)) {
+    if (options.cardanoType && !Cardano.TYPES.isCardanoType(options.cardanoType)) {
       throw new SeedError(
         'Invalid Cardano type',
-        { expected: CardanoTypes.getCardanoTypes(), got: options.cardanoType }
+        { expected: Cardano.TYPES.getCardano.TYPES(), got: options.cardanoType }
       )
     }
   
-    this._cardanoType = options.cardanoType ?? CardanoTypes.BYRON_ICARUS
+    this._cardanoType = options.cardanoType ?? Cardano.TYPES.BYRON_ICARUS
   }
 
   static client(): string {
@@ -54,24 +32,24 @@ export class CardanoSeed extends ISeed {
 
   static fromMnemonic(
     mnemonic: string | IMnemonic,
-    cardanoType: string = CardanoTypes.BYRON_ICARUS,
+    cardanoType: string = Cardano.TYPES.BYRON_ICARUS,
     passphrase?: string
   ): string {
     switch (cardanoType) {
-      case CardanoTypes.BYRON_ICARUS:
+      case Cardano.TYPES.BYRON_ICARUS:
         return this.generateByronIcarus(mnemonic)
-      case CardanoTypes.BYRON_LEDGER:
+      case Cardano.TYPES.BYRON_LEDGER:
         return this.generateByronLedger(mnemonic, passphrase)
-      case CardanoTypes.BYRON_LEGACY:
+      case Cardano.TYPES.BYRON_LEGACY:
         return this.generateByronLegacy(mnemonic)
-      case CardanoTypes.SHELLEY_ICARUS:
+      case Cardano.TYPES.SHELLEY_ICARUS:
         return this.generateShelleyIcarus(mnemonic)
-      case CardanoTypes.SHELLEY_LEDGER:
+      case Cardano.TYPES.SHELLEY_LEDGER:
         return this.generateShelleyLedger(mnemonic, passphrase)
       default:
         throw new SeedError(
           'Invalid Cardano type',
-          { expected: CardanoTypes.getCardanoTypes(), got: cardanoType }
+          { expected: Cardano.TYPES.getCardano.TYPES(), got: cardanoType }
         )
     }
   }

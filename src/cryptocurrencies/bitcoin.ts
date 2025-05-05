@@ -15,7 +15,10 @@ import {
   XPrivateKeyVersions,
   XPublicKeyVersions
 } from '../const';
-import { ICryptocurrency, INetwork } from './icryptocurrency';
+import {
+  ICryptocurrency,
+  INetwork
+} from './icryptocurrency';
 
 
 export class Mainnet extends INetwork {
@@ -83,6 +86,7 @@ export class Testnet extends INetwork {
 }
 
 export class Regtest extends Testnet {
+
   static HRP = 'bcrt';
 }
 

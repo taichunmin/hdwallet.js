@@ -1,0 +1,64 @@
+// SPDX-License-Identifier: MIT
+
+import { CoinTypes } from '../slip44';
+import { SLIP10Ed25519ECC } from '../ecc';
+import {
+  Info,
+  Entropies,
+  Mnemonics,
+  Seeds,
+  HDs,
+  Addresses,
+  Networks,
+  Params,
+  XPrivateKeyVersions,
+  XPublicKeyVersions
+} from '../const';
+import {
+  ICryptocurrency,
+  INetwork
+} from './icryptocurrency';
+
+
+export class Mainnet extends INetwork {
+
+  static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({ P2PKH: 0x0488ade4 });
+  static XPUBLIC_KEY_VERSIONS = new XPublicKeyVersions({ P2PKH: 0x0488b21e });
+}
+
+export class Sui extends ICryptocurrency {
+
+  static NAME = 'Sui';
+  static SYMBOL = 'SUI';
+  static INFO = new Info({
+    SOURCE_CODE: 'https://github.com/MystenLabs/sui',
+    WHITEPAPER: 'https://docs.sui.io',
+    WEBSITES: [
+        'https://sui.io'
+    ]
+  });
+  static ECC = SLIP10Ed25519ECC;
+  static COIN_TYPE = CoinTypes.Sui;
+  static NETWORKS = new Networks({ MAINNET: Mainnet });
+  static DEFAULT_NETWORK = Sui.NETWORKS.MAINNET;
+  static ENTROPIES = new Entropies([
+    'BIP39'
+  ]);
+  static MNEMONICS = new Mnemonics([
+    'BIP39'
+  ]);
+  static SEEDS = new Seeds([
+    'BIP39'
+  ]);
+  static HDS = new HDs([
+    'BIP32',
+    'BIP44'
+  ]);
+  static DEFAULT_HD = Sui.HDS.BIP44;
+  static ADDRESSES = new Addresses({ SUI: 'Sui' });
+  static DEFAULT_ADDRESS = Sui.ADDRESSES.SUI;
+  static PARAMS = new Params({
+    KEY_TYPE: 0x00,
+    ADDRESS_PREFIX: '0x'
+  });
+}

@@ -7,8 +7,7 @@ import {
   ElectrumV2Seed,
   MoneroSeed
 } from '../src/seeds'
-
-import {CardanoTypes} from '../src/seeds/cardano'
+import { Cardano } from '../src/cryptocurrencies'
 
 const algorandPhrase = 'abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon invest'
 const bip39Phrase = 'abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about'
@@ -36,7 +35,7 @@ function runSeedExamples() {
   // Cardano Byron Ledger
   const cardanonBLedger = CardanoSeed.fromMnemonic(
     bip39Phrase,
-    CardanoTypes.BYRON_LEDGER,
+    Cardano.TYPES.BYRON_LEDGER,
     passphrase
   )
   console.log(`CardanoSeed.fromMnemonic (Byron Ledger) => ${cardanonBLedger}`)
@@ -44,21 +43,21 @@ function runSeedExamples() {
   // Cardano Byron Legacy
   const cardanoBLegacy = CardanoSeed.fromMnemonic(
     "hurry cement chunk movie obtain jealous sphere ticket eight still usage hint",
-    CardanoTypes.BYRON_LEGACY
+    Cardano.TYPES.BYRON_LEGACY
   )
   console.log(`CardanoSeed.fromMnemonic (Byron Legacy) => ${cardanoBLegacy}`)
   
   // Cardano Shelley Ledger
   const cardanoSICarus = CardanoSeed.fromMnemonic(
     bip39Phrase,
-    CardanoTypes.SHELLEY_ICARUS
+    Cardano.TYPES.SHELLEY_ICARUS
   )
   console.log(`CardanoSeed.fromMnemonic (Shelley Icarus) => ${cardanoSICarus}`)
 
   // Cardano Shelley Ledger
   const cardanoShelley = CardanoSeed.fromMnemonic(
     bip39Phrase,
-    CardanoTypes.SHELLEY_LEDGER,
+    Cardano.TYPES.SHELLEY_LEDGER,
     passphrase
   )
   console.log(`CardanoSeed.fromMnemonic (Shelley Ledger) => ${cardanoShelley}`)

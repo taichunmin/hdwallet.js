@@ -28,7 +28,7 @@ export abstract class INetwork {
   static WITNESS_VERSIONS?: WitnessVersions;
   static XPRIVATE_KEY_VERSIONS?: XPrivateKeyVersions;
   static XPUBLIC_KEY_VERSIONS?: XPublicKeyVersions;
-  static MESSAGE_PREFIX?: string;
+  static MESSAGE_PREFIX?: string | null;
   static WIF_PREFIX?: number;
 
   // Bitcoin-Cash / eCash

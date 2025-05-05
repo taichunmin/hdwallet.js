@@ -1,0 +1,66 @@
+// SPDX-License-Identifier: MIT
+
+import { CoinTypes } from '../slip44';
+import { SLIP10Ed25519Blake2bECC } from '../ecc';
+import {
+  Info,
+  Entropies,
+  Mnemonics,
+  Seeds,
+  HDs,
+  Addresses,
+  Networks,
+  Params,
+  XPrivateKeyVersions,
+  XPublicKeyVersions
+} from '../const';
+import {
+  ICryptocurrency,
+  INetwork
+} from './icryptocurrency';
+
+
+export class Mainnet extends INetwork {
+
+  static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({ P2PKH: 0x0488ade4 });
+  static XPUBLIC_KEY_VERSIONS = new XPublicKeyVersions({ P2PKH: 0x0488b21e });
+}
+
+export class Nano extends ICryptocurrency {
+
+  static NAME = 'Nano';
+  static SYMBOL = 'XNO';
+  static INFO = new Info({
+    SOURCE_CODE: 'https://github.com/nanocurrency/nano-node',
+    WHITEPAPER: 'https://nano.org/en/whitepaper',
+    WEBSITES: [
+        'http://nano.org/en'
+    ]
+  });
+  static ECC = SLIP10Ed25519Blake2bECC;
+  static COIN_TYPE = CoinTypes.Nano;
+  static NETWORKS = new Networks({ MAINNET: Mainnet });
+  static DEFAULT_NETWORK = Nano.NETWORKS.MAINNET;
+  static ENTROPIES = new Entropies([
+    'BIP39'
+  ]);
+  static MNEMONICS = new Mnemonics([
+    'BIP39'
+  ]);
+  static SEEDS = new Seeds([
+    'BIP39'
+  ]);
+  static HDS = new HDs([
+    'BIP32',
+    'BIP44'
+  ]);
+  static DEFAULT_HD = Nano.HDS.BIP44;
+  static ADDRESSES = new Addresses({ NANO: 'Nano' });
+  static DEFAULT_ADDRESS = Nano.ADDRESSES.NANO;
+  static PARAMS = new Params({
+    ADDRESS_PREFIX: 'nano_',
+    ALPHABET: '13456789abcdefghijkmnopqrstuwxyz',
+    PAYLOAD_PADDING_DECODED: '\x00\x00\x00',
+    PAYLOAD_PADDING_ENCODED: '1111'
+  });
+}
