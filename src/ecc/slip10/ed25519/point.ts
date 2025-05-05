@@ -48,10 +48,6 @@ export class SLIP10Ed25519Point extends IPoint {
     return BigInt(this.point.getY().toString(10));
   }
 
-  raw(): Uint8Array {
-    return this.rawEncoded();
-  }
-
   rawEncoded(): Uint8Array {
     return new Uint8Array(ec.encodePoint(this.point));
   }
@@ -60,5 +56,17 @@ export class SLIP10Ed25519Point extends IPoint {
     const xBytes = this.point.getX().toArray('be', 32);
     const yBytes = this.point.getY().toArray('be', 32);
     return new Uint8Array([...xBytes, ...yBytes]);
+  }
+
+  add(point: IPoint): IPoint {
+    const other = (point as this).underlyingObject() as EdwardsPoint;
+    const sum = this.point.add(other) as EdwardsPoint;
+    return new SLIP10Ed25519Point(sum);
+  }
+
+  multiply(scalar: bigint): IPoint {
+    const bn = new BN(scalar.toString(), 10);
+    const prod = this.point.mul(bn) as EdwardsPoint;
+    return new SLIP10Ed25519Point(prod);
   }
 }

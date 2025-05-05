@@ -22,11 +22,17 @@ export abstract class IPoint {
 
   abstract y(): bigint;
 
-  abstract raw(): Uint8Array;
+  raw(): Uint8Array {
+    return this.rawEncoded();
+  }
 
   abstract rawEncoded(): Uint8Array;
 
   abstract rawDecoded(): Uint8Array;
 
   abstract underlyingObject(): any;
+
+  abstract add(point: IPoint): IPoint;
+
+  abstract multiply(scalar: bigint): IPoint;
 }
