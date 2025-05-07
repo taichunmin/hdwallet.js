@@ -19,11 +19,11 @@ export class FilecoinAddress implements IAddress {
 
   static alphabet: string = Filecoin.PARAMS.ALPHABET;
   static addressPrefix: string = Filecoin.PARAMS.ADDRESS_PREFIX;
+  static addressType: string = Filecoin.DEFAULT_ADDRESS_TYPE;
   static addressTypes: Record<string, number> = {
     secp256k1: Filecoin.PARAMS.ADDRESS_TYPES.SECP256K1,
     bls: Filecoin.PARAMS.ADDRESS_TYPES.BLS
   };
-  static addressType: string = Filecoin.DEFAULT_ADDRESS_TYPE;
 
   static getName(): string {
     return 'Filecoin';
@@ -35,8 +35,8 @@ export class FilecoinAddress implements IAddress {
 
   static encode(
     publicKey: Buffer | string | IPublicKey, options: AddressOptionsInterface = {
-        addressPrefix: this.addressPrefix,
-        addressType: this.addressType
+      addressPrefix: this.addressPrefix,
+      addressType: this.addressType
     }
   ): string {
     const pk = validateAndGetPublicKey(publicKey, SLIP10Secp256k1PublicKey);
@@ -45,7 +45,6 @@ export class FilecoinAddress implements IAddress {
     const typeKey = options.addressType ?? this.addressType;
     const addressType = this.addressTypes[typeKey];
     if (addressType === undefined) {
-        console.log(this.addressTypes, typeKey)
       throw new AddressError('Invalid Filecoin address type', {
         expected: Object.keys(FilecoinAddress.addressTypes),
         got: typeKey
@@ -63,8 +62,8 @@ export class FilecoinAddress implements IAddress {
 
   static decode(
     address: string, options: AddressOptionsInterface = {
-        addressPrefix: this.addressPrefix,
-        addressType: this.addressType
+      addressPrefix: this.addressPrefix,
+      addressType: this.addressType
     }
   ): string {
     const prefix = FilecoinAddress.addressPrefix;
@@ -93,7 +92,9 @@ export class FilecoinAddress implements IAddress {
       });
     }
 
-    const payloadBytes = toBuffer(decode(addressBody.slice(1), FilecoinAddress.alphabet));
+    const payloadBytes = toBuffer(decode(
+      addressBody.slice(1), FilecoinAddress.alphabet
+    ));
     if (payloadBytes.length !== 24) {
       throw new AddressError('Invalid length', {
         expected: 24,
