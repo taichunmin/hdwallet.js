@@ -23,11 +23,12 @@ import {
 
 
 export class Types extends NestedNamespace {
-  static getCardanoTypes(): string[] {
+
+  getCardanoTypes(): string[] {
     return Object.values(this as any) as string[]
   }
 
-  static isCardanoType(type: string): boolean {
+  isCardanoType(type: string): boolean {
     return this.getCardanoTypes().includes(type)
   }
 }

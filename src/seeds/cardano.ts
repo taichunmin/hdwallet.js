@@ -15,7 +15,7 @@ export class CardanoSeed extends ISeed {
     if (options.cardanoType && !Cardano.TYPES.isCardanoType(options.cardanoType)) {
       throw new SeedError(
         'Invalid Cardano type',
-        { expected: Cardano.TYPES.getCardano.TYPES(), got: options.cardanoType }
+        { expected: Cardano.TYPES.getCardanoTypes(), got: options.cardanoType }
       )
     }
   
@@ -49,7 +49,7 @@ export class CardanoSeed extends ISeed {
       default:
         throw new SeedError(
           'Invalid Cardano type',
-          { expected: Cardano.TYPES.getCardano.TYPES(), got: cardanoType }
+          { expected: Cardano.TYPES.getCardanoTypes(), got: cardanoType }
         )
     }
   }
