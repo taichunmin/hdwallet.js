@@ -1,11 +1,13 @@
 // SPDX-License-Identifier: MIT
 
 import { IPublicKey } from '../ecc';
+import { INetwork } from '../cryptocurrencies/icryptocurrency';
 
 export interface AddressOptionsInterface {
   hrp?: string,
   addressPrefix?: string;
   addressType?: string;
+  networkType?: string | INetwork;
   publicKeyAddressPrefix?: number;
   scriptAddressPrefix?: number;
   publicKeyType?: "uncompressed" | "compressed";

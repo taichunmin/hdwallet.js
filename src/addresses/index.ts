@@ -15,6 +15,9 @@ import { TronAddress } from './tron';
 import { AddressError } from '../exceptions';
 import { RippleAddress } from './ripple';
 import { FilecoinAddress } from './filecoin';
+import { AvalancheAddress } from './avalanche';
+import { EOSAddress } from './eos';
+import { ErgoAddress } from './ergo';
 
 export class ADDRESSES {
 
@@ -32,6 +35,9 @@ export class ADDRESSES {
     [TronAddress.getName()]: TronAddress,
     [RippleAddress.getName()]: RippleAddress,
     [FilecoinAddress.getName()]: FilecoinAddress,
+    [AvalancheAddress.getName()]: AvalancheAddress,
+    [EOSAddress.getName()]: EOSAddress,
+    [ErgoAddress.getName()]: ErgoAddress,
   };
 
   public static getNames(): string[] {
@@ -71,4 +77,7 @@ export {
   TronAddress,
   RippleAddress,
   FilecoinAddress,
+  AvalancheAddress,
+  EOSAddress,
+  ErgoAddress
 };
