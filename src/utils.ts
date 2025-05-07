@@ -1,5 +1,6 @@
 import crypto from "crypto";
 import { Buffer } from "buffer";
+import { INetwork } from './cryptocurrencies/icryptocurrency';
 
 export class DerivationError extends Error {
   constructor(message: string) {
@@ -677,4 +678,44 @@ export function wordsToBytesChunk(
   const chunk = i1 + len * ((i2 - i1 + len) % len) + len * len * ((i3 - i2 + len) % len);
   const u8 = integerToBytes(chunk, 4, endianness);
   return Buffer.from(u8);
+}
+
+/**
+ * Returns [data, ok], where ok indicates whether data matches typeOrName.
+ */
+export function validateAndGetData(
+  data: any, typeOrName: any
+): [any, boolean] {
+  if (typeOrName === "any") {
+    return [data, true];
+  }
+  if (typeOrName === "null") {
+    return [data, data === null];
+  }
+  if (typeOrName === "array") {
+    return [data, Array.isArray(data)];
+  }
+  if (typeof typeOrName === "string") {
+    return [data, typeof data === typeOrName];
+  }
+  if (typeof typeOrName === "function") {
+    if (typeof data === "function") {
+      if (data === typeOrName) {
+        return [data, true];
+      }
+      let ctor: any = data;
+      while ((ctor = Object.getPrototypeOf(ctor))) {
+        if (ctor === typeOrName) {
+          return [data, true];
+        }
+      }
+      return [data, false];
+    }
+    try {
+      return [data, data instanceof typeOrName];
+    } catch {
+      return [data, false];
+    }
+  }
+  return [data, false];
 }
