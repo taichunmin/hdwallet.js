@@ -3,14 +3,14 @@
 import { randomBytes } from 'crypto';
 
 import { integerToBytes, bytesToHex, hexToBytes, bytesToInteger } from '../../utils';
-import { IEntropy } from '../ientropy';
+import { Entropy } from '../entropy';
 
 export const ELECTRUM_V2_ENTROPY_STRENGTHS = {
   ONE_HUNDRED_THIRTY_TWO: 132,
   TWO_HUNDRED_SIXTY_FOUR: 264
 } as const;
 
-export class ElectrumV2Entropy extends IEntropy {
+export class ElectrumV2Entropy extends Entropy {
 
   static strengths: number[] = [
     ELECTRUM_V2_ENTROPY_STRENGTHS.ONE_HUNDRED_THIRTY_TWO,

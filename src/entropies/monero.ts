@@ -1,13 +1,13 @@
 // SPDX-License-Identifier: MIT
 
-import { IEntropy } from './ientropy';
+import { Entropy } from './entropy';
 
 export const MONERO_ENTROPY_STRENGTHS = {
   ONE_HUNDRED_TWENTY_EIGHT: 128,
   TWO_HUNDRED_FIFTY_SIX: 256
 } as const;
 
-export class MoneroEntropy extends IEntropy {
+export class MoneroEntropy extends Entropy {
 
   static strengths = [
     MONERO_ENTROPY_STRENGTHS.ONE_HUNDRED_TWENTY_EIGHT,

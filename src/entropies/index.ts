@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-import { IEntropy } from './ientropy';
+import { Entropy } from './entropy';
 import { AlgorandEntropy, ALGORAND_ENTROPY_STRENGTHS } from './algorand';
 import { BIP39Entropy, BIP39_ENTROPY_STRENGTHS } from './bip39';
 import { ElectrumV1Entropy, ELECTRUM_V1_ENTROPY_STRENGTHS } from './electrum/v1';
@@ -10,7 +10,7 @@ import { EntropyError } from '../exceptions';
 
 export class ENTROPIES {
 
-  static dictionary: Record<string, typeof IEntropy> = {
+  static dictionary: Record<string, typeof Entropy> = {
     [AlgorandEntropy.getName()]: AlgorandEntropy,
     [BIP39Entropy.getName()]: BIP39Entropy,
     [ElectrumV1Entropy.getName()]: ElectrumV1Entropy,
@@ -22,11 +22,11 @@ export class ENTROPIES {
     return Object.keys(this.dictionary);
   }
 
-  static getClasses(): typeof IEntropy[] {
+  static getClasses(): typeof Entropy[] {
     return Object.values(this.dictionary);
   }
 
-  static getEntropyClass(name: string): typeof IEntropy {
+  static getEntropyClass(name: string): typeof Entropy {
     if (!this.isEntropy(name)) {
       throw new EntropyError(
         'Invalid Entropy name', { expected: this.getNames(), got: name }
@@ -41,7 +41,7 @@ export class ENTROPIES {
 }
 
 export {
-  IEntropy,
+  Entropy,
   AlgorandEntropy, ALGORAND_ENTROPY_STRENGTHS,
   BIP39Entropy, BIP39_ENTROPY_STRENGTHS,
   ElectrumV1Entropy, ELECTRUM_V1_ENTROPY_STRENGTHS,

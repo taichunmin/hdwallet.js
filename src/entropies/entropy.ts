@@ -3,7 +3,7 @@
 import { getBytes, bytesToHex, bytesToInteger } from '../utils';
 import { EntropyError } from '../exceptions';
 
-export abstract class IEntropy {
+export class Entropy {
 
   protected entropy: string;
   protected strength: number;
@@ -14,7 +14,7 @@ export abstract class IEntropy {
 
     const entropyBytes = getBytes(entropy);
     const strength = entropyBytes.length;
-    const constructor = this.constructor as typeof IEntropy;
+    const constructor = this.constructor as typeof Entropy;
 
     if (constructor.getName() === 'Electrum-V2') {
       if (!constructor.areEntropyBitsEnough(entropyBytes)) {
