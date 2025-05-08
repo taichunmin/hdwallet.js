@@ -1,28 +1,23 @@
-import { IMnemonic, MnemonicOptionsInterface } from "../imnemonic";
-import { IEntropy } from "../../entropies/ientropy";
-import { AlgorandEntropy, ALGORAND_ENTROPY_STRENGTHS } from "../../entropies/algorand";
-import { MnemonicError, EntropyError, ChecksumError } from "../../exceptions";
-import { getBytes, bytesToString, convertBits, toBuffer } from "../../utils";
-import { sha512_256 } from "../../crypto";
-import {BIP39_MNEMONIC_LANGUAGES} from "../bip39/mnemonic";
+// SPDX-License-Identifier: MIT
 
-interface AlgorandMnemonicWordsInterface {
-  TWENTY_FIVE: number
-}
-
-interface AlgorandMnemonicLanguagesInterface {
-  ENGLISH: string
-}
+import { Mnemonic } from '../mnemonic';
+import { Entropy, AlgorandEntropy, ALGORAND_ENTROPY_STRENGTHS } from '../../entropies';
+import {
+  MnemonicOptionsInterface, AlgorandMnemonicLanguagesInterface, AlgorandMnemonicWordsInterface
+} from '../../interfaces';
+import { sha512_256 } from '../../crypto';
+import { getBytes, bytesToString, convertBits, toBuffer } from '../../utils';
+import { MnemonicError, EntropyError, ChecksumError } from '../../exceptions';
 
 export const ALGORAND_MNEMONIC_WORDS: AlgorandMnemonicWordsInterface = {
   TWENTY_FIVE: 25
 } as const;
 
 export const ALGORAND_MNEMONIC_LANGUAGES: AlgorandMnemonicLanguagesInterface = {
-  ENGLISH: "english"
+  ENGLISH: 'english'
 } as const;
 
-export class AlgorandMnemonic extends IMnemonic {
+export class AlgorandMnemonic extends Mnemonic {
 
   static checksumLength: number = 2;
   static wordBitLength: number = 11;
@@ -40,20 +35,20 @@ export class AlgorandMnemonic extends IMnemonic {
   );
 
   static wordlistPath: Record<string,string> = {
-    [ALGORAND_MNEMONIC_LANGUAGES.ENGLISH]: "algorand/wordlist/english.txt"
+    [ALGORAND_MNEMONIC_LANGUAGES.ENGLISH]: 'algorand/wordlist/english.txt'
   };
 
-  static client(): string {
-    return "Algorand";
+  static getName(): string {
+    return 'Algorand';
   }
 
   static fromWords(
     words: number, language: string, options: MnemonicOptionsInterface = { }
   ): AlgorandMnemonic {
+
     if (!this.wordsList.includes(words)) {
       throw new MnemonicError(
-        `Invalid words count`,
-        { expected: this.wordsList, got: words }
+        `Invalid words count`, { expected: this.wordsList, got: words }
       );
     }
     const strength = this.wordsToEntropyStrength[words];
@@ -63,13 +58,12 @@ export class AlgorandMnemonic extends IMnemonic {
   }
 
   static fromEntropy(
-    entropy: string | Uint8Array | IEntropy, language: string, options: MnemonicOptionsInterface = { }
+    entropy: string | Uint8Array | Entropy, language: string, options: MnemonicOptionsInterface = { }
   ): AlgorandMnemonic {
-    const entropyBytes = typeof entropy === "string"
-      ? getBytes(entropy)
-      : entropy instanceof Uint8Array
-        ? entropy
-        : getBytes((entropy as IEntropy).entropy());
+
+    const entropyBytes = typeof entropy === 'string'
+      ? getBytes(entropy) : entropy instanceof Uint8Array
+        ? entropy : getBytes((entropy as Entropy).getEntropy());
 
     const phrase = this.encode(entropyBytes, language, options);
     return new AlgorandMnemonic(phrase, options);
@@ -78,38 +72,35 @@ export class AlgorandMnemonic extends IMnemonic {
   static encode(
     entropyInput: string | Uint8Array, language: string, options: MnemonicOptionsInterface = { }
   ): string {
-    const entropyBytes = toBuffer(entropyInput);
 
+    const entropyBytes = toBuffer(entropyInput);
     if (!AlgorandEntropy.isValidBytesStrength(entropyBytes.length)) {
       throw new EntropyError(
-        "Wrong entropy strength",
-        { expected: AlgorandEntropy.strengths, got: entropyBytes.length * 8 }
+        'Wrong entropy strength', { expected: AlgorandEntropy.strengths, got: entropyBytes.length * 8 }
       );
     }
 
-    // Compute checksum
     const fullHash = sha512_256(entropyBytes);
     const checksum = fullHash.slice(0, this.checksumLength);
     const checksumWords = convertBits(checksum, 8, this.wordBitLength);
-    if (!checksumWords) throw new Error("Checksum conversion failed");
+    if (!checksumWords) throw new Error('Checksum conversion failed');
 
-    // Data words
     const dataWords = convertBits(entropyBytes, 8, this.wordBitLength);
-    if (!dataWords) throw new Error("Entropy conversion failed");
+    if (!dataWords) throw new Error('Entropy conversion failed');
 
-    // Map to actual words
     const wordList = this.getWordsListByLanguage(language, this.wordlistPath);
     const indexes = [...dataWords, checksumWords[0]];
-    return indexes.map(i => wordList[i]).join(" ");
+    return indexes.map(i => wordList[i]).join(' ');
   }
 
   static decode(
       mnemonic: string | string[], options: MnemonicOptionsInterface = { }
   ): string {
+
     const words = this.normalize(mnemonic);
     if (!this.wordsList.includes(words.length)) {
       throw new MnemonicError(
-        "Invalid mnemonic length",
+        'Invalid mnemonic length',
         { expected: this.wordsList, got: words.length }
       );
     }
@@ -117,7 +108,6 @@ export class AlgorandMnemonic extends IMnemonic {
     const [wordList] = this.findLanguage(words, this.wordlistPath);
     const idxMap = Object.fromEntries(wordList.map((w, i) => [w, i]));
 
-    // Convert words back to indexes
     const indexes = words.map(w => {
       const idx = idxMap[w];
       if (idx === undefined) {
@@ -126,13 +116,11 @@ export class AlgorandMnemonic extends IMnemonic {
       return idx;
     });
 
-    // Recover entropy bytes (drop final padding byte)
     const allBytes = convertBits(indexes.slice(0, -1), this.wordBitLength, 8);
-    if (!allBytes) throw new Error("Bit conversion failed");
+    if (!allBytes) throw new Error('Bit conversion failed');
     const entropyBytesArr = allBytes.slice(0, -1);
     const entropyBytes = Uint8Array.from(entropyBytesArr);
 
-    // Verify checksum
     const expectedIdx = (convertBits(
       sha512_256(toBuffer(entropyBytes)).slice(0, this.checksumLength), 8, this.wordBitLength
     ) || [])[0];
@@ -140,14 +128,13 @@ export class AlgorandMnemonic extends IMnemonic {
 
     if (expectedIdx !== actualIdx) {
       throw new ChecksumError(
-        "Invalid checksum",
+        'Invalid checksum',
         {
           expected: wordList[expectedIdx],
           got: wordList[actualIdx]
         }
       );
     }
-
     return bytesToString(entropyBytes);
   }
 }

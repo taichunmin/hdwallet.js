@@ -1,23 +1,14 @@
-import { IMnemonic, MnemonicOptionsInterface } from "../../imnemonic";
-import { IEntropy } from "../../../entropies/ientropy";
-import { ElectrumV1Entropy, ELECTRUM_V1_ENTROPY_STRENGTHS } from "../../../entropies/electrum/v1";
-import { MnemonicError, EntropyError } from "../../../exceptions";
+// SPDX-License-Identifier: MIT
+
+import { Mnemonic } from '../../mnemonic';
+import { Entropy, ElectrumV1Entropy, ELECTRUM_V1_ENTROPY_STRENGTHS } from '../../../entropies';
 import {
-    hexToBytes,
-    integerToBytes,
-    bytesToInteger,
-    bytesToHex,
-    getBytes
-} from "../../../utils";
-import { Buffer } from "buffer";
-
-interface ElectrumV1MnemonicWordsInterface {
-  TWELVE: number;
-}
-
-interface ElectrumV1MnemonicLanguagesInterface {
-  ENGLISH: string;
-}
+  MnemonicOptionsInterface, ElectrumV1MnemonicLanguagesInterface, ElectrumV1MnemonicWordsInterface
+} from '../../../interfaces';
+import {
+  hexToBytes, integerToBytes, bytesToInteger, bytesToHex, getBytes
+} from '../../../utils';
+import { MnemonicError, EntropyError } from '../../../exceptions';
 
 export const ELECTRUM_V1_MNEMONIC_WORDS: ElectrumV1MnemonicWordsInterface = {
   TWELVE: 12,
@@ -25,10 +16,10 @@ export const ELECTRUM_V1_MNEMONIC_WORDS: ElectrumV1MnemonicWordsInterface = {
 
 export const ELECTRUM_V1_MNEMONIC_LANGUAGES: ElectrumV1MnemonicLanguagesInterface =
   {
-    ENGLISH: "english",
+    ENGLISH: 'english',
   } as const;
 
-export class ElectrumV1Mnemonic extends IMnemonic {
+export class ElectrumV1Mnemonic extends Mnemonic {
 
   static wordsListNumber = 1626;
 
@@ -46,25 +37,19 @@ export class ElectrumV1Mnemonic extends IMnemonic {
   );
 
   static wordlistPath: Record<string, string> = {
-    [ELECTRUM_V1_MNEMONIC_LANGUAGES.ENGLISH]: "electrum/v1/wordlist/english.txt",
+    [ELECTRUM_V1_MNEMONIC_LANGUAGES.ENGLISH]: 'electrum/v1/wordlist/english.txt',
   };
 
-  /** “client” instead of “name” */
-  static client(): string {
-    return "Electrum-V1";
+  static getName(): string {
+    return 'Electrum-V1';
   }
 
-  /** Generate a mnemonic by specifying word count */
   static fromWords(
-    count: number,
-    language: string,
-    options: MnemonicOptionsInterface = {}
+    count: number, language: string, options: MnemonicOptionsInterface = { }
   ): ElectrumV1Mnemonic {
+
     if (!this.wordsList.includes(count)) {
-      throw new MnemonicError("Invalid mnemonic words number", {
-        expected: this.wordsList,
-        got: count,
-      });
+      throw new MnemonicError('Invalid mnemonic words number', { expected: this.wordsList, got: count });
     }
     const entropy = ElectrumV1Entropy.generate(
       this.wordsToStrength[count]
@@ -73,30 +58,30 @@ export class ElectrumV1Mnemonic extends IMnemonic {
     return new ElectrumV1Mnemonic(phrase, options);
   }
 
-  /** Generate a mnemonic from existing entropy */
   static fromEntropy(
-    entropy: string | Uint8Array | IEntropy, language: string, options: MnemonicOptionsInterface = { }
+    entropy: string | Uint8Array | Entropy, language: string, options: MnemonicOptionsInterface = { }
   ): ElectrumV1Mnemonic {
+
     let raw: Uint8Array;
-    if (typeof entropy === "string") {
+    if (typeof entropy === 'string') {
       raw = hexToBytes(entropy);
     } else if (entropy instanceof Uint8Array) {
       raw = entropy;
     } else {
-      raw = hexToBytes(entropy.entropy());
+      raw = hexToBytes(entropy.getEntropy());
     }
     const phrase = this.encode(raw, language, options);
     return new ElectrumV1Mnemonic(phrase, options);
   }
 
-  /** Core encode: split 4-byte chunks into 3-word groups */
   static encode(
     entropy: string | Uint8Array, language: string, options: MnemonicOptionsInterface = { }
   ): string {
-      const entropyBytes = getBytes(entropy)
+
+    const entropyBytes = getBytes(entropy)
     if (!ElectrumV1Entropy.isValidBytesStrength(entropyBytes.length)) {
       throw new EntropyError(
-        "Wrong entropy strength", { expected: ElectrumV1Entropy.strengths, got: entropyBytes.length * 8 }
+        'Wrong entropy strength', { expected: ElectrumV1Entropy.strengths, got: entropyBytes.length * 8 }
       );
     }
 
@@ -114,11 +99,9 @@ export class ElectrumV1Mnemonic extends IMnemonic {
       const w3 = (Math.floor(chunkInt / wl / wl) + w2) % wl;
       mnemonic.push(wordList[w1], wordList[w2], wordList[w3]);
     }
-
-    return this.normalize(mnemonic).join(" ");
+    return this.normalize(mnemonic).join(' ');
   }
 
-  /** Core decode: 3 words → 4-byte chunks → hex string */
   static decode(
     mnemonic: string | string[], options: MnemonicOptionsInterface = { checksum: false }
   ): string {
@@ -126,13 +109,12 @@ export class ElectrumV1Mnemonic extends IMnemonic {
     const words = this.normalize(mnemonic);
     const count = words.length;
     if (!this.wordsList.includes(count)) {
-      throw new MnemonicError("Invalid mnemonic words count", {
+      throw new MnemonicError('Invalid mnemonic words count', {
         expected: this.wordsList,
         got: count,
       });
     }
 
-    // decide which wordList & idxMap to use
     let wordsList: string[];
     let idxMap: Record<string, number> = { };
     if (options.wordsList && options.wordsListWithIndex) {
@@ -157,15 +139,12 @@ export class ElectrumV1Mnemonic extends IMnemonic {
         wl * ((i2 - i1 + wl) % wl) +
         wl * wl * ((i3 - i2 + wl) % wl);
 
-      const chunkBytes = integerToBytes(chunkVal, 4, "big");
+      const chunkBytes = integerToBytes(chunkVal, 4, 'big');
       bufs.push(Buffer.from(chunkBytes));
     }
-
     return bytesToHex(Buffer.concat(bufs), false);
   }
 
-
-  /** Quick validity check */
   static isValid(
     input: string | string[], options: MnemonicOptionsInterface = { }
   ): boolean {
@@ -177,10 +156,9 @@ export class ElectrumV1Mnemonic extends IMnemonic {
     }
   }
 
-  /** Normalize to an array of NFKD-lowered words */
   static normalize(input: string | string[]): string[] {
     const arr =
-      typeof input === "string" ? input.trim().split(/\s+/) : input;
-    return arr.map((w) => w.normalize("NFKD").toLowerCase());
+      typeof input === 'string' ? input.trim().split(/\s+/) : input;
+    return arr.map((w) => w.normalize('NFKD').toLowerCase());
   }
 }

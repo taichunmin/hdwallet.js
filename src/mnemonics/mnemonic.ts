@@ -1,88 +1,78 @@
-import * as fs from "fs";
-import * as path from "path";
-import { MnemonicError } from "../exceptions";
-import { IEntropy } from "../entropies/ientropy";
+// SPDX-License-Identifier: MIT
 
-export interface MnemonicOptionsInterface {
-  checksum?: boolean;
-  mnemonicType?: string;
-  maxAttempts?: bigint;
-  wordlistPath?: Record<string, string>;
-  wordsList?: string[],
-  wordsListWithIndex?: Record<string, number>;
-  bip39List?: string[],
-  bip39Index?: Record<string, number>,
-  ev1List?: string[],
-  ev1Index?: Record<string, number>
-}
+import * as fs from 'fs';
+import * as path from 'path';
 
-export abstract class IMnemonic {
+import { Entropy } from '../entropies';
+import { MnemonicOptionsInterface } from '../interfaces';
+import { MnemonicError } from '../exceptions';
 
-  protected _mnemonic: string[];
-  protected _words: number;
-  protected _language: string;
-  protected _mnemonicType?: string;
+export class Mnemonic {
+
+  protected mnemonic: string[];
+  protected words: number;
+  protected language: string;
+  protected mnemonicType?: string;
 
   static wordsList: number[] = [];
   static languages: string[] = [];
 
   static wordlistPath: Record<string, string> = { };
 
-  constructor(
-      mnemonic: string | string[], options: MnemonicOptionsInterface = { }
-  ) {
-    const words = IMnemonic.normalize(mnemonic);
-    const constructor = this.constructor as typeof IMnemonic;
-    // Validate mnemonic words
+  constructor(mnemonic: string | string[], options: MnemonicOptionsInterface = { }) {
+    const words = Mnemonic.normalize(mnemonic);
+    const constructor = this.constructor as typeof Mnemonic;
+    
     if (!constructor.isValid(words, options)) {
-      throw new MnemonicError("Invalid mnemonic words");
+      throw new MnemonicError('Invalid mnemonic words');
     }
-    // Determine language and wordlist
-    const [wordList, language] = constructor.findLanguage(words, options.wordlistPath);
-    this._mnemonic = words;
-    this._words = words.length;
-    this._language = language;
-    this._mnemonicType = options.mnemonicType;
+    const [_, language] = constructor.findLanguage(
+      words, options.wordlistPath
+    );
+    this.mnemonic = words;
+    this.words = words.length;
+    this.language = language;
+    this.mnemonicType = options.mnemonicType;
   }
 
-  static client(): string {
-    throw new Error("Must override client()");
+  static getName(): string {
+    throw new Error('Must override getName()');
   }
 
-  mnemonic(): string {
-    return this._mnemonic.join(" ");
+  getMnemonic(): string {
+    return this.mnemonic.join(' ');
   }
 
-  language(): string {
-    return this._language;
+  getWords(): number {
+    return this.words;
   }
-
-  words(): number {
-    return this._words;
+  
+  getLanguage(): string {
+    return this.language;
   }
 
   static fromWords(
     words: number, language: string, options: MnemonicOptionsInterface = { }
-  ): IMnemonic {
-    throw new Error("Must override fromWords()");
+  ): Mnemonic {
+    throw new Error('Must override fromWords()');
   }
 
   static fromEntropy(
-    entropy: string | Uint8Array | IEntropy, language: string, options: MnemonicOptionsInterface = { }
-  ): IMnemonic {
-    throw new Error("Must override fromEntropy()");
+    entropy: string | Uint8Array | Entropy, language: string, options: MnemonicOptionsInterface = { }
+  ): Mnemonic {
+    throw new Error('Must override fromEntropy()');
   }
 
   static encode(
     entropy: string | Uint8Array, language: string, options: MnemonicOptionsInterface = { }
   ): string {
-    throw new Error("Must override encode()");
+    throw new Error('Must override encode()');
   }
 
   static decode(
     mnemonic: string | string[], options: MnemonicOptionsInterface = { }
   ): string {
-    throw new Error("Must override decode()");
+    throw new Error('Must override decode()');
   }
 
   static getWordsListByLanguage(
@@ -94,11 +84,11 @@ export abstract class IMnemonic {
       throw new MnemonicError(`No wordlist for language '${language}'`);
     }
     const full = path.join(__dirname, rel);
-    const txt = fs.readFileSync(full, "utf8");
+    const txt = fs.readFileSync(full, 'utf8');
     return txt
       .split(/\r?\n/)
       .map((w) => w.trim())
-      .filter((w) => w !== "" && !w.startsWith("#"));
+      .filter((w) => w !== '' && !w.startsWith('#'));
   }
 
   static findLanguage(
@@ -121,7 +111,7 @@ export abstract class IMnemonic {
       }
     }
     throw new MnemonicError(
-      `Invalid language for mnemonic: '${mnemonic.join(" ")}'`
+      `Invalid language for mnemonic: '${mnemonic.join(' ')}'`
     );
   }
 
@@ -145,6 +135,6 @@ export abstract class IMnemonic {
   }
 
   static normalize(mnemonic: string | string[]): string[] {
-    return typeof mnemonic === "string" ? mnemonic.trim().split(/\s+/) : mnemonic;
+    return typeof mnemonic === 'string' ? mnemonic.trim().split(/\s+/) : mnemonic;
   }
 }
