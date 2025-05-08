@@ -2,9 +2,9 @@
 
 import * as elliptic from 'elliptic';
 
-import {
-  IPublicKey, IPrivateKey, SLIP10Nist256p1PublicKey
-} from '../../index';
+import { IPrivateKey } from '../../iprivate-key';
+import { IPublicKey } from '../../ipublic-key';
+import { SLIP10Nist256p1PublicKey } from './public-key';
 import { SLIP10_SECP256K1_CONST } from '../../../const';
 
 const ec = new elliptic.ec('p256');

@@ -1,8 +1,9 @@
 // SPDX-License-Identifier: MIT
 
-import { 
-  IEllipticCurveCryptography, IPoint, IPublicKey, IPrivateKey
-} from '../../index';
+import { IEllipticCurveCryptography } from '../../iecc';
+import { IPoint } from '../../ipoint';
+import { IPublicKey } from '../../ipublic-key';
+import { IPrivateKey } from '../../iprivate-key';
 import { SLIP10Secp256k1Point } from './point';
 import { SLIP10Secp256k1PublicKey } from './public-key';
 import { SLIP10Secp256k1PrivateKey } from './private-key';
@@ -21,7 +22,7 @@ export class SLIP10Secp256k1ECC extends IEllipticCurveCryptography {
 }
 
 export {
-    SLIP10Secp256k1Point,
-    SLIP10Secp256k1PublicKey,
-    SLIP10Secp256k1PrivateKey
+  SLIP10Secp256k1Point,
+  SLIP10Secp256k1PublicKey,
+  SLIP10Secp256k1PrivateKey
 }

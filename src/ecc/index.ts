@@ -4,39 +4,12 @@ import { IEllipticCurveCryptography } from './iecc';
 import { IPoint } from './ipoint';
 import { IPublicKey } from './ipublic-key';
 import { IPrivateKey } from './iprivate-key';
-import {
-  KholawEd25519ECC,
-  KholawEd25519Point,
-  KholawEd25519PrivateKey,
-  KholawEd25519PublicKey
-} from './kholaw';
-import {
-  // Ed25519
-  SLIP10Ed25519ECC,
-  SLIP10Ed25519Point,
-  SLIP10Ed25519PublicKey,
-  SLIP10Ed25519PrivateKey,
-  // Ed25519-Blake2b
-  SLIP10Ed25519Blake2bECC,
-  SLIP10Ed25519Blake2bPoint,
-  SLIP10Ed25519Blake2bPublicKey,
-  SLIP10Ed25519Blake2bPrivateKey,
-  // Ed25519-Monero
-  SLIP10Ed25519MoneroECC,
-  SLIP10Ed25519MoneroPoint,
-  SLIP10Ed25519MoneroPublicKey,
-  SLIP10Ed25519MoneroPrivateKey,
-  // Secp256k1
-  SLIP10Secp256k1ECC,
-  SLIP10Secp256k1Point,
-  SLIP10Secp256k1PublicKey,
-  SLIP10Secp256k1PrivateKey,
-  // Nist256p1
-  SLIP10Nist256p1ECC,
-  SLIP10Nist256p1Point,
-  SLIP10Nist256p1PublicKey,
-  SLIP10Nist256p1PrivateKey
-} from './slip10';
+import { KholawEd25519ECC } from './kholaw/ed25519';
+import { SLIP10Ed25519ECC } from './slip10/ed25519';
+import { SLIP10Ed25519Blake2bECC } from './slip10/ed25519/blake2b';
+import { SLIP10Ed25519MoneroECC } from './slip10/ed25519/monero';
+import { SLIP10Nist256p1ECC } from './slip10/nist256p1';
+import { SLIP10Secp256k1ECC } from './slip10/secp256k1';
 import { getBytes } from '../utils';
 import { ECCError, PublicKeyError } from '../exceptions';
 
@@ -106,35 +79,5 @@ export {
   IEllipticCurveCryptography,
   IPoint,
   IPublicKey,
-  IPrivateKey,
-  // Kholaw-Ed25519
-  KholawEd25519ECC,
-  KholawEd25519Point,
-  KholawEd25519PublicKey,
-  KholawEd25519PrivateKey,
-  // Ed25519
-  SLIP10Ed25519ECC,
-  SLIP10Ed25519Point,
-  SLIP10Ed25519PublicKey,
-  SLIP10Ed25519PrivateKey,
-  // Ed25519-Blake2b
-  SLIP10Ed25519Blake2bECC,
-  SLIP10Ed25519Blake2bPoint,
-  SLIP10Ed25519Blake2bPublicKey,
-  SLIP10Ed25519Blake2bPrivateKey,
-  // Ed25519-Monero
-  SLIP10Ed25519MoneroECC,
-  SLIP10Ed25519MoneroPoint,
-  SLIP10Ed25519MoneroPublicKey,
-  SLIP10Ed25519MoneroPrivateKey,
-  // Nist256p1
-  SLIP10Nist256p1ECC,
-  SLIP10Nist256p1Point,
-  SLIP10Nist256p1PublicKey,
-  SLIP10Nist256p1PrivateKey,
-  // Secp256k1
-  SLIP10Secp256k1ECC,
-  SLIP10Secp256k1Point,
-  SLIP10Secp256k1PublicKey,
-  SLIP10Secp256k1PrivateKey
+  IPrivateKey
 }

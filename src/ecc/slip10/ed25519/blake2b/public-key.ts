@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-import { IPoint } from '../../../index';
+import { IPoint } from '../../../ipoint';
 import { SLIP10Ed25519PublicKey } from '../public-key';
 import { SLIP10Ed25519Blake2bPoint } from './point';
 

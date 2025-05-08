@@ -2,11 +2,10 @@
 
 import * as elliptic from 'elliptic';
 
-import {
-    IPoint, IPublicKey, SLIP10Nist256p1Point
-} from '../../index';
+import { IPublicKey } from '../../ipublic-key';
+import { IPoint } from '../../ipoint';
+import { SLIP10Nist256p1Point } from './point';
 import { SLIP10_SECP256K1_CONST } from '../../../const';
-
 
 const ec = new elliptic.ec('p256');
 type BasePoint = elliptic.curve.base.BasePoint;

@@ -2,8 +2,8 @@
 
 import * as elliptic from 'elliptic';
 
-import { IPublicKey } from '../../../index';
-import { SLIP10Ed25519PrivateKey } from '../../index';
+import { IPublicKey } from '../../../ipublic-key';
+import { SLIP10Ed25519PrivateKey } from '../../ed25519';
 import { SLIP10Ed25519MoneroPublicKey } from './public-key';
 import { pointScalarMulBase } from '../../../../libs/ed25519-utils';
 import { bytesToString } from '../../../../utils';

@@ -2,9 +2,10 @@
 
 import * as elliptic from 'elliptic';
 
-import {
-    IEllipticCurveCryptography, IPoint, IPublicKey, IPrivateKey
-} from '../../index';
+import { IEllipticCurveCryptography } from '../../iecc';
+import { IPoint } from '../../ipoint';
+import { IPublicKey } from '../../ipublic-key';
+import { IPrivateKey } from '../../iprivate-key';
 import { SLIP10Nist256p1Point } from './point';
 import { SLIP10Nist256p1PublicKey } from './public-key';
 import { SLIP10Nist256p1PrivateKey } from './private-key';

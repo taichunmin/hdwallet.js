@@ -2,13 +2,13 @@
 
 import * as elliptic from 'elliptic';
 
-import { IPrivateKey, IPublicKey } from '../../index';
 import { KHOLAW_ED25519_CONST } from '../../../const';
-import { SLIP10Ed25519PrivateKey } from '../../slip10';
+import { SLIP10Ed25519PrivateKey } from '../../slip10/ed25519';
 import { KholawEd25519PublicKey } from './public-key';
-import { OptionsPrivateKey } from '../../iprivate-key';
+import { IPrivateKey, OptionsPrivateKey } from '../../iprivate-key';
 import { pointScalarMulBase } from '../../../libs/ed25519-utils';
 import { bytesToString } from '../../../utils';
+import { IPublicKey } from '../../ipublic-key';
 
 const ec = new elliptic.eddsa('ed25519');
 type EdDSAKeyPair = elliptic.eddsa.KeyPair;

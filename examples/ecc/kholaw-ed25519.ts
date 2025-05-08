@@ -5,12 +5,14 @@ import {
   IPublicKey,
   IPrivateKey,
   ECCS,
+  validateAndGetPublicKey
+} from '../../src/ecc';
+import {
   KholawEd25519ECC,
   KholawEd25519Point,
   KholawEd25519PublicKey,
   KholawEd25519PrivateKey,
-  validateAndGetPublicKey
-} from '../../src/ecc';
+} from '../../src/ecc/kholaw/ed25519';
 import { hexToBytes, bytesToString, isAllEqual } from '../../src/utils';
 
 const ecc: typeof IEllipticCurveCryptography = ECCS.ecc(KholawEd25519ECC.NAME);

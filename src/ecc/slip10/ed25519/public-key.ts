@@ -2,7 +2,8 @@
 
 import * as elliptic from 'elliptic';
 
-import { IPublicKey, IPoint } from '../../index';
+import { IPublicKey } from '../../ipublic-key';
+import { IPoint } from '../../ipoint';
 import { SLIP10_ED25519_CONST } from '../../../const';
 import { SLIP10Ed25519Point } from './point';
 

@@ -1,9 +1,10 @@
 // SPDX-License-Identifier: MIT
 
-import {
-  IEllipticCurveCryptography, IPoint, IPublicKey, IPrivateKey
-} from '../../index';
-import { SLIP10Ed25519ECC } from '../../slip10';
+import { IEllipticCurveCryptography } from '../../iecc';
+import { IPoint } from '../../ipoint';
+import { IPublicKey } from '../../ipublic-key';
+import { IPrivateKey } from '../../iprivate-key';
+import { SLIP10Ed25519ECC } from '../../slip10/ed25519';
 import { KholawEd25519Point } from './point';
 import { KholawEd25519PublicKey } from './public-key';
 import { KholawEd25519PrivateKey } from './private-key';

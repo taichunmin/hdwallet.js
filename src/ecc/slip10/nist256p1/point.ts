@@ -3,7 +3,7 @@
 import * as elliptic from 'elliptic';
 import BN from 'bn.js';
 
-import { IPoint } from '../../index';
+import { IPoint } from '../../ipoint';
 import { SLIP10_SECP256K1_CONST } from '../../../const';
 
 const ec = new elliptic.ec('p256');

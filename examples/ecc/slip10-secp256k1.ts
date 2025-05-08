@@ -5,12 +5,16 @@ import {
   IPublicKey,
   IPrivateKey,
   ECCS,
+  validateAndGetPublicKey
+} from '../../src/ecc';
+import {
+  // Secp256k1
   SLIP10Secp256k1ECC,
   SLIP10Secp256k1Point,
   SLIP10Secp256k1PublicKey,
-  SLIP10Secp256k1PrivateKey,
-  validateAndGetPublicKey
-} from '../../src/ecc';
+  SLIP10Secp256k1PrivateKey
+} from '../../src/ecc/slip10/secp256k1';
+
 import { hexToBytes, bytesToString, isAllEqual } from '../../src/utils';
 
 const ecc: typeof IEllipticCurveCryptography = ECCS.ecc(SLIP10Secp256k1ECC.NAME);

@@ -2,9 +2,10 @@
 
 import * as elliptic from 'elliptic';
 
-import { IPrivateKey, IPublicKey } from '../../index';
-import { SLIP10_ED25519_CONST } from '../../../const';
+import { IPrivateKey } from '../../iprivate-key';
+import { IPublicKey } from '../../ipublic-key';
 import { SLIP10Ed25519PublicKey } from './public-key';
+import { SLIP10_ED25519_CONST } from '../../../const';
 
 const ec = new elliptic.eddsa('ed25519');
 

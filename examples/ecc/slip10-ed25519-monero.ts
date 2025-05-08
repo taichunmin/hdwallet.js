@@ -5,12 +5,14 @@ import {
   IPublicKey,
   IPrivateKey,
   ECCS,
+  validateAndGetPublicKey
+} from '../../src/ecc';
+import {
   SLIP10Ed25519MoneroECC,
   SLIP10Ed25519MoneroPoint,
   SLIP10Ed25519MoneroPublicKey,
   SLIP10Ed25519MoneroPrivateKey,
-  validateAndGetPublicKey
-} from '../../src/ecc';
+} from '../../src/ecc/slip10/ed25519/monero';
 import { hexToBytes, bytesToString, isAllEqual } from '../../src/utils';
 
 const ecc: typeof IEllipticCurveCryptography = ECCS.ecc(SLIP10Ed25519MoneroECC.NAME);

@@ -3,7 +3,9 @@
 import * as nacl from "tweetnacl-blake2b";
 import { SignKeyPair } from 'tweetnacl-blake2b';
 
-import { IPrivateKey, IPublicKey, SLIP10Ed25519Blake2bPublicKey } from '../../../index';
+import { IPrivateKey } from '../../../iprivate-key';
+import { IPublicKey } from '../../../ipublic-key';
+import { SLIP10Ed25519Blake2bPublicKey } from './public-key';
 import { SLIP10_ED25519_CONST } from '../../../../const';
 
 export class SLIP10Ed25519Blake2bPrivateKey extends IPrivateKey {

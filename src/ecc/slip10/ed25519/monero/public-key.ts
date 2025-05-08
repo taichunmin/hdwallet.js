@@ -2,9 +2,9 @@
 
 import * as elliptic from 'elliptic';
 
-import { IPoint } from '../../../index';
+import { IPoint } from '../../../ipoint';
 import { SLIP10Ed25519MoneroPoint } from './point';
-import { SLIP10Ed25519PublicKey } from '../../index';
+import { SLIP10Ed25519PublicKey } from '../../ed25519';
 
 const ec = new elliptic.eddsa('ed25519');
 
