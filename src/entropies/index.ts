@@ -1,38 +1,42 @@
-import { IEntropy } from "./ientropy";
-import { AlgorandEntropy, ALGORAND_ENTROPY_STRENGTHS } from "./algorand";
-import { BIP39Entropy, BIP39_ENTROPY_STRENGTHS } from "./bip39";
-import { ElectrumV1Entropy, ELECTRUM_V1_ENTROPY_STRENGTHS } from "./electrum/v1";
-import { ElectrumV2Entropy, ELECTRUM_V2_ENTROPY_STRENGTHS } from "./electrum/v2";
-import { MoneroEntropy, MONERO_ENTROPY_STRENGTHS } from "./monero";
-import { EntropyError } from "../exceptions";
+// SPDX-License-Identifier: MIT
+
+import { IEntropy } from './ientropy';
+import { AlgorandEntropy, ALGORAND_ENTROPY_STRENGTHS } from './algorand';
+import { BIP39Entropy, BIP39_ENTROPY_STRENGTHS } from './bip39';
+import { ElectrumV1Entropy, ELECTRUM_V1_ENTROPY_STRENGTHS } from './electrum/v1';
+import { ElectrumV2Entropy, ELECTRUM_V2_ENTROPY_STRENGTHS } from './electrum/v2';
+import { MoneroEntropy, MONERO_ENTROPY_STRENGTHS } from './monero';
+import { EntropyError } from '../exceptions';
 
 export class ENTROPIES {
 
   static dictionary: Record<string, typeof IEntropy> = {
-    [AlgorandEntropy.client()]: AlgorandEntropy,
-    [BIP39Entropy.client()]: BIP39Entropy,
-    [ElectrumV1Entropy.client()]: ElectrumV1Entropy,
-    [ElectrumV2Entropy.client()]: ElectrumV2Entropy,
-    [MoneroEntropy.client()]: MoneroEntropy,
+    [AlgorandEntropy.getName()]: AlgorandEntropy,
+    [BIP39Entropy.getName()]: BIP39Entropy,
+    [ElectrumV1Entropy.getName()]: ElectrumV1Entropy,
+    [ElectrumV2Entropy.getName()]: ElectrumV2Entropy,
+    [MoneroEntropy.getName()]: MoneroEntropy
   };
 
-  static clients(): string[] {
+  static getNames(): string[] {
     return Object.keys(this.dictionary);
   }
 
-  static classes(): typeof IEntropy[] {
+  static getClasses(): typeof IEntropy[] {
     return Object.values(this.dictionary);
   }
 
-  static entropy(name: string): typeof IEntropy {
+  static getEntropyClass(name: string): typeof IEntropy {
     if (!this.isEntropy(name)) {
-      throw new EntropyError(`Invalid entropy name: ${name}. Expected one of ${this.clients().join(", ")}`);
+      throw new EntropyError(
+        'Invalid Entropy name', { expected: this.getNames(), got: name }
+      );
     }
     return this.dictionary[name];
   }
 
   static isEntropy(name: string): boolean {
-    return this.clients().includes(name);
+    return this.getNames().includes(name);
   }
 }
 

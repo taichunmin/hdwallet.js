@@ -1,4 +1,6 @@
-import { IEntropy } from "./ientropy";
+// SPDX-License-Identifier: MIT
+
+import { IEntropy } from './ientropy';
 
 export const MONERO_ENTROPY_STRENGTHS = {
   ONE_HUNDRED_TWENTY_EIGHT: 128,
@@ -12,7 +14,7 @@ export class MoneroEntropy extends IEntropy {
     MONERO_ENTROPY_STRENGTHS.TWO_HUNDRED_FIFTY_SIX
   ];
 
-  static client(): string {
-    return "Monero";
+  static getName(): string {
+    return 'Monero';
   }
 }

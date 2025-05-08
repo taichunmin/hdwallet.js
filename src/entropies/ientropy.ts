@@ -1,48 +1,54 @@
-import { EntropyError } from "../exceptions";
-import { getBytes, bytesToHex, hexToBytes, bytesToInteger } from "../utils";
+// SPDX-License-Identifier: MIT
+
+import { getBytes, bytesToHex, bytesToInteger } from '../utils';
+import { EntropyError } from '../exceptions';
 
 export abstract class IEntropy {
 
-  protected _entropy: string;
-  protected _strength: number;
+  protected entropy: string;
+  protected strength: number;
 
   static strengths: number[];
 
-  constructor(entropy: Uint8Array | string) {
-    const entropyBytes: Uint8Array = getBytes(entropy);
-    const strength: number = entropyBytes.length;
+  constructor(entropy: string) {
+
+    const entropyBytes = getBytes(entropy);
+    const strength = entropyBytes.length;
     const constructor = this.constructor as typeof IEntropy;
 
-    if (constructor.client() === "Electrum-V2") {
-      if (!constructor.areEntropyBitsEnough(entropyBytes))
-        throw new EntropyError("Entropy bits are not enough");
-      this._strength = BigInt(bytesToInteger(entropyBytes)).toString(2).length;
+    if (constructor.getName() === 'Electrum-V2') {
+      if (!constructor.areEntropyBitsEnough(entropyBytes)) {
+        throw new EntropyError('Entropy bits are not enough');
+      }
+      this.strength = BigInt(bytesToInteger(entropyBytes)).toString(2).length;
     } else {
       if (!constructor.isValidBytesStrength(strength))
-        throw new EntropyError("Unsupported entropy strength");
-      this._strength = strength * 8;
+        throw new EntropyError('Unsupported entropy strength');
+      this.strength = strength * 8;
     }
-    this._entropy = bytesToHex(entropyBytes);
+    this.entropy = bytesToHex(entropyBytes);
   }
 
-  static client(): string {
-    throw new Error("Must override client()");
+  static getName(): string {
+    throw new Error('Must override getName()');
   }
 
-  entropy(): string {
-    return this._entropy;
+  getEntropy(): string {
+    return this.entropy;
   }
 
-  strength(): number {
-    return this._strength;
+  getStrength(): number {
+    return this.strength;
   }
 
   static generate(strength: number): string {
+
     if (!this.strengths.includes(strength)) {
       throw new Error(`Invalid strength ${strength}`);
     }
-    const rnd = crypto.getRandomValues(new Uint8Array(strength / 8));
-    return bytesToHex(rnd);
+    return bytesToHex(crypto.getRandomValues(
+      new Uint8Array(strength / 8)
+    ));
   }
 
   static isValid(entropy: string): boolean {
@@ -58,6 +64,6 @@ export abstract class IEntropy {
   }
 
   static areEntropyBitsEnough(entropy: Uint8Array | number): boolean {
-    throw new Error("Not implemented");
+    throw new Error('Not implemented');
   }
 }

@@ -1,4 +1,6 @@
-import { IEntropy } from "./ientropy";
+// SPDX-License-Identifier: MIT
+
+import { IEntropy } from './ientropy';
 
 export const BIP39_ENTROPY_STRENGTHS = {
   ONE_HUNDRED_TWENTY_EIGHT: 128,
@@ -18,7 +20,7 @@ export class BIP39Entropy extends IEntropy {
     BIP39_ENTROPY_STRENGTHS.TWO_HUNDRED_FIFTY_SIX
   ];
 
-  static client(): string {
-    return "BIP39";
+  static getName(): string {
+    return 'BIP39';
   }
 }

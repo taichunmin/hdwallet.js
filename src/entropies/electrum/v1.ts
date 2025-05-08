@@ -1,4 +1,6 @@
-import { IEntropy } from "../ientropy";
+// SPDX-License-Identifier: MIT
+
+import { IEntropy } from '../ientropy';
 
 export const ELECTRUM_V1_ENTROPY_STRENGTHS = {
   ONE_HUNDRED_TWENTY_EIGHT: 128
@@ -10,7 +12,7 @@ export class ElectrumV1Entropy extends IEntropy {
       ELECTRUM_V1_ENTROPY_STRENGTHS.ONE_HUNDRED_TWENTY_EIGHT
   ];
 
-  static client(): string {
-    return "Electrum-V1";
+  static getName(): string {
+    return 'Electrum-V1';
   }
 }

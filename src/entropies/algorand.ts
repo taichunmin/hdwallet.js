@@ -1,4 +1,6 @@
-import { IEntropy } from "./ientropy";
+// SPDX-License-Identifier: MIT
+
+import { IEntropy } from './ientropy';
 
 export const ALGORAND_ENTROPY_STRENGTHS = {
   TWO_HUNDRED_FIFTY_SIX: 256
@@ -10,7 +12,7 @@ export class AlgorandEntropy extends IEntropy {
       ALGORAND_ENTROPY_STRENGTHS.TWO_HUNDRED_FIFTY_SIX
   ];
 
-  static client(): string {
-    return "Algorand";
+  static getName(): string {
+    return 'Algorand';
   }
 }
