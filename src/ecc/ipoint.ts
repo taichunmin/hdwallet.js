@@ -18,19 +18,19 @@ export abstract class IPoint {
     throw new Error('Must override fromCoordinates()');
   }
 
-  abstract x(): bigint;
+  abstract getX(): bigint;
 
-  abstract y(): bigint;
+  abstract getY(): bigint;
 
-  raw(): Uint8Array {
-    return this.rawEncoded();
+  getRaw(): Uint8Array {
+    return this.getRawEncoded();
   }
 
-  abstract rawEncoded(): Uint8Array;
+  abstract getRawEncoded(): Uint8Array;
 
-  abstract rawDecoded(): Uint8Array;
+  abstract getRawDecoded(): Uint8Array;
 
-  abstract underlyingObject(): any;
+  abstract getUnderlyingObject(): any;
 
   abstract add(point: IPoint): IPoint;
 

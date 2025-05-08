@@ -36,30 +36,30 @@ export class SLIP10Ed25519Point extends IPoint {
     return new this(pt);
   }
 
-  underlyingObject(): any {
+  getUnderlyingObject(): any {
     return this.point;
   }
 
-  x(): bigint {
+  getX(): bigint {
     return BigInt(this.point.getX().toString(10));
   }
 
-  y(): bigint {
+  getY(): bigint {
     return BigInt(this.point.getY().toString(10));
   }
 
-  rawEncoded(): Uint8Array {
+  getRawEncoded(): Uint8Array {
     return new Uint8Array(ec.encodePoint(this.point));
   }
 
-  rawDecoded(): Uint8Array {
+  getRawDecoded(): Uint8Array {
     const xBytes = this.point.getX().toArray('be', 32);
     const yBytes = this.point.getY().toArray('be', 32);
     return new Uint8Array([...xBytes, ...yBytes]);
   }
 
   add(point: IPoint): IPoint {
-    const other = (point as this).underlyingObject() as EdwardsPoint;
+    const other = (point as this).getUnderlyingObject() as EdwardsPoint;
     const sum = this.point.add(other) as EdwardsPoint;
     return new SLIP10Ed25519Point(sum);
   }

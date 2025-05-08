@@ -15,7 +15,7 @@ import {
 } from '../../src/ecc/slip10/ed25519/monero';
 import { hexToBytes, bytesToString, isAllEqual } from '../../src/utils';
 
-const ecc: typeof IEllipticCurveCryptography = ECCS.ecc(SLIP10Ed25519MoneroECC.NAME);
+const ecc: typeof IEllipticCurveCryptography = ECCS.getECC(SLIP10Ed25519MoneroECC.NAME);
 
 const keys = {
     ecc: 'SLIP10-Ed25519-Monero',
@@ -40,8 +40,8 @@ console.log(
     slip10Ed25519MoneroPrivateKey instanceof SLIP10Ed25519MoneroPrivateKey,
     eccSLIP10Ed25519MoneroPrivateKey instanceof SLIP10Ed25519MoneroPrivateKey,
     isAllEqual(
-        slip10Ed25519MoneroPrivateKey.raw(),
-        eccSLIP10Ed25519MoneroPrivateKey.raw(),
+        slip10Ed25519MoneroPrivateKey.getRaw(),
+        eccSLIP10Ed25519MoneroPrivateKey.getRaw(),
         keys.privateKey
     )
 );
@@ -54,16 +54,16 @@ console.log(
     rawSLIP10Ed25519MoneroPoint instanceof SLIP10Ed25519MoneroPoint,
     coordinatesSLIP10Ed25519MoneroPoint instanceof SLIP10Ed25519MoneroPoint,
     isAllEqual(
-        rawSLIP10Ed25519MoneroPoint.raw(),
-        coordinatesSLIP10Ed25519MoneroPoint .raw(),
-        ecc.POINT.fromBytes(keys.point.raw).raw(),
-        ecc.POINT.fromCoordinates(keys.point.x, keys.point.y).raw(),
+        rawSLIP10Ed25519MoneroPoint.getRaw(),
+        coordinatesSLIP10Ed25519MoneroPoint .getRaw(),
+        ecc.POINT.fromBytes(keys.point.raw).getRaw(),
+        ecc.POINT.fromCoordinates(keys.point.x, keys.point.y).getRaw(),
         keys.point.raw
     )
 );
 
-const slip10Ed25519MoneroPublicKey: IPublicKey = slip10Ed25519MoneroPrivateKey.publicKey();
-const eccSLIP10Ed25519MoneroPublicKey: IPublicKey = eccSLIP10Ed25519MoneroPrivateKey.publicKey();
+const slip10Ed25519MoneroPublicKey: IPublicKey = slip10Ed25519MoneroPrivateKey.getPublicKey();
+const eccSLIP10Ed25519MoneroPublicKey: IPublicKey = eccSLIP10Ed25519MoneroPrivateKey.getPublicKey();
 const uncompressedPublicKey: IPublicKey = validateAndGetPublicKey(keys.publicKey.uncompressed, SLIP10Ed25519MoneroPublicKey);
 const compressedPublicKey: IPublicKey = validateAndGetPublicKey(keys.publicKey.compressed, SLIP10Ed25519MoneroPublicKey);
 
@@ -73,13 +73,13 @@ console.log(
     eccSLIP10Ed25519MoneroPublicKey instanceof SLIP10Ed25519MoneroPublicKey,
     uncompressedPublicKey instanceof SLIP10Ed25519MoneroPublicKey,
     isAllEqual(
-        uncompressedPublicKey.rawUncompressed(),
-        slip10Ed25519MoneroPublicKey.rawUncompressed(),
-        eccSLIP10Ed25519MoneroPublicKey.rawUncompressed(),
-        SLIP10Ed25519MoneroPublicKey.fromBytes(keys.publicKey.uncompressed).rawUncompressed(),
-        SLIP10Ed25519MoneroPublicKey.fromPoint(rawSLIP10Ed25519MoneroPoint).rawUncompressed(),
-        ecc.PUBLIC_KEY.fromBytes(keys.publicKey.uncompressed).rawUncompressed(),
-        ecc.PUBLIC_KEY.fromPoint(coordinatesSLIP10Ed25519MoneroPoint).rawUncompressed(),
+        uncompressedPublicKey.getRawUncompressed(),
+        slip10Ed25519MoneroPublicKey.getRawUncompressed(),
+        eccSLIP10Ed25519MoneroPublicKey.getRawUncompressed(),
+        SLIP10Ed25519MoneroPublicKey.fromBytes(keys.publicKey.uncompressed).getRawUncompressed(),
+        SLIP10Ed25519MoneroPublicKey.fromPoint(rawSLIP10Ed25519MoneroPoint).getRawUncompressed(),
+        ecc.PUBLIC_KEY.fromBytes(keys.publicKey.uncompressed).getRawUncompressed(),
+        ecc.PUBLIC_KEY.fromPoint(coordinatesSLIP10Ed25519MoneroPoint).getRawUncompressed(),
         keys.publicKey.uncompressed
     )
 );
@@ -90,13 +90,13 @@ console.log(
     eccSLIP10Ed25519MoneroPublicKey instanceof SLIP10Ed25519MoneroPublicKey,
     compressedPublicKey instanceof SLIP10Ed25519MoneroPublicKey,
     isAllEqual(
-        compressedPublicKey.rawCompressed(),
-        slip10Ed25519MoneroPublicKey.rawCompressed(),
-        eccSLIP10Ed25519MoneroPublicKey.rawCompressed(),
-        SLIP10Ed25519MoneroPublicKey.fromBytes(keys.publicKey.compressed).rawCompressed(),
-        SLIP10Ed25519MoneroPublicKey.fromPoint(rawSLIP10Ed25519MoneroPoint).rawCompressed(),
-        ecc.PUBLIC_KEY.fromBytes(keys.publicKey.compressed).rawCompressed(),
-        ecc.PUBLIC_KEY.fromPoint(coordinatesSLIP10Ed25519MoneroPoint).rawCompressed(),
+        compressedPublicKey.getRawCompressed(),
+        slip10Ed25519MoneroPublicKey.getRawCompressed(),
+        eccSLIP10Ed25519MoneroPublicKey.getRawCompressed(),
+        SLIP10Ed25519MoneroPublicKey.fromBytes(keys.publicKey.compressed).getRawCompressed(),
+        SLIP10Ed25519MoneroPublicKey.fromPoint(rawSLIP10Ed25519MoneroPoint).getRawCompressed(),
+        ecc.PUBLIC_KEY.fromBytes(keys.publicKey.compressed).getRawCompressed(),
+        ecc.PUBLIC_KEY.fromPoint(coordinatesSLIP10Ed25519MoneroPoint).getRawCompressed(),
         keys.publicKey.compressed
     )
 );

@@ -27,36 +27,36 @@ export class SLIP10Secp256k1PublicKey extends IPublicKey {
   }
 
   static fromPoint(point: IPoint): IPublicKey {
-    const base = (point as SLIP10Secp256k1Point).underlyingObject() as BasePoint;
+    const base = (point as SLIP10Secp256k1Point).getUnderlyingObject() as BasePoint;
     return new SLIP10Secp256k1PublicKey(base);
   }
 
-  static compressedLength(): number {
+  static getCompressedLength(): number {
     return SLIP10_SECP256K1_CONST.PUBLIC_KEY_COMPRESSED_BYTE_LENGTH;
   }
 
-  static uncompressedLength(): number {
+  static getUncompressedLength(): number {
     return SLIP10_SECP256K1_CONST.PUBLIC_KEY_UNCOMPRESSED_BYTE_LENGTH;
   }
 
-  underlyingObject(): any {
+  getUnderlyingObject(): any {
     return this.publicKey;
   }
 
-  rawCompressed(): Uint8Array {
+  getRawCompressed(): Uint8Array {
     return new Uint8Array(this.publicKey.encodeCompressed());
   }
 
-  rawUncompressed(): Uint8Array {
+  getRawUncompressed(): Uint8Array {
     const arr = this.publicKey.encode('array', false) as number[];
     return new Uint8Array(arr);
   }
 
-  raw(): Uint8Array {
-    return this.rawCompressed();
+  getRaw(): Uint8Array {
+    return this.getRawCompressed();
   }
 
-  point(): IPoint {
+  getPoint(): IPoint {
     return new SLIP10Secp256k1Point(this.publicKey);
   }
 }

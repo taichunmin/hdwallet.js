@@ -27,11 +27,11 @@ export class SLIP10Nist256p1PrivateKey extends IPrivateKey {
     }
   }
 
-  static size(): number {
+  static getLength(): number {
     return SLIP10_SECP256K1_CONST.PRIVATE_KEY_BYTE_LENGTH;
   }
 
-  raw(): Uint8Array {
+  getRaw(): Uint8Array {
     const privBN = this.privateKey.getPrivate();
     const hex = privBN.toString(16).padStart(
       SLIP10_SECP256K1_CONST.PRIVATE_KEY_BYTE_LENGTH * 2,
@@ -40,11 +40,11 @@ export class SLIP10Nist256p1PrivateKey extends IPrivateKey {
     return Uint8Array.from(Buffer.from(hex, 'hex'));
   }
 
-  underlyingObject(): any {
+  getUnderlyingObject(): any {
     return this.privateKey;
   }
 
-  publicKey(): IPublicKey {
+  getPublicKey(): IPublicKey {
     const pubPt = this.privateKey.getPublic();
     return new SLIP10Nist256p1PublicKey(pubPt);
   }

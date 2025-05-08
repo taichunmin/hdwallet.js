@@ -47,29 +47,29 @@ export class SLIP10Secp256k1Point extends IPoint {
     return new SLIP10Secp256k1Point(point);
   }
 
-  underlyingObject(): any {
+  getUnderlyingObject(): any {
     return this.point;
   }
 
-  x(): bigint {
+  getX(): bigint {
     return BigInt(this.point.getX().toString());
   }
 
-  y(): bigint {
+  getY(): bigint {
     return BigInt(this.point.getY().toString());
   }
 
-  rawEncoded(): Uint8Array {
+  getRawEncoded(): Uint8Array {
     return new Uint8Array(this.point.encodeCompressed());
   }
 
-  rawDecoded(): Uint8Array {
+  getRawDecoded(): Uint8Array {
     const encoded = this.point.encode('array', false) as number[];
     return new Uint8Array(encoded.slice(1));
   }
 
   add(point: IPoint): IPoint {
-    const other = (point as this).underlyingObject() as BasePoint;
+    const other = (point as this).getUnderlyingObject() as BasePoint;
     const sum = this.point.add(other) as BasePoint;
     return new SLIP10Secp256k1Point(sum);
   }

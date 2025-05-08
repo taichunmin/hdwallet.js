@@ -27,20 +27,20 @@ export class SLIP10Ed25519PrivateKey extends IPrivateKey {
     }
   }
 
-  static size(): number {
+  static getLength(): number {
     return SLIP10_ED25519_CONST.PRIVATE_KEY_BYTE_LENGTH;
   }
 
-  raw(): Uint8Array {
+  getRaw(): Uint8Array {
     const secret = this.privateKey.secret();
     return new Uint8Array(secret);
   }
 
-  underlyingObject(): any {
+  getUnderlyingObject(): any {
     return this.privateKey;
   }
 
-  publicKey(): IPublicKey {
+  getPublicKey(): IPublicKey {
     const pubBytes = this.privateKey.pubBytes();
     return SLIP10Ed25519PublicKey.fromBytes(new Uint8Array(pubBytes));
   }

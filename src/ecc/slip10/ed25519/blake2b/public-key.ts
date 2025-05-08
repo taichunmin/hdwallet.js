@@ -10,7 +10,7 @@ export class SLIP10Ed25519Blake2bPublicKey extends SLIP10Ed25519PublicKey {
     return 'SLIP10-Ed25519-Blake2b';
   }
 
-  point(): IPoint {
+  getPoint(): IPoint {
     return new SLIP10Ed25519Blake2bPoint(this.publicKey);
   }
 }

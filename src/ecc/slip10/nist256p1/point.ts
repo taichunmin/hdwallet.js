@@ -38,30 +38,30 @@ export class SLIP10Nist256p1Point extends IPoint {
     return new SLIP10Nist256p1Point(pt);
   }
 
-  underlyingObject(): any {
+  getUnderlyingObject(): any {
     return this.point;
   }
 
-  x(): bigint {
+  getX(): bigint {
     return BigInt(this.point.getX().toString());
   }
 
-  y(): bigint {
+  getY(): bigint {
     return BigInt(this.point.getY().toString());
   }
 
-  rawEncoded(): Uint8Array {
+  getRawEncoded(): Uint8Array {
     const arr = this.point.encode('array', true) as number[];
     return new Uint8Array(arr);
   }
 
-  rawDecoded(): Uint8Array {
+  getRawDecoded(): Uint8Array {
     const arr = this.point.encode('array', false) as number[];
     return new Uint8Array(arr[0] === 4 ? arr.slice(1) : arr);
   }
 
   add(other: IPoint): SLIP10Nist256p1Point {
-    const p = (other as this).underlyingObject() as BasePoint;
+    const p = (other as this).getUnderlyingObject() as BasePoint;
     const sum = this.point.add(p) as BasePoint;
     return new SLIP10Nist256p1Point(sum);
   }

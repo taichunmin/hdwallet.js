@@ -15,7 +15,7 @@ import {
 } from '../../src/ecc/slip10/ed25519/blake2b';
 import { hexToBytes, bytesToString, isAllEqual } from '../../src/utils';
 
-const ecc: typeof IEllipticCurveCryptography = ECCS.ecc(SLIP10Ed25519Blake2bECC.NAME);
+const ecc: typeof IEllipticCurveCryptography = ECCS.getECC(SLIP10Ed25519Blake2bECC.NAME);
 
 const keys = {
     ecc: 'SLIP10-Ed25519-Blake2b',
@@ -40,8 +40,8 @@ console.log(
     slip10Ed25519Blake2bPrivateKey instanceof SLIP10Ed25519Blake2bPrivateKey,
     eccSLIP10Ed25519Blake2bPrivateKey instanceof SLIP10Ed25519Blake2bPrivateKey,
     isAllEqual(
-        slip10Ed25519Blake2bPrivateKey.raw(),
-        eccSLIP10Ed25519Blake2bPrivateKey.raw(),
+        slip10Ed25519Blake2bPrivateKey.getRaw(),
+        eccSLIP10Ed25519Blake2bPrivateKey.getRaw(),
         keys.privateKey
     )
 );
@@ -54,16 +54,16 @@ console.log(
     rawSLIP10Ed25519Blake2bPoint instanceof SLIP10Ed25519Blake2bPoint,
     coordinatesSLIP10Ed25519Blake2bPoint instanceof SLIP10Ed25519Blake2bPoint,
     isAllEqual(
-        rawSLIP10Ed25519Blake2bPoint.raw(),
-        coordinatesSLIP10Ed25519Blake2bPoint .raw(),
-        ecc.POINT.fromBytes(keys.point.raw).raw(),
-        ecc.POINT.fromCoordinates(keys.point.x, keys.point.y).raw(),
+        rawSLIP10Ed25519Blake2bPoint.getRaw(),
+        coordinatesSLIP10Ed25519Blake2bPoint .getRaw(),
+        ecc.POINT.fromBytes(keys.point.raw).getRaw(),
+        ecc.POINT.fromCoordinates(keys.point.x, keys.point.y).getRaw(),
         keys.point.raw
     )
 );
 
-const slip10Ed25519Blake2bPublicKey: IPublicKey = slip10Ed25519Blake2bPrivateKey.publicKey();
-const eccSLIP10Ed25519Blake2bPublicKey: IPublicKey = eccSLIP10Ed25519Blake2bPrivateKey.publicKey();
+const slip10Ed25519Blake2bPublicKey: IPublicKey = slip10Ed25519Blake2bPrivateKey.getPublicKey();
+const eccSLIP10Ed25519Blake2bPublicKey: IPublicKey = eccSLIP10Ed25519Blake2bPrivateKey.getPublicKey();
 const uncompressedPublicKey: IPublicKey = validateAndGetPublicKey(keys.publicKey.uncompressed, SLIP10Ed25519Blake2bPublicKey);
 const compressedPublicKey: IPublicKey = validateAndGetPublicKey(keys.publicKey.compressed, SLIP10Ed25519Blake2bPublicKey);
 
@@ -73,13 +73,13 @@ console.log(
     eccSLIP10Ed25519Blake2bPublicKey instanceof SLIP10Ed25519Blake2bPublicKey,
     uncompressedPublicKey instanceof SLIP10Ed25519Blake2bPublicKey,
     isAllEqual(
-        uncompressedPublicKey.rawUncompressed(),
-        slip10Ed25519Blake2bPublicKey.rawUncompressed(),
-        eccSLIP10Ed25519Blake2bPublicKey.rawUncompressed(),
-        SLIP10Ed25519Blake2bPublicKey.fromBytes(keys.publicKey.uncompressed).rawUncompressed(),
-        SLIP10Ed25519Blake2bPublicKey.fromPoint(rawSLIP10Ed25519Blake2bPoint).rawUncompressed(),
-        ecc.PUBLIC_KEY.fromBytes(keys.publicKey.uncompressed).rawUncompressed(),
-        ecc.PUBLIC_KEY.fromPoint(coordinatesSLIP10Ed25519Blake2bPoint).rawUncompressed(),
+        uncompressedPublicKey.getRawUncompressed(),
+        slip10Ed25519Blake2bPublicKey.getRawUncompressed(),
+        eccSLIP10Ed25519Blake2bPublicKey.getRawUncompressed(),
+        SLIP10Ed25519Blake2bPublicKey.fromBytes(keys.publicKey.uncompressed).getRawUncompressed(),
+        SLIP10Ed25519Blake2bPublicKey.fromPoint(rawSLIP10Ed25519Blake2bPoint).getRawUncompressed(),
+        ecc.PUBLIC_KEY.fromBytes(keys.publicKey.uncompressed).getRawUncompressed(),
+        ecc.PUBLIC_KEY.fromPoint(coordinatesSLIP10Ed25519Blake2bPoint).getRawUncompressed(),
         keys.publicKey.uncompressed
     )
 );
@@ -90,13 +90,13 @@ console.log(
     eccSLIP10Ed25519Blake2bPublicKey instanceof SLIP10Ed25519Blake2bPublicKey,
     compressedPublicKey instanceof SLIP10Ed25519Blake2bPublicKey,
     isAllEqual(
-        compressedPublicKey.rawCompressed(),
-        slip10Ed25519Blake2bPublicKey.rawCompressed(),
-        eccSLIP10Ed25519Blake2bPublicKey.rawCompressed(),
-        SLIP10Ed25519Blake2bPublicKey.fromBytes(keys.publicKey.compressed).rawCompressed(),
-        SLIP10Ed25519Blake2bPublicKey.fromPoint(rawSLIP10Ed25519Blake2bPoint).rawCompressed(),
-        ecc.PUBLIC_KEY.fromBytes(keys.publicKey.compressed).rawCompressed(),
-        ecc.PUBLIC_KEY.fromPoint(coordinatesSLIP10Ed25519Blake2bPoint).rawCompressed(),
+        compressedPublicKey.getRawCompressed(),
+        slip10Ed25519Blake2bPublicKey.getRawCompressed(),
+        eccSLIP10Ed25519Blake2bPublicKey.getRawCompressed(),
+        SLIP10Ed25519Blake2bPublicKey.fromBytes(keys.publicKey.compressed).getRawCompressed(),
+        SLIP10Ed25519Blake2bPublicKey.fromPoint(rawSLIP10Ed25519Blake2bPoint).getRawCompressed(),
+        ecc.PUBLIC_KEY.fromBytes(keys.publicKey.compressed).getRawCompressed(),
+        ecc.PUBLIC_KEY.fromPoint(coordinatesSLIP10Ed25519Blake2bPoint).getRawCompressed(),
         keys.publicKey.compressed
     )
 );

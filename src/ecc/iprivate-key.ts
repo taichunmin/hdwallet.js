@@ -26,15 +26,15 @@ export abstract class IPrivateKey {
     throw new Error('Must override fromBytes()');
   }
 
-  static size(): number {
+  static getLength(): number {
     throw new Error('Must override size()');
   }
 
-  abstract raw(): Uint8Array;
+  abstract getRaw(): Uint8Array;
 
-  abstract publicKey(): IPublicKey;
+  abstract getPublicKey(): IPublicKey;
 
-  abstract underlyingObject(): any;
+  abstract getUnderlyingObject(): any;
 
   static isValidBytes(bytes: Uint8Array): boolean {
     try {

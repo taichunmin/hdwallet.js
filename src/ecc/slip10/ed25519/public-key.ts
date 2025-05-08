@@ -40,34 +40,34 @@ export class SLIP10Ed25519PublicKey extends IPublicKey {
   }
 
   static fromPoint(point: IPoint): IPublicKey {
-    const raw = (point as any).rawEncoded() as Uint8Array;
+    const raw = (point as any).getRawEncoded() as Uint8Array;
     return this.fromBytes(raw);
   }
 
-  static compressedLength(): number {
+  static getCompressedLength(): number {
     return SLIP10_ED25519_CONST.PUBLIC_KEY_BYTE_LENGTH + SLIP10_ED25519_CONST.PUBLIC_KEY_PREFIX.length;
   }
 
-  static uncompressedLength(): number {
-    return SLIP10Ed25519PublicKey.compressedLength();
+  static getUncompressedLength(): number {
+    return SLIP10Ed25519PublicKey.getCompressedLength();
   }
 
-  underlyingObject(): any {
+  getUnderlyingObject(): any {
     return this.publicKey;
   }
 
-  rawCompressed(): Uint8Array {
+  getRawCompressed(): Uint8Array {
     return new Uint8Array([
       ...SLIP10_ED25519_CONST.PUBLIC_KEY_PREFIX,
       ...ec.encodePoint(this.publicKey)
     ]);
   }
 
-  rawUncompressed(): Uint8Array {
-    return this.rawCompressed();
+  getRawUncompressed(): Uint8Array {
+    return this.getRawCompressed();
   }
 
-  point(): IPoint {
+  getPoint(): IPoint {
     return new SLIP10Ed25519Point(this.publicKey);
   }
 }

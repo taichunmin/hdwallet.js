@@ -28,22 +28,22 @@ export class SLIP10Secp256k1PrivateKey extends IPrivateKey {
     }
   }
 
-  static size(): number {
+  static getLength(): number {
     return SLIP10_SECP256K1_CONST.PRIVATE_KEY_BYTE_LENGTH;
   }
 
-  raw(): Uint8Array {
+  getRaw(): Uint8Array {
     const privHex = this.privateKey.getPrivate().toString(16).padStart(
         SLIP10_SECP256K1_CONST.PRIVATE_KEY_BYTE_LENGTH * 2, '0'
     );
     return Uint8Array.from(Buffer.from(privHex, 'hex'));
   }
 
-  underlyingObject(): any {
+  getUnderlyingObject(): any {
     return this.privateKey;
   }
 
-  publicKey(): IPublicKey {
+  getPublicKey(): IPublicKey {
     const pubPoint = this.privateKey.getPublic();
     return new SLIP10Secp256k1PublicKey(pubPoint);
   }

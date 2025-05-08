@@ -24,26 +24,26 @@ export class ECCS {
     [SLIP10Secp256k1ECC.NAME]: SLIP10Secp256k1ECC
   };
 
-  static names(): string[] {
+  static getNames(): string[] {
     return Object.keys(this.dictionary);
   }
 
-  static classes(): typeof IEllipticCurveCryptography[] {
+  static getClasses(): typeof IEllipticCurveCryptography[] {
     return Object.values(this.dictionary);
   }
 
-  static ecc(name: string): typeof IEllipticCurveCryptography {
+  static getECC(name: string): typeof IEllipticCurveCryptography {
     if (!this.isECC(name)) {
       throw new ECCError(
         `Invalid ECC name: ${name}`,
-        { expected: this.names(), got: name }
+        { expected: this.getNames(), got: name }
       );
     }
     return this.dictionary[name];
   }
 
   static isECC(name: string): boolean {
-    return this.names().includes(name);
+    return this.getNames().includes(name);
   }
 }
 

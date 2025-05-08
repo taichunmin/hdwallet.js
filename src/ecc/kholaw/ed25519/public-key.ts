@@ -10,7 +10,7 @@ export class KholawEd25519PublicKey extends SLIP10Ed25519PublicKey {
     return 'Kholaw-Ed25519';
   }
 
-  point(): IPoint {
+  getPoint(): IPoint {
     return new KholawEd25519Point(this.publicKey);
   }
 }

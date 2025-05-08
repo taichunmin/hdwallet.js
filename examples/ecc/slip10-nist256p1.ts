@@ -15,7 +15,7 @@ import {
 } from '../../src/ecc/slip10/nist256p1';
 import { hexToBytes, bytesToString, isAllEqual } from '../../src/utils';
 
-const ecc: typeof IEllipticCurveCryptography = ECCS.ecc(SLIP10Nist256p1ECC.NAME);
+const ecc: typeof IEllipticCurveCryptography = ECCS.getECC(SLIP10Nist256p1ECC.NAME);
 
 const keys = {
     ecc: 'SLIP10-Nist256p1',
@@ -40,8 +40,8 @@ console.log(
     slip10Nist256p1PrivateKey instanceof SLIP10Nist256p1PrivateKey,
     eccSLIP10Nist256p1PrivateKey instanceof SLIP10Nist256p1PrivateKey,
     isAllEqual(
-        slip10Nist256p1PrivateKey.raw(),
-        eccSLIP10Nist256p1PrivateKey.raw(),
+        slip10Nist256p1PrivateKey.getRaw(),
+        eccSLIP10Nist256p1PrivateKey.getRaw(),
         keys.privateKey
     )
 );
@@ -54,16 +54,16 @@ console.log(
     rawSLIP10Nist256p1Point instanceof SLIP10Nist256p1Point,
     coordinatesSLIP10Nist256p1Point instanceof SLIP10Nist256p1Point,
     isAllEqual(
-        rawSLIP10Nist256p1Point.raw(),
-        coordinatesSLIP10Nist256p1Point .raw(),
-        ecc.POINT.fromBytes(keys.point.raw).raw(),
-        ecc.POINT.fromCoordinates(keys.point.x, keys.point.y).raw(),
+        rawSLIP10Nist256p1Point.getRaw(),
+        coordinatesSLIP10Nist256p1Point .getRaw(),
+        ecc.POINT.fromBytes(keys.point.raw).getRaw(),
+        ecc.POINT.fromCoordinates(keys.point.x, keys.point.y).getRaw(),
         keys.point.raw
     )
 );
 
-const slip10Nist256p1PublicKey: IPublicKey = slip10Nist256p1PrivateKey.publicKey();
-const eccSLIP10Nist256p1PublicKey: IPublicKey = eccSLIP10Nist256p1PrivateKey.publicKey();
+const slip10Nist256p1PublicKey: IPublicKey = slip10Nist256p1PrivateKey.getPublicKey();
+const eccSLIP10Nist256p1PublicKey: IPublicKey = eccSLIP10Nist256p1PrivateKey.getPublicKey();
 const uncompressedPublicKey: IPublicKey = validateAndGetPublicKey(keys.publicKey.uncompressed, SLIP10Nist256p1PublicKey);
 const compressedPublicKey: IPublicKey = validateAndGetPublicKey(keys.publicKey.compressed, SLIP10Nist256p1PublicKey);
 
@@ -73,13 +73,13 @@ console.log(
     eccSLIP10Nist256p1PublicKey instanceof SLIP10Nist256p1PublicKey,
     uncompressedPublicKey instanceof SLIP10Nist256p1PublicKey,
     isAllEqual(
-        uncompressedPublicKey.rawUncompressed(),
-        slip10Nist256p1PublicKey.rawUncompressed(),
-        eccSLIP10Nist256p1PublicKey.rawUncompressed(),
-        SLIP10Nist256p1PublicKey.fromBytes(keys.publicKey.uncompressed).rawUncompressed(),
-        SLIP10Nist256p1PublicKey.fromPoint(rawSLIP10Nist256p1Point).rawUncompressed(),
-        ecc.PUBLIC_KEY.fromBytes(keys.publicKey.uncompressed).rawUncompressed(),
-        ecc.PUBLIC_KEY.fromPoint(coordinatesSLIP10Nist256p1Point).rawUncompressed(),
+        uncompressedPublicKey.getRawUncompressed(),
+        slip10Nist256p1PublicKey.getRawUncompressed(),
+        eccSLIP10Nist256p1PublicKey.getRawUncompressed(),
+        SLIP10Nist256p1PublicKey.fromBytes(keys.publicKey.uncompressed).getRawUncompressed(),
+        SLIP10Nist256p1PublicKey.fromPoint(rawSLIP10Nist256p1Point).getRawUncompressed(),
+        ecc.PUBLIC_KEY.fromBytes(keys.publicKey.uncompressed).getRawUncompressed(),
+        ecc.PUBLIC_KEY.fromPoint(coordinatesSLIP10Nist256p1Point).getRawUncompressed(),
         keys.publicKey.uncompressed
     )
 );
@@ -90,13 +90,13 @@ console.log(
     eccSLIP10Nist256p1PublicKey instanceof SLIP10Nist256p1PublicKey,
     compressedPublicKey instanceof SLIP10Nist256p1PublicKey,
     isAllEqual(
-        compressedPublicKey.rawCompressed(),
-        slip10Nist256p1PublicKey.rawCompressed(),
-        eccSLIP10Nist256p1PublicKey.rawCompressed(),
-        SLIP10Nist256p1PublicKey.fromBytes(keys.publicKey.compressed).rawCompressed(),
-        SLIP10Nist256p1PublicKey.fromPoint(rawSLIP10Nist256p1Point).rawCompressed(),
-        ecc.PUBLIC_KEY.fromBytes(keys.publicKey.compressed).rawCompressed(),
-        ecc.PUBLIC_KEY.fromPoint(coordinatesSLIP10Nist256p1Point).rawCompressed(),
+        compressedPublicKey.getRawCompressed(),
+        slip10Nist256p1PublicKey.getRawCompressed(),
+        eccSLIP10Nist256p1PublicKey.getRawCompressed(),
+        SLIP10Nist256p1PublicKey.fromBytes(keys.publicKey.compressed).getRawCompressed(),
+        SLIP10Nist256p1PublicKey.fromPoint(rawSLIP10Nist256p1Point).getRawCompressed(),
+        ecc.PUBLIC_KEY.fromBytes(keys.publicKey.compressed).getRawCompressed(),
+        ecc.PUBLIC_KEY.fromPoint(coordinatesSLIP10Nist256p1Point).getRawCompressed(),
         keys.publicKey.compressed
     )
 );

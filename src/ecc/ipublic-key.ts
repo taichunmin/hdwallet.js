@@ -22,19 +22,19 @@ export abstract class IPublicKey {
     throw new Error('Must override fromPoint()');
   }
 
-  abstract rawCompressed(): Uint8Array;
+  abstract getRawCompressed(): Uint8Array;
 
-  abstract rawUncompressed(): Uint8Array;
+  abstract getRawUncompressed(): Uint8Array;
 
-  abstract point(): IPoint;
+  abstract getPoint(): IPoint;
 
-  abstract underlyingObject(): any;
+  abstract getUnderlyingObject(): any;
 
-  static compressedLength(): number {
+  static getCompressedLength(): number {
     throw new Error('Must override compressedLength()');
   }
 
-  static uncompressedLength(): number {
+  static getUncompressedLength(): number {
     throw new Error('Must override uncompressedLength()');
   }
 
