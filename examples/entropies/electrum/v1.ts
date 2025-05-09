@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 
 import {
-  ENTROPIES, Entropy, ElectrumV1Entropy, ELECTRUM_V1_ENTROPY_STRENGTHS
+  ENTROPIES, ElectrumV1Entropy, ELECTRUM_V1_ENTROPY_STRENGTHS
 } from '../../../src/entropies';
 import { isAllEqual } from '../../../src/utils';
 
@@ -11,7 +11,7 @@ const data = {
   strength: ELECTRUM_V1_ENTROPY_STRENGTHS.ONE_HUNDRED_TWENTY_EIGHT
 }
 
-const ElectrumV1EntropyClass: typeof Entropy = ENTROPIES.getEntropyClass(data.name);
+const ElectrumV1EntropyClass: typeof ElectrumV1Entropy = ENTROPIES.getEntropyClass(data.name);
 
 const electrumV1EntropyClass: ElectrumV1Entropy = new ElectrumV1EntropyClass(data.entropy);
 const electrumV1Entropy: ElectrumV1Entropy = new ElectrumV1Entropy(data.entropy);
@@ -25,7 +25,7 @@ console.log(
     ElectrumV1EntropyClass.generate(data.strength).length,
     ElectrumV1Entropy.generate(data.strength).length
   ),'\n'
-)
+);
 
-console.log('Entropy:', data.entropy)
-console.log('Strength:', data.strength)
+console.log('Entropy:', data.entropy);
+console.log('Strength:', data.strength);

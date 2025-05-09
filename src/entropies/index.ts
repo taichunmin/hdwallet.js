@@ -26,7 +26,7 @@ export class ENTROPIES {
     return Object.values(this.dictionary);
   }
 
-  static getEntropyClass(name: string): typeof Entropy {
+  static getEntropyClass(name: string): typeof Entropy | any {
     if (!this.isEntropy(name)) {
       throw new EntropyError(
         'Invalid Entropy name', { expected: this.getNames(), got: name }
