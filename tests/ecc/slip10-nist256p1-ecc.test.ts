@@ -3,12 +3,15 @@
 import eccs from '../data/json/eccs.json';
 
 import {
+  SLIP10Nist256p1ECC,
   SLIP10Nist256p1Point,
   SLIP10Nist256p1PublicKey,
   SLIP10Nist256p1PrivateKey
-} from '../../src/ecc';
+} from '../../src/ecc/slip10/nist256p1';
 
 import { getBytes } from '../../src/utils';
+import {ECCS} from "../../src/ecc";
+
 
 interface PointVec { encode: string; decode: string; }
 interface CurveData {
@@ -20,6 +23,10 @@ interface CurveData {
 }
 
 const data = (eccs as Record<string, CurveData>)["SLIP10-Nist256p1"];
+const skBytes    = getBytes(data["private-key"]);
+const bytesUncmp = getBytes(data.uncompressed["public-key"]);
+const bytesCcmp  = getBytes(data.compressed["public-key"]);
+const encPoint   = getBytes(data.uncompressed.point.encode);
 
 describe("SLIP10-Nist256p1 end-to-end", () => {
   it("instance .getName()", () => {
@@ -38,18 +45,18 @@ describe("SLIP10-Nist256p1 end-to-end", () => {
     const dec = getBytes(data.uncompressed.point.decode);
 
     const G1 = SLIP10Nist256p1Point.fromBytes(enc);
-    const xs = G1.x();
-    const ys = G1.y();
+    const xs = G1.getX();
+    const ys = G1.getY();
 
     it("fromBytes() → rawEncoded/rawDecoded", () => {
-      expect(G1.rawEncoded()).toEqual(enc);
-      expect(G1.rawDecoded()).toEqual(dec);
+      expect(G1.getRawEncoded()).toEqual(enc);
+      expect(G1.getRawDecoded()).toEqual(dec);
     });
 
     it("fromCoordinates(x,y) → rawEncoded/rawDecoded", () => {
       const G2 = SLIP10Nist256p1Point.fromCoordinates(xs, ys);
-      expect(G2.rawEncoded()).toEqual(enc);
-      expect(G2.rawDecoded()).toEqual(dec);
+      expect(G2.getRawEncoded()).toEqual(enc);
+      expect(G2.getRawDecoded()).toEqual(dec);
     });
   });
 
@@ -59,16 +66,16 @@ describe("SLIP10-Nist256p1 end-to-end", () => {
     const dec = getBytes(vec.decode);
 
     const baseP = SLIP10Nist256p1Point.fromBytes(enc);
-    const xsStr = baseP.x().toString();
-    const ysStr = baseP.y().toString();
+    const xsStr = baseP.getX().toString();
+    const ysStr = baseP.getY().toString();
 
     describe(`Point (${type})`, () => {
       it("fromBytes()", () => {
         const p = SLIP10Nist256p1Point.fromBytes(enc);
-        expect(p.x().toString()).toBe(xsStr);
-        expect(p.y().toString()).toBe(ysStr);
-        expect(p.rawDecoded()).toEqual(dec);
-        expect(p.rawEncoded()).toEqual(enc);
+        expect(p.getX().toString()).toBe(xsStr);
+        expect(p.getY().toString()).toBe(ysStr);
+        expect(p.getRawDecoded()).toEqual(dec);
+        expect(p.getRawEncoded()).toEqual(enc);
       });
 
       it("fromCoordinates()", () => {
@@ -76,10 +83,10 @@ describe("SLIP10-Nist256p1 end-to-end", () => {
           BigInt(xsStr),
           BigInt(ysStr)
         );
-        expect(p.x().toString()).toBe(xsStr);
-        expect(p.y().toString()).toBe(ysStr);
-        expect(p.rawDecoded()).toEqual(dec);
-        expect(p.rawEncoded()).toEqual(enc);
+        expect(p.getX().toString()).toBe(xsStr);
+        expect(p.getY().toString()).toBe(ysStr);
+        expect(p.getRawDecoded()).toEqual(dec);
+        expect(p.getRawEncoded()).toEqual(enc);
       });
     });
 
@@ -87,16 +94,16 @@ describe("SLIP10-Nist256p1 end-to-end", () => {
       const pkBytes = getBytes(data[type]["public-key"]);
       it("fromBytes()", () => {
         const pk = SLIP10Nist256p1PublicKey.fromBytes(pkBytes);
-        expect(pk.rawUncompressed()).toEqual(
+        expect(pk.getRawUncompressed()).toEqual(
           getBytes(data.uncompressed["public-key"])
         );
-        expect(pk.rawCompressed()).toEqual(
+        expect(pk.getRawCompressed()).toEqual(
           getBytes(data.compressed["public-key"])
         );
 
-        const pt = pk.point();
-        expect(pt.x().toString()).toBe(xsStr);
-        expect(pt.y().toString()).toBe(ysStr);
+        const pt = pk.getPoint();
+        expect(pt.getX().toString()).toBe(xsStr);
+        expect(pt.getY().toString()).toBe(ysStr);
       });
     });
   }
@@ -104,13 +111,13 @@ describe("SLIP10-Nist256p1 end-to-end", () => {
   describe("PrivateKey", () => {
     it("fromBytes() → raw & pubkey", () => {
       const sk = SLIP10Nist256p1PrivateKey.fromBytes(getBytes(data["private-key"]));
-      expect(sk.raw()).toEqual(getBytes(data["private-key"]));
+      expect(sk.getRaw()).toEqual(getBytes(data["private-key"]));
 
-      const pk = sk.publicKey();
-      expect(pk.rawUncompressed()).toEqual(
+      const pk = sk.getPublicKey();
+      expect(pk.getRawUncompressed()).toEqual(
         getBytes(data.uncompressed["public-key"])
       );
-      expect(pk.rawCompressed()).toEqual(
+      expect(pk.getRawCompressed()).toEqual(
         getBytes(data.compressed["public-key"])
       );
     });
@@ -130,16 +137,85 @@ describe("SLIP10-Nist256p1 end-to-end", () => {
         const m1 = G.multiply(cur);
         const m2 = G.multiply(cur);
 
-        const expectedDecoded = m1.rawDecoded();
-        const expectedEncoded = m1.rawEncoded();
+        const expectedDecoded = m1.getRawDecoded();
+        const expectedEncoded = m1.getRawEncoded();
 
         for (const q of [a1, a2, m1, m2]) {
-          expect(q.x().toString()).toBe(m1.x().toString());
-          expect(q.y().toString()).toBe(m1.y().toString());
-          expect(q.rawDecoded()).toEqual(expectedDecoded);
-          expect(q.rawEncoded()).toEqual(expectedEncoded);
+          expect(q.getX().toString()).toBe(m1.getX().toString());
+          expect(q.getY().toString()).toBe(m1.getY().toString());
+          expect(q.getRawDecoded()).toEqual(expectedDecoded);
+          expect(q.getRawEncoded()).toEqual(expectedEncoded);
         }
       });
     }
+  });
+
+  describe("SLIP10-Secp256k1 (generic)", () => {
+    const ecc = ECCS.getECCClass(SLIP10Nist256p1ECC.NAME);
+
+    it("ECC.NAME matches concrete NAME", () => {
+      expect(SLIP10Nist256p1ECC.NAME).toBe(data.name);
+      expect(ecc.NAME).toBe(SLIP10Nist256p1ECC.NAME);
+    });
+
+    it("generic PRIVATE_KEY.fromBytes()", () => {
+      const skConcrete = SLIP10Nist256p1PrivateKey.fromBytes(skBytes);
+      const skGeneric = ecc.PRIVATE_KEY.fromBytes(skBytes);
+      expect(skGeneric).toBeInstanceOf(SLIP10Nist256p1PrivateKey);
+      expect(skGeneric.getRaw()).toEqual(skBytes);
+      expect(skGeneric.getRaw()).toEqual(skConcrete.getRaw());
+    });
+
+    it("generic POINT.fromBytes and .fromCoordinates", () => {
+      const basePoint = SLIP10Nist256p1Point.fromBytes(encPoint);
+      const pGeneric1 = ecc.POINT.fromBytes(encPoint);
+      const pGeneric2 = ecc.POINT.fromCoordinates(basePoint.getX(), basePoint.getY());
+      expect(pGeneric1.getRawEncoded()).toEqual(encPoint);
+      expect(pGeneric2.getRawDecoded()).toEqual(basePoint.getRawDecoded());
+    });
+
+    it("generic PUBLIC_KEY.fromBytes and .fromPoint", () => {
+      const basePoint = SLIP10Nist256p1Point.fromBytes(encPoint);
+      const puGeneric1 = ecc.PUBLIC_KEY.fromBytes(bytesUncmp);
+      const puGeneric2 = ecc.PUBLIC_KEY.fromPoint(basePoint);
+      expect(puGeneric1.getRawUncompressed()).toEqual(bytesUncmp);
+      expect(puGeneric2.getRawCompressed()).toEqual(bytesCcmp);
+    });
+
+    it("cross-route byte equality", () => {
+      const skConc = SLIP10Nist256p1PrivateKey.fromBytes(skBytes);
+      const skGen = ecc.PRIVATE_KEY.fromBytes(skBytes);
+      expect(skConc.getRaw()).toEqual(skGen.getRaw());
+
+      const ptConc = SLIP10Nist256p1Point.fromBytes(encPoint);
+      const ptGen = ecc.POINT.fromBytes(encPoint);
+      expect(ptConc.getRawDecoded()).toEqual(ptGen.getRawDecoded());
+
+      const pkConc = SLIP10Nist256p1PublicKey.fromBytes(bytesUncmp);
+      const pkGen = ecc.PUBLIC_KEY.fromBytes(bytesUncmp);
+      expect(pkConc.getRawCompressed()).toEqual(pkGen.getRawCompressed());
+    });
+
+    it("curve constants & classes", () => {
+      expect(SLIP10Nist256p1ECC.NAME).toBe(data.name);
+      expect(typeof SLIP10Nist256p1ECC.ORDER).toBe("bigint");
+      expect(SLIP10Nist256p1ECC.GENERATOR).toBeInstanceOf(SLIP10Nist256p1Point);
+      expect(SLIP10Nist256p1ECC.POINT).toBe(SLIP10Nist256p1Point);
+      expect(SLIP10Nist256p1ECC.PUBLIC_KEY).toBe(SLIP10Nist256p1PublicKey);
+      expect(SLIP10Nist256p1ECC.PRIVATE_KEY).toBe(SLIP10Nist256p1PrivateKey);
+    });
+
+    it("public key lengths", () => {
+      expect(SLIP10Nist256p1PublicKey.getUncompressedLength())
+          .toBe(data.uncompressed.length);
+      expect(SLIP10Nist256p1PublicKey.getCompressedLength())
+          .toBe(data.compressed.length);
+    });
+
+    it("private key length (via instance)", () => {
+      const sk = SLIP10Nist256p1PrivateKey.fromBytes(skBytes);
+      expect(sk.getRaw().length).toBe(data["private-key-length"]);
+    });
+
   });
 });

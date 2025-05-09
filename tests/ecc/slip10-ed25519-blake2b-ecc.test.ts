@@ -2,13 +2,18 @@
 
 import eccs from '../data/json/eccs.json';
 
+import { ECCS } from '../../src/ecc'
+
 import {
+  SLIP10Ed25519Blake2bECC,
   SLIP10Ed25519Blake2bPoint,
   SLIP10Ed25519Blake2bPublicKey,
   SLIP10Ed25519Blake2bPrivateKey
-} from '../../src/ecc';
+} from '../../src/ecc/slip10/ed25519/blake2b';
 
 import { getBytes } from '../../src/utils';
+import {SLIP10Ed25519Point} from "../../src/ecc/slip10/ed25519";
+
 
 interface PointVec { encode: string; decode: string; x: number; y: number }
 interface CurveData {
@@ -20,6 +25,10 @@ interface CurveData {
 }
 
 const data = (eccs as Record<string, CurveData>)["SLIP10-Ed25519-Blake2b"];
+const skBytes    = getBytes(data["private-key"]);
+const bytesUncmp = getBytes(data.uncompressed["public-key"]);
+const bytesCcmp  = getBytes(data.compressed["public-key"]);
+const encPoint   = getBytes(data.uncompressed.point.encode);
 
 describe("SLIP10-Ed25519-Blake2b (tweetnacl) end-to-end", () => {
   it("curve name via instances", () => {
@@ -42,27 +51,27 @@ describe("SLIP10-Ed25519-Blake2b (tweetnacl) end-to-end", () => {
     const enc        = getBytes(encode);
 
     const canonical = SLIP10Ed25519Blake2bPoint.fromBytes(enc);
-    const xs        = canonical.x();
-    const ys        = canonical.y();
-    const expEnc    = canonical.rawEncoded();
-    const expDec    = canonical.rawDecoded();
+    const xs        = canonical.getX();
+    const ys        = canonical.getY();
+    const expEnc    = canonical.getRawEncoded();
+    const expDec    = canonical.getRawDecoded();
 
     it(`Point.fromBytes() (${type})`, () => {
       const p = SLIP10Ed25519Blake2bPoint.fromBytes(enc);
       expect(p.getName()).toBe(data.name);
-      expect(p.x()).toBe(xs);
-      expect(p.y()).toBe(ys);
-      expect(p.rawEncoded()).toEqual(expEnc);
-      expect(p.rawDecoded()).toEqual(expDec);
+      expect(p.getX()).toBe(xs);
+      expect(p.getY()).toBe(ys);
+      expect(p.getRawEncoded()).toEqual(expEnc);
+      expect(p.getRawDecoded()).toEqual(expDec);
     });
 
     it(`Point.fromCoordinates() (${type})`, () => {
       const p = SLIP10Ed25519Blake2bPoint.fromCoordinates(xs, ys);
       expect(p.getName()).toBe(data.name);
-      expect(p.x()).toBe(xs);
-      expect(p.y()).toBe(ys);
-      expect(p.rawEncoded()).toEqual(expEnc);
-      expect(p.rawDecoded()).toEqual(expDec);
+      expect(p.getX()).toBe(xs);
+      expect(p.getY()).toBe(ys);
+      expect(p.getRawEncoded()).toEqual(expEnc);
+      expect(p.getRawDecoded()).toEqual(expDec);
     });
   }
 
@@ -77,14 +86,14 @@ describe("SLIP10-Ed25519-Blake2b (tweetnacl) end-to-end", () => {
       const m1   = G.multiply(cur);
       const m2   = G.multiply(cur);
 
-      const expEnc = m1.rawEncoded();
-      const expDec = m1.rawDecoded();
+      const expEnc = m1.getRawEncoded();
+      const expDec = m1.getRawDecoded();
 
       for (const q of [a1, a2, m1, m2]) {
-        expect(q.x()).toBe(m1.x());
-        expect(q.y()).toBe(m1.y());
-        expect(q.rawEncoded()).toEqual(expEnc);
-        expect(q.rawDecoded()).toEqual(expDec);
+        expect(q.getX()).toBe(m1.getX());
+        expect(q.getY()).toBe(m1.getY());
+        expect(q.getRawEncoded()).toEqual(expEnc);
+        expect(q.getRawDecoded()).toEqual(expDec);
       }
     }
   });
@@ -94,19 +103,19 @@ describe("SLIP10-Ed25519-Blake2b (tweetnacl) end-to-end", () => {
     it(`PublicKey.fromBytes() (${type})`, () => {
       const pk = SLIP10Ed25519Blake2bPublicKey.fromBytes(pkBytes);
       expect(pk.getName()).toBe(data.name);
-      expect(pk.rawUncompressed()).toEqual(
+      expect(pk.getRawUncompressed()).toEqual(
         getBytes(data.uncompressed["public-key"])
       );
-      expect(pk.rawCompressed()).toEqual(
+      expect(pk.getRawCompressed()).toEqual(
         getBytes(data.compressed["public-key"])
       );
 
-      const pt = pk.point();
+      const pt = pk.getPoint();
       const base = SLIP10Ed25519Blake2bPoint.fromBytes(
         getBytes(data.uncompressed.point.encode)
       );
-      expect(pt.x()).toBe(base.x());
-      expect(pt.y()).toBe(base.y());
+      expect(pt.getX()).toBe(base.getX());
+      expect(pt.getY()).toBe(base.getY());
     });
   }
 
@@ -115,15 +124,84 @@ describe("SLIP10-Ed25519-Blake2b (tweetnacl) end-to-end", () => {
       getBytes(data["private-key"])
     );
     expect(sk.getName()).toBe(data.name);
-    expect(sk.raw()).toEqual(getBytes(data["private-key"]));
+    expect(sk.getRaw()).toEqual(getBytes(data["private-key"]));
 
-    const pk = sk.publicKey();
+    const pk = sk.getPublicKey();
     expect(pk.getName()).toBe(data.name);
-    expect(pk.rawUncompressed()).toEqual(
+    expect(pk.getRawUncompressed()).toEqual(
       getBytes(data.uncompressed["public-key"])
     );
-    expect(pk.rawCompressed()).toEqual(
+    expect(pk.getRawCompressed()).toEqual(
       getBytes(data.compressed["public-key"])
     );
+  });
+  
+    describe("SLIP10-Secp256k1 (generic)", () => {
+    const ecc = ECCS.getECCClass(SLIP10Ed25519Blake2bECC.NAME);
+
+    it("ECC.NAME matches concrete NAME", () => {
+      expect(SLIP10Ed25519Blake2bECC.NAME).toBe(data.name);
+      expect(ecc.NAME).toBe(SLIP10Ed25519Blake2bECC.NAME);
+    });
+
+    it("generic PRIVATE_KEY.fromBytes()", () => {
+      const skConcrete = SLIP10Ed25519Blake2bPrivateKey.fromBytes(skBytes);
+      const skGeneric = ecc.PRIVATE_KEY.fromBytes(skBytes);
+      expect(skGeneric).toBeInstanceOf(SLIP10Ed25519Blake2bPrivateKey);
+      expect(skGeneric.getRaw()).toEqual(skBytes);
+      expect(skGeneric.getRaw()).toEqual(skConcrete.getRaw());
+    });
+
+    it("generic POINT.fromBytes and .fromCoordinates", () => {
+      const basePoint = SLIP10Ed25519Blake2bPoint.fromBytes(encPoint);
+      const pGeneric1 = ecc.POINT.fromBytes(encPoint);
+      const pGeneric2 = ecc.POINT.fromCoordinates(basePoint.getX(), basePoint.getY());
+      expect(pGeneric1.getRawEncoded()).toEqual(encPoint);
+      expect(pGeneric2.getRawDecoded()).toEqual(basePoint.getRawDecoded());
+    });
+
+    it("generic PUBLIC_KEY.fromBytes and .fromPoint", () => {
+      const basePoint = SLIP10Ed25519Blake2bPoint.fromBytes(encPoint);
+      const puGeneric1 = ecc.PUBLIC_KEY.fromBytes(bytesUncmp);
+      const puGeneric2 = ecc.PUBLIC_KEY.fromPoint(basePoint);
+      expect(puGeneric1.getRawUncompressed()).toEqual(bytesUncmp);
+      expect(puGeneric2.getRawCompressed()).toEqual(bytesCcmp);
+    });
+
+    it("cross-route byte equality", () => {
+      const skConc = SLIP10Ed25519Blake2bPrivateKey.fromBytes(skBytes);
+      const skGen = ecc.PRIVATE_KEY.fromBytes(skBytes);
+      expect(skConc.getRaw()).toEqual(skGen.getRaw());
+
+      const ptConc = SLIP10Ed25519Blake2bPoint.fromBytes(encPoint);
+      const ptGen = ecc.POINT.fromBytes(encPoint);
+      expect(ptConc.getRawDecoded()).toEqual(ptGen.getRawDecoded());
+
+      const pkConc = SLIP10Ed25519Blake2bPublicKey.fromBytes(bytesUncmp);
+      const pkGen = ecc.PUBLIC_KEY.fromBytes(bytesUncmp);
+      expect(pkConc.getRawCompressed()).toEqual(pkGen.getRawCompressed());
+    });
+
+    it("curve constants & classes", () => {
+      expect(SLIP10Ed25519Blake2bECC.NAME).toBe(data.name);
+      expect(typeof SLIP10Ed25519Blake2bECC.ORDER).toBe("bigint");
+      expect(SLIP10Ed25519Blake2bECC.GENERATOR).toBeInstanceOf(SLIP10Ed25519Point);
+      expect(SLIP10Ed25519Blake2bECC.POINT).toBe(SLIP10Ed25519Blake2bPoint);
+      expect(SLIP10Ed25519Blake2bECC.PUBLIC_KEY).toBe(SLIP10Ed25519Blake2bPublicKey);
+      expect(SLIP10Ed25519Blake2bECC.PRIVATE_KEY).toBe(SLIP10Ed25519Blake2bPrivateKey);
+    });
+
+    it("public key lengths", () => {
+      expect(SLIP10Ed25519Blake2bPublicKey.getUncompressedLength())
+          .toBe(data.uncompressed.length);
+      expect(SLIP10Ed25519Blake2bPublicKey.getCompressedLength())
+          .toBe(data.compressed.length);
+    });
+
+    it("private key length (via instance)", () => {
+      const sk = SLIP10Ed25519Blake2bPrivateKey.fromBytes(skBytes);
+      expect(sk.getRaw().length).toBe(data["private-key-length"]);
+    });
+
   });
 });
