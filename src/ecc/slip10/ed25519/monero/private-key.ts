@@ -16,7 +16,7 @@ export class SLIP10Ed25519MoneroPrivateKey extends SLIP10Ed25519PrivateKey {
     return 'SLIP10-Ed25519-Monero';
   }
 
-  publicKey(): PublicKey {
+  getPublicKey(): PublicKey {
     const verifyKey = ec.keyFromPublic(
         bytesToString(pointScalarMulBase(this.privateKey.secret()))
     );

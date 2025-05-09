@@ -49,7 +49,7 @@ export class SLIP10Ed25519PublicKey extends PublicKey {
   }
 
   static getUncompressedLength(): number {
-    return SLIP10Ed25519PublicKey.getCompressedLength();
+    return this.getCompressedLength();
   }
 
   getUnderlyingObject(): any {

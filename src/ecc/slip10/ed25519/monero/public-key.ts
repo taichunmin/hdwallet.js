@@ -15,7 +15,7 @@ export class SLIP10Ed25519MoneroPublicKey extends SLIP10Ed25519PublicKey {
     return 'SLIP10-Ed25519-Monero';
   }
 
-  rawCompressed(): Uint8Array {
+  getRawCompressed(): Uint8Array {
     return new Uint8Array(ec.encodePoint(this.publicKey));
   }
 
@@ -23,11 +23,7 @@ export class SLIP10Ed25519MoneroPublicKey extends SLIP10Ed25519PublicKey {
     return SLIP10_ED25519_CONST.PUBLIC_KEY_BYTE_LENGTH;
   }
 
-  static getUncompressedLength(): number {
-    return SLIP10Ed25519MoneroPublicKey.getCompressedLength();
-  }
-
-  point(): Point {
+  getPoint(): Point {
     return new SLIP10Ed25519MoneroPoint(this.publicKey);
   }
 }
