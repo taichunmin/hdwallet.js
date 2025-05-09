@@ -1,14 +1,15 @@
 // SPDX-License-Identifier: MIT
 
 import { Buffer } from 'buffer';
-import { IPublicKey, SLIP10Secp256k1PublicKey, validateAndGetPublicKey } from '../ecc';
+import { PublicKey, SLIP10Secp256k1PublicKey, validateAndGetPublicKey } from '../ecc';
 import { Ethereum } from '../cryptocurrencies';
 import { keccak256 } from '../crypto';
 import { bytesToString } from '../utils';
 import { AddressError } from '../exceptions';
-import { AddressOptionsInterface, IAddress } from './iaddress';
+import { Address } from './address';
+import { AddressOptionsInterface } from '../interfaces';
 
-export class EthereumAddress implements IAddress {
+export class EthereumAddress implements Address {
 
   static addressPrefix: string = Ethereum.PARAMS.ADDRESS_PREFIX;
 
@@ -32,13 +33,12 @@ export class EthereumAddress implements IAddress {
   }
 
   static encode(
-    publicKey: Buffer | string | IPublicKey,
-    options: AddressOptionsInterface = {
+    publicKey: Buffer | string | PublicKey, options: AddressOptionsInterface = {
       skipChecksumEncode: false
     }
   ): string {
     const pk = validateAndGetPublicKey(publicKey, SLIP10Secp256k1PublicKey);
-    const pubKeyHash = bytesToString(keccak256(pk.rawUncompressed().slice(1))).slice(-40);
+    const pubKeyHash = bytesToString(keccak256(pk.getRawUncompressed().slice(1))).slice(-40);
 
     return this.addressPrefix + (
       options.skipChecksumEncode ? pubKeyHash : this.checksumEncode(pubKeyHash)
@@ -46,8 +46,7 @@ export class EthereumAddress implements IAddress {
   }
 
   static decode(
-    address: string,
-    options: AddressOptionsInterface = {
+    address: string, options: AddressOptionsInterface = {
       skipChecksumEncode: false
     }
   ): string {
@@ -74,7 +73,6 @@ export class EthereumAddress implements IAddress {
         got: addressPart
       });
     }
-
     return addressPart.toLowerCase();
   }
 }

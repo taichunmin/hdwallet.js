@@ -3,17 +3,18 @@
 import { Buffer } from 'buffer';
 import { ensureString, checkEncode, checkDecode } from '../libs/base58';
 import {
-  IPublicKey,
+  PublicKey,
   SLIP10Secp256k1PublicKey,
   validateAndGetPublicKey
 } from '../ecc';
 import { Tron } from '../cryptocurrencies';
 import { keccak256 } from '../crypto';
 import { integerToBytes, bytesToString, toBuffer } from '../utils';
-import { AddressOptionsInterface, IAddress } from './iaddress';
+import { Address } from './address';
 import { AddressError } from '../exceptions';
+import { AddressOptionsInterface } from '../interfaces';
 
-export class TronAddress implements IAddress {
+export class TronAddress implements Address {
 
   static publicKeyAddressPrefix: number = Tron.NETWORKS.MAINNET.PUBLIC_KEY_ADDRESS_PREFIX;
   static alphabet: string = Tron.PARAMS.ALPHABET;
@@ -23,21 +24,22 @@ export class TronAddress implements IAddress {
   }
 
   static encode(
-    publicKey: Buffer | string | IPublicKey,
-    options: AddressOptionsInterface = {
+    publicKey: Buffer | string | PublicKey, options: AddressOptionsInterface = {
       publicKeyAddressPrefix: this.publicKeyAddressPrefix,
       alphabet: this.alphabet
     }
   ): string {
+
     const pk = validateAndGetPublicKey(publicKey, SLIP10Secp256k1PublicKey);
-    const addressHash = bytesToString(keccak256(pk.rawUncompressed().slice(1))).slice(-40); // last 20 bytes
+    const addressHash = bytesToString(keccak256(pk.getRawUncompressed().slice(1))).slice(-40); // last 20 bytes
     const prefixBytes = integerToBytes(
         options.publicKeyAddressPrefix ?? this.publicKeyAddressPrefix
     );
     const alphabet = options.alphabet ?? this.alphabet;
     const payload = Buffer.concat([prefixBytes, Buffer.from(addressHash, 'hex')]);
-
-    return ensureString(checkEncode(payload, alphabet));
+    return ensureString(checkEncode(
+      payload, alphabet
+    ));
   }
 
   static decode(
@@ -47,6 +49,7 @@ export class TronAddress implements IAddress {
       alphabet: this.alphabet
     }
   ): string {
+
     const alphabet = options.alphabet ?? this.alphabet;
     const decoded = checkDecode(address, alphabet);
     const prefixValue = integerToBytes(
@@ -67,7 +70,8 @@ export class TronAddress implements IAddress {
         expected: prefixBytes.toString('hex'), got: prefixGot.toString('hex')
       });
     }
-
-    return bytesToString(decoded.slice(prefixBytes.length));
+    return bytesToString(decoded.slice(
+      prefixBytes.length
+    ));
   }
 }

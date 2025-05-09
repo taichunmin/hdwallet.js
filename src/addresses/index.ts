@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-import { IAddress } from './iaddress';
+import { Address } from './address';
 import { P2PKHAddress } from './p2pkh';
 import { P2SHAddress } from './p2sh';
 import { P2TRAddress } from './p2tr';
@@ -21,7 +21,7 @@ import { ErgoAddress } from './ergo';
 
 export class ADDRESSES {
 
-  private static readonly dictionary: Record<string, typeof IAddress> = {
+  private static readonly dictionary: Record<string, typeof Address> = {
     [P2PKHAddress.getName()]: P2PKHAddress,
     [P2SHAddress.getName()]: P2SHAddress,
     [P2TRAddress.getName()]: P2TRAddress,
@@ -44,11 +44,11 @@ export class ADDRESSES {
     return Object.keys(this.dictionary);
   }
 
-  public static getClasses(): Array<typeof IAddress> {
+  public static getClasses(): Array<typeof Address> {
     return Object.values(this.dictionary);
   }
 
-  public static address(name: string): typeof IAddress {
+  public static address(name: string): typeof Address {
     if (!this.isAddress(name)) {
       throw new AddressError(
         'Invalid address name', { expected: this.getNames(), got: name }
@@ -63,7 +63,7 @@ export class ADDRESSES {
 }
 
 export {
-  IAddress,
+  Address,
   P2PKHAddress,
   P2SHAddress,
   P2TRAddress,

@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 
 import { Buffer } from 'buffer';
-import { IPrivateKey, IPublicKey, SLIP10Secp256k1PrivateKey, } from '../../src/ecc';
+import { PrivateKey, PublicKey, SLIP10Secp256k1PrivateKey, } from '../../src/ecc';
 import {
   P2PKHAddress,
   P2SHAddress,
@@ -24,14 +24,14 @@ import { PUBLIC_KEY_TYPES } from '../../src/const';
 import { bytesToString } from '../../src/utils';
 import { Bitcoin, Cosmos, Filecoin, Avalanche, Ergo } from '../../src/cryptocurrencies';
 
-const PRIVATE_KEY: IPrivateKey = SLIP10Secp256k1PrivateKey.fromBytes(
+const PRIVATE_KEY: PrivateKey = SLIP10Secp256k1PrivateKey.fromBytes(
   Buffer.from('be3851aa7822b92deb2f34655e41a40fd510f6cf9aa2a4f0c4d7a4bc81f0ad74', 'hex')
 );
-const PUBLIC_KEY: IPublicKey = PRIVATE_KEY.publicKey();
+const PUBLIC_KEY: PublicKey = PRIVATE_KEY.getPublicKey();
 
-console.log('Private Key:', bytesToString(PRIVATE_KEY.raw()));
-console.log('Uncompressed Public Key:', bytesToString(PUBLIC_KEY.rawUncompressed()));
-console.log('Compressed Public Key:', bytesToString(PUBLIC_KEY.rawCompressed()), '\n');
+console.log('Private Key:', bytesToString(PRIVATE_KEY.getRaw()));
+console.log('Uncompressed Public Key:', bytesToString(PUBLIC_KEY.getRawUncompressed()));
+console.log('Compressed Public Key:', bytesToString(PUBLIC_KEY.getRawCompressed()), '\n');
 
 const p2pkhAddress: string = P2PKHAddress.encode(PUBLIC_KEY, {
   publicKeyAddressPrefix: Bitcoin.NETWORKS.MAINNET.PUBLIC_KEY_ADDRESS_PREFIX,

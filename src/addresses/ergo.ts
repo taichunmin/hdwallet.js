@@ -2,19 +2,16 @@
 
 import { Buffer } from 'buffer';
 import { ensureString, encode, decode } from '../libs/base58';
-import {
-  IPublicKey,
-  SLIP10Secp256k1PublicKey,
-  validateAndGetPublicKey
-} from '../ecc';
+import { PublicKey, SLIP10Secp256k1PublicKey, validateAndGetPublicKey } from '../ecc';
 import { Ergo } from '../cryptocurrencies';
 import { blake2b256 } from '../crypto';
 import { bytesToString, integerToBytes, validateAndGetData, toBuffer } from '../utils';
-import { AddressOptionsInterface, IAddress } from './iaddress';
-import { AddressError, NetworkError } from '../exceptions';
+import { Address } from './address';
 import { INetwork } from '../cryptocurrencies/icryptocurrency';
+import { AddressOptionsInterface } from '../interfaces';
+import { AddressError, NetworkError } from '../exceptions';
 
-export class ErgoAddress implements IAddress {
+export class ErgoAddress implements Address {
 
   static checksumLength: number = Ergo.PARAMS.CHECKSUM_LENGTH;
   static addressType: string = Ergo.DEFAULT_ADDRESS_TYPE;
@@ -37,7 +34,7 @@ export class ErgoAddress implements IAddress {
   }
 
   static encode(
-    publicKey: Buffer | string | IPublicKey, options: AddressOptionsInterface = {
+    publicKey: Buffer | string | PublicKey, options: AddressOptionsInterface = {
       addressType: this.addressType,
       networkType: this.networkType
     }
@@ -63,9 +60,8 @@ export class ErgoAddress implements IAddress {
     }
     const pk = validateAndGetPublicKey(publicKey, SLIP10Secp256k1PublicKey);
     const prefix = integerToBytes(addressType + networkType);
-    const addressPayload = Buffer.concat([prefix, pk.rawCompressed()]);
+    const addressPayload = Buffer.concat([prefix, pk.getRawCompressed()]);
     const checksum = this.computeChecksum(addressPayload);
-
     return ensureString(encode(Buffer.concat([addressPayload, checksum])));
   }
 
@@ -82,16 +78,14 @@ export class ErgoAddress implements IAddress {
     const networkType = this.networkTypes[networkKey];
     if (networkType === undefined) {
       throw new NetworkError('Invalid Ergo network type', {
-        expected: Object.keys(this.networkTypes),
-        got: network
+        expected: Object.keys(this.networkTypes), got: network
       });
     }
     const typeKey = options.addressType ?? this.addressType;
     const addressType = this.addressTypes[typeKey];
     if (addressType === undefined) {
       throw new AddressError('Invalid Ergo address type', {
-        expected: Object.keys(this.addressTypes),
-        got: typeKey
+        expected: Object.keys(this.addressTypes), got: typeKey
       });
     }
 
@@ -99,11 +93,10 @@ export class ErgoAddress implements IAddress {
     const decoded = decode(address);
 
     const expectedLength =
-      SLIP10Secp256k1PublicKey.compressedLength() + this.checksumLength + prefix.length;
+      SLIP10Secp256k1PublicKey.getCompressedLength() + this.checksumLength + prefix.length;
     if (decoded.length !== expectedLength) {
       throw new AddressError('Invalid length', {
-        expected: expectedLength,
-        got: decoded.length
+        expected: expectedLength, got: decoded.length
       });
     }
 
@@ -113,16 +106,14 @@ export class ErgoAddress implements IAddress {
 
     if (!checksum.equals(checksumExpected)) {
       throw new AddressError('Invalid checksum', {
-        expected: checksumExpected.toString('hex'),
-        got: checksum.toString('hex')
+        expected: checksumExpected.toString('hex'), got: checksum.toString('hex')
       });
     }
 
     const prefixGot = payload.slice(0, prefix.length);
     if (!prefix.equals(prefixGot)) {
       throw new AddressError('Invalid prefix', {
-        expected: prefix.toString('hex'),
-        got: prefixGot.toString('hex')
+        expected: prefix.toString('hex'), got: prefixGot.toString('hex')
       });
     }
 
@@ -132,7 +123,6 @@ export class ErgoAddress implements IAddress {
         got: pubKey.toString('hex')
       });
     }
-
     return bytesToString(pubKey);
   }
 }

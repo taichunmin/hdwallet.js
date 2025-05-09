@@ -2,18 +2,15 @@
 
 import { Buffer } from 'buffer';
 import { ensureString, encode, decode } from '../libs/base58';
-import {
-  IPublicKey,
-  SLIP10Secp256k1PublicKey,
-  validateAndGetPublicKey
-} from '../ecc';
+import { PublicKey, SLIP10Secp256k1PublicKey, validateAndGetPublicKey } from '../ecc';
 import { EOS } from '../cryptocurrencies';
-import { bytesToString, toBuffer } from '../utils';
-import { AddressOptionsInterface, IAddress } from './iaddress';
-import { AddressError } from '../exceptions';
 import { ripemd160 } from '../crypto';
+import { bytesToString, toBuffer } from '../utils';
+import { AddressOptionsInterface } from '../interfaces';
+import { Address } from './address';
+import { AddressError } from '../exceptions';
 
-export class EOSAddress implements IAddress {
+export class EOSAddress implements Address {
 
   static addressPrefix: string = EOS.PARAMS.ADDRESS_PREFIX;
   static checksumLength: number = EOS.PARAMS.CHECKSUM_LENGTH;
@@ -27,12 +24,12 @@ export class EOSAddress implements IAddress {
   }
 
   static encode(
-    publicKey: Buffer | string | IPublicKey, options: AddressOptionsInterface = {
-        addressPrefix: this.addressPrefix
+    publicKey: Buffer | string | PublicKey, options: AddressOptionsInterface = {
+      addressPrefix: this.addressPrefix
     }
   ): string {
     const pk = validateAndGetPublicKey(publicKey, SLIP10Secp256k1PublicKey);
-    const raw = toBuffer(pk.rawCompressed());
+    const raw = toBuffer(pk.getRawCompressed());
     const checksum = this.computeChecksum(raw);
     const prefix = options.addressPrefix ?? this.addressPrefix;
     return prefix + ensureString(encode(Buffer.concat([raw, checksum])));
@@ -40,25 +37,23 @@ export class EOSAddress implements IAddress {
 
   static decode(
     address: string, options: AddressOptionsInterface = {
-        addressPrefix: this.addressPrefix
+      addressPrefix: this.addressPrefix
     }
   ): string {
     const prefix = options.addressPrefix ?? this.addressPrefix;
     if (!address.startsWith(prefix)) {
       throw new AddressError('Invalid prefix', {
-        expected: prefix,
-        got: address.slice(0, prefix.length)
+        expected: prefix, got: address.slice(0, prefix.length)
       });
     }
 
     const withoutPrefix = address.slice(prefix.length);
     const decoded = decode(withoutPrefix);
 
-    const expectedLength = SLIP10Secp256k1PublicKey.compressedLength() + this.checksumLength;
+    const expectedLength = SLIP10Secp256k1PublicKey.getCompressedLength() + this.checksumLength;
     if (decoded.length !== expectedLength) {
       throw new AddressError('Invalid length', {
-        expected: expectedLength,
-        got: decoded.length
+        expected: expectedLength, got: decoded.length
       });
     }
 
@@ -68,8 +63,7 @@ export class EOSAddress implements IAddress {
 
     if (!checksum.equals(computedChecksum)) {
       throw new AddressError('Invalid checksum', {
-        expected: computedChecksum.toString('hex'),
-        got: checksum.toString('hex')
+        expected: computedChecksum.toString('hex'), got: checksum.toString('hex')
       });
     }
 
@@ -78,7 +72,6 @@ export class EOSAddress implements IAddress {
         got: publicKeyBytes.toString('hex')
       });
     }
-
     return bytesToString(publicKeyBytes);
   }
 }

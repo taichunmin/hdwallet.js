@@ -2,9 +2,9 @@
 
 import { P2PKHAddress } from './p2pkh';
 import { Ripple } from '../cryptocurrencies';
-import { IAddress } from './iaddress';
+import { Address } from './address';
 
-export class RippleAddress extends P2PKHAddress implements IAddress {
+export class RippleAddress extends P2PKHAddress implements Address {
 
   static alphabet: string = Ripple.PARAMS.ALPHABET;
 

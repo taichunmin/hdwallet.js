@@ -1,17 +1,19 @@
 // SPDX-License-Identifier: MIT
 
 import { Buffer } from 'buffer';
+
 import { ensureString } from '../libs/base58';
 import { segwitEncode, segwitDecode } from '../libs/segwit-bech32';
 import { PUBLIC_KEY_TYPES } from '../const';
-import { IPublicKey, SLIP10Secp256k1PublicKey, validateAndGetPublicKey } from '../ecc';
+import { PublicKey, SLIP10Secp256k1PublicKey, validateAndGetPublicKey } from '../ecc';
 import { Bitcoin } from '../cryptocurrencies';
 import { hash160 } from '../crypto';
 import { AddressError } from '../exceptions';
 import { bytesToString } from '../utils';
-import { AddressOptionsInterface, IAddress } from './iaddress';
+import { Address } from './address';
+import { AddressOptionsInterface } from '../interfaces';
 
-export class P2WPKHAddress implements IAddress {
+export class P2WPKHAddress implements Address {
 
   static hrp: string = Bitcoin.NETWORKS.MAINNET.HRP;
   static witnessVersion: number = Bitcoin.NETWORKS.MAINNET.WITNESS_VERSIONS.P2WPKH;
@@ -21,7 +23,7 @@ export class P2WPKHAddress implements IAddress {
   }
 
   static encode(
-    publicKey: Buffer | string | IPublicKey, options: AddressOptionsInterface = {
+    publicKey: Buffer | string | PublicKey, options: AddressOptionsInterface = {
       hrp: this.hrp,
       publicKeyType: PUBLIC_KEY_TYPES.COMPRESSED,
       witnessVersion: this.witnessVersion
@@ -32,13 +34,12 @@ export class P2WPKHAddress implements IAddress {
 
     const rawPubBytes =
       options.publicKeyType === PUBLIC_KEY_TYPES.UNCOMPRESSED
-        ? pk.rawUncompressed() : pk.rawCompressed();
+        ? pk.getRawUncompressed() : pk.getRawCompressed();
 
     const pubKeyHash = hash160(rawPubBytes);
 
     const hrp = options.hrp ?? this.hrp;
     const witnessVersion = options.witnessVersion ?? this.witnessVersion;
-
     return ensureString(segwitEncode(hrp, witnessVersion, pubKeyHash));
   }
 
@@ -52,7 +53,6 @@ export class P2WPKHAddress implements IAddress {
     if (!decoded) {
       throw new AddressError('Invalid address decoding');
     }
-
     return bytesToString(decoded);
   }
 }

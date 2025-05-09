@@ -2,20 +2,15 @@
 
 import { Buffer } from 'buffer';
 import { encodeNoPadding, decode } from '../libs/base32';
-import {
-  IPublicKey,
-  SLIP10Secp256k1PublicKey,
-  validateAndGetPublicKey
-} from '../ecc';
+import { PublicKey, SLIP10Secp256k1PublicKey, validateAndGetPublicKey } from '../ecc';
 import { Filecoin } from '../cryptocurrencies';
 import { blake2b160, blake2b32 } from '../crypto';
-import {
-  integerToBytes, bytesToString, toBuffer
-} from '../utils';
-import { AddressOptionsInterface, IAddress } from './iaddress';
+import { integerToBytes, bytesToString, toBuffer } from '../utils';
+import { AddressOptionsInterface } from '../interfaces';
+import { Address } from './address';
 import { AddressError } from '../exceptions';
 
-export class FilecoinAddress implements IAddress {
+export class FilecoinAddress implements Address {
 
   static alphabet: string = Filecoin.PARAMS.ALPHABET;
   static addressPrefix: string = Filecoin.PARAMS.ADDRESS_PREFIX;
@@ -34,13 +29,13 @@ export class FilecoinAddress implements IAddress {
   }
 
   static encode(
-    publicKey: Buffer | string | IPublicKey, options: AddressOptionsInterface = {
+    publicKey: Buffer | string | PublicKey, options: AddressOptionsInterface = {
       addressPrefix: this.addressPrefix,
       addressType: this.addressType
     }
   ): string {
     const pk = validateAndGetPublicKey(publicKey, SLIP10Secp256k1PublicKey);
-    const pubKeyHash = blake2b160(pk.rawUncompressed());
+    const pubKeyHash = blake2b160(pk.getRawUncompressed());
 
     const typeKey = options.addressType ?? this.addressType;
     const addressType = this.addressTypes[typeKey];
@@ -56,7 +51,6 @@ export class FilecoinAddress implements IAddress {
       Buffer.concat([pubKeyHash, checksum]).toString('hex'),
       FilecoinAddress.alphabet
     );
-
     return FilecoinAddress.addressPrefix + String.fromCharCode(addressType + '0'.charCodeAt(0)) + base32Encoded;
   }
 
@@ -112,7 +106,6 @@ export class FilecoinAddress implements IAddress {
         got: checksum.toString('hex')
       });
     }
-
     return bytesToString(publicKeyHash);
   }
 }

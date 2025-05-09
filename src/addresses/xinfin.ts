@@ -2,9 +2,9 @@
 
 import { EthereumAddress } from './ethereum';
 import { XinFin } from '../cryptocurrencies';
-import { IAddress } from './iaddress';
+import { Address } from './address';
 
-export class XinFinAddress extends EthereumAddress implements IAddress {
+export class XinFinAddress extends EthereumAddress implements Address {
 
   static addressPrefix: string = XinFin.PARAMS.ADDRESS_PREFIX;
 

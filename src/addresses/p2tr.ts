@@ -2,24 +2,18 @@
 
 import { segwitEncode, segwitDecode } from '../libs/segwit-bech32';
 import {
-  IPublicKey,
-  SLIP10Secp256k1ECC,
-  SLIP10Secp256k1Point,
-  SLIP10Secp256k1PublicKey,
-  validateAndGetPublicKey
+  PublicKey, SLIP10Secp256k1ECC, SLIP10Secp256k1Point, SLIP10Secp256k1PublicKey, validateAndGetPublicKey
 } from '../ecc';
 import { Bitcoin } from '../cryptocurrencies';
 import { sha256 } from '../crypto';
 import {
-  getBytes,
-  integerToBytes,
-  bytesToInteger,
-  bytesToString
+  getBytes, integerToBytes, bytesToInteger, bytesToString
 } from '../utils';
-import { AddressOptionsInterface, IAddress } from './iaddress';
+import { AddressOptionsInterface } from '../interfaces';
+import { Address } from './address';
 
 
-export class P2TRAddress implements IAddress {
+export class P2TRAddress implements Address {
   
   static hrp: string = Bitcoin.NETWORKS.MAINNET.HRP;
   static fieldSize: bigint = BigInt(Bitcoin.PARAMS.FIELD_SIZE);
@@ -35,14 +29,14 @@ export class P2TRAddress implements IAddress {
     return sha256(new Uint8Array([...tagHash, ...tagHash, ...data]));
   }
 
-  static hashTapTweak(pubKey: IPublicKey): Uint8Array {
-    const x = BigInt(pubKey.point().x());
+  static hashTapTweak(pubKey: PublicKey): Uint8Array {
+    const x = BigInt(pubKey.getPoint().getX());
     return this.taggedHash(this.tapTweakTagHash, integerToBytes(x));
   }
 
-  static liftX(pubKey: IPublicKey): SLIP10Secp256k1Point {
+  static liftX(pubKey: PublicKey): SLIP10Secp256k1Point {
     const p = this.fieldSize;
-    const x = BigInt(pubKey.point().x());
+    const x = BigInt(pubKey.getPoint().getX());
 
     if (x >= p) throw new Error('Unable to compute LiftX point');
     
@@ -58,15 +52,15 @@ export class P2TRAddress implements IAddress {
     return SLIP10Secp256k1Point.fromCoordinates(x, evenY);
   }
 
-  static tweakPublicKey(pubKey: IPublicKey): Uint8Array {
+  static tweakPublicKey(pubKey: PublicKey): Uint8Array {
     const tweak = BigInt(bytesToInteger(this.hashTapTweak(pubKey)));
     const lifted = this.liftX(pubKey);
     const tweaked = lifted.add(SLIP10Secp256k1ECC.GENERATOR.multiply(tweak));
-    return integerToBytes(BigInt(tweaked.x()));
+    return integerToBytes(BigInt(tweaked.getX()));
   }
 
   static encode(
-    publicKey: string | Uint8Array | IPublicKey, options: AddressOptionsInterface = {
+    publicKey: string | Uint8Array | PublicKey, options: AddressOptionsInterface = {
       hrp: this.hrp,
       witnessVersion: this.witnessVersion
     }
@@ -86,7 +80,7 @@ export class P2TRAddress implements IAddress {
 
     const [witnessVersion, data] = segwitDecode(options.hrp ?? this.hrp, address);
 
-    const expectedLength = SLIP10Secp256k1PublicKey.compressedLength() - 1;
+    const expectedLength = SLIP10Secp256k1PublicKey.getCompressedLength() - 1;
     if (data?.length !== expectedLength) {
       throw new Error(`Invalid length (expected: ${expectedLength}, got: ${data?.length})`);
     }

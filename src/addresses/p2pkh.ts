@@ -1,16 +1,18 @@
 // SPDX-License-Identifier: MIT
 
 import { Buffer } from 'buffer';
+
 import { checkDecode, checkEncode, ensureString } from '../libs/base58';
 import { PUBLIC_KEY_TYPES } from '../const';
-import { IPublicKey, SLIP10Secp256k1PublicKey, validateAndGetPublicKey } from '../ecc';
+import { PublicKey, SLIP10Secp256k1PublicKey, validateAndGetPublicKey } from '../ecc';
 import { Bitcoin } from '../cryptocurrencies';
 import { hash160 } from '../crypto';
 import { AddressError } from '../exceptions';
 import { bytesToString, integerToBytes, toBuffer } from '../utils';
-import { AddressOptionsInterface, IAddress } from './iaddress';
+import { AddressOptionsInterface } from '../interfaces';
+import { Address } from './address';
 
-export class P2PKHAddress implements IAddress {
+export class P2PKHAddress implements Address {
 
   static publicKeyAddressPrefix: number = Bitcoin.NETWORKS.MAINNET.PUBLIC_KEY_ADDRESS_PREFIX;
   static alphabet: string = Bitcoin.PARAMS.ALPHABET;
@@ -20,7 +22,7 @@ export class P2PKHAddress implements IAddress {
   }
 
   static encode(
-    publicKey: Buffer | string | IPublicKey, options: AddressOptionsInterface = {
+    publicKey: Buffer | string | PublicKey, options: AddressOptionsInterface = {
       publicKeyAddressPrefix: this.publicKeyAddressPrefix,
       publicKeyType: PUBLIC_KEY_TYPES.COMPRESSED,
       alphabet: this.alphabet
@@ -34,7 +36,7 @@ export class P2PKHAddress implements IAddress {
 
     const rawPubBytes =
       options.publicKeyType === PUBLIC_KEY_TYPES.UNCOMPRESSED
-        ? pk.rawUncompressed() : pk.rawCompressed();
+        ? pk.getRawUncompressed() : pk.getRawCompressed();
 
     const pubKeyHash = hash160(toBuffer(rawPubBytes));
     const payload = Buffer.concat([prefixBytes, pubKeyHash]);
