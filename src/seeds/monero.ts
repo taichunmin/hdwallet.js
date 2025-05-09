@@ -1,20 +1,21 @@
-import { IMnemonic, MoneroMnemonic } from '../mnemonics';
+// SPDX-License-Identifier: MIT
+
+import { Mnemonic, MoneroMnemonic } from '../mnemonics';
 import { MnemonicError } from '../exceptions';
-import { ISeed } from './iseed';
+import { Seed } from './seed';
 
-export class MoneroSeed extends ISeed {
-  constructor(seed: string) {
-    super(seed);
-  }
+export class MoneroSeed extends Seed {
 
-  static client(): string {
+  static getName(): string {
     return 'Monero';
   }
 
-  static fromMnemonic(mnemonic: string | IMnemonic): string {
-    const phrase = typeof mnemonic === 'string' ? mnemonic : mnemonic.mnemonic();
+  static fromMnemonic(mnemonic: string | Mnemonic): string {
+
+    const phrase = typeof mnemonic === 'string' ? mnemonic : mnemonic.getMnemonic();
+
     if (!MoneroMnemonic.isValid(phrase)) {
-      throw new MnemonicError(`Invalid ${this.client()} mnemonic words`);
+      throw new MnemonicError(`Invalid ${this.getName()} mnemonic words`);
     }
     return MoneroMnemonic.decode(phrase);
   }

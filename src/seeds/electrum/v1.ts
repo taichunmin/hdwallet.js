@@ -1,30 +1,33 @@
-import { sha256 } from '../../crypto'
-import { MnemonicError } from '../../exceptions'
-import { IMnemonic, ElectrumV1Mnemonic } from '../../mnemonics'
-import { bytesToString } from '../../utils'
-import { ISeed } from '../iseed'
+// SPDX-License-Identifier: MIT
 
-export class ElectrumV1Seed extends ISeed {
+import { Seed } from '../seed';
+import { Mnemonic, ElectrumV1Mnemonic } from '../../mnemonics';
+import { sha256 } from '../../crypto';
+import { bytesToString } from '../../utils';
+import { MnemonicError } from '../../exceptions';
+
+export class ElectrumV1Seed extends Seed {
+
   static hashIterationNumber = 10 ** 5
 
-  static client(): string {
-    return 'Electrum-V1'
+  static getName(): string {
+    return 'Electrum-V1';
   }
 
-  static fromMnemonic(mnemonic: string | IMnemonic): string {
-    const phrase = typeof mnemonic === 'string' ? mnemonic : mnemonic.mnemonic()
-    if (!ElectrumV1Mnemonic.isValid(phrase)) {
-      throw new MnemonicError(`Invalid ${this.client()} mnemonic words`)
-    }
+  static fromMnemonic(mnemonic: string | Mnemonic): string {
 
-    const entropy = ElectrumV1Mnemonic.decode(phrase)
-    const entropyBuffer = Buffer.from(entropy, 'utf8')
-    let entropyHash = entropyBuffer
+    const phrase = typeof mnemonic === 'string' ? mnemonic : mnemonic.getMnemonic();
+
+    if (!ElectrumV1Mnemonic.isValid(phrase)) {
+      throw new MnemonicError(`Invalid ${this.getName()} mnemonic words`);
+    }
+    const entropy = ElectrumV1Mnemonic.decode(phrase);
+    const entropyBuffer = Buffer.from(entropy, 'utf8');
+    let entropyHash = entropyBuffer;
 
     for (let i = 0; i < this.hashIterationNumber; i++) {
-      entropyHash = sha256(Buffer.concat([entropyHash, entropyBuffer]))
+      entropyHash = sha256(Buffer.concat([entropyHash, entropyBuffer]));
     }
-
-    return bytesToString(entropyHash)
+    return bytesToString(entropyHash);
   }
 }

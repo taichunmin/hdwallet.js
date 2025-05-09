@@ -12,7 +12,7 @@ export class Mnemonic {
   protected mnemonic: string[];
   protected words: number;
   protected language: string;
-  protected options?: MnemonicOptionsInterface;
+  protected options: MnemonicOptionsInterface;
 
   static wordsList: number[] = [];
   static languages: string[] = [];

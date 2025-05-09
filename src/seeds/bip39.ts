@@ -1,29 +1,35 @@
-import { IMnemonic, BIP39Mnemonic } from '../mnemonics';
-import { MnemonicError } from '../exceptions';
+// SPDX-License-Identifier: MIT
+
+import { Seed } from './seed';
+import { Mnemonic, BIP39Mnemonic } from '../mnemonics';
 import { pbkdf2HmacSha512 } from '../crypto';
 import { bytesToString } from '../utils';
-import { ISeed } from './iseed';
+import { MnemonicError } from '../exceptions';
+import { SeedOptionsInterface } from '../interfaces';
 
-export class BIP39Seed extends ISeed {
+export class BIP39Seed extends Seed {
+
   static seedSaltModifier = 'mnemonic';
   static seedPbkdf2Rounds = 2048;
 
-  constructor(seed: string) {
-    super(seed);
-  }
-
-  static client(): string {
+  static getName(): string {
     return 'BIP39';
   }
 
-  static fromMnemonic(mnemonic: string | IMnemonic, passphrase?: string): string {
-    const phrase = typeof mnemonic === 'string' ? mnemonic : mnemonic.mnemonic();
+  static fromMnemonic(
+    mnemonic: string | Mnemonic, options: SeedOptionsInterface = { }
+  ): string {
+
+    const phrase = typeof mnemonic === 'string' ? mnemonic : mnemonic.getMnemonic();
+
     if (!BIP39Mnemonic.isValid(phrase)) {
-      throw new MnemonicError(`Invalid ${this.client()} mnemonic words`);
+      throw new MnemonicError(`Invalid ${this.getName()} mnemonic words`);
     }
-    const saltBase = this.seedSaltModifier + (passphrase ?? '');
+    const saltBase = this.seedSaltModifier + (options.passphrase ?? '');
     const salt = saltBase.normalize('NFKD');
-    const seedBytes = pbkdf2HmacSha512(phrase, salt, this.seedPbkdf2Rounds);
+    const seedBytes = pbkdf2HmacSha512(
+      phrase, salt, this.seedPbkdf2Rounds
+    );
     return bytesToString(seedBytes);
   }
 }

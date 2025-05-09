@@ -94,3 +94,23 @@ export interface MoneroMnemonicLanguagesInterface {
   RUSSIAN: string;
   SPANISH: string;
 }
+
+export interface SeedOptionsInterface {
+  passphrase?: string | null;
+  cardanoType?: string;
+  mnemonicType?: string;
+}
+
+export interface AddressOptionsInterface {
+  hrp?: string,
+  addressPrefix?: string;
+  addressType?: string;
+  networkType?: string;
+  publicKeyAddressPrefix?: number;
+  scriptAddressPrefix?: number;
+  publicKeyType?: string;
+  witnessVersion?: number;
+  skipChecksumEncode?: boolean;
+  alphabet?: string;
+}
+

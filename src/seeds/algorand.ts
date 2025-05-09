@@ -1,20 +1,21 @@
-import { IMnemonic, AlgorandMnemonic } from '../mnemonics';
+// SPDX-License-Identifier: MIT
+
+import { Seed } from './seed';
+import { Mnemonic, AlgorandMnemonic } from '../mnemonics';
 import { MnemonicError } from '../exceptions';
-import { ISeed } from './iseed';
 
-export class AlgorandSeed extends ISeed {
-  constructor(seed: string) {
-    super(seed);
-  }
+export class AlgorandSeed extends Seed {
 
-  static client(): string {
+  static getName(): string {
     return 'Algorand';
   }
 
-  static fromMnemonic(mnemonic: string | IMnemonic): string {
-    const phrase = typeof mnemonic === 'string' ? mnemonic : mnemonic.mnemonic();
+  static fromMnemonic(mnemonic: string | Mnemonic): string {
+
+    const phrase = typeof mnemonic === 'string' ? mnemonic : mnemonic.getMnemonic();
+
     if (!AlgorandMnemonic.isValid(phrase)) {
-      throw new MnemonicError(`Invalid ${this.client()} mnemonic words`);
+      throw new MnemonicError(`Invalid ${this.getName()} mnemonic words`);
     }
     return AlgorandMnemonic.decode(phrase);
   }
