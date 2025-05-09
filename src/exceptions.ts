@@ -40,3 +40,5 @@ export class AddressError extends BaseError { }
 export class CryptocurrencyError extends BaseError { }
 
 export class SymbolError extends BaseError { }
+
+export class DerivationError extends BaseError { }

@@ -1,13 +1,9 @@
-import crypto from "crypto";
-import { Buffer } from "buffer";
-import { INetwork } from './cryptocurrencies/icryptocurrency';
+// SPDX-License-Identifier: MIT
 
-export class DerivationError extends Error {
-  constructor(message: string) {
-    super(message);
-    this.name = "DerivationError";
-  }
-}
+import crypto from 'crypto';
+import { Buffer } from 'buffer';
+
+import { DerivationError } from './exceptions';
 
 /**
  * Normalize any Buffer / Uint8Array / string into a Node.js Buffer.
@@ -26,19 +22,19 @@ export function toBuffer(data: Buffer | Uint8Array | string): Buffer {
     return Buffer.from(data.buffer, data.byteOffset, data.byteLength);
   }
 
-  if (typeof data === "string") {
+  if (typeof data === 'string') {
     // strip 0x/0X prefix if present
-    const str = data.startsWith("0x") || data.startsWith("0X")
+    const str = data.startsWith('0x') || data.startsWith('0X')
       ? data.slice(2)
       : data;
 
     // hex-only check (even length, hex digits)
     if (/^[0-9a-fA-F]+$/.test(str) && str.length % 2 === 0) {
-      return Buffer.from(str, "hex");
+      return Buffer.from(str, 'hex');
     }
 
     // fallback to UTF-8
-    return Buffer.from(data, "utf8");
+    return Buffer.from(data, 'utf8');
   }
 
   throw new TypeError(
@@ -87,19 +83,19 @@ export function bytesToString(
 ): string {
   if (
     data == null ||
-    (typeof data === "string" && data.length === 0) ||
+    (typeof data === 'string' && data.length === 0) ||
     (data instanceof Uint8Array && data.length === 0)
   ) {
-    return "";
+    return '';
   }
 
-  if (typeof data === "string") {
+  if (typeof data === 'string') {
     // pure hex? even length & only 0–9, A–F
     if (data.length % 2 === 0 && /^[0-9A-Fa-f]+$/.test(data)) {
       return data.toLowerCase();
     }
     // otherwise treat as UTF-8
-    return Buffer.from(data, "utf-8").toString("hex");
+    return Buffer.from(data, 'utf-8').toString('hex');
   }
 
   // Uint8Array case
@@ -108,13 +104,12 @@ export function bytesToString(
 
 /**
  * Normalize input into a Uint8Array.
- * - If data is a hex string (with or without "0x"), it’s decoded.
+ * - If data is a hex string (with or without '0x'), it’s decoded.
  * - If data is a raw string and unhexlify=true, we hex-decode;
  *   otherwise we UTF-8 encode.
  */
 export function getBytes(
-  data: Uint8Array | string,
-  unhexlify: boolean = true
+  data: Uint8Array | string, unhexlify: boolean = true
 ): Uint8Array {
   if (!data) {
     return new Uint8Array();
@@ -125,13 +120,13 @@ export function getBytes(
   // string case
   let str = data;
   if (unhexlify) {
-    if (str.startsWith("0x") || str.startsWith("0X")) {
+    if (str.startsWith('0x') || str.startsWith('0X')) {
       str = str.slice(2);
     }
     if (str.length % 2 === 1) {
-      str = "0" + str;
+      str = '0' + str;
     }
-    return new Uint8Array(Buffer.from(str, "hex"));
+    return new Uint8Array(Buffer.from(str, 'hex'));
   } else {
     return new TextEncoder().encode(str);
   }
@@ -143,8 +138,7 @@ export function getBytes(
  * @param littleEndian - If true, treat input as little-endian; otherwise big-endian.
  */
 export function bytesToInteger(
-  bytes: Uint8Array,
-  littleEndian = false
+  bytes: Uint8Array, littleEndian = false
 ): bigint {
   // if little-endian, reverse into a new array
   const data = littleEndian
@@ -160,15 +154,13 @@ export function bytesToInteger(
  * Convert a bigint or number to a Uint8Array.
  * @param value      The integer value to encode
  * @param length     Desired byte length (optional; pads)
- * @param endianness "big" (default) or "little"
+ * @param endianness 'big' (default) or 'little'
  */
 export function integerToBytes(
-  value: bigint | number,
-  length?: number,
-  endianness: "big" | "little" = "big"
+  value: bigint | number, length?: number, endianness: 'big' | 'little' = 'big'
 ): Uint8Array {
   // coerce to BigInt without using 0n
-  let val = typeof value === "number" ? BigInt(value) : value;
+  let val = typeof value === 'number' ? BigInt(value) : value;
   if (val < BigInt(0)) {
     throw new Error(`Cannot convert negative integers: ${val}`);
   }
@@ -201,20 +193,19 @@ export function integerToBytes(
   }
 
   const result = new Uint8Array(bytes);
-  return endianness === "little" ? result.reverse() : result;
+  return endianness === 'little' ? result.reverse() : result;
 }
 
 /**
  * Convert a byte array to its binary string, optionally zero-padding.
  */
 export function bytesToBinaryString(
-  data: Uint8Array,
-  zeroPadBits: number = 0
+  data: Uint8Array, zeroPadBits: number = 0
 ): string {
   const bits = Array.from(data)
-    .map((b) => b.toString(2).padStart(8, "0"))
-    .join("");
-  return bits.length < zeroPadBits ? bits.padStart(zeroPadBits, "0") : bits;
+    .map((b) => b.toString(2).padStart(8, '0'))
+    .join('');
+  return bits.length < zeroPadBits ? bits.padStart(zeroPadBits, '0') : bits;
 }
 
 /**
@@ -224,24 +215,23 @@ export function binaryStringToInteger(
   data: Uint8Array | string
 ): bigint {
   const bin =
-    typeof data === "string"
+    typeof data === 'string'
       ? data
       : bytesToBinaryString(data);
   const clean = bin.trim();
-  return BigInt("0b" + clean);
+  return BigInt('0b' + clean);
 }
 
 /**
  * Convert a (possibly large) integer into its binary string, optionally zero-padded.
  */
 export function integerToBinaryString(
-  data: number | bigint,
-  zeroPadBits: number = 0
+  data: number | bigint, zeroPadBits: number = 0
 ): string {
-  const big = typeof data === "bigint" ? data : BigInt(data);
+  const big = typeof data === 'bigint' ? data : BigInt(data);
   const bits = big.toString(2);
   return bits.length < zeroPadBits
-    ? bits.padStart(zeroPadBits, "0")
+    ? bits.padStart(zeroPadBits, '0')
     : bits;
 }
 
@@ -253,14 +243,14 @@ export function binaryStringToBytes(
   zeroPadByteLen: number = 0
 ): Uint8Array {
   const bits =
-    typeof data === "string"
+    typeof data === 'string'
       ? data.trim()
       : bytesToBinaryString(data);
   const bitLen = bits.length;
-  const val = BigInt("0b" + bits);
+  const val = BigInt('0b' + bits);
   let hex = val.toString(16);
   if (hex.length % 2 === 1) {
-    hex = "0" + hex;
+    hex = '0' + hex;
   }
   const byteLen =
     zeroPadByteLen > 0
@@ -268,9 +258,9 @@ export function binaryStringToBytes(
       : Math.ceil(bitLen / 8);
   const expectedHexLen = byteLen * 2;
   if (hex.length < expectedHexLen) {
-    hex = hex.padStart(expectedHexLen, "0");
+    hex = hex.padStart(expectedHexLen, '0');
   }
-  return new Uint8Array(Buffer.from(hex, "hex"));
+  return new Uint8Array(Buffer.from(hex, 'hex'));
 }
 
 /**
@@ -337,10 +327,9 @@ export function isAllEqual(
  * Generate a random passphrase of ASCII letters and digits.
  */
 export function generatePassphrase(length = 32): string {
-  const chars =
-    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
   const bytes = crypto.randomBytes(length);
-  let result = "";
+  let result = '';
   for (let i = 0; i < length; i++) {
     result += chars[bytes[i] % chars.length];
   }
@@ -352,31 +341,30 @@ export function generatePassphrase(length = 32): string {
  */
 export function getHMAC(eccName: string): Buffer {
   if ([
-    "Kholaw-Ed25519",
-    "SLIP10-Ed25519",
-    "SLIP10-Ed25519-Blake2b",
-    "SLIP10-Ed25519-Monero",
+    'Kholaw-Ed25519',
+    'SLIP10-Ed25519',
+    'SLIP10-Ed25519-Blake2b',
+    'SLIP10-Ed25519-Monero',
   ].includes(eccName)) {
-    return Buffer.from("ed25519 seed", "utf-8");
-  } else if (eccName === "SLIP10-Nist256p1") {
-    return Buffer.from("Nist256p1 seed", "utf-8");
-  } else if (eccName === "SLIP10-Secp256k1") {
-    return Buffer.from("Bitcoin seed", "utf-8");
+    return Buffer.from('ed25519 seed', 'utf-8');
+  } else if (eccName === 'SLIP10-Nist256p1') {
+    return Buffer.from('Nist256p1 seed', 'utf-8');
+  } else if (eccName === 'SLIP10-Secp256k1') {
+    return Buffer.from('Bitcoin seed', 'utf-8');
   }
-  throw new DerivationError(`Unknown ECC name "${eccName}"`);
+  throw new DerivationError(`Unknown ECC name '${eccName}'`);
 }
 
 /**
- * Recursively exclude keys (after replacing "-"→"_") from a nested object.
+ * Recursively exclude keys (after replacing '-'→'_') from a nested object.
  */
 export function excludeKeys(
-  nested: Record<string, any>,
-  keys: Set<string>
+  nested: Record<string, any>, keys: Set<string>
 ): Record<string, any> {
   const out: Record<string, any> = {};
   for (const [k, v] of Object.entries(nested)) {
-    const normKey = k.replace(/-/g, "_");
-    if (v && typeof v === "object" && !Buffer.isBuffer(v)) {
+    const normKey = k.replace(/-/g, '_');
+    if (v && typeof v === 'object' && !Buffer.isBuffer(v)) {
       out[k] = excludeKeys(v, keys);
     } else if (!keys.has(normKey)) {
       out[k] = v;
@@ -389,15 +377,15 @@ export function excludeKeys(
  * Convert a BIP-32 path string to an array of indexes.
  */
 export function pathToIndexes(path: string): number[] {
-  if (path === "m" || path === "m/") return [];
-  if (!path.startsWith("m/")) {
+  if (path === 'm' || path === 'm/') return [];
+  if (!path.startsWith('m/')) {
     throw new DerivationError(
-      `Bad path format, expected "m/0'/0", got "${path}"`
+      `Bad path format, expected 'm/0'/0', got '${path}'`
     );
   }
   return path
     .slice(2)
-    .split("/")
+    .split('/')
     .map(i =>
       i.endsWith("'")
         ? parseInt(i.slice(0, -1), 10) + 0x80000000
@@ -410,14 +398,14 @@ export function pathToIndexes(path: string): number[] {
  */
 export function indexesToPath(indexes: number[]): string {
   return (
-    "m" +
+    'm' +
     indexes
       .map(i =>
         i & 0x80000000
           ? `/${(i & ~0x80000000).toString()}'`
           : `/${i.toString()}`
       )
-      .join("")
+      .join('')
   );
 }
 
@@ -427,18 +415,17 @@ export type IndexTuple = [number, boolean] | [number, number, boolean];
  * Normalize an index input.
  */
 export function normalizeIndex(
-  index: number | string | [number, number],
-  hardened = false
+  index: number | string | [number, number], hardened = false
 ): IndexTuple {
-  if (typeof index === "number") {
+  if (typeof index === 'number') {
     if (index < 0) throw new DerivationError(`Bad index: ${index}`);
     return [index, hardened];
   }
-  if (typeof index === "string") {
+  if (typeof index === 'string') {
     const m = index.match(/^(\d+)(?:-(\d+))?$/);
     if (!m) {
       throw new DerivationError(
-        `Bad index format, got "${index}"`
+        `Bad index format, got '${index}'`
       );
     }
     const from = parseInt(m[1], 10);
@@ -453,7 +440,7 @@ export function normalizeIndex(
   }
   if (Array.isArray(index)) {
     const [a, b] = index;
-    if (index.length !== 2 || typeof a !== "number" || typeof b !== "number") {
+    if (index.length !== 2 || typeof a !== 'number' || typeof b !== 'number') {
       throw new DerivationError(`Bad index tuple: ${JSON.stringify(index)}`);
     }
     if (a < 0 || b < 0) {
@@ -473,32 +460,31 @@ export function normalizeIndex(
  * Normalize either a path or an index array.
  */
 export function normalizeDerivation(
-  path?: string,
-  indexes?: number[]
+  path?: string, indexes?: number[]
 ): [string, number[], IndexTuple[]] {
-  let _path = "m";
+  let _path = 'm';
   const _indexes: number[] = [];
   const _deriv: IndexTuple[] = [];
 
   if (indexes && path) {
-    throw new DerivationError("Provide either path or indexes, not both");
+    throw new DerivationError('Provide either path or indexes, not both');
   }
   if (indexes) {
     path = indexesToPath(indexes);
   }
-  if (!path || path === "m" || path === "m/") {
+  if (!path || path === 'm' || path === 'm/') {
     return [`${_path}/`, _indexes, _deriv];
   }
-  if (!path.startsWith("m/")) {
+  if (!path.startsWith('m/')) {
     throw new DerivationError(
-      `Bad path format, got "${path}"`
+      `Bad path format, got '${path}'`
     );
   }
 
-  for (const seg of path.slice(2).split("/")) {
+  for (const seg of path.slice(2).split('/')) {
     const hardened = seg.endsWith("'");
     const core = hardened ? seg.slice(0, -1) : seg;
-    const parts = core.split("-").map(x => parseInt(x, 10));
+    const parts = core.split('-').map(x => parseInt(x, 10));
     if (parts.length === 2) {
       const [from, to] = parts;
       if (from > to) {
@@ -537,15 +523,15 @@ export function indexTupleToInteger(idx: IndexTuple): number {
 export function indexTupleToString(idx: IndexTuple): string {
   if (idx.length === 2) {
     const [i, h] = idx;
-    return `${i}${h ? "'" : ""}`;
+    return `${i}${h ? "'" : ''}`;
   } else {
     const [from, to, h] = idx;
-    return `${from}-${to}${h ? "'" : ""}`;
+    return `${from}-${to}${h ? "'" : ''}`;
   }
 }
 
 /**
- * Parse a single "n" or "n'" string to [number, hardened].
+ * Parse a single 'n' or 'n'' string to [number, hardened].
  */
 export function indexStringToTuple(i: string): [number, boolean] {
   const hardened = i.endsWith("'");
@@ -558,7 +544,7 @@ export function indexStringToTuple(i: string): [number, boolean] {
  */
 export function xor(a: Buffer, b: Buffer): Buffer {
   if (a.length !== b.length)
-    throw new DerivationError("Buffers must match length for XOR");
+    throw new DerivationError('Buffers must match length for XOR');
   return Buffer.from(a.map((x, i) => x ^ b[i]));
 }
 
@@ -567,7 +553,7 @@ export function xor(a: Buffer, b: Buffer): Buffer {
  */
 export function addNoCarry(a: Buffer, b: Buffer): Buffer {
   if (a.length !== b.length)
-    throw new DerivationError("Buffers must match length for addNoCarry");
+    throw new DerivationError('Buffers must match length for addNoCarry');
   return Buffer.from(a.map((x, i) => (x + b[i]) & 0xff));
 }
 
@@ -575,8 +561,7 @@ export function addNoCarry(a: Buffer, b: Buffer): Buffer {
  * Multiply each byte by scalar without carry.
  */
 export function multiplyScalarNoCarry(
-  data: Buffer,
-  scalar: number
+  data: Buffer, scalar: number
 ): Buffer {
   return Buffer.from(data.map(x => (x * scalar) & 0xff));
 }
@@ -614,9 +599,7 @@ export function bytesReverse(data: Buffer): Buffer {
  * Convert data between bit-widths.
  */
 export function convertBits(
-  data: number[] | Buffer,
-  fromBits: number,
-  toBits: number
+  data: number[] | Buffer, fromBits: number, toBits: number
 ): number[] | null {
   const input = Array.isArray(data) ? data : Array.from(data);
   const maxVal = (1 << toBits) - 1;
@@ -648,12 +631,10 @@ export function convertBits(
  * Map a 4-byte chunk into three words.
  */
 export function bytesChunkToWords(
-  bytesChunk: Buffer,
-  wordsList: string[],
-  endianness: "little" | "big"
+  bytesChunk: Buffer, wordsList: string[], endianness: 'little' | 'big'
 ): [string, string, string] {
   const len = BigInt(wordsList.length);
-  let chunkNum = bytesToInteger(new Uint8Array(bytesChunk), endianness !== "big");
+  let chunkNum = bytesToInteger(new Uint8Array(bytesChunk), endianness !== 'big');
   const i1 = Number(chunkNum % len);
   const i2 = Number(((chunkNum / len) + BigInt(i1)) % len);
   const i3 = Number(((chunkNum / len / len) + BigInt(i2)) % len);
@@ -664,11 +645,7 @@ export function bytesChunkToWords(
  * Inverse: three words → 4-byte Buffer.
  */
 export function wordsToBytesChunk(
-  w1: string,
-  w2: string,
-  w3: string,
-  wordsList: string[],
-  endianness: "little" | "big"
+  w1: string, w2: string, w3: string, wordsList: string[], endianness: 'little' | 'big'
 ): Buffer {
   const len = BigInt(wordsList.length);
   const idxMap = new Map(wordsList.map((w, i) => [w, BigInt(i)]));
@@ -686,20 +663,20 @@ export function wordsToBytesChunk(
 export function validateAndGetData(
   data: any, typeOrName: any
 ): [any, boolean] {
-  if (typeOrName === "any") {
+  if (typeOrName === 'any') {
     return [data, true];
   }
-  if (typeOrName === "null") {
+  if (typeOrName === 'null') {
     return [data, data === null];
   }
-  if (typeOrName === "array") {
+  if (typeOrName === 'array') {
     return [data, Array.isArray(data)];
   }
-  if (typeof typeOrName === "string") {
+  if (typeof typeOrName === 'string') {
     return [data, typeof data === typeOrName];
   }
-  if (typeof typeOrName === "function") {
-    if (typeof data === "function") {
+  if (typeof typeOrName === 'function') {
+    if (typeof data === 'function') {
       if (data === typeOrName) {
         return [data, true];
       }
