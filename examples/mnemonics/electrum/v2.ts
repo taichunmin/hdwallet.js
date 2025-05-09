@@ -1,49 +1,84 @@
-// examples/bip39_example.ts
+// SPDX-License-Identifier: MIT
 
-// import { BIP39Mnemonic } from "../src/mnemonics/bip39";
-// import { bytesToHex } from "../src/utils";
-
-import { randomBytes } from "crypto";
 import {
-  ElectrumV2Mnemonic,
-  ELECTRUM_V2_MNEMONIC_LANGUAGES,
-  ELECTRUM_V2_MNEMONIC_WORDS,
-    ELECTRUM_V2_MNEMONIC_TYPES
-} from "../../../src/mnemonics/electrum/v2/mnemonic";
-import { ElectrumV2Entropy, ELECTRUM_V2_ENTROPY_STRENGTHS } from "../../../src/entropies/electrum/v2";
+  MNEMONICS, ElectrumV2Mnemonic, ELECTRUM_V2_MNEMONIC_LANGUAGES, ELECTRUM_V2_MNEMONIC_WORDS, ELECTRUM_V2_MNEMONIC_TYPES
+} from '../../../src/mnemonics';
+import { isAllEqual } from '../../../src/utils';
 
-/**
- * Example demonstrating BIP39Mnemonic usage:
- */
-function runExample() {
-  // const entropyHex = ElectrumV2Entropy.generate(
-  //     ELECTRUM_V2_ENTROPY_STRENGTHS.TWO_HUNDRED_FIFTY_SIX
-  // );
-  const entropyHex = "0c3a7d6111221a9a9f3f309ee2680ac4b0";
-  console.log("Entropy (hex):", entropyHex);
-
-  // 2) Convert entropy → mnemonic phrase
-  // const mnemonicObj = ElectrumV2Mnemonic.fromWords(
-  //     ELECTRUM_V2_MNEMONIC_WORDS.TWENTY_FIVE, ELECTRUM_V2_MNEMONIC_LANGUAGES.ENGLISH
-  // );
-  const mnemonicObj = ElectrumV2Mnemonic.fromEntropy(
-      entropyHex, ELECTRUM_V2_MNEMONIC_LANGUAGES.ENGLISH, { mnemonicType: ELECTRUM_V2_MNEMONIC_TYPES.STANDARD_2FA }
-  );
-  console.log("Mnemonic phrase:", mnemonicObj.mnemonic());
-
-  // 3) Decode mnemonic back → entropy bytes
-  const decodedBytes = ElectrumV2Mnemonic.decode(
-      mnemonicObj.mnemonic(), { mnemonicType: ELECTRUM_V2_MNEMONIC_TYPES.STANDARD_2FA }
-  );
-  // const decodedBytes = ElectrumV2Mnemonic.decode(
-  //     "inform attitude erode wheat december virtual husband skin sea deny already satoshi ghost evolve crouch cheese flag twenty arm utility alter riot roof ability grace"
-  // );
-  console.log(
-    "Decoded matches original?",
-    decodedBytes === entropyHex, decodedBytes
-  );
+const data = {
+  name: 'Electrum-V2',
+  entropy: 'ccc4c46b09115cf2ae02d6301cf2291374908fd14aaed8f5feac21953f669dbe6c',
+  language: ELECTRUM_V2_MNEMONIC_LANGUAGES.ENGLISH,
+  words: ELECTRUM_V2_MNEMONIC_WORDS.TWENTY_FOUR,
+  mnemonics: [
+    {
+      mnemonic: 'carpet jacket rebuild fault drip prison quiz suggest fiction early elevator empower cheap medal travel copy food retreat junk beyond banana bracket change smoke',
+      mnemonicType: ELECTRUM_V2_MNEMONIC_TYPES.STANDARD
+    },
+    {
+      mnemonic: 'spring ivory rebuild fault drip prison quiz suggest fiction early elevator empower cheap medal travel copy food retreat junk beyond banana bracket change smoke',
+      mnemonicType: ELECTRUM_V2_MNEMONIC_TYPES.SEGWIT
+    },
+    {
+      mnemonic: 'zoo ivory rebuild fault drip prison quiz suggest fiction early elevator empower cheap medal travel copy food retreat junk beyond banana bracket change smoke',
+      mnemonicType: ELECTRUM_V2_MNEMONIC_TYPES.STANDARD_2FA
+    },
+    {
+      mnemonic: 'crawl jacket rebuild fault drip prison quiz suggest fiction early elevator empower cheap medal travel copy food retreat junk beyond banana bracket change smoke',
+      mnemonicType: ELECTRUM_V2_MNEMONIC_TYPES.SEGWIT_2FA
+    }
+  ]
 }
 
+const ElectrumV2MnemonicClass: typeof ElectrumV2Mnemonic = MNEMONICS.getMnemonicClass(data.name);
 
-runExample();
+for (const mnemonic of data.mnemonics) {
 
+  const electrumV2MnemonicClass: ElectrumV2Mnemonic = new ElectrumV2MnemonicClass(mnemonic.mnemonic, { mnemonicType: mnemonic.mnemonicType });
+  const electrumV2Mnemonic: ElectrumV2Mnemonic = new ElectrumV2Mnemonic(mnemonic.mnemonic, { mnemonicType: mnemonic.mnemonicType });
+
+  console.log(
+    isAllEqual(
+      electrumV2MnemonicClass.getMnemonic(),
+      electrumV2Mnemonic.getMnemonic(),
+      ElectrumV2MnemonicClass.fromEntropy(data.entropy, data.language, { mnemonicType: mnemonic.mnemonicType }).getMnemonic(),
+      ElectrumV2Mnemonic.fromEntropy(data.entropy, data.language, { mnemonicType: mnemonic.mnemonicType }).getMnemonic(),
+      mnemonic.mnemonic
+    ),
+    isAllEqual(
+      electrumV2MnemonicClass.getLanguage(),
+      electrumV2Mnemonic.getLanguage(),
+      ElectrumV2MnemonicClass.fromEntropy(data.entropy, data.language, { mnemonicType: mnemonic.mnemonicType }).getLanguage(),
+      ElectrumV2Mnemonic.fromEntropy(data.entropy, data.language, { mnemonicType: mnemonic.mnemonicType }).getLanguage(),
+      data.language),
+    isAllEqual(
+      electrumV2MnemonicClass.getWords(),
+      electrumV2Mnemonic.getWords(),
+      ElectrumV2MnemonicClass.fromEntropy(data.entropy, data.language, { mnemonicType: mnemonic.mnemonicType }).getWords(),
+      ElectrumV2Mnemonic.fromEntropy(data.entropy, data.language, { mnemonicType: mnemonic.mnemonicType }).getWords(),
+      data.words
+    ),
+    isAllEqual(
+      electrumV2MnemonicClass.getMnemonicType(),
+      electrumV2Mnemonic.getMnemonicType(),
+      ElectrumV2MnemonicClass.fromEntropy(data.entropy, data.language, { mnemonicType: mnemonic.mnemonicType }).getMnemonicType(),
+      ElectrumV2Mnemonic.fromEntropy(data.entropy, data.language, { mnemonicType: mnemonic.mnemonicType }).getMnemonicType(),
+      mnemonic.mnemonicType
+    ),
+    isAllEqual(
+      ElectrumV2MnemonicClass.isValid(mnemonic.mnemonic, { mnemonicType: mnemonic.mnemonicType }),
+      ElectrumV2Mnemonic.isValid(mnemonic.mnemonic, { mnemonicType: mnemonic.mnemonicType })
+    ),
+    isAllEqual(ElectrumV2MnemonicClass.isValidLanguage(data.language), ElectrumV2Mnemonic.isValidLanguage(data.language)),
+    isAllEqual(ElectrumV2MnemonicClass.isValidWords(data.words), ElectrumV2Mnemonic.isValidWords(data.words)),
+    isAllEqual(
+      ElectrumV2MnemonicClass.fromWords(data.words, data.language).getMnemonic().split(' ').length,
+      ElectrumV2Mnemonic.fromWords(data.words, data.language).getMnemonic().split(' ').length
+    ), '\n'
+  );
+
+  console.log('Mnemonic:', mnemonic.mnemonic);
+  console.log('Language:', data.language);
+  console.log('Words:', data.words);
+  console.log('Mnemonic Type:', mnemonic.mnemonicType, '\n');
+}

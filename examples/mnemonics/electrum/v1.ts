@@ -1,42 +1,53 @@
-// examples/bip39_example.ts
+// SPDX-License-Identifier: MIT
 
-// import { BIP39Mnemonic } from "../src/mnemonics/bip39";
-// import { bytesToHex } from "../src/utils";
+import {
+  MNEMONICS, ElectrumV1Mnemonic, ELECTRUM_V1_MNEMONIC_LANGUAGES, ELECTRUM_V1_MNEMONIC_WORDS
+} from '../../../src/mnemonics';
+import { isAllEqual } from '../../../src/utils';
 
-import { randomBytes } from "crypto";
-import { ElectrumV1Mnemonic, ELECTRUM_V1_MNEMONIC_LANGUAGES, ELECTRUM_V1_MNEMONIC_WORDS } from "../../../src/mnemonics/electrum/v1/mnemonic";
-import { ElectrumV1Entropy, ELECTRUM_V1_ENTROPY_STRENGTHS } from "../../../src/entropies/electrum/v1";
-
-/**
- * Example demonstrating BIP39Mnemonic usage:
- */
-function runExample() {
-  // const entropyHex = ElectrumV1Entropy.generate(
-  //     ELECTRUM_V1_ENTROPY_STRENGTHS.TWO_HUNDRED_FIFTY_SIX
-  // );
-  const entropyHex = "724bf9ce32db1baa801761c4f11fe901";
-  console.log("Entropy (hex):", entropyHex);
-
-  // 2) Convert entropy → mnemonic phrase
-  // const mnemonicObj = ElectrumV1Mnemonic.fromWords(
-  //     ELECTRUM_V1_MNEMONIC_WORDS.TWENTY_FIVE, ELECTRUM_V1_MNEMONIC_LANGUAGES.ENGLISH
-  // );
-  const mnemonicObj = ElectrumV1Mnemonic.fromEntropy(
-      entropyHex, ELECTRUM_V1_MNEMONIC_LANGUAGES.ENGLISH, { checksum: true }
-  );
-  console.log("Mnemonic phrase:", mnemonicObj.mnemonic());
-
-  // 3) Decode mnemonic back → entropy bytes
-  const decodedBytes = ElectrumV1Mnemonic.decode(mnemonicObj.mnemonic());
-  // const decodedBytes = ElectrumV1Mnemonic.decode(
-  //     "inform attitude erode wheat december virtual husband skin sea deny already satoshi ghost evolve crouch cheese flag twenty arm utility alter riot roof ability grace"
-  // );
-  console.log(
-    "Decoded matches original?",
-    decodedBytes === entropyHex, decodedBytes
-  );
+const data = {
+  name: 'Electrum-V1',
+  entropy: '6304c6da30c9509955cad59983fa8c1e',
+  mnemonic: 'bomb physical final feed usually eat mutter stick group shoulder soothe knee',
+  language: ELECTRUM_V1_MNEMONIC_LANGUAGES.ENGLISH,
+  words: ELECTRUM_V1_MNEMONIC_WORDS.TWELVE
 }
 
+const ElectrumV1MnemonicClass: typeof ElectrumV1Mnemonic = MNEMONICS.getMnemonicClass(data.name);
 
-runExample();
+const electrumV1MnemonicClass: ElectrumV1Mnemonic = new ElectrumV1MnemonicClass(data.mnemonic);
+const electrumV1Mnemonic: ElectrumV1Mnemonic = new ElectrumV1Mnemonic(data.mnemonic);
 
+console.log(
+  isAllEqual(
+    electrumV1MnemonicClass.getMnemonic(),
+    electrumV1Mnemonic.getMnemonic(),
+    ElectrumV1MnemonicClass.fromEntropy(data.entropy, data.language).getMnemonic(),
+    ElectrumV1Mnemonic.fromEntropy(data.entropy, data.language).getMnemonic(),
+    data.mnemonic
+  ),
+  isAllEqual(
+    electrumV1MnemonicClass.getLanguage(),
+    electrumV1Mnemonic.getLanguage(),
+    ElectrumV1MnemonicClass.fromEntropy(data.entropy, data.language).getLanguage(),
+    ElectrumV1Mnemonic.fromEntropy(data.entropy, data.language).getLanguage(),
+    data.language),
+  isAllEqual(
+    electrumV1MnemonicClass.getWords(),
+    electrumV1Mnemonic.getWords(),
+    ElectrumV1MnemonicClass.fromEntropy(data.entropy, data.language).getWords(),
+    ElectrumV1Mnemonic.fromEntropy(data.entropy, data.language).getWords(),
+    data.words
+  ),
+  isAllEqual(ElectrumV1MnemonicClass.isValid(data.mnemonic), ElectrumV1Mnemonic.isValid(data.mnemonic)),
+  isAllEqual(ElectrumV1MnemonicClass.isValidLanguage(data.language), ElectrumV1Mnemonic.isValidLanguage(data.language)),
+  isAllEqual(ElectrumV1MnemonicClass.isValidWords(data.words), ElectrumV1Mnemonic.isValidWords(data.words)),
+  isAllEqual(
+    ElectrumV1MnemonicClass.fromWords(data.words, data.language).getMnemonic().split(' ').length,
+    ElectrumV1Mnemonic.fromWords(data.words, data.language).getMnemonic().split(' ').length
+  ), '\n'
+);
+
+console.log('Mnemonic:', data.mnemonic);
+console.log('Language:', data.language);
+console.log('Words:', data.words);

@@ -1,41 +1,53 @@
-// examples/bip39_example.ts
+// SPDX-License-Identifier: MIT
 
-// import { BIP39Mnemonic } from "../src/mnemonics/bip39";
-// import { bytesToHex } from "../src/utils";
+import {
+  MNEMONICS, AlgorandMnemonic, ALGORAND_MNEMONIC_LANGUAGES, ALGORAND_MNEMONIC_WORDS
+} from '../../src/mnemonics';
+import { isAllEqual } from '../../src/utils';
 
-import { randomBytes } from "crypto";
-import { bytesToHex } from "../../src/utils";
-import { AlgorandMnemonic, ALGORAND_MNEMONIC_LANGUAGES, ALGORAND_MNEMONIC_WORDS } from "../../src/mnemonics/algorand/mnemonic";
-import { AlgorandEntropy, ALGORAND_ENTROPY_STRENGTHS } from "../../src/entropies/algorand";
-
-/**
- * Example demonstrating BIP39Mnemonic usage:
- */
-function runExample() {
-  // const entropyHex = AlgorandEntropy.generate(
-  //     ALGORAND_ENTROPY_STRENGTHS.TWO_HUNDRED_FIFTY_SIX
-  // );
-  const entropyHex = "9cab03999e5f9cd1ff8dca0fae4e0ef6cbb038852627c1ca7a1704bf83e87637";
-  console.log("Entropy (hex):", entropyHex);
-
-  // 2) Convert entropy → mnemonic phrase
-  // const mnemonicObj = AlgorandMnemonic.fromWords(
-  //     ALGORAND_MNEMONIC_WORDS.TWENTY_FIVE, ALGORAND_MNEMONIC_LANGUAGES.ENGLISH
-  // );
-  const mnemonicObj = AlgorandMnemonic.fromEntropy(entropyHex, ALGORAND_MNEMONIC_LANGUAGES.ENGLISH);
-  console.log("Mnemonic phrase:", mnemonicObj.mnemonic());
-
-  // 3) Decode mnemonic back → entropy bytes
-  const decodedBytes = AlgorandMnemonic.decode(mnemonicObj.mnemonic());
-  // const decodedBytes = AlgorandMnemonic.decode(
-  //     "inform attitude erode wheat december virtual husband skin sea deny already satoshi ghost evolve crouch cheese flag twenty arm utility alter riot roof ability grace"
-  // );
-  console.log(
-    "Decoded matches original?",
-    decodedBytes === entropyHex, decodedBytes
-  );
+const data = {
+  name: 'Algorand',
+  entropy: 'b66022fff8b6322f8b8fa444d6d097457b6b9e7bb05add5b75f9c827df7bd3b6',
+  mnemonic: 'bitter maze legend hurdle grace slim labor pig silk drive slogan reform street travel long follow knife step lake lady salad ten repair absent sunny',
+  language: ALGORAND_MNEMONIC_LANGUAGES.ENGLISH,
+  words: ALGORAND_MNEMONIC_WORDS.TWENTY_FIVE
 }
 
+const AlgorandMnemonicClass: typeof AlgorandMnemonic = MNEMONICS.getMnemonicClass(data.name);
 
-runExample();
+const algorandMnemonicClass: AlgorandMnemonic = new AlgorandMnemonicClass(data.mnemonic);
+const algorandMnemonic: AlgorandMnemonic = new AlgorandMnemonic(data.mnemonic);
 
+console.log(
+  isAllEqual(
+    algorandMnemonicClass.getMnemonic(),
+    algorandMnemonic.getMnemonic(),
+    AlgorandMnemonicClass.fromEntropy(data.entropy, data.language).getMnemonic(),
+    AlgorandMnemonic.fromEntropy(data.entropy, data.language).getMnemonic(),
+    data.mnemonic
+  ),
+  isAllEqual(
+    algorandMnemonicClass.getLanguage(),
+    algorandMnemonic.getLanguage(),
+    AlgorandMnemonicClass.fromEntropy(data.entropy, data.language).getLanguage(),
+    AlgorandMnemonic.fromEntropy(data.entropy, data.language).getLanguage(),
+    data.language),
+  isAllEqual(
+    algorandMnemonicClass.getWords(),
+    algorandMnemonic.getWords(),
+    AlgorandMnemonicClass.fromEntropy(data.entropy, data.language).getWords(),
+    AlgorandMnemonic.fromEntropy(data.entropy, data.language).getWords(),
+    data.words
+  ),
+  isAllEqual(AlgorandMnemonicClass.isValid(data.mnemonic), AlgorandMnemonic.isValid(data.mnemonic)),
+  isAllEqual(AlgorandMnemonicClass.isValidLanguage(data.language), AlgorandMnemonic.isValidLanguage(data.language)),
+  isAllEqual(AlgorandMnemonicClass.isValidWords(data.words), AlgorandMnemonic.isValidWords(data.words)),
+  isAllEqual(
+    AlgorandMnemonicClass.fromWords(data.words, data.language).getMnemonic().split(' ').length,
+    AlgorandMnemonic.fromWords(data.words, data.language).getMnemonic().split(' ').length
+  ), '\n'
+);
+
+console.log('Mnemonic:', data.mnemonic);
+console.log('Language:', data.language);
+console.log('Words:', data.words);
