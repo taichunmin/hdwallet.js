@@ -2,7 +2,10 @@
 
 import eccs from '../data/json/eccs.json';
 
+
 import {
+  ECCS,
+  Point,
   KholawEd25519ECC,
   KholawEd25519Point,
   KholawEd25519PublicKey,
@@ -10,6 +13,7 @@ import {
 } from '../../src/ecc';
 
 import { getBytes } from '../../src/utils';
+
 
 interface PointVec { encode: string; x: number; y: number }
 interface CurveData {
@@ -21,8 +25,12 @@ interface CurveData {
 }
 
 const data = (eccs as Record<string, CurveData>)["Kholaw-Ed25519"];
+const skBytes    = getBytes(data["private-key"]);
+const bytesUncmp = getBytes(data.uncompressed["public-key"]);
+const bytesCcmp  = getBytes(data.compressed["public-key"]);
+const encPoint   = getBytes(data.uncompressed.point.encode);
 
-describe("SLIP10-Kholaw-Ed25519 end-to-end", () => {
+describe("Kholaw-Ed25519 end-to-end", () => {
   it("curve-name via getName()", () => {
     const sk = KholawEd25519PrivateKey.fromBytes(getBytes(data["private-key"]));
     expect(sk.getName()).toBe(data.name);
@@ -40,25 +48,25 @@ describe("SLIP10-Kholaw-Ed25519 end-to-end", () => {
     const enc = getBytes(data[type].point.encode);
 
     const canonical = KholawEd25519Point.fromBytes(enc);
-    const xs        = canonical.x();
-    const ys        = canonical.y();
-    const expEnc    = canonical.rawEncoded();
-    const expDec    = canonical.rawDecoded();
+    const xs        = canonical.getX();
+    const ys        = canonical.getY();
+    const expEnc    = canonical.getRawEncoded();
+    const expDec    = canonical.getRawDecoded();
 
     it(`Point.fromBytes() (${type})`, () => {
       const p = KholawEd25519Point.fromBytes(enc);
-      expect(p.x()).toBe(xs);
-      expect(p.y()).toBe(ys);
-      expect(p.rawEncoded()).toEqual(expEnc);
-      expect(p.rawDecoded()).toEqual(expDec);
+      expect(p.getX()).toBe(xs);
+      expect(p.getY()).toBe(ys);
+      expect(p.getRawEncoded()).toEqual(expEnc);
+      expect(p.getRawDecoded()).toEqual(expDec);
     });
 
     it(`Point.fromCoordinates() (${type})`, () => {
       const p = KholawEd25519Point.fromCoordinates(xs, ys);
-      expect(p.x()).toBe(xs);
-      expect(p.y()).toBe(ys);
-      expect(p.rawEncoded()).toEqual(expEnc);
-      expect(p.rawDecoded()).toEqual(expDec);
+      expect(p.getX()).toBe(xs);
+      expect(p.getY()).toBe(ys);
+      expect(p.getRawEncoded()).toEqual(expEnc);
+      expect(p.getRawDecoded()).toEqual(expDec);
     });
   }
 
@@ -71,8 +79,8 @@ describe("SLIP10-Kholaw-Ed25519 end-to-end", () => {
       const cur  = BigInt(n);
 
       const m1 = G.multiply(cur);
-      const expEnc = m1.rawEncoded();
-      const expDec = m1.rawDecoded();
+      const expEnc = m1.getRawEncoded();
+      const expDec = m1.getRawDecoded();
 
       for (const q of [
         G.add(G.multiply(prev)),
@@ -80,10 +88,10 @@ describe("SLIP10-Kholaw-Ed25519 end-to-end", () => {
         m1,
         G.multiply(cur)
       ]) {
-        expect(q.x()).toBe(m1.x());
-        expect(q.y()).toBe(m1.y());
-        expect(q.rawEncoded()).toEqual(expEnc);
-        expect(q.rawDecoded()).toEqual(expDec);
+        expect(q.getX()).toBe(m1.getX());
+        expect(q.getY()).toBe(m1.getY());
+        expect(q.getRawEncoded()).toEqual(expEnc);
+        expect(q.getRawDecoded()).toEqual(expDec);
       }
     }
   });
@@ -92,19 +100,19 @@ describe("SLIP10-Kholaw-Ed25519 end-to-end", () => {
     const pkBytes = getBytes(data[type]["public-key"]);
     it(`PublicKey.fromBytes() (${type})`, () => {
       const pk = KholawEd25519PublicKey.fromBytes(pkBytes);
-      expect(pk.rawUncompressed()).toEqual(
+      expect(pk.getRawUncompressed()).toEqual(
         getBytes(data.uncompressed["public-key"])
       );
-      expect(pk.rawCompressed()).toEqual(
+      expect(pk.getRawCompressed()).toEqual(
         getBytes(data.compressed["public-key"])
       );
 
-      const pt2 = pk.point();
+      const pt2 = pk.getPoint();
       const base = KholawEd25519Point.fromBytes(
         getBytes(data.uncompressed.point.encode)
       );
-      expect(pt2.x()).toBe(base.x());
-      expect(pt2.y()).toBe(base.y());
+      expect(pt2.getX()).toBe(base.getX());
+      expect(pt2.getY()).toBe(base.getY());
     });
   }
 
@@ -112,14 +120,85 @@ describe("SLIP10-Kholaw-Ed25519 end-to-end", () => {
     const sk = KholawEd25519PrivateKey.fromBytes(
       getBytes(data["private-key"])
     );
-    expect(sk.raw()).toEqual(getBytes(data["private-key"]));
+    expect(sk.getRaw()).toEqual(getBytes(data["private-key"]));
 
-    const pk = sk.publicKey();
-    expect(pk.rawUncompressed()).toEqual(
+    const pk = sk.getPublicKey();
+    expect(pk.getRawUncompressed()).toEqual(
       getBytes(data.uncompressed["public-key"])
     );
-    expect(pk.rawCompressed()).toEqual(
+    expect(pk.getRawCompressed()).toEqual(
       getBytes(data.compressed["public-key"])
     );
+  });
+
+
+    describe("Kholaw-Ed25519 (generic)", () => {
+    const ecc = ECCS.getECCClass(KholawEd25519ECC.NAME);
+
+    it("ECC.NAME matches concrete NAME", () => {
+      expect(KholawEd25519ECC.NAME).toBe(data.name);
+      expect(ecc.NAME).toBe(KholawEd25519ECC.NAME);
+    });
+
+    it("generic PRIVATE_KEY.fromBytes()", () => {
+      const skConcrete = KholawEd25519PrivateKey.fromBytes(skBytes);
+      const skGeneric = ecc.PRIVATE_KEY.fromBytes(skBytes);
+      expect(skGeneric).toBeInstanceOf(KholawEd25519PrivateKey);
+      expect(skGeneric.getRaw()).toEqual(skBytes);
+      expect(skGeneric.getRaw()).toEqual(skConcrete.getRaw());
+    });
+
+    it("generic POINT.fromBytes and .fromCoordinates", () => {
+      const basePoint = KholawEd25519Point.fromBytes(encPoint);
+      const pGeneric1 = ecc.POINT.fromBytes(encPoint);
+      const pGeneric2 = ecc.POINT.fromCoordinates(basePoint.getX(), basePoint.getY());
+      expect(pGeneric1.getRawEncoded()).toEqual(encPoint);
+      expect(pGeneric2.getRawDecoded()).toEqual(basePoint.getRawDecoded());
+    });
+
+    it("generic PUBLIC_KEY.fromBytes and .fromPoint", () => {
+      const basePoint = KholawEd25519Point.fromBytes(encPoint);
+      const puGeneric1 = ecc.PUBLIC_KEY.fromBytes(bytesUncmp);
+      const puGeneric2 = ecc.PUBLIC_KEY.fromPoint(basePoint);
+      expect(puGeneric1.getRawUncompressed()).toEqual(bytesUncmp);
+      expect(puGeneric2.getRawCompressed()).toEqual(bytesCcmp);
+    });
+
+    it("cross-route byte equality", () => {
+      const skConc = KholawEd25519PrivateKey.fromBytes(skBytes);
+      const skGen = ecc.PRIVATE_KEY.fromBytes(skBytes);
+      expect(skConc.getRaw()).toEqual(skGen.getRaw());
+
+      const ptConc = KholawEd25519Point.fromBytes(encPoint);
+      const ptGen = ecc.POINT.fromBytes(encPoint);
+      expect(ptConc.getRawDecoded()).toEqual(ptGen.getRawDecoded());
+
+      const pkConc = KholawEd25519PublicKey.fromBytes(bytesUncmp);
+      const pkGen = ecc.PUBLIC_KEY.fromBytes(bytesUncmp);
+      expect(pkConc.getRawCompressed()).toEqual(pkGen.getRawCompressed());
+    });
+
+    it("curve constants & classes", () => {
+      console.log(KholawEd25519ECC.NAME)
+      expect(KholawEd25519ECC.NAME).toBe(data.name);
+      expect(typeof KholawEd25519ECC.ORDER).toBe("bigint");
+      expect(KholawEd25519ECC.GENERATOR).toBeInstanceOf(Point);
+      expect(KholawEd25519ECC.POINT).toBe(KholawEd25519Point);
+      expect(KholawEd25519ECC.PUBLIC_KEY).toBe(KholawEd25519PublicKey);
+      expect(KholawEd25519ECC.PRIVATE_KEY).toBe(KholawEd25519PrivateKey);
+    });
+
+    it("public key lengths", () => {
+      expect(KholawEd25519PublicKey.getUncompressedLength())
+          .toBe(data.uncompressed.length);
+      expect(KholawEd25519PublicKey.getCompressedLength())
+          .toBe(data.compressed.length);
+    });
+
+    it("private key length (via instance)", () => {
+      const sk = KholawEd25519PrivateKey.fromBytes(skBytes);
+      expect(sk.getRaw().length).toBe(data["private-key-length"]);
+    });
+
   });
 });

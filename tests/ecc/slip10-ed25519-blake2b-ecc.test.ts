@@ -5,14 +5,14 @@ import eccs from '../data/json/eccs.json';
 import { ECCS } from '../../src/ecc'
 
 import {
+  SLIP10Ed25519Point,
   SLIP10Ed25519Blake2bECC,
   SLIP10Ed25519Blake2bPoint,
   SLIP10Ed25519Blake2bPublicKey,
   SLIP10Ed25519Blake2bPrivateKey
-} from '../../src/ecc/slip10/ed25519/blake2b';
+} from '../../src/ecc';
 
 import { getBytes } from '../../src/utils';
-import {SLIP10Ed25519Point} from "../../src/ecc/slip10/ed25519";
 
 
 interface PointVec { encode: string; decode: string; x: number; y: number }
@@ -136,7 +136,7 @@ describe("SLIP10-Ed25519-Blake2b (tweetnacl) end-to-end", () => {
     );
   });
   
-    describe("SLIP10-Secp256k1 (generic)", () => {
+    describe("SLIP10-Ed25519-Blake2b (generic)", () => {
     const ecc = ECCS.getECCClass(SLIP10Ed25519Blake2bECC.NAME);
 
     it("ECC.NAME matches concrete NAME", () => {

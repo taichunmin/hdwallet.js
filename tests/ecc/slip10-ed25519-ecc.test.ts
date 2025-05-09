@@ -9,7 +9,7 @@ import {
   SLIP10Ed25519Point,
   SLIP10Ed25519PublicKey,
   SLIP10Ed25519PrivateKey
-} from '../../src/ecc/slip10/ed25519'
+} from '../../src/ecc'
 import { getBytes } from '../../src/utils';
 
 
@@ -130,7 +130,7 @@ describe("SLIP10-Ed25519 (tweetnacl) end-to-end", () => {
     }
   });
   
-  describe("SLIP10-Secp256k1 (generic)", () => {
+  describe("SLIP10-Ed25519 (generic)", () => {
     const ecc = ECCS.getECCClass(SLIP10Ed25519ECC.NAME);
 
     it("ECC.NAME matches concrete NAME", () => {

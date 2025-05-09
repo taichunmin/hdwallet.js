@@ -3,14 +3,14 @@
 import eccs from '../data/json/eccs.json';
 
 import {
+  ECCS,
   SLIP10Nist256p1ECC,
   SLIP10Nist256p1Point,
   SLIP10Nist256p1PublicKey,
   SLIP10Nist256p1PrivateKey
-} from '../../src/ecc/slip10/nist256p1';
+} from '../../src/ecc';
 
 import { getBytes } from '../../src/utils';
-import {ECCS} from "../../src/ecc";
 
 
 interface PointVec { encode: string; decode: string; }
@@ -150,7 +150,7 @@ describe("SLIP10-Nist256p1 end-to-end", () => {
     }
   });
 
-  describe("SLIP10-Secp256k1 (generic)", () => {
+  describe("SLIP10-Nist256p1 (generic)", () => {
     const ecc = ECCS.getECCClass(SLIP10Nist256p1ECC.NAME);
 
     it("ECC.NAME matches concrete NAME", () => {

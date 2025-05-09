@@ -1,17 +1,16 @@
 // SPDX-License-Identifier: MIT
 
 import eccs from '../data/json/eccs.json';
-import {
-  ECCS,
-  validateAndGetPublicKey
-} from '../../src/ecc'
+
 
 import {
   SLIP10Secp256k1ECC,
   SLIP10Secp256k1Point,
   SLIP10Secp256k1PublicKey,
   SLIP10Secp256k1PrivateKey,
-} from '../../src/ecc/slip10/secp256k1';
+  ECCS,
+  validateAndGetPublicKey
+} from '../../src/ecc';
 
 import { getBytes } from '../../src/utils';
 
