@@ -2,14 +2,14 @@
 
 import * as elliptic from 'elliptic';
 
-import { IPrivateKey } from '../../iprivate-key';
-import { IPublicKey } from '../../ipublic-key';
+import { PrivateKey } from '../../private-key';
+import { PublicKey } from '../../public-key';
 import { SLIP10Nist256p1PublicKey } from './public-key';
 import { SLIP10_SECP256K1_CONST } from '../../../const';
 
 const ec = new elliptic.ec('p256');
 
-export class SLIP10Nist256p1PrivateKey extends IPrivateKey {
+export class SLIP10Nist256p1PrivateKey extends PrivateKey {
 
   getName(): string {
     return 'SLIP10-Nist256p1';
@@ -44,7 +44,7 @@ export class SLIP10Nist256p1PrivateKey extends IPrivateKey {
     return this.privateKey;
   }
 
-  getPublicKey(): IPublicKey {
+  getPublicKey(): PublicKey {
     const pubPt = this.privateKey.getPublic();
     return new SLIP10Nist256p1PublicKey(pubPt);
   }

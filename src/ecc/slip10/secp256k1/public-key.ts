@@ -2,21 +2,21 @@
 
 import * as elliptic from 'elliptic';
 
-import { IPublicKey } from '../../ipublic-key';
-import { IPoint } from '../../ipoint';
+import { PublicKey } from '../../public-key';
+import { Point } from '../../point';
 import { SLIP10Secp256k1Point } from './point';
 import { SLIP10_SECP256K1_CONST } from '../../../const';
 
 const ec = new elliptic.ec('secp256k1');
 type BasePoint = elliptic.curve.base.BasePoint;
 
-export class SLIP10Secp256k1PublicKey extends IPublicKey {
+export class SLIP10Secp256k1PublicKey extends PublicKey {
 
   getName(): string {
     return 'SLIP10-Secp256k1';
   }
 
-  static fromBytes(publicKey: Uint8Array): IPublicKey {
+  static fromBytes(publicKey: Uint8Array): PublicKey {
     try {
       const keyPair = ec.keyFromPublic(Buffer.from(publicKey));
       const pubPoint = keyPair.getPublic();
@@ -26,7 +26,7 @@ export class SLIP10Secp256k1PublicKey extends IPublicKey {
     }
   }
 
-  static fromPoint(point: IPoint): IPublicKey {
+  static fromPoint(point: Point): PublicKey {
     const base = (point as SLIP10Secp256k1Point).getUnderlyingObject() as BasePoint;
     return new SLIP10Secp256k1PublicKey(base);
   }
@@ -56,7 +56,7 @@ export class SLIP10Secp256k1PublicKey extends IPublicKey {
     return this.getRawCompressed();
   }
 
-  getPoint(): IPoint {
+  getPoint(): Point {
     return new SLIP10Secp256k1Point(this.publicKey);
   }
 }

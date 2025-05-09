@@ -2,7 +2,7 @@
 
 import * as elliptic from 'elliptic';
 
-import { IPoint } from '../../../ipoint';
+import { Point } from '../../../point';
 import { SLIP10Ed25519MoneroPoint } from './point';
 import { SLIP10Ed25519PublicKey } from '../../ed25519';
 
@@ -18,7 +18,7 @@ export class SLIP10Ed25519MoneroPublicKey extends SLIP10Ed25519PublicKey {
     return new Uint8Array(ec.encodePoint(this.publicKey));
   }
 
-  point(): IPoint {
+  point(): Point {
     return new SLIP10Ed25519MoneroPoint(this.publicKey);
   }
 }

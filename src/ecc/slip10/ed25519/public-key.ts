@@ -2,21 +2,21 @@
 
 import * as elliptic from 'elliptic';
 
-import { IPublicKey } from '../../ipublic-key';
-import { IPoint } from '../../ipoint';
+import { PublicKey } from '../../public-key';
+import { Point } from '../../point';
 import { SLIP10_ED25519_CONST } from '../../../const';
 import { SLIP10Ed25519Point } from './point';
 
 const ec = new elliptic.eddsa('ed25519');
 type EdwardsPoint = elliptic.curve.edwards.EdwardsPoint;
 
-export class SLIP10Ed25519PublicKey extends IPublicKey {
+export class SLIP10Ed25519PublicKey extends PublicKey {
 
   getName(): string {
     return 'SLIP10-Ed25519';
   }
 
-  static fromBytes(publicKey: Uint8Array): IPublicKey {
+  static fromBytes(publicKey: Uint8Array): PublicKey {
     let data = publicKey;
     const prefix = SLIP10_ED25519_CONST.PUBLIC_KEY_PREFIX;
     if (
@@ -39,7 +39,7 @@ export class SLIP10Ed25519PublicKey extends IPublicKey {
     }
   }
 
-  static fromPoint(point: IPoint): IPublicKey {
+  static fromPoint(point: Point): PublicKey {
     const raw = (point as any).getRawEncoded() as Uint8Array;
     return this.fromBytes(raw);
   }
@@ -67,7 +67,7 @@ export class SLIP10Ed25519PublicKey extends IPublicKey {
     return this.getRawCompressed();
   }
 
-  getPoint(): IPoint {
+  getPoint(): Point {
     return new SLIP10Ed25519Point(this.publicKey);
   }
 }

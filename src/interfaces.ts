@@ -1,5 +1,9 @@
 // SPDX-License-Identifier: MIT
 
+export interface OptionsPrivateKey {
+  extendedKey?: Uint8Array;
+}
+
 export interface MnemonicOptionsInterface {
   checksum?: boolean;
   mnemonicType?: string;

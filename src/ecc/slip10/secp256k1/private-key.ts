@@ -2,20 +2,20 @@
 
 import * as elliptic from 'elliptic';
 
-import { IPrivateKey } from '../../iprivate-key';
-import { IPublicKey } from '../../ipublic-key';
+import { PrivateKey } from '../../private-key';
+import { PublicKey } from '../../public-key';
 import { SLIP10Secp256k1PublicKey } from './public-key';
 import { SLIP10_SECP256K1_CONST } from '../../../const';
 
 const ec = new elliptic.ec('secp256k1');
 
-export class SLIP10Secp256k1PrivateKey extends IPrivateKey {
+export class SLIP10Secp256k1PrivateKey extends PrivateKey {
 
   getName(): string {
     return 'SLIP10-Secp256k1';
   }
 
-  static fromBytes(privateKey: Uint8Array): IPrivateKey {
+  static fromBytes(privateKey: Uint8Array): PrivateKey {
     if (privateKey.length !== SLIP10_SECP256K1_CONST.PRIVATE_KEY_BYTE_LENGTH) {
       throw new Error('Invalid private key bytes length');
     }
@@ -43,7 +43,7 @@ export class SLIP10Secp256k1PrivateKey extends IPrivateKey {
     return this.privateKey;
   }
 
-  getPublicKey(): IPublicKey {
+  getPublicKey(): PublicKey {
     const pubPoint = this.privateKey.getPublic();
     return new SLIP10Secp256k1PublicKey(pubPoint);
   }

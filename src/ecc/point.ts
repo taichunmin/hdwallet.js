@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-export abstract class IPoint {
+export abstract class Point {
 
   point: any;
 
@@ -10,11 +10,11 @@ export abstract class IPoint {
 
   abstract getName(): string;
 
-  static fromBytes(point: Uint8Array): IPoint {
+  static fromBytes(point: Uint8Array): Point {
     throw new Error('Must override fromBytes()');
   }
 
-  static fromCoordinates(x: bigint, y: bigint): IPoint {
+  static fromCoordinates(x: bigint, y: bigint): Point {
     throw new Error('Must override fromCoordinates()');
   }
 
@@ -32,7 +32,7 @@ export abstract class IPoint {
 
   abstract getUnderlyingObject(): any;
 
-  abstract add(point: IPoint): IPoint;
+  abstract add(point: Point): Point;
 
-  abstract multiply(scalar: bigint): IPoint;
+  abstract multiply(scalar: bigint): Point;
 }

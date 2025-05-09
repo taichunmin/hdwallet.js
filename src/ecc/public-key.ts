@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: MIT
 
-import { IPoint } from './ipoint';
+import { Point } from './point';
 
-export abstract class IPublicKey {
+export abstract class PublicKey {
 
   publicKey: any;
 
@@ -14,11 +14,11 @@ export abstract class IPublicKey {
     throw new Error('Must override getName()');
   }
 
-  static fromBytes(publicKey: Uint8Array): IPublicKey {
+  static fromBytes(publicKey: Uint8Array): PublicKey {
     throw new Error('Must override fromBytes()');
   }
 
-  static fromPoint(point: IPoint): IPublicKey {
+  static fromPoint(point: Point): PublicKey {
     throw new Error('Must override fromPoint()');
   }
 
@@ -26,7 +26,7 @@ export abstract class IPublicKey {
 
   abstract getRawUncompressed(): Uint8Array;
 
-  abstract getPoint(): IPoint;
+  abstract getPoint(): Point;
 
   abstract getUnderlyingObject(): any;
 
@@ -47,7 +47,7 @@ export abstract class IPublicKey {
     }
   }
 
-  static isValidPoint(point: IPoint): boolean {
+  static isValidPoint(point: Point): boolean {
     try {
       this.fromPoint(point);
       return true;

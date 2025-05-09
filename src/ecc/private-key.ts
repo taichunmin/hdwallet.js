@@ -1,12 +1,9 @@
 // SPDX-License-Identifier: MIT
 
-import { IPublicKey } from './ipublic-key';
+import { PublicKey } from './public-key';
+import { OptionsPrivateKey } from '../interfaces';
 
-export interface OptionsPrivateKey {
-  extendedKey?: Uint8Array;
-}
-
-export abstract class IPrivateKey {
+export abstract class PrivateKey {
 
   privateKey: any;
   options: OptionsPrivateKey;
@@ -22,7 +19,7 @@ export abstract class IPrivateKey {
     throw new Error('Must override getName()');
   }
 
-  static fromBytes(privateKey: Uint8Array): IPrivateKey {
+  static fromBytes(privateKey: Uint8Array): PrivateKey {
     throw new Error('Must override fromBytes()');
   }
 
@@ -32,7 +29,7 @@ export abstract class IPrivateKey {
 
   abstract getRaw(): Uint8Array;
 
-  abstract getPublicKey(): IPublicKey;
+  abstract getPublicKey(): PublicKey;
 
   abstract getUnderlyingObject(): any;
 

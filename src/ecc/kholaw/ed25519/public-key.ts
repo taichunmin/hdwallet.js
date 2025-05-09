@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 
-import { IPoint } from '../../ipoint';
-import { SLIP10Ed25519PublicKey } from '../../slip10/ed25519';
+import { Point } from '../../point';
+import { SLIP10Ed25519PublicKey } from '../../slip10';
 import { KholawEd25519Point } from './point';
 
 export class KholawEd25519PublicKey extends SLIP10Ed25519PublicKey {
@@ -10,7 +10,7 @@ export class KholawEd25519PublicKey extends SLIP10Ed25519PublicKey {
     return 'Kholaw-Ed25519';
   }
 
-  getPoint(): IPoint {
+  getPoint(): Point {
     return new KholawEd25519Point(this.publicKey);
   }
 }

@@ -3,18 +3,18 @@
 import * as nacl from "tweetnacl-blake2b";
 import { SignKeyPair } from 'tweetnacl-blake2b';
 
-import { IPrivateKey } from '../../../iprivate-key';
-import { IPublicKey } from '../../../ipublic-key';
+import { PrivateKey } from '../../../private-key';
+import { PublicKey } from '../../../public-key';
 import { SLIP10Ed25519Blake2bPublicKey } from './public-key';
 import { SLIP10_ED25519_CONST } from '../../../../const';
 
-export class SLIP10Ed25519Blake2bPrivateKey extends IPrivateKey {
+export class SLIP10Ed25519Blake2bPrivateKey extends PrivateKey {
 
   getName(): string {
     return 'SLIP10-Ed25519-Blake2b';
   }
 
-  static fromBytes(privateKey: Uint8Array): IPrivateKey {
+  static fromBytes(privateKey: Uint8Array): PrivateKey {
 
     if (privateKey.length !== SLIP10_ED25519_CONST.PRIVATE_KEY_BYTE_LENGTH) {
       throw new Error('Invalid private key bytes length');
@@ -42,7 +42,7 @@ export class SLIP10Ed25519Blake2bPrivateKey extends IPrivateKey {
     return this.privateKey;
   }
 
-  getPublicKey(): IPublicKey {
+  getPublicKey(): PublicKey {
     const publicKey = this.privateKey.publicKey;
     return SLIP10Ed25519Blake2bPublicKey.fromBytes(publicKey);
   }

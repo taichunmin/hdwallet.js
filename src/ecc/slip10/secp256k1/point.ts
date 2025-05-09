@@ -3,19 +3,19 @@
 import * as elliptic from 'elliptic';
 import BN from 'bn.js';
 
-import { IPoint } from '../../ipoint';
+import { Point } from '../../point';
 import { SLIP10_SECP256K1_CONST } from '../../../const';
 
 const ec = new elliptic.ec('secp256k1');
 type BasePoint = elliptic.curve.base.BasePoint;
 
-export class SLIP10Secp256k1Point extends IPoint {
+export class SLIP10Secp256k1Point extends Point {
 
   getName(): string {
     return 'SLIP10-Secp256k1';
   }
 
-  static fromBytes(point: Uint8Array): IPoint {
+  static fromBytes(point: Uint8Array): Point {
 
     if (point.length === SLIP10_SECP256K1_CONST.PUBLIC_KEY_UNCOMPRESSED_BYTE_LENGTH) {
       const keyPair = ec.keyFromPublic(Buffer.from(point));
@@ -40,7 +40,7 @@ export class SLIP10Secp256k1Point extends IPoint {
     throw new Error('Invalid point bytes');
   }
 
-  static fromCoordinates(x: bigint, y: bigint): IPoint {
+  static fromCoordinates(x: bigint, y: bigint): Point {
     const bnX = new BN(x.toString());
     const bnY = new BN(y.toString());
     const point = ec.curve.point(bnX, bnY) as BasePoint;
@@ -68,13 +68,13 @@ export class SLIP10Secp256k1Point extends IPoint {
     return new Uint8Array(encoded.slice(1));
   }
 
-  add(point: IPoint): IPoint {
+  add(point: Point): Point {
     const other = (point as this).getUnderlyingObject() as BasePoint;
     const sum = this.point.add(other) as BasePoint;
     return new SLIP10Secp256k1Point(sum);
   }
 
-  multiply(scalar: bigint): IPoint {
+  multiply(scalar: bigint): Point {
     const bn = new BN(scalar.toString());
     const prod = this.point.mul(bn) as BasePoint;
     return new SLIP10Secp256k1Point(prod);

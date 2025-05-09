@@ -3,12 +3,13 @@
 import * as elliptic from 'elliptic';
 
 import { KHOLAW_ED25519_CONST } from '../../../const';
-import { SLIP10Ed25519PrivateKey } from '../../slip10/ed25519';
+import { SLIP10Ed25519PrivateKey } from '../../slip10';
 import { KholawEd25519PublicKey } from './public-key';
-import { IPrivateKey, OptionsPrivateKey } from '../../iprivate-key';
+import { PrivateKey } from '../../private-key';
+import { PublicKey } from '../../public-key';
+import { OptionsPrivateKey } from '../../../interfaces';
 import { pointScalarMulBase } from '../../../libs/ed25519-utils';
 import { bytesToString } from '../../../utils';
-import { IPublicKey } from '../../ipublic-key';
 
 const ec = new elliptic.eddsa('ed25519');
 type EdDSAKeyPair = elliptic.eddsa.KeyPair;
@@ -31,7 +32,7 @@ export class KholawEd25519PrivateKey extends SLIP10Ed25519PrivateKey {
     return 'Kholaw-Ed25519';
   }
 
-  static fromBytes(privateKey: Uint8Array): IPrivateKey {
+  static fromBytes(privateKey: Uint8Array): PrivateKey {
 
     if (privateKey.length !== KHOLAW_ED25519_CONST.PRIVATE_KEY_BYTE_LENGTH) {
       throw new Error('Invalid private key bytes length');
@@ -55,7 +56,7 @@ export class KholawEd25519PrivateKey extends SLIP10Ed25519PrivateKey {
     return combined;
   }
 
-  getPublicKey(): IPublicKey {
+  getPublicKey(): PublicKey {
     const verifyKey = ec.keyFromPublic(
         bytesToString(pointScalarMulBase(this.privateKey.secret()))
     );

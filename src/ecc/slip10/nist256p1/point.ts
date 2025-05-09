@@ -3,13 +3,13 @@
 import * as elliptic from 'elliptic';
 import BN from 'bn.js';
 
-import { IPoint } from '../../ipoint';
+import { Point } from '../../point';
 import { SLIP10_SECP256K1_CONST } from '../../../const';
 
 const ec = new elliptic.ec('p256');
 type BasePoint = elliptic.curve.base.BasePoint;
 
-export class SLIP10Nist256p1Point extends IPoint {
+export class SLIP10Nist256p1Point extends Point {
 
   getName(): string {
     return 'SLIP10-Nist256p1';
@@ -60,7 +60,7 @@ export class SLIP10Nist256p1Point extends IPoint {
     return new Uint8Array(arr[0] === 4 ? arr.slice(1) : arr);
   }
 
-  add(other: IPoint): SLIP10Nist256p1Point {
+  add(other: Point): SLIP10Nist256p1Point {
     const p = (other as this).getUnderlyingObject() as BasePoint;
     const sum = this.point.add(p) as BasePoint;
     return new SLIP10Nist256p1Point(sum);

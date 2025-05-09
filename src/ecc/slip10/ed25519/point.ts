@@ -3,19 +3,19 @@
 import * as elliptic from 'elliptic';
 import BN from 'bn.js';
 
-import { IPoint } from '../../ipoint';
+import { Point } from '../../point';
 import { SLIP10_ED25519_CONST } from '../../../const';
 
 const ec = new elliptic.eddsa('ed25519');
 type EdwardsPoint = elliptic.curve.edwards.EdwardsPoint;
 
-export class SLIP10Ed25519Point extends IPoint {
+export class SLIP10Ed25519Point extends Point {
 
   getName(): string {
     return 'SLIP10-Ed25519';
   }
 
-  static fromBytes(point: Uint8Array): IPoint {
+  static fromBytes(point: Uint8Array): Point {
     if (point.length !== SLIP10_ED25519_CONST.PUBLIC_KEY_BYTE_LENGTH) {
       throw new Error('Invalid point bytes length');
     }
@@ -29,7 +29,7 @@ export class SLIP10Ed25519Point extends IPoint {
     }
   }
 
-  static fromCoordinates(x: bigint, y: bigint): IPoint {
+  static fromCoordinates(x: bigint, y: bigint): Point {
     const bnX = new BN(x.toString(), 10);
     const bnY = new BN(y.toString(), 10);
     const pt = ec.curve.point(bnX, bnY) as EdwardsPoint;
@@ -58,13 +58,13 @@ export class SLIP10Ed25519Point extends IPoint {
     return new Uint8Array([...xBytes, ...yBytes]);
   }
 
-  add(point: IPoint): IPoint {
+  add(point: Point): Point {
     const other = (point as this).getUnderlyingObject() as EdwardsPoint;
     const sum = this.point.add(other) as EdwardsPoint;
     return new SLIP10Ed25519Point(sum);
   }
 
-  multiply(scalar: bigint): IPoint {
+  multiply(scalar: bigint): Point {
     const bn = new BN(scalar.toString(), 10);
     const prod = this.point.mul(bn) as EdwardsPoint;
     return new SLIP10Ed25519Point(prod);

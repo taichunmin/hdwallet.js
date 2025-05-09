@@ -2,7 +2,7 @@
 
 import * as elliptic from 'elliptic';
 
-import { IPublicKey } from '../../../ipublic-key';
+import { PublicKey } from '../../../public-key';
 import { SLIP10Ed25519PrivateKey } from '../../ed25519';
 import { SLIP10Ed25519MoneroPublicKey } from './public-key';
 import { pointScalarMulBase } from '../../../../libs/ed25519-utils';
@@ -16,7 +16,7 @@ export class SLIP10Ed25519MoneroPrivateKey extends SLIP10Ed25519PrivateKey {
     return 'SLIP10-Ed25519-Monero';
   }
 
-  publicKey(): IPublicKey {
+  publicKey(): PublicKey {
     const verifyKey = ec.keyFromPublic(
         bytesToString(pointScalarMulBase(this.privateKey.secret()))
     );
