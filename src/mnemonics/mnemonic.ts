@@ -12,17 +12,19 @@ export class Mnemonic {
   protected mnemonic: string[];
   protected words: number;
   protected language: string;
-  protected mnemonicType?: string;
+  protected options?: MnemonicOptionsInterface;
 
   static wordsList: number[] = [];
   static languages: string[] = [];
 
   static wordlistPath: Record<string, string> = { };
 
-  constructor(mnemonic: string | string[], options: MnemonicOptionsInterface = { }) {
+  constructor(
+    mnemonic: string | string[], options: MnemonicOptionsInterface = { }
+  ) {
     const words = Mnemonic.normalize(mnemonic);
     const constructor = this.constructor as typeof Mnemonic;
-    
+
     if (!constructor.isValid(words, options)) {
       throw new MnemonicError('Invalid mnemonic words');
     }
@@ -32,7 +34,7 @@ export class Mnemonic {
     this.mnemonic = words;
     this.words = words.length;
     this.language = language;
-    this.mnemonicType = options.mnemonicType;
+    this.options = options;
   }
 
   static getName(): string {
@@ -46,7 +48,7 @@ export class Mnemonic {
   getWords(): number {
     return this.words;
   }
-  
+
   getLanguage(): string {
     return this.language;
   }

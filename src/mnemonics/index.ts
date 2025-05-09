@@ -28,11 +28,10 @@ export class MNEMONICS {
     return Object.values(this.dictionary);
   }
 
-  static getMnemonicClass(name: string): typeof Mnemonic {
+  static getMnemonicClass(name: string): typeof Mnemonic | any {
     if (!this.isMnemonic(name)) {
       throw new MnemonicError(
-        'Invalid mnemonic name',
-        { expected: this.getNames(), got: name }
+        'Invalid Mnemonic name', { expected: this.getNames(), got: name }
       )
     }
     return this.dictionary[name];

@@ -3,7 +3,7 @@
 import { Buffer } from 'buffer';
 
 import { Mnemonic, BIP39Mnemonic, ElectrumV1Mnemonic } from '../../index';
-import { Entropy, ElectrumV2Entropy, ELECTRUM_V2_ENTROPY_STRENGTHS,} from '../../../entropies';
+import { Entropy, ElectrumV2Entropy, ELECTRUM_V2_ENTROPY_STRENGTHS } from '../../../entropies';
 import {
   MnemonicOptionsInterface,
   ElectrumV2MnemonicLanguagesInterface,
@@ -224,8 +224,7 @@ export class ElectrumV2Mnemonic extends Mnemonic {
     const words = this.normalize(mnemonic);
     if (!this.wordsList.includes(words.length)) {
       throw new MnemonicError('Invalid mnemonic words count', {
-        expected: this.wordsList,
-        got: words.length,
+        expected: this.wordsList, got: words.length,
       });
     }
 
@@ -279,6 +278,13 @@ export class ElectrumV2Mnemonic extends Mnemonic {
     );
     if (!mnemonicType) return false;
     return tag.startsWith(this.mnemonicTypes[mnemonicType]);
+  }
+
+  getMnemonicType(): string {
+    if (!this.options?.mnemonicType) {
+      throw new MnemonicError('mnemonicType is not found');
+    }
+    return this.options?.mnemonicType;
   }
 
   static normalize(input: string | string[]): string[] {
