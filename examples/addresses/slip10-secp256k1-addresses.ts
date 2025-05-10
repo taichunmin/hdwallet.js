@@ -1,7 +1,8 @@
 // SPDX-License-Identifier: MIT
 
-import { Buffer } from 'buffer';
-import { PrivateKey, PublicKey, SLIP10Secp256k1PrivateKey, } from '../../src/ecc';
+import {
+  PrivateKey, PublicKey, SLIP10Secp256k1PrivateKey
+} from '../../src/ecc';
 import {
   P2PKHAddress,
   P2SHAddress,
@@ -18,11 +19,18 @@ import {
   FilecoinAddress,
   AvalancheAddress,
   EOSAddress,
-  ErgoAddress
+  ErgoAddress,
+  IconAddress,
+  OKTChainAddress,
+  HarmonyAddress,
+  ZilliqaAddress,
+  InjectiveAddress
 } from '../../src/addresses';
 import { PUBLIC_KEY_TYPES } from '../../src/const';
 import { bytesToString } from '../../src/utils';
-import { Bitcoin, Cosmos, Filecoin, Avalanche, Ergo } from '../../src/cryptocurrencies';
+import {
+  Bitcoin, Cosmos, Filecoin, Avalanche, Ergo, OKTChain, Harmony, Zilliqa, Injective
+} from '../../src/cryptocurrencies';
 
 const PRIVATE_KEY: PrivateKey = SLIP10Secp256k1PrivateKey.fromBytes(
   Buffer.from('be3851aa7822b92deb2f34655e41a40fd510f6cf9aa2a4f0c4d7a4bc81f0ad74', 'hex')
@@ -181,3 +189,39 @@ const p2shErgoAddressHash: string = ErgoAddress.decode(p2shErgoAddress, {
   addressType: Ergo.ADDRESS_TYPES.P2SH, networkType: Ergo.NETWORKS.TESTNET
 });
 console.log("(P2SH) Ergo Address:", p2shErgoAddress, p2shErgoAddressHash);
+
+const iconAddress: string = IconAddress.encode(PUBLIC_KEY);
+const iconAddressHash: string = IconAddress.decode(iconAddress);
+console.log("Icon Address:", iconAddress, iconAddressHash);
+
+const oktChainAddress: string = OKTChainAddress.encode(PUBLIC_KEY, {
+  hrp: OKTChain.NETWORKS.MAINNET.HRP
+});
+const oktChainAddressHash: string = OKTChainAddress.decode(oktChainAddress, {
+  hrp: OKTChain.NETWORKS.MAINNET.HRP
+});
+console.log("OKTChain Address:", oktChainAddress, oktChainAddressHash);
+
+const harmonyAddress: string = HarmonyAddress.encode(PUBLIC_KEY, {
+  hrp: Harmony.NETWORKS.MAINNET.HRP
+});
+const harmonyAddressHash: string = HarmonyAddress.decode(harmonyAddress, {
+  hrp: Harmony.NETWORKS.MAINNET.HRP
+});
+console.log("Harmony Address:", harmonyAddress, harmonyAddressHash);
+
+const zilliqaAddress: string = ZilliqaAddress.encode(PUBLIC_KEY, {
+  hrp: Zilliqa.NETWORKS.MAINNET.HRP
+});
+const zilliqaAddressHash: string = ZilliqaAddress.decode(zilliqaAddress, {
+  hrp: Zilliqa.NETWORKS.MAINNET.HRP
+});
+console.log("Zilliqa Address:", zilliqaAddress, zilliqaAddressHash);
+
+const injectiveAddress: string = InjectiveAddress.encode(PUBLIC_KEY, {
+  hrp: Injective.NETWORKS.MAINNET.HRP
+});
+const injectiveAddressHash: string = InjectiveAddress.decode(injectiveAddress, {
+  hrp: Injective.NETWORKS.MAINNET.HRP
+});
+console.log("Injective Address:", injectiveAddress, injectiveAddressHash);

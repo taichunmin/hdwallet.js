@@ -18,6 +18,11 @@ import { FilecoinAddress } from './filecoin';
 import { AvalancheAddress } from './avalanche';
 import { EOSAddress } from './eos';
 import { ErgoAddress } from './ergo';
+import { IconAddress } from './icon';
+import { OKTChainAddress } from './okt-chain';
+import { HarmonyAddress } from './harmony';
+import { ZilliqaAddress } from './zilliqa';
+import { InjectiveAddress } from './injective';
 
 export class ADDRESSES {
 
@@ -38,6 +43,11 @@ export class ADDRESSES {
     [AvalancheAddress.getName()]: AvalancheAddress,
     [EOSAddress.getName()]: EOSAddress,
     [ErgoAddress.getName()]: ErgoAddress,
+    [IconAddress.getName()]: IconAddress,
+    [OKTChainAddress.getName()]: OKTChainAddress,
+    [HarmonyAddress.getName()]: HarmonyAddress,
+    [ZilliqaAddress.getName()]: ZilliqaAddress,
+    [InjectiveAddress.getName()]: InjectiveAddress,
   };
 
   public static getNames(): string[] {
@@ -79,5 +89,10 @@ export {
   FilecoinAddress,
   AvalancheAddress,
   EOSAddress,
-  ErgoAddress
+  ErgoAddress,
+  IconAddress,
+  OKTChainAddress,
+  HarmonyAddress,
+  ZilliqaAddress,
+  InjectiveAddress
 };
