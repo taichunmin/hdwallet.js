@@ -13,7 +13,7 @@ import {
   XPrivateKeyVersions,
   XPublicKeyVersions
 } from '../const';
-import { Cryptocurrency, Network} from './cryptocurrency';
+import { Cryptocurrency, Network } from './cryptocurrency';
 
 export class Mainnet extends Network {
 
