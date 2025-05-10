@@ -6,8 +6,9 @@ import {
     indexTupleToString,
     IndexTuple
   } from '../utils';
-  import { Derivation, DerivationOptions } from './derivation';
-  
+  import { Derivation } from './derivation';
+  import { DerivationOptions } from '../interfaces';
+
   export class MoneroDerivation extends Derivation {
     private _minor: IndexTuple;
     private _major: IndexTuple;

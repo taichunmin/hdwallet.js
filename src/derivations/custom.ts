@@ -1,8 +1,9 @@
 // SPDX-License-Identifier: MIT
 
 import { normalizeDerivation } from '../utils';
-import { Derivation, DerivationOptions } from './derivation';
+import { Derivation } from './derivation';
 import { DerivationError } from '../exceptions';
+import { DerivationOptions } from '../interfaces';
 
 export class CustomDerivation extends Derivation {
   constructor(options?: DerivationOptions) {

@@ -6,8 +6,8 @@ import {
   indexTupleToString,
   IndexTuple
 } from '../utils';
-import { Derivation, DerivationOptions } from './derivation';
-import { DerivationError } from '../exceptions';
+import { Derivation } from './derivation';
+import { DerivationOptions } from '../interfaces';
 
 export class ElectrumDerivation extends Derivation {
   private _change: IndexTuple;

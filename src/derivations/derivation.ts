@@ -2,24 +2,7 @@
 
 import { EllipticCurveCryptography } from '../ecc';
 import { normalizeDerivation, IndexTuple } from '../utils';
-
-export interface DerivationOptions {
-  // Custom
-  path?: string;
-  indexes?: number[];
-  // BIP | Electrum
-  coinType?: string | number;
-  account?: string | number | [number, number];
-  change?: string | number;
-  address?: string | number | [number, number];
-  // Cardano
-  role?: string | number;
-  // Monero
-  minor?: string | number | [number, number];
-  major?: string | number | [number, number];
-  // HDW
-  ecc?: string | number | typeof EllipticCurveCryptography;
-}
+import { DerivationOptions } from '../interfaces';
 
 export class Derivation {
   protected _path: string;

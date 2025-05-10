@@ -6,7 +6,8 @@ import {
   indexTupleToString,
   IndexTuple
 } from '../utils';
-import { Derivation, DerivationOptions } from './derivation';
+import { Derivation } from './derivation';
+import { DerivationOptions } from '../interfaces';
 import { DerivationError } from '../exceptions';
 
 export enum ROLES {

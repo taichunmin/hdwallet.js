@@ -10,8 +10,9 @@ import {
   ECCS as EllipticCurveCryptographies, 
   EllipticCurveCryptography
 } from '../ecc';
-import { Derivation, DerivationOptions } from './derivation';
+import { Derivation } from './derivation';
 import { DerivationError } from '../exceptions';
+import { DerivationOptions } from '../interfaces';
 
 export enum ECCS {
   SLIP10_Secp256k1      = 'SLIP10-Secp256k1',
