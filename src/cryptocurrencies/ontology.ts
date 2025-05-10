@@ -15,18 +15,22 @@ import {
   XPublicKeyVersions
 } from '../const';
 import {
-  ICryptocurrency,
-  INetwork
-} from './icryptocurrency';
+  Cryptocurrency,
+  Network
+} from './cryptocurrency';
 
 
-export class Mainnet extends INetwork {
+export class Mainnet extends Network {
 
-  static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({ P2PKH: 0x0488ade4 });
-  static XPUBLIC_KEY_VERSIONS = new XPublicKeyVersions({ P2PKH: 0x0488b21e });
+  static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
+    P2PKH: 0x0488ade4
+  });
+  static XPUBLIC_KEY_VERSIONS = new XPublicKeyVersions({
+    P2PKH: 0x0488b21e
+  });
 }
 
-export class Ontology extends ICryptocurrency {
+export class Ontology extends Cryptocurrency {
 
   static NAME = 'Ontology';
   static SYMBOL = 'ONT';
@@ -34,12 +38,14 @@ export class Ontology extends ICryptocurrency {
     SOURCE_CODE: 'https://github.com/ontio/ontology',
     WHITEPAPER: 'https://docs.ont.io',
     WEBSITES: [
-        'https://ont.io'
+      'https://ont.io'
     ]
   });
   static ECC = SLIP10Nist256p1ECC;
   static COIN_TYPE = CoinTypes.Ontology;
-  static NETWORKS = new Networks({ MAINNET: Mainnet });
+  static NETWORKS = new Networks({
+    MAINNET: Mainnet
+  });
   static DEFAULT_NETWORK = Ontology.NETWORKS.MAINNET;
   static ENTROPIES = new Entropies([
     'BIP39'
@@ -55,7 +61,11 @@ export class Ontology extends ICryptocurrency {
     'BIP44'
   ]);
   static DEFAULT_HD = Ontology.HDS.BIP44;
-  static ADDRESSES = new Addresses({ NEO: 'Neo' });
+  static ADDRESSES = new Addresses({
+    NEO: 'Neo'
+  });
   static DEFAULT_ADDRESS = Ontology.ADDRESSES.NEO;
-  static PARAMS = new Params({ ADDRESS_VERSION: 0x17 });
+  static PARAMS = new Params({
+    ADDRESS_VERSION: 0x17
+  });
 }

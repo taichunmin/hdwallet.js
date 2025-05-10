@@ -14,12 +14,12 @@ import {
   XPublicKeyVersions
 } from '../const';
 import {
-  ICryptocurrency,
-  INetwork
-} from './icryptocurrency';
+  Cryptocurrency,
+  Network
+} from './cryptocurrency';
 
 
-export class Mainnet extends INetwork {
+export class Mainnet extends Network {
 
   static PUBLIC_KEY_ADDRESS_PREFIX = 0x00001cb8;
   static SCRIPT_ADDRESS_PREFIX = 0x00001cbd;
@@ -35,7 +35,7 @@ export class Mainnet extends INetwork {
   static WIF_PREFIX = 0x80;
 }
 
-export class Testnet extends INetwork {
+export class Testnet extends Network {
 
   static PUBLIC_KEY_ADDRESS_PREFIX = 0x00001d25;
   static SCRIPT_ADDRESS_PREFIX = 0x00001cba;
@@ -51,7 +51,7 @@ export class Testnet extends INetwork {
   static WIF_PREFIX = 0xef;
 }
 
-export class Zcash extends ICryptocurrency {
+export class Zcash extends Cryptocurrency {
 
   static NAME = 'Zcash';
   static SYMBOL = 'ZEC';
@@ -59,7 +59,7 @@ export class Zcash extends ICryptocurrency {
     SOURCE_CODE: 'https://github.com/zcash/zcash',
     WHITEPAPER: 'https://github.com/zcash/zips/blob/master/protocol/protocol.pdf',
     WEBSITES: [
-        'https://z.cash'
+      'https://z.cash'
     ]
   });
   static ECC = SLIP10Secp256k1ECC;

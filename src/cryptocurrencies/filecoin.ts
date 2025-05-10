@@ -16,19 +16,23 @@ import {
   XPublicKeyVersions
 } from '../const';
 import {
-  ICryptocurrency,
-  INetwork
-} from './icryptocurrency';
+  Cryptocurrency,
+  Network
+} from './cryptocurrency';
 
 
-export class Mainnet extends INetwork {
+export class Mainnet extends Network {
 
-  static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({ P2PKH: 0x0488ade4 });
-  static XPUBLIC_KEY_VERSIONS = new XPublicKeyVersions({ P2PKH: 0x0488b21e });
+  static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
+    P2PKH: 0x0488ade4
+  });
+  static XPUBLIC_KEY_VERSIONS = new XPublicKeyVersions({
+    P2PKH: 0x0488b21e
+  });
   static WIF_PREFIX = 0x80;
 }
 
-export class Filecoin extends ICryptocurrency {
+export class Filecoin extends Cryptocurrency {
 
   static NAME = 'Filecoin';
   static SYMBOL = 'FIL';
@@ -36,12 +40,14 @@ export class Filecoin extends ICryptocurrency {
     SOURCE_CODE: 'https://github.com/filecoin-project',
     WHITEPAPER: 'https://docs.filecoin.io',
     WEBSITES: [
-        'https://filecoin.io'
+      'https://filecoin.io'
     ]
   });
   static ECC = SLIP10Secp256k1ECC;
   static COIN_TYPE = CoinTypes.Filecoin;
-  static NETWORKS = new Networks({ MAINNET: Mainnet });
+  static NETWORKS = new Networks({
+    MAINNET: Mainnet
+  });
   static DEFAULT_NETWORK = Filecoin.NETWORKS.MAINNET;
   static ENTROPIES = new Entropies([
     'BIP39'
@@ -57,7 +63,9 @@ export class Filecoin extends ICryptocurrency {
     'BIP44'
   ]);
   static DEFAULT_HD = Filecoin.HDS.BIP44;
-  static ADDRESSES = new Addresses({ FILECOIN: 'Filecoin' });
+  static ADDRESSES = new Addresses({
+    FILECOIN: 'Filecoin'
+  });
   static DEFAULT_ADDRESS = Filecoin.ADDRESSES.FILECOIN;
   static ADDRESS_TYPES = new AddressTypes({
     SECP256K1: 'secp256k1',
@@ -68,7 +76,7 @@ export class Filecoin extends ICryptocurrency {
     ALPHABET: 'abcdefghijklmnopqrstuvwxyz234567',
     ADDRESS_PREFIX: 'f',
     ADDRESS_TYPES: {
-        SECP256K1: 0x01,
+      SECP256K1: 0x01,
         BLS: 0x03
     }
   });

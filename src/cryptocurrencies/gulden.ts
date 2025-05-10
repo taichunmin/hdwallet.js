@@ -14,12 +14,12 @@ import {
   XPublicKeyVersions
 } from '../const';
 import {
-  ICryptocurrency,
-  INetwork
-} from './icryptocurrency';
+  Cryptocurrency,
+  Network
+} from './cryptocurrency';
 
 
-export class Mainnet extends INetwork {
+export class Mainnet extends Network {
 
   static PUBLIC_KEY_ADDRESS_PREFIX = 0x26;
   static SCRIPT_ADDRESS_PREFIX = 0x62;
@@ -35,20 +35,22 @@ export class Mainnet extends INetwork {
   static WIF_PREFIX = 0x62;
 }
 
-export class Gulden extends ICryptocurrency {
+export class Gulden extends Cryptocurrency {
 
   static NAME = 'Gulden';
   static SYMBOL = 'NLG';
   static INFO = new Info({
     SOURCE_CODE: 'https://github.com/Gulden/gulden-old',
     WEBSITES: [
-        'https://gulden.com'
+      'https://gulden.com'
     ]
   });
   static ECC = SLIP10Secp256k1ECC;
   static COIN_TYPE = CoinTypes.Gulden;
   static SUPPORT_BIP38 = true;
-  static NETWORKS = new Networks({ MAINNET: Mainnet });
+  static NETWORKS = new Networks({
+    MAINNET: Mainnet
+  });
   static DEFAULT_NETWORK = Gulden.NETWORKS.MAINNET;
   static ENTROPIES = new Entropies([
     'BIP39'

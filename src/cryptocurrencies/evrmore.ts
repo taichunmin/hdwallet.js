@@ -15,12 +15,12 @@ import {
   XPublicKeyVersions
 } from '../const';
 import {
-  ICryptocurrency,
-  INetwork
-} from './icryptocurrency';
+  Cryptocurrency,
+  Network
+} from './cryptocurrency';
 
 
-export class Mainnet extends INetwork {
+export class Mainnet extends Network {
 
   static PUBLIC_KEY_ADDRESS_PREFIX = 0x21;
   static SCRIPT_ADDRESS_PREFIX = 0x5c;
@@ -49,7 +49,7 @@ export class Mainnet extends INetwork {
   static WIF_PREFIX = 0x80;
 }
 
-export class Testnet extends INetwork {
+export class Testnet extends Network {
 
   static PUBLIC_KEY_ADDRESS_PREFIX = 0x6f;
   static SCRIPT_ADDRESS_PREFIX = 0xc4;
@@ -78,7 +78,7 @@ export class Testnet extends INetwork {
   static WIF_PREFIX = 0xef;
 }
 
-export class Evrmore extends ICryptocurrency {
+export class Evrmore extends Cryptocurrency {
 
   static NAME = 'Evrmore';
   static SYMBOL = 'EVR';
@@ -86,7 +86,7 @@ export class Evrmore extends ICryptocurrency {
     SOURCE_CODE: 'https://github.com/EvrmoreOrg/Evrmore',
     WHITEPAPER: 'https://github.com/EvrmoreOrg/whitepaper',
     WEBSITES: [
-        'https://evrmorecoin.org/'
+      'https://evrmorecoin.org/'
     ]
   });
   static ECC = SLIP10Secp256k1ECC;

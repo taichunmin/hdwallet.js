@@ -14,12 +14,12 @@ import {
   XPublicKeyVersions
 } from '../const';
 import {
-  ICryptocurrency,
-  INetwork
-} from './icryptocurrency';
+  Cryptocurrency,
+  Network
+} from './cryptocurrency';
 
 
-export class Mainnet extends INetwork {
+export class Mainnet extends Network {
 
   static PUBLIC_KEY_ADDRESS_PREFIX = 0x19;
   static SCRIPT_ADDRESS_PREFIX = 0x05;
@@ -35,7 +35,7 @@ export class Mainnet extends INetwork {
   static WIF_PREFIX = 0xa4;
 }
 
-export class Bata extends ICryptocurrency {
+export class Bata extends Cryptocurrency {
 
   static NAME = 'Bata';
   static SYMBOL = 'BTA';
@@ -43,14 +43,16 @@ export class Bata extends ICryptocurrency {
     SOURCE_CODE: 'https://github.com/BTA-BATA/Bataoshi',
     WHITEPAPER: 'https://bata.io/wp-content/uploads/2021/09/Bata-Cryptocurrency-Whitepaper.pdf',
     WEBSITES: [
-        'https://bata.io',
+      'https://bata.io',
         'https://bata.digital'
     ]
   });
   static ECC = SLIP10Secp256k1ECC;
   static COIN_TYPE = CoinTypes.Bata;
   static SUPPORT_BIP38 = true;
-  static NETWORKS = new Networks({ MAINNET: Mainnet });
+  static NETWORKS = new Networks({
+    MAINNET: Mainnet
+  });
   static DEFAULT_NETWORK = Bata.NETWORKS.MAINNET;
   static ENTROPIES = new Entropies([
     'BIP39'

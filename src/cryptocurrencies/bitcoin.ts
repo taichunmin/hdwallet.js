@@ -16,12 +16,12 @@ import {
   XPublicKeyVersions
 } from '../const';
 import {
-  ICryptocurrency,
-  INetwork
-} from './icryptocurrency';
+  Cryptocurrency,
+  Network
+} from './cryptocurrency';
 
 
-export class Mainnet extends INetwork {
+export class Mainnet extends Network {
 
   static PUBLIC_KEY_ADDRESS_PREFIX = 0x00;
   static SCRIPT_ADDRESS_PREFIX = 0x05;
@@ -53,7 +53,7 @@ export class Mainnet extends INetwork {
   static WIF_PREFIX = 0x80;
 }
 
-export class Testnet extends INetwork {
+export class Testnet extends Network {
 
   static PUBLIC_KEY_ADDRESS_PREFIX = 0x6f;
   static SCRIPT_ADDRESS_PREFIX = 0xc4;
@@ -90,7 +90,7 @@ export class Regtest extends Testnet {
   static HRP = 'bcrt';
 }
 
-export class Bitcoin extends ICryptocurrency {
+export class Bitcoin extends Cryptocurrency {
 
   static NAME = 'Bitcoin';
   static SYMBOL = 'BTC';
@@ -98,7 +98,7 @@ export class Bitcoin extends ICryptocurrency {
     SOURCE_CODE: 'https://github.com/bitcoin/bitcoin',
     WHITEPAPER: 'https://bitcoin.org/bitcoin.pdf',
     WEBSITES: [
-        'https://bitcoin.org'
+      'https://bitcoin.org'
     ]
   });
   static ECC = SLIP10Secp256k1ECC;

@@ -14,12 +14,12 @@ import {
   XPublicKeyVersions
 } from '../const';
 import {
-  ICryptocurrency,
-  INetwork
-} from './icryptocurrency';
+  Cryptocurrency,
+  Network
+} from './cryptocurrency';
 
 
-export class Mainnet extends INetwork {
+export class Mainnet extends Network {
 
   static PUBLIC_KEY_ADDRESS_PREFIX = 0x37;
   static SCRIPT_ADDRESS_PREFIX = 0x05;
@@ -35,7 +35,7 @@ export class Mainnet extends INetwork {
   static WIF_PREFIX = 0xb7;
 }
 
-export class Potcoin extends ICryptocurrency {
+export class Potcoin extends Cryptocurrency {
 
   static NAME = 'Potcoin';
   static SYMBOL = 'POT';
@@ -43,13 +43,15 @@ export class Potcoin extends ICryptocurrency {
     SOURCE_CODE: 'https://github.com/potcoin/Potcoin',
     WHITEPAPER: 'https://www.potcoin.com/images/blog-images/PotCoin-4.20.2016.pdf',
     WEBSITES: [
-        'http://www.potcoin.com'
+      'http://www.potcoin.com'
     ]
   });
   static ECC = SLIP10Secp256k1ECC;
   static COIN_TYPE = CoinTypes.Potcoin;
   static SUPPORT_BIP38 = true;
-  static NETWORKS = new Networks({ MAINNET: Mainnet });
+  static NETWORKS = new Networks({
+    MAINNET: Mainnet
+  });
   static DEFAULT_NETWORK = Potcoin.NETWORKS.MAINNET;
   static ENTROPIES = new Entropies([
     'BIP39'

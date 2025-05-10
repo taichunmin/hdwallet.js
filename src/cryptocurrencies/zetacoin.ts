@@ -14,12 +14,12 @@ import {
   XPublicKeyVersions
 } from '../const';
 import {
-  ICryptocurrency,
-  INetwork
-} from './icryptocurrency';
+  Cryptocurrency,
+  Network
+} from './cryptocurrency';
 
 
-export class Mainnet extends INetwork {
+export class Mainnet extends Network {
 
   static PUBLIC_KEY_ADDRESS_PREFIX = 0x50;
   static SCRIPT_ADDRESS_PREFIX = 0x09;
@@ -35,20 +35,22 @@ export class Mainnet extends INetwork {
   static WIF_PREFIX = 0xe0;
 }
 
-export class Zetacoin extends ICryptocurrency {
+export class Zetacoin extends Cryptocurrency {
 
   static NAME = 'Zetacoin';
   static SYMBOL = 'ZET';
   static INFO = new Info({
     SOURCE_CODE: 'https://github.com/zetacoin/zetacoin',
     WEBSITES: [
-        'http://www.zetac.org'
+      'http://www.zetac.org'
     ]
   });
   static ECC = SLIP10Secp256k1ECC;
   static COIN_TYPE = CoinTypes.Zetacoin;
   static SUPPORT_BIP38 = true;
-  static NETWORKS = new Networks({ MAINNET: Mainnet });
+  static NETWORKS = new Networks({
+    MAINNET: Mainnet
+  });
   static DEFAULT_NETWORK = Zetacoin.NETWORKS.MAINNET;
   static ENTROPIES = new Entropies([
     'BIP39'

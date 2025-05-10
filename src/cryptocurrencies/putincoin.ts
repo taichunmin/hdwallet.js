@@ -14,12 +14,12 @@ import {
   XPublicKeyVersions
 } from '../const';
 import {
-  ICryptocurrency,
-  INetwork
-} from './icryptocurrency';
+  Cryptocurrency,
+  Network
+} from './cryptocurrency';
 
 
-export class Mainnet extends INetwork {
+export class Mainnet extends Network {
 
   static PUBLIC_KEY_ADDRESS_PREFIX = 0x37;
   static SCRIPT_ADDRESS_PREFIX = 0x14;
@@ -35,7 +35,7 @@ export class Mainnet extends INetwork {
   static WIF_PREFIX = 0xb7;
 }
 
-export class Putincoin extends ICryptocurrency {
+export class Putincoin extends Cryptocurrency {
 
   static NAME = 'Putincoin';
   static SYMBOL = 'PUT';
@@ -43,13 +43,15 @@ export class Putincoin extends ICryptocurrency {
     SOURCE_CODE: 'https://github.com/PutinCoinPUT/PutinCoin',
     WHITEPAPER: 'https://putincoin.org/putincoin.pdf',
     WEBSITES: [
-        'https://putincoin.org'
+      'https://putincoin.org'
     ]
   });
   static ECC = SLIP10Secp256k1ECC;
   static COIN_TYPE = CoinTypes.Putincoin;
   static SUPPORT_BIP38 = true;
-  static NETWORKS = new Networks({ MAINNET: Mainnet });
+  static NETWORKS = new Networks({
+    MAINNET: Mainnet
+  });
   static DEFAULT_NETWORK = Putincoin.NETWORKS.MAINNET;
   static ENTROPIES = new Entropies([
     'BIP39'

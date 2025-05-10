@@ -15,12 +15,12 @@ import {
   XPublicKeyVersions
 } from '../const';
 import {
-  ICryptocurrency,
-  INetwork
-} from './icryptocurrency';
+  Cryptocurrency,
+  Network
+} from './cryptocurrency';
 
 
-export class Mainnet extends INetwork {
+export class Mainnet extends Network {
 
   static PUBLIC_KEY_ADDRESS_PREFIX = 0x1f;
   static SCRIPT_ADDRESS_PREFIX = 0x4e;
@@ -45,7 +45,7 @@ export class Mainnet extends INetwork {
   static WIF_PREFIX = 0x9f;
 }
 
-export class DeepOnion extends ICryptocurrency {
+export class DeepOnion extends Cryptocurrency {
 
   static NAME = 'DeepOnion';
   static SYMBOL = 'ONION';
@@ -53,13 +53,15 @@ export class DeepOnion extends ICryptocurrency {
     SOURCE_CODE: 'https://github.com/deeponion/deeponion',
     WHITEPAPER: 'https://deeponion.org/White-Paper.pdf',
     WEBSITES: [
-        'https://deeponion.org'
+      'https://deeponion.org'
     ]
   });
   static ECC = SLIP10Secp256k1ECC;
   static COIN_TYPE = CoinTypes.DeepOnion;
   static SUPPORT_BIP38 = true;
-  static NETWORKS = new Networks({ MAINNET: Mainnet });
+  static NETWORKS = new Networks({
+    MAINNET: Mainnet
+  });
   static DEFAULT_NETWORK = DeepOnion.NETWORKS.MAINNET;
   static ENTROPIES = new Entropies([
     'BIP39'

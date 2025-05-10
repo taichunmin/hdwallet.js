@@ -14,12 +14,12 @@ import {
   XPublicKeyVersions
 } from '../const';
 import {
-  ICryptocurrency,
-  INetwork
-} from './icryptocurrency';
+  Cryptocurrency,
+  Network
+} from './cryptocurrency';
 
 
-export class Mainnet extends INetwork {
+export class Mainnet extends Network {
 
   static PUBLIC_KEY_ADDRESS_PREFIX = 0x3e;
   static SCRIPT_ADDRESS_PREFIX = 0x55;
@@ -35,7 +35,7 @@ export class Mainnet extends INetwork {
   static WIF_PREFIX = 0xbe;
 }
 
-export class Gridcoin extends ICryptocurrency {
+export class Gridcoin extends Cryptocurrency {
 
   static NAME = 'Gridcoin';
   static SYMBOL = 'GRC';
@@ -43,13 +43,15 @@ export class Gridcoin extends ICryptocurrency {
     SOURCE_CODE: 'https://github.com/gridcoin-community/Gridcoin-Research',
     WHITEPAPER: 'https://www.gridcoin.us/assets/img/whitepaper.pdf',
     WEBSITES: [
-        'http://www.gridcoin.us'
+      'http://www.gridcoin.us'
     ]
   });
   static ECC = SLIP10Secp256k1ECC;
   static COIN_TYPE = CoinTypes.Gridcoin;
   static SUPPORT_BIP38 = true;
-  static NETWORKS = new Networks({ MAINNET: Mainnet });
+  static NETWORKS = new Networks({
+    MAINNET: Mainnet
+  });
   static DEFAULT_NETWORK = Gridcoin.NETWORKS.MAINNET;
   static ENTROPIES = new Entropies([
     'BIP39'

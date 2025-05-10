@@ -14,12 +14,12 @@ import {
   XPublicKeyVersions
 } from '../const';
 import {
-  ICryptocurrency,
-  INetwork
-} from './icryptocurrency';
+  Cryptocurrency,
+  Network
+} from './cryptocurrency';
 
 
-export class Mainnet extends INetwork {
+export class Mainnet extends Network {
 
   static PUBLIC_KEY_ADDRESS_PREFIX = 0x23;
   static SCRIPT_ADDRESS_PREFIX = 0x5f;
@@ -35,7 +35,7 @@ export class Mainnet extends INetwork {
   static WIF_PREFIX = 0x3c;
 }
 
-export class Testnet extends INetwork {
+export class Testnet extends Network {
 
   static PUBLIC_KEY_ADDRESS_PREFIX = 0x4c;
   static SCRIPT_ADDRESS_PREFIX = 0x89;
@@ -51,14 +51,14 @@ export class Testnet extends INetwork {
   static WIF_PREFIX = 0xed;
 }
 
-export class FIX extends ICryptocurrency {
+export class FIX extends Cryptocurrency {
 
   static NAME = 'FIX';
   static SYMBOL = 'FIX';
   static INFO = new Info({
     SOURCE_CODE: 'https://github.com/NewCapital/FIX-Core',
     WEBSITES: [
-        'https://fix.network'
+      'https://fix.network'
     ]
   });
   static ECC = SLIP10Secp256k1ECC;

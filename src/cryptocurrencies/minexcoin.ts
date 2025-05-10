@@ -14,12 +14,12 @@ import {
   XPublicKeyVersions
 } from '../const';
 import {
-  ICryptocurrency,
-  INetwork
-} from './icryptocurrency';
+  Cryptocurrency,
+  Network
+} from './cryptocurrency';
 
 
-export class Mainnet extends INetwork {
+export class Mainnet extends Network {
 
   static PUBLIC_KEY_ADDRESS_PREFIX = 0x4b;
   static SCRIPT_ADDRESS_PREFIX = 0x05;
@@ -35,7 +35,7 @@ export class Mainnet extends INetwork {
   static WIF_PREFIX = 0x80;
 }
 
-export class Minexcoin extends ICryptocurrency {
+export class Minexcoin extends Cryptocurrency {
 
   static NAME = 'Minexcoin';
   static SYMBOL = 'MNX';
@@ -43,13 +43,15 @@ export class Minexcoin extends ICryptocurrency {
     SOURCE_CODE: 'https://github.com/minexcoin/minexcoin',
     WHITEPAPER: 'https://minexcoin.com/html/download/wpeng.pdf',
     WEBSITES: [
-        'https://minexcoin.com'
+      'https://minexcoin.com'
     ]
   });
   static ECC = SLIP10Secp256k1ECC;
   static COIN_TYPE = CoinTypes.Minexcoin;
   static SUPPORT_BIP38 = true;
-  static NETWORKS = new Networks({ MAINNET: Mainnet });
+  static NETWORKS = new Networks({
+    MAINNET: Mainnet
+  });
   static DEFAULT_NETWORK = Minexcoin.NETWORKS.MAINNET;
   static ENTROPIES = new Entropies([
     'BIP39'

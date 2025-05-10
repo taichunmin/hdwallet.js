@@ -15,12 +15,12 @@ import {
   XPublicKeyVersions
 } from '../const';
 import {
-  ICryptocurrency,
-  INetwork
-} from './icryptocurrency';
+  Cryptocurrency,
+  Network
+} from './cryptocurrency';
 
 
-export class Mainnet extends INetwork {
+export class Mainnet extends Network {
 
   static PUBLIC_KEY_ADDRESS_PREFIX = 0x00;
   static SCRIPT_ADDRESS_PREFIX = 0x05;
@@ -45,7 +45,7 @@ export class Mainnet extends INetwork {
   static WIF_PREFIX = 0x80;
 }
 
-export class BlockStamp extends ICryptocurrency {
+export class BlockStamp extends Cryptocurrency {
 
   static NAME = 'Block-Stamp';
   static SYMBOL = 'BST';
@@ -53,13 +53,15 @@ export class BlockStamp extends ICryptocurrency {
     SOURCE_CODE: 'https://github.com/BlockStamp',
     WHITEPAPER: 'https://whitepaper.blockstamp.info',
     WEBSITES: [
-        'https://blockstamp.info'
+      'https://blockstamp.info'
     ]
   });
   static ECC = SLIP10Secp256k1ECC;
   static COIN_TYPE = CoinTypes.BlockStamp;
   static SUPPORT_BIP38 = true;
-  static NETWORKS = new Networks({ MAINNET: Mainnet });
+  static NETWORKS = new Networks({
+    MAINNET: Mainnet
+  });
   static DEFAULT_NETWORK = BlockStamp.NETWORKS.MAINNET;
   static ENTROPIES = new Entropies([
     'BIP39'

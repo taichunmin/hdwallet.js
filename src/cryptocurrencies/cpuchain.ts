@@ -15,12 +15,12 @@ import {
   XPublicKeyVersions
 } from '../const';
 import {
-  ICryptocurrency,
-  INetwork
-} from './icryptocurrency';
+  Cryptocurrency,
+  Network
+} from './cryptocurrency';
 
 
-export class Mainnet extends INetwork {
+export class Mainnet extends Network {
 
   static PUBLIC_KEY_ADDRESS_PREFIX = 0x1c;
   static SCRIPT_ADDRESS_PREFIX = 0x1e;
@@ -45,7 +45,7 @@ export class Mainnet extends INetwork {
   static WIF_PREFIX = 0x80;
 }
 
-export class CPUChain extends ICryptocurrency {
+export class CPUChain extends Cryptocurrency {
 
   static NAME = 'CPU-Chain';
   static SYMBOL = 'CPU';
@@ -53,13 +53,15 @@ export class CPUChain extends ICryptocurrency {
     SOURCE_CODE: 'https://github.com/cpuchain/cpuchain',
     WHITEPAPER: 'https://cpuchain.org/assets/v1.pdf',
     WEBSITES: [
-        'https://cpuchain.org'
+      'https://cpuchain.org'
     ]
   });
   static ECC = SLIP10Secp256k1ECC;
   static COIN_TYPE = CoinTypes.CPUChain;
   static SUPPORT_BIP38 = true;
-  static NETWORKS = new Networks({ MAINNET: Mainnet });
+  static NETWORKS = new Networks({
+    MAINNET: Mainnet
+  });
   static DEFAULT_NETWORK = CPUChain.NETWORKS.MAINNET;
   static ENTROPIES = new Entropies([
     'BIP39'

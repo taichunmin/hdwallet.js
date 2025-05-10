@@ -15,12 +15,12 @@ import {
   XPublicKeyVersions
 } from '../const';
 import {
-  ICryptocurrency,
-  INetwork
-} from './icryptocurrency';
+  Cryptocurrency,
+  Network
+} from './cryptocurrency';
 
 
-export class Mainnet extends INetwork {
+export class Mainnet extends Network {
 
   static SCRIPT_ADDRESS_PREFIX = 0x32;
   static PUBLIC_KEY_ADDRESS_PREFIX = 0x3a;
@@ -50,7 +50,7 @@ export class Mainnet extends INetwork {
   static WIF_PREFIX = 0x80;
 }
 
-export class Testnet extends INetwork {
+export class Testnet extends Network {
 
   static SCRIPT_ADDRESS_PREFIX = 0x6e;
   static PUBLIC_KEY_ADDRESS_PREFIX = 0x78;
@@ -80,7 +80,7 @@ export class Testnet extends INetwork {
   static WIF_PREFIX = 0xef;
 }
 
-export class Qtum extends ICryptocurrency {
+export class Qtum extends Cryptocurrency {
 
   static NAME = 'Qtum';
   static SYMBOL = 'QTUM';
@@ -88,7 +88,7 @@ export class Qtum extends ICryptocurrency {
     SOURCE_CODE: 'https://github.com/qtumproject/qtum',
     WHITEPAPER: 'https://qtumorg.s3.ap-northeast-2.amazonaws.com/Qtum_New_Whitepaper_en.pdf',
     WEBSITES: [
-        'https://qtum.org',
+      'https://qtum.org',
         'https://qtum.info'
     ]
   });

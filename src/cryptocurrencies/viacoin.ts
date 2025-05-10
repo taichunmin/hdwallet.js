@@ -15,12 +15,12 @@ import {
   XPublicKeyVersions
 } from '../const';
 import {
-  ICryptocurrency,
-  INetwork
-} from './icryptocurrency';
+  Cryptocurrency,
+  Network
+} from './cryptocurrency';
 
 
-export class Mainnet extends INetwork {
+export class Mainnet extends Network {
 
   static PUBLIC_KEY_ADDRESS_PREFIX = 0x47;
   static SCRIPT_ADDRESS_PREFIX = 0x21;
@@ -45,7 +45,7 @@ export class Mainnet extends INetwork {
   static WIF_PREFIX = 0xc7;
 }
 
-export class Testnet extends INetwork {
+export class Testnet extends Network {
 
   static PUBLIC_KEY_ADDRESS_PREFIX = 0x7f;
   static SCRIPT_ADDRESS_PREFIX = 0xc4;
@@ -70,7 +70,7 @@ export class Testnet extends INetwork {
   static WIF_PREFIX = 0xff;
 }
 
-export class Viacoin extends ICryptocurrency {
+export class Viacoin extends Cryptocurrency {
 
   static NAME = 'Viacoin';
   static SYMBOL = 'VIA';
@@ -78,7 +78,7 @@ export class Viacoin extends ICryptocurrency {
     SOURCE_CODE: 'https://github.com/viacoin/viacoin',
     WHITEPAPER: 'https://github.com/viacoin/documents/blob/master/whitepapers/Viacoin_fullcolor_whitepaper.pdf',
     WEBSITES: [
-        'http://viacoin.org'
+      'http://viacoin.org'
     ]
   });
   static ECC = SLIP10Secp256k1ECC;

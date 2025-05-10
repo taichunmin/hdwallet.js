@@ -14,12 +14,12 @@ import {
   XPublicKeyVersions
 } from '../const';
 import {
-  ICryptocurrency,
-  INetwork
-} from './icryptocurrency';
+  Cryptocurrency,
+  Network
+} from './cryptocurrency';
 
 
-export class Mainnet extends INetwork {
+export class Mainnet extends Network {
 
   static PUBLIC_KEY_ADDRESS_PREFIX = 0x35;
   static SCRIPT_ADDRESS_PREFIX = 0x75;
@@ -35,20 +35,22 @@ export class Mainnet extends INetwork {
   static WIF_PREFIX = 0xb5;
 }
 
-export class Neurocoin extends ICryptocurrency {
+export class Neurocoin extends Cryptocurrency {
 
   static NAME = 'Neurocoin';
   static SYMBOL = 'NRO';
   static INFO = new Info({
     SOURCE_CODE: 'https://github.com/neurocoin/neurocoin',
     WEBSITES: [
-        'http://neurocoin.org'
+      'http://neurocoin.org'
     ]
   });
   static ECC = SLIP10Secp256k1ECC;
   static COIN_TYPE = CoinTypes.Neurocoin;
   static SUPPORT_BIP38 = true;
-  static NETWORKS = new Networks({ MAINNET: Mainnet });
+  static NETWORKS = new Networks({
+    MAINNET: Mainnet
+  });
   static DEFAULT_NETWORK = Neurocoin.NETWORKS.MAINNET;
   static ENTROPIES = new Entropies([
     'BIP39'

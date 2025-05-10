@@ -14,12 +14,12 @@ import {
   XPublicKeyVersions
 } from '../const';
 import {
-  ICryptocurrency,
-  INetwork
-} from './icryptocurrency';
+  Cryptocurrency,
+  Network
+} from './cryptocurrency';
 
 
-export class Mainnet extends INetwork {
+export class Mainnet extends Network {
 
   static PUBLIC_KEY_ADDRESS_PREFIX = 0x19;
   static SCRIPT_ADDRESS_PREFIX = 0x05;
@@ -35,7 +35,7 @@ export class Mainnet extends INetwork {
   static WIF_PREFIX = 0x99;
 }
 
-export class BelaCoin extends ICryptocurrency {
+export class BelaCoin extends Cryptocurrency {
 
   static NAME = 'Bela-Coin';
   static SYMBOL = 'BELA';
@@ -43,13 +43,15 @@ export class BelaCoin extends ICryptocurrency {
     SOURCE_CODE: 'https://github.com/TheAmbiaFund/erc20bela',
     WHITEPAPER: 'http://livebela.com/assets/releases/belawhitepaper.pdf',
     WEBSITES: [
-        'http://livebela.com'
+      'http://livebela.com'
     ]
   });
   static ECC = SLIP10Secp256k1ECC;
   static COIN_TYPE = CoinTypes.BelaCoin;
   static SUPPORT_BIP38 = true;
-  static NETWORKS = new Networks({ MAINNET: Mainnet });
+  static NETWORKS = new Networks({
+    MAINNET: Mainnet
+  });
   static DEFAULT_NETWORK = BelaCoin.NETWORKS.MAINNET;
   static ENTROPIES = new Entropies([
     'BIP39'

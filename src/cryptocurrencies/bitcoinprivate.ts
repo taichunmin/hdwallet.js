@@ -14,12 +14,12 @@ import {
   XPublicKeyVersions
 } from '../const';
 import {
-  ICryptocurrency,
-  INetwork
-} from './icryptocurrency';
+  Cryptocurrency,
+  Network
+} from './cryptocurrency';
 
 
-export class Mainnet extends INetwork {
+export class Mainnet extends Network {
 
   static PUBLIC_KEY_ADDRESS_PREFIX = 0x00001325;
   static SCRIPT_ADDRESS_PREFIX = 0x000013af;
@@ -35,7 +35,7 @@ export class Mainnet extends INetwork {
   static WIF_PREFIX = 0x80;
 }
 
-export class Testnet extends INetwork {
+export class Testnet extends Network {
 
   static PUBLIC_KEY_ADDRESS_PREFIX = 0x00001957;
   static SCRIPT_ADDRESS_PREFIX = 0x000019e0;
@@ -51,7 +51,7 @@ export class Testnet extends INetwork {
   static WIF_PREFIX = 0xef;
 }
 
-export class BitcoinPrivate extends ICryptocurrency {
+export class BitcoinPrivate extends Cryptocurrency {
 
   static NAME = 'Bitcoin-Private';
   static SYMBOL = 'BTCP';
@@ -59,7 +59,7 @@ export class BitcoinPrivate extends ICryptocurrency {
     SOURCE_CODE: 'https://github.com/BTCPrivate/BitcoinPrivate',
     WHITEPAPER: 'https://btcprivate.org/whitepaper.pdf',
     WEBSITES: [
-        'https://btcprivate.org'
+      'https://btcprivate.org'
     ]
   });
   static ECC = SLIP10Secp256k1ECC;

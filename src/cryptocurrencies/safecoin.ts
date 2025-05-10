@@ -14,12 +14,12 @@ import {
   XPublicKeyVersions
 } from '../const';
 import {
-  ICryptocurrency,
-  INetwork
-} from './icryptocurrency';
+  Cryptocurrency,
+  Network
+} from './cryptocurrency';
 
 
-export class Mainnet extends INetwork {
+export class Mainnet extends Network {
 
   static PUBLIC_KEY_ADDRESS_PREFIX = 0x3d;
   static SCRIPT_ADDRESS_PREFIX = 0x56;
@@ -35,7 +35,7 @@ export class Mainnet extends INetwork {
   static WIF_PREFIX = 0xbd;
 }
 
-export class Safecoin extends ICryptocurrency {
+export class Safecoin extends Cryptocurrency {
 
   static NAME = 'Safecoin';
   static SYMBOL = 'SAFE';
@@ -43,13 +43,15 @@ export class Safecoin extends ICryptocurrency {
     SOURCE_CODE: 'https://github.com/Fair-Exchange/safecoin',
     WHITEPAPER: 'https://safecoin.org/assets/SafeWhitePaper.pdf',
     WEBSITES: [
-        'https://www.safecoin.org'
+      'https://www.safecoin.org'
     ]
   });
   static ECC = SLIP10Secp256k1ECC;
   static COIN_TYPE = CoinTypes.Safecoin;
   static SUPPORT_BIP38 = true;
-  static NETWORKS = new Networks({ MAINNET: Mainnet });
+  static NETWORKS = new Networks({
+    MAINNET: Mainnet
+  });
   static DEFAULT_NETWORK = Safecoin.NETWORKS.MAINNET;
   static ENTROPIES = new Entropies([
     'BIP39'

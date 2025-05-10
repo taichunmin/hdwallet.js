@@ -15,12 +15,12 @@ import {
   XPublicKeyVersions
 } from '../const';
 import {
-  ICryptocurrency,
-  INetwork
-} from './icryptocurrency';
+  Cryptocurrency,
+  Network
+} from './cryptocurrency';
 
 
-export class Mainnet extends INetwork {
+export class Mainnet extends Network {
 
   static PUBLIC_KEY_ADDRESS_PREFIX = 0x26;
   static SCRIPT_ADDRESS_PREFIX = 0x35;
@@ -45,7 +45,7 @@ export class Mainnet extends INetwork {
   static WIF_PREFIX = 0x80;
 }
 
-export class NIX extends ICryptocurrency {
+export class NIX extends Cryptocurrency {
 
   static NAME = 'NIX';
   static SYMBOL = 'NIX';
@@ -53,14 +53,16 @@ export class NIX extends ICryptocurrency {
     SOURCE_CODE: 'https://github.com/NixPlatform/NixCore',
     WHITEPAPER: 'https://nixplatform.io/about/documentation',
     WEBSITES: [
-        'https://nixplatform.io',
+      'https://nixplatform.io',
         'https://governance.nixplatform.io'
     ]
   });
   static ECC = SLIP10Secp256k1ECC;
   static COIN_TYPE = CoinTypes.NIX;
   static SUPPORT_BIP38 = true;
-  static NETWORKS = new Networks({ MAINNET: Mainnet });
+  static NETWORKS = new Networks({
+    MAINNET: Mainnet
+  });
   static DEFAULT_NETWORK = NIX.NETWORKS.MAINNET;
   static ENTROPIES = new Entropies([
     'BIP39'

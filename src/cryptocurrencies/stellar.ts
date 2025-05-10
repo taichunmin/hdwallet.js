@@ -16,18 +16,22 @@ import {
   XPublicKeyVersions
 } from '../const';
 import {
-  ICryptocurrency,
-  INetwork
-} from './icryptocurrency';
+  Cryptocurrency,
+  Network
+} from './cryptocurrency';
 
 
-export class Mainnet extends INetwork {
+export class Mainnet extends Network {
 
-  static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({ P2PKH: 0x0488ade4 });
-  static XPUBLIC_KEY_VERSIONS = new XPublicKeyVersions({ P2PKH: 0x0488b21e });
+  static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
+    P2PKH: 0x0488ade4
+  });
+  static XPUBLIC_KEY_VERSIONS = new XPublicKeyVersions({
+    P2PKH: 0x0488b21e
+  });
 }
 
-export class Stellar extends ICryptocurrency {
+export class Stellar extends Cryptocurrency {
 
   static NAME = 'Stellar';
   static SYMBOL = 'XLM';
@@ -35,12 +39,14 @@ export class Stellar extends ICryptocurrency {
     SOURCE_CODE: 'https://github.com/stellar/stellar-core',
     WHITEPAPER: 'https://www.stellar.org/papers/stellar-consensus-protocol.pdf',
     WEBSITES: [
-        'https://www.stellar.org'
+      'https://www.stellar.org'
     ]
   });
   static ECC = SLIP10Ed25519ECC;
   static COIN_TYPE = CoinTypes.Stellar;
-  static NETWORKS = new Networks({ MAINNET: Mainnet });
+  static NETWORKS = new Networks({
+    MAINNET: Mainnet
+  });
   static DEFAULT_NETWORK = Stellar.NETWORKS.MAINNET;
   static ENTROPIES = new Entropies([
     'BIP39'
@@ -56,7 +62,9 @@ export class Stellar extends ICryptocurrency {
     'BIP44'
   ]);
   static DEFAULT_HD = Stellar.HDS.BIP44;
-  static ADDRESSES = new Addresses({ STELLAR: 'Stellar' });
+  static ADDRESSES = new Addresses({
+    STELLAR: 'Stellar'
+  });
   static DEFAULT_ADDRESS = Stellar.ADDRESSES.STELLAR;
   static ADDRESS_TYPES = new AddressTypes({
     PRIVATE_KEY: 'private_key',
@@ -66,7 +74,7 @@ export class Stellar extends ICryptocurrency {
   static PARAMS = new Params({
     CHECKSUM_LENGTH: 0x02,
     ADDRESS_TYPES: {
-        PRIVATE_KEY: 18 << 3,
+      PRIVATE_KEY: 18 << 3,
         PUBLIC_KEY: 6 << 3
     }
   });

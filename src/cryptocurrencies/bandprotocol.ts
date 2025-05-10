@@ -14,20 +14,24 @@ import {
   XPublicKeyVersions
 } from '../const';
 import {
-  ICryptocurrency,
-  INetwork
-} from './icryptocurrency';
+  Cryptocurrency,
+  Network
+} from './cryptocurrency';
 
 
-export class Mainnet extends INetwork {
+export class Mainnet extends Network {
 
   static HRP = 'band';
-  static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({ P2PKH: 0x0488ade4 });
-  static XPUBLIC_KEY_VERSIONS = new XPublicKeyVersions({ P2PKH: 0x0488b21e });
+  static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
+    P2PKH: 0x0488ade4
+  });
+  static XPUBLIC_KEY_VERSIONS = new XPublicKeyVersions({
+    P2PKH: 0x0488b21e
+  });
   static WIF_PREFIX = 0x80;
 }
 
-export class BandProtocol extends ICryptocurrency {
+export class BandProtocol extends Cryptocurrency {
 
   static NAME = 'Band-Protocol';
   static SYMBOL = 'BAND';
@@ -35,12 +39,14 @@ export class BandProtocol extends ICryptocurrency {
     SOURCE_CODE: 'https://github.com/bandprotocol/chain',
     WHITEPAPER: 'https://bandprotocol.com/whitepaper-3.0.1.pdf',
     WEBSITES: [
-        'https://bandprotocol.com'
+      'https://bandprotocol.com'
     ]
   });
   static ECC = SLIP10Secp256k1ECC;
   static COIN_TYPE = CoinTypes.BandProtocol;
-  static NETWORKS = new Networks({ MAINNET: Mainnet });
+  static NETWORKS = new Networks({
+    MAINNET: Mainnet
+  });
   static DEFAULT_NETWORK = BandProtocol.NETWORKS.MAINNET;
   static ENTROPIES = new Entropies([
     'BIP39'
@@ -56,6 +62,8 @@ export class BandProtocol extends ICryptocurrency {
     'BIP44'
   ]);
   static DEFAULT_HD = BandProtocol.HDS.BIP44;
-  static ADDRESSES = new Addresses({ COSMOS: 'Cosmos' });
+  static ADDRESSES = new Addresses({
+    COSMOS: 'Cosmos'
+  });
   static DEFAULT_ADDRESS = BandProtocol.ADDRESSES.COSMOS;
 }

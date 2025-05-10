@@ -14,12 +14,12 @@ import {
   XPublicKeyVersions
 } from '../const';
 import {
-  ICryptocurrency,
-  INetwork
-} from './icryptocurrency';
+  Cryptocurrency,
+  Network
+} from './cryptocurrency';
 
 
-export class Mainnet extends INetwork {
+export class Mainnet extends Network {
 
   static PUBLIC_KEY_ADDRESS_PREFIX = 0x34;
   static SCRIPT_ADDRESS_PREFIX = 0x0d;
@@ -35,7 +35,7 @@ export class Mainnet extends INetwork {
   static WIF_PREFIX = 0x80;
 }
 
-export class Namecoin extends ICryptocurrency {
+export class Namecoin extends Cryptocurrency {
 
   static NAME = 'Namecoin';
   static SYMBOL = 'NMC';
@@ -43,13 +43,15 @@ export class Namecoin extends ICryptocurrency {
     SOURCE_CODE: 'https://github.com/namecoin/namecoin-core',
     WHITEPAPER: 'https://www.namecoin.org/resources/whitepaper',
     WEBSITES: [
-        'https://www.namecoin.org'
+      'https://www.namecoin.org'
     ]
   });
   static ECC = SLIP10Secp256k1ECC;
   static COIN_TYPE = CoinTypes.Namecoin;
   static SUPPORT_BIP38 = true;
-  static NETWORKS = new Networks({ MAINNET: Mainnet });
+  static NETWORKS = new Networks({
+    MAINNET: Mainnet
+  });
   static DEFAULT_NETWORK = Namecoin.NETWORKS.MAINNET;
   static ENTROPIES = new Entropies([
     'BIP39'

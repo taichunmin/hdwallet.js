@@ -15,12 +15,12 @@ import {
   XPublicKeyVersions
 } from '../const';
 import {
-  ICryptocurrency,
-  INetwork
-} from './icryptocurrency';
+  Cryptocurrency,
+  Network
+} from './cryptocurrency';
 
 
-export class Mainnet extends INetwork {
+export class Mainnet extends Network {
 
   static PUBLIC_KEY_ADDRESS_PREFIX = 0x3f;
   static SCRIPT_ADDRESS_PREFIX = 0x05;
@@ -45,7 +45,7 @@ export class Mainnet extends INetwork {
   static WIF_PREFIX = 0x80;
 }
 
-export class Syscoin extends ICryptocurrency {
+export class Syscoin extends Cryptocurrency {
 
   static NAME = 'Syscoin';
   static SYMBOL = 'SYS';
@@ -53,13 +53,15 @@ export class Syscoin extends ICryptocurrency {
     SOURCE_CODE: 'https://github.com/syscoin/syscoin',
     WHITEPAPER: 'https://syscoin.org/research-whitepapers',
     WEBSITES: [
-        'http://syscoin.org'
+      'http://syscoin.org'
     ]
   });
   static ECC = SLIP10Secp256k1ECC;
   static COIN_TYPE = CoinTypes.Syscoin;
   static SUPPORT_BIP38 = true;
-  static NETWORKS = new Networks({ MAINNET: Mainnet });
+  static NETWORKS = new Networks({
+    MAINNET: Mainnet
+  });
   static DEFAULT_NETWORK = Syscoin.NETWORKS.MAINNET;
   static ENTROPIES = new Entropies([
     'BIP39'

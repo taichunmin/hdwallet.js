@@ -14,12 +14,12 @@ import {
   XPublicKeyVersions
 } from '../const';
 import {
-  ICryptocurrency,
-  INetwork
-} from './icryptocurrency';
+  Cryptocurrency,
+  Network
+} from './cryptocurrency';
 
 
-export class Mainnet extends INetwork {
+export class Mainnet extends Network {
 
   static PUBLIC_KEY_ADDRESS_PREFIX = 0x1e;
   static SCRIPT_ADDRESS_PREFIX = 0x0d;
@@ -35,7 +35,7 @@ export class Mainnet extends INetwork {
   static WIF_PREFIX = 0xd4;
 }
 
-export class Testnet extends INetwork {
+export class Testnet extends Network {
 
   static PUBLIC_KEY_ADDRESS_PREFIX = 0x8b;
   static SCRIPT_ADDRESS_PREFIX = 0x13;
@@ -51,7 +51,7 @@ export class Testnet extends INetwork {
   static WIF_PREFIX = 0xef;
 }
 
-export class Pivx extends ICryptocurrency {
+export class Pivx extends Cryptocurrency {
 
   static NAME = 'Pivx';
   static SYMBOL = 'PIVX';
@@ -59,7 +59,7 @@ export class Pivx extends ICryptocurrency {
     SOURCE_CODE: 'https://github.com/PIVX-Project/PIVX',
     WHITEPAPER: 'https://pivx.org/whitepaper',
     WEBSITES: [
-        'https://pivx.org'
+      'https://pivx.org'
     ]
   });
   static ECC = SLIP10Secp256k1ECC;

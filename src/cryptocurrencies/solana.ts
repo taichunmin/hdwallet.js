@@ -15,18 +15,22 @@ import {
   XPublicKeyVersions
 } from '../const';
 import {
-  ICryptocurrency,
-  INetwork
-} from './icryptocurrency';
+  Cryptocurrency,
+  Network
+} from './cryptocurrency';
 
 
-export class Mainnet extends INetwork {
+export class Mainnet extends Network {
 
-  static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({ P2PKH: 0x0488ade4 });
-  static XPUBLIC_KEY_VERSIONS = new XPublicKeyVersions({ P2PKH: 0x0488b21e });
+  static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
+    P2PKH: 0x0488ade4
+  });
+  static XPUBLIC_KEY_VERSIONS = new XPublicKeyVersions({
+    P2PKH: 0x0488b21e
+  });
 }
 
-export class Solana extends ICryptocurrency {
+export class Solana extends Cryptocurrency {
 
   static NAME = 'Solana';
   static SYMBOL = 'SOL';
@@ -34,12 +38,14 @@ export class Solana extends ICryptocurrency {
     SOURCE_CODE: 'https://github.com/solana-labs/solana',
     WHITEPAPER: 'https://solana.com/solana-whitepaper.pdf',
     WEBSITES: [
-        'https://solana.com'
+      'https://solana.com'
     ]
   });
   static ECC = SLIP10Ed25519ECC;
   static COIN_TYPE = CoinTypes.Solana;
-  static NETWORKS = new Networks({ MAINNET: Mainnet });
+  static NETWORKS = new Networks({
+    MAINNET: Mainnet
+  });
   static DEFAULT_NETWORK = Solana.NETWORKS.MAINNET;
   static ENTROPIES = new Entropies([
     'BIP39'
@@ -55,7 +61,11 @@ export class Solana extends ICryptocurrency {
     'BIP44'
   ]);
   static DEFAULT_HD = Solana.HDS.BIP44;
-  static ADDRESSES = new Addresses({ SOLANA: 'Solana' });
+  static ADDRESSES = new Addresses({
+    SOLANA: 'Solana'
+  });
   static DEFAULT_ADDRESS = Solana.ADDRESSES.SOLANA;
-  static PARAMS = new Params({ ALPHABET: '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz' });
+  static PARAMS = new Params({
+    ALPHABET: '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz'
+  });
 }

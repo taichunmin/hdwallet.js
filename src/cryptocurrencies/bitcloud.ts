@@ -14,12 +14,12 @@ import {
   XPublicKeyVersions
 } from '../const';
 import {
-  ICryptocurrency,
-  INetwork
-} from './icryptocurrency';
+  Cryptocurrency,
+  Network
+} from './cryptocurrency';
 
 
-export class Mainnet extends INetwork {
+export class Mainnet extends Network {
 
   static PUBLIC_KEY_ADDRESS_PREFIX = 0x19;
   static SCRIPT_ADDRESS_PREFIX = 0x05;
@@ -35,7 +35,7 @@ export class Mainnet extends INetwork {
   static WIF_PREFIX = 0x99;
 }
 
-export class BitCloud extends ICryptocurrency {
+export class BitCloud extends Cryptocurrency {
 
   static NAME = 'Bit-Cloud';
   static SYMBOL = 'BTDX';
@@ -43,13 +43,15 @@ export class BitCloud extends ICryptocurrency {
     SOURCE_CODE: 'https://github.com/LIMXTEC/Bitcloud',
     WHITEPAPER: 'https://github.com/LIMXTEC/Bitcloud/blob/master/README.md',
     WEBSITES: [
-        'https://bit-cloud.cc'
+      'https://bit-cloud.cc'
     ]
   });
   static ECC = SLIP10Secp256k1ECC;
   static COIN_TYPE = CoinTypes.BitCloud;
   static SUPPORT_BIP38 = true;
-  static NETWORKS = new Networks({ MAINNET: Mainnet });
+  static NETWORKS = new Networks({
+    MAINNET: Mainnet
+  });
   static DEFAULT_NETWORK = BitCloud.NETWORKS.MAINNET;
   static ENTROPIES = new Entropies([
     'BIP39'

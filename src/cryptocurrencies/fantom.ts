@@ -14,19 +14,23 @@ import {
   XPublicKeyVersions
 } from '../const';
 import {
-  ICryptocurrency,
-  INetwork
-} from './icryptocurrency';
+  Cryptocurrency,
+  Network
+} from './cryptocurrency';
 
 
-export class Mainnet extends INetwork {
+export class Mainnet extends Network {
 
-  static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({ P2PKH: 0x0488ade4 });
-  static XPUBLIC_KEY_VERSIONS = new XPublicKeyVersions({ P2PKH: 0x0488b21e });
+  static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
+    P2PKH: 0x0488ade4
+  });
+  static XPUBLIC_KEY_VERSIONS = new XPublicKeyVersions({
+    P2PKH: 0x0488b21e
+  });
   static WIF_PREFIX = 0x80;
 }
 
-export class Fantom extends ICryptocurrency {
+export class Fantom extends Cryptocurrency {
 
   static NAME = 'Fantom';
   static SYMBOL = 'FTM';
@@ -34,12 +38,14 @@ export class Fantom extends ICryptocurrency {
     SOURCE_CODE: 'https://github.com/Fantom-foundation/go-opera',
     WHITEPAPER: 'https://fantom.foundation/fantom-research-papers',
     WEBSITES: [
-        'https://fantom.foundation'
+      'https://fantom.foundation'
     ]
   });
   static ECC = SLIP10Secp256k1ECC;
   static COIN_TYPE = CoinTypes.Fantom;
-  static NETWORKS = new Networks({ MAINNET: Mainnet });
+  static NETWORKS = new Networks({
+    MAINNET: Mainnet
+  });
   static DEFAULT_NETWORK = Fantom.NETWORKS.MAINNET;
   static ENTROPIES = new Entropies([
     'BIP39'
@@ -55,6 +61,8 @@ export class Fantom extends ICryptocurrency {
     'BIP44'
   ]);
   static DEFAULT_HD = Fantom.HDS.BIP44;
-  static ADDRESSES = new Addresses({ ETHEREUM: 'Ethereum' });
+  static ADDRESSES = new Addresses({
+    ETHEREUM: 'Ethereum'
+  });
   static DEFAULT_ADDRESS = Fantom.ADDRESSES.ETHEREUM;
 }

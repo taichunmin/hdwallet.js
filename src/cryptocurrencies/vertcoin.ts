@@ -15,12 +15,12 @@ import {
   XPublicKeyVersions
 } from '../const';
 import {
-  ICryptocurrency,
-  INetwork
-} from './icryptocurrency';
+  Cryptocurrency,
+  Network
+} from './cryptocurrency';
 
 
-export class Mainnet extends INetwork {
+export class Mainnet extends Network {
 
   static PUBLIC_KEY_ADDRESS_PREFIX = 0x47;
   static SCRIPT_ADDRESS_PREFIX = 0x05;
@@ -45,7 +45,7 @@ export class Mainnet extends INetwork {
   static WIF_PREFIX = 0x80;
 }
 
-export class Vertcoin extends ICryptocurrency {
+export class Vertcoin extends Cryptocurrency {
 
   static NAME = 'Vertcoin';
   static SYMBOL = 'VTC';
@@ -53,13 +53,15 @@ export class Vertcoin extends ICryptocurrency {
     SOURCE_CODE: 'https://github.com/vertcoin/vertcoin',
     WHITEPAPER: 'https://vertcoin.org/specs-explained',
     WEBSITES: [
-        'http://vertcoin.org'
+      'http://vertcoin.org'
     ]
   });
   static ECC = SLIP10Secp256k1ECC;
   static COIN_TYPE = CoinTypes.Vertcoin;
   static SUPPORT_BIP38 = true;
-  static NETWORKS = new Networks({ MAINNET: Mainnet });
+  static NETWORKS = new Networks({
+    MAINNET: Mainnet
+  });
   static DEFAULT_NETWORK = Vertcoin.NETWORKS.MAINNET;
   static ENTROPIES = new Entropies([
     'BIP39'

@@ -15,12 +15,12 @@ import {
   XPublicKeyVersions
 } from '../const';
 import {
-  ICryptocurrency,
-  INetwork
-} from './icryptocurrency';
+  Cryptocurrency,
+  Network
+} from './cryptocurrency';
 
 
-export class Mainnet extends INetwork {
+export class Mainnet extends Network {
 
   static PUBLIC_KEY_ADDRESS_PREFIX = 0x3c;
   static SCRIPT_ADDRESS_PREFIX = 0x7a;
@@ -49,7 +49,7 @@ export class Mainnet extends INetwork {
   static WIF_PREFIX = 0x80;
 }
 
-export class Testnet extends INetwork {
+export class Testnet extends Network {
 
   static PUBLIC_KEY_ADDRESS_PREFIX = 0x6f;
   static SCRIPT_ADDRESS_PREFIX = 0xc4;
@@ -78,7 +78,7 @@ export class Testnet extends INetwork {
   static WIF_PREFIX = 0x80;
 }
 
-export class Ravencoin extends ICryptocurrency {
+export class Ravencoin extends Cryptocurrency {
 
   static NAME = 'Ravencoin';
   static SYMBOL = 'RVN';
@@ -86,7 +86,7 @@ export class Ravencoin extends ICryptocurrency {
     SOURCE_CODE: 'https://github.com/RavenProject/Ravencoin',
     WHITEPAPER: 'https://ravencoin.org/whitepaper',
     WEBSITES: [
-        'https://ravencoin.org',
+      'https://ravencoin.org',
         'https://getravencoin.org'
     ]
   });

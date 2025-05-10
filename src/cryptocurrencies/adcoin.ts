@@ -14,12 +14,12 @@ import {
   XPublicKeyVersions
 } from '../const';
 import {
-  ICryptocurrency,
-  INetwork
-} from './icryptocurrency';
+  Cryptocurrency,
+  Network
+} from './cryptocurrency';
 
 
-export class Mainnet extends INetwork {
+export class Mainnet extends Network {
 
   static PUBLIC_KEY_ADDRESS_PREFIX = 0x17;
   static SCRIPT_ADDRESS_PREFIX = 0x05;
@@ -35,7 +35,7 @@ export class Mainnet extends INetwork {
   static WIF_PREFIX = 0xb0;
 }
 
-export class Adcoin extends ICryptocurrency {
+export class Adcoin extends Cryptocurrency {
 
   static NAME = 'Adcoin';
   static SYMBOL = 'ACC';
@@ -43,13 +43,15 @@ export class Adcoin extends ICryptocurrency {
     SOURCE_CODE: 'https://github.com/adcoin-project/AdCoin',
     WHITEPAPER: 'https://www.getadcoin.com/assets/Whitepaper_AdCoin.pdf',
     WEBSITES: [
-        'https://www.getadcoin.com'
+      'https://www.getadcoin.com'
     ]
   });
   static ECC = SLIP10Secp256k1ECC;
   static COIN_TYPE = CoinTypes.Adcoin;
   static SUPPORT_BIP38 = true;
-  static NETWORKS = new Networks({ MAINNET: Mainnet });
+  static NETWORKS = new Networks({
+    MAINNET: Mainnet
+  });
   static DEFAULT_NETWORK = Adcoin.NETWORKS.MAINNET;
   static ENTROPIES = new Entropies([
     'BIP39'

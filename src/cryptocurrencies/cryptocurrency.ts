@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-import { IEllipticCurveCryptography } from '../ecc';
+import { EllipticCurveCryptography } from '../ecc';
 // import { BIP44Derivation } from '../derivations/bip44';
 import {
   Info,
@@ -19,7 +19,7 @@ import {
 } from '../const';
 import { NetworkError } from '../exceptions';
 
-export abstract class INetwork {
+export abstract class Network {
 
   // Bitcoin network types
   static PUBLIC_KEY_ADDRESS_PREFIX?: number;
@@ -53,16 +53,16 @@ export abstract class INetwork {
   }
 }
 
-export abstract class ICryptocurrency {
+export abstract class Cryptocurrency {
   
   static NAME: string;
   static SYMBOL: string;
   static INFO: Info;
-  static ECC: new (...args: any[]) => IEllipticCurveCryptography;
+  static ECC: new (...args: any[]) => EllipticCurveCryptography;
   static COIN_TYPE: number;
   static SUPPORT_BIP38?: boolean = false;
   static NETWORKS: Networks;
-  static DEFAULT_NETWORK: typeof INetwork;
+  static DEFAULT_NETWORK: typeof Network;
   static ENTROPIES: Entropies;
   static MNEMONICS: Mnemonics;
   static SEEDS: Seeds;

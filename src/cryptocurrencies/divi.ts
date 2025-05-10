@@ -14,12 +14,12 @@ import {
   XPublicKeyVersions
 } from '../const';
 import {
-  ICryptocurrency,
-  INetwork
-} from './icryptocurrency';
+  Cryptocurrency,
+  Network
+} from './cryptocurrency';
 
 
-export class Mainnet extends INetwork {
+export class Mainnet extends Network {
 
   static PUBLIC_KEY_ADDRESS_PREFIX = 0x1e;
   static SCRIPT_ADDRESS_PREFIX = 0x0d;
@@ -35,7 +35,7 @@ export class Mainnet extends INetwork {
   static WIF_PREFIX = 0xd4;
 }
 
-export class Testnet extends INetwork {
+export class Testnet extends Network {
 
   static PUBLIC_KEY_ADDRESS_PREFIX = 0x1e;
   static SCRIPT_ADDRESS_PREFIX = 0x0d;
@@ -51,7 +51,7 @@ export class Testnet extends INetwork {
   static WIF_PREFIX = 0xd4;
 }
 
-export class Divi extends ICryptocurrency {
+export class Divi extends Cryptocurrency {
 
   static NAME = 'Divi';
   static SYMBOL = 'DIVI';
@@ -59,7 +59,7 @@ export class Divi extends ICryptocurrency {
     SOURCE_CODE: 'https://github.com/Divicoin/Divi',
     WHITEPAPER: 'https://wiki.diviproject.org/#whitepaper',
     WEBSITES: [
-        'https://www.diviproject.org',
+      'https://www.diviproject.org',
         'https://diviwallet.com'
     ]
   });

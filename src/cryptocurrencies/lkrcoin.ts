@@ -14,12 +14,12 @@ import {
   XPublicKeyVersions
 } from '../const';
 import {
-  ICryptocurrency,
-  INetwork
-} from './icryptocurrency';
+  Cryptocurrency,
+  Network
+} from './cryptocurrency';
 
 
-export class Mainnet extends INetwork {
+export class Mainnet extends Network {
 
   static PUBLIC_KEY_ADDRESS_PREFIX = 0x30;
   static SCRIPT_ADDRESS_PREFIX = 0x55;
@@ -35,7 +35,7 @@ export class Mainnet extends INetwork {
   static WIF_PREFIX = 0xb0;
 }
 
-export class Lkrcoin extends ICryptocurrency {
+export class Lkrcoin extends Cryptocurrency {
 
   static NAME = 'Lkrcoin';
   static SYMBOL = 'LKR';
@@ -43,13 +43,15 @@ export class Lkrcoin extends ICryptocurrency {
     SOURCE_CODE: 'https://github.com/LKRcoin/lkrcoin',
     WHITEPAPER: 'https://lkrcoin.io/draft/WhitePaper.pdf',
     WEBSITES: [
-        'https://lkrcoin.io'
+      'https://lkrcoin.io'
     ]
   });
   static ECC = SLIP10Secp256k1ECC;
   static COIN_TYPE = CoinTypes.Lkrcoin;
   static SUPPORT_BIP38 = true;
-  static NETWORKS = new Networks({ MAINNET: Mainnet });
+  static NETWORKS = new Networks({
+    MAINNET: Mainnet
+  });
   static DEFAULT_NETWORK = Lkrcoin.NETWORKS.MAINNET;
   static ENTROPIES = new Entropies([
     'BIP39'

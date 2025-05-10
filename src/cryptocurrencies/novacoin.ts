@@ -14,12 +14,12 @@ import {
   XPublicKeyVersions
 } from '../const';
 import {
-  ICryptocurrency,
-  INetwork
-} from './icryptocurrency';
+  Cryptocurrency,
+  Network
+} from './cryptocurrency';
 
 
-export class Mainnet extends INetwork {
+export class Mainnet extends Network {
 
   static PUBLIC_KEY_ADDRESS_PREFIX = 0x08;
   static SCRIPT_ADDRESS_PREFIX = 0x14;
@@ -35,7 +35,7 @@ export class Mainnet extends INetwork {
   static WIF_PREFIX = 0x88;
 }
 
-export class Novacoin extends ICryptocurrency {
+export class Novacoin extends Cryptocurrency {
 
   static NAME = 'Novacoin';
   static SYMBOL = 'NVC';
@@ -43,14 +43,16 @@ export class Novacoin extends ICryptocurrency {
     SOURCE_CODE: 'https://github.com/novacoin-project/novacoin',
     WHITEPAPER: 'https://github.com/novacoin-project/novacoin/wiki',
     WEBSITES: [
-        'https://nova-coin.org',
+      'https://nova-coin.org',
         'https://novacoin.one'
     ]
   });
   static ECC = SLIP10Secp256k1ECC;
   static COIN_TYPE = CoinTypes.Novacoin;
   static SUPPORT_BIP38 = true;
-  static NETWORKS = new Networks({ MAINNET: Mainnet });
+  static NETWORKS = new Networks({
+    MAINNET: Mainnet
+  });
   static DEFAULT_NETWORK = Novacoin.NETWORKS.MAINNET;
   static ENTROPIES = new Entropies([
     'BIP39'

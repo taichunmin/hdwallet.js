@@ -16,18 +16,22 @@ import {
   XPublicKeyVersions
 } from '../const';
 import {
-  ICryptocurrency,
-  INetwork
-} from './icryptocurrency';
+  Cryptocurrency,
+  Network
+} from './cryptocurrency';
 
 
-export class Mainnet extends INetwork {
+export class Mainnet extends Network {
 
-  static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({ P2PKH: 0x0488ade4 });
-  static XPUBLIC_KEY_VERSIONS = new XPublicKeyVersions({ P2PKH: 0x0488b21e });
+  static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
+    P2PKH: 0x0488ade4
+  });
+  static XPUBLIC_KEY_VERSIONS = new XPublicKeyVersions({
+    P2PKH: 0x0488b21e
+  });
 }
 
-export class Tezos extends ICryptocurrency {
+export class Tezos extends Cryptocurrency {
 
   static NAME = 'Tezos';
   static SYMBOL = 'XTZ';
@@ -35,12 +39,14 @@ export class Tezos extends ICryptocurrency {
     SOURCE_CODE: 'https://github.com/tezos/tezos',
     WHITEPAPER: 'https://tezos.com/whitepaper.pdf',
     WEBSITES: [
-        'https://www.tezos.com'
+      'https://www.tezos.com'
     ]
   });
   static ECC = SLIP10Ed25519ECC;
   static COIN_TYPE = CoinTypes.Tezos;
-  static NETWORKS = new Networks({ MAINNET: Mainnet });
+  static NETWORKS = new Networks({
+    MAINNET: Mainnet
+  });
   static DEFAULT_NETWORK = Tezos.NETWORKS.MAINNET;
   static ENTROPIES = new Entropies([
     'BIP39'
@@ -56,7 +62,9 @@ export class Tezos extends ICryptocurrency {
     'BIP44'
   ]);
   static DEFAULT_HD = Tezos.HDS.BIP44;
-  static ADDRESSES = new Addresses({ TEZOS: 'Tezos' });
+  static ADDRESSES = new Addresses({
+    TEZOS: 'Tezos'
+  });
   static DEFAULT_ADDRESS = Tezos.ADDRESSES.TEZOS;
   static ADDRESS_PREFIXES = new AddressPrefixes({
     TZ1: 'tz1',
@@ -66,9 +74,9 @@ export class Tezos extends ICryptocurrency {
   static DEFAULT_ADDRESS_PREFIX = Tezos.ADDRESS_PREFIXES.TZ1;
   static PARAMS = new Params({
     ADDRESS_PREFIXES: {
-      TZ1: '\x06\xa1\x9f',        
-      TZ2: '\x06\xa1\xa1',        
-      TZ3: '\x06\xa1\xa4'    
-    } 
+      TZ1: '\x06\xa1\x9f',
+      TZ2: '\x06\xa1\xa1',
+      TZ3: '\x06\xa1\xa4'
+    }
   });
 }

@@ -15,12 +15,12 @@ import {
   XPublicKeyVersions
 } from '../const';
 import {
-  ICryptocurrency,
-  INetwork
-} from './icryptocurrency';
+  Cryptocurrency,
+  Network
+} from './cryptocurrency';
 
 
-export class Mainnet extends INetwork {
+export class Mainnet extends Network {
 
   static PUBLIC_KEY_ADDRESS_PREFIX = 0x38;
   static SCRIPT_ADDRESS_PREFIX = 0x3c;
@@ -41,7 +41,7 @@ export class Mainnet extends INetwork {
   static WIF_PREFIX = 0x6c;
 }
 
-export class Particl extends ICryptocurrency {
+export class Particl extends Cryptocurrency {
 
   static NAME = 'Particl';
   static SYMBOL = 'PART';
@@ -49,14 +49,16 @@ export class Particl extends ICryptocurrency {
     SOURCE_CODE: 'https://github.com/particl/particl-core',
     WHITEPAPER: 'https://github.com/particl/whitepaper/blob/master/Particl%20Whitepaper%20Draft%20v0.3.pdf',
     WEBSITES: [
-        'http://particl.io',
+      'http://particl.io',
         'https://particl.store'
     ]
   });
   static ECC = SLIP10Secp256k1ECC;
   static COIN_TYPE = CoinTypes.Particl;
   static SUPPORT_BIP38 = true;
-  static NETWORKS = new Networks({ MAINNET: Mainnet });
+  static NETWORKS = new Networks({
+    MAINNET: Mainnet
+  });
   static DEFAULT_NETWORK = Particl.NETWORKS.MAINNET;
   static ENTROPIES = new Entropies([
     'BIP39'

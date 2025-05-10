@@ -14,12 +14,12 @@ import {
   XPublicKeyVersions
 } from '../const';
 import {
-  ICryptocurrency,
-  INetwork
-} from './icryptocurrency';
+  Cryptocurrency,
+  Network
+} from './cryptocurrency';
 
 
-export class Mainnet extends INetwork {
+export class Mainnet extends Network {
 
   static PUBLIC_KEY_ADDRESS_PREFIX = 0x1e;
   static SCRIPT_ADDRESS_PREFIX = 0x5a;
@@ -35,7 +35,7 @@ export class Mainnet extends INetwork {
   static WIF_PREFIX = 0x9e;
 }
 
-export class Denarius extends ICryptocurrency {
+export class Denarius extends Cryptocurrency {
 
   static NAME = 'Denarius';
   static SYMBOL = 'DNR';
@@ -43,13 +43,15 @@ export class Denarius extends ICryptocurrency {
     SOURCE_CODE: 'https://github.com/metaspartan/denarius',
     WHITEPAPER: 'https://denarius.io/wp-content/uploads/2020/06/whitescroll.pdf',
     WEBSITES: [
-        'https://denarius.io'
+      'https://denarius.io'
     ]
   });
   static ECC = SLIP10Secp256k1ECC;
   static COIN_TYPE = CoinTypes.Denarius;
   static SUPPORT_BIP38 = true;
-  static NETWORKS = new Networks({ MAINNET: Mainnet });
+  static NETWORKS = new Networks({
+    MAINNET: Mainnet
+  });
   static DEFAULT_NETWORK = Denarius.NETWORKS.MAINNET;
   static ENTROPIES = new Entropies([
     'BIP39'

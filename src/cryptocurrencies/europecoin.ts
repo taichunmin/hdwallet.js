@@ -14,12 +14,12 @@ import {
   XPublicKeyVersions
 } from '../const';
 import {
-  ICryptocurrency,
-  INetwork
-} from './icryptocurrency';
+  Cryptocurrency,
+  Network
+} from './cryptocurrency';
 
 
-export class Mainnet extends INetwork {
+export class Mainnet extends Network {
 
   static PUBLIC_KEY_ADDRESS_PREFIX = 0x21;
   static SCRIPT_ADDRESS_PREFIX = 0x05;
@@ -35,7 +35,7 @@ export class Mainnet extends INetwork {
   static WIF_PREFIX = 0xa8;
 }
 
-export class EuropeCoin extends ICryptocurrency {
+export class EuropeCoin extends Cryptocurrency {
 
   static NAME = 'Europe-Coin';
   static SYMBOL = 'ERC';
@@ -43,13 +43,15 @@ export class EuropeCoin extends ICryptocurrency {
     SOURCE_CODE: 'https://github.com/LIMXTEC/Europecoin-V3',
     WHITEPAPER: 'https://www.europecoin.eu.org/projects-2/37-specifications',
     WEBSITES: [
-        'https://www.europecoin.eu.org'
+      'https://www.europecoin.eu.org'
     ]
   });
   static ECC = SLIP10Secp256k1ECC;
   static COIN_TYPE = CoinTypes.EuropeCoin;
   static SUPPORT_BIP38 = true;
-  static NETWORKS = new Networks({ MAINNET: Mainnet });
+  static NETWORKS = new Networks({
+    MAINNET: Mainnet
+  });
   static DEFAULT_NETWORK = EuropeCoin.NETWORKS.MAINNET;
   static ENTROPIES = new Entropies([
     'BIP39'

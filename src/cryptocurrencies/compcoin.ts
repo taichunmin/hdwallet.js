@@ -14,12 +14,12 @@ import {
   XPublicKeyVersions
 } from '../const';
 import {
-  ICryptocurrency,
-  INetwork
-} from './icryptocurrency';
+  Cryptocurrency,
+  Network
+} from './cryptocurrency';
 
 
-export class Mainnet extends INetwork {
+export class Mainnet extends Network {
 
   static PUBLIC_KEY_ADDRESS_PREFIX = 0x1c;
   static SCRIPT_ADDRESS_PREFIX = 0x55;
@@ -35,15 +35,21 @@ export class Mainnet extends INetwork {
   static WIF_PREFIX = 0x9c;
 }
 
-export class Compcoin extends ICryptocurrency {
+export class Compcoin extends Cryptocurrency {
 
   static NAME = 'Compcoin';
   static SYMBOL = 'CMP';
-  static INFO = new Info({ WEBSITES: [        'https://compcoin.com'    ] });
+  static INFO = new Info({
+    WEBSITES: [
+      'https://compcoin.com'
+    ]
+  });
   static ECC = SLIP10Secp256k1ECC;
   static COIN_TYPE = CoinTypes.Compcoin;
   static SUPPORT_BIP38 = true;
-  static NETWORKS = new Networks({ MAINNET: Mainnet });
+  static NETWORKS = new Networks({
+    MAINNET: Mainnet
+  });
   static DEFAULT_NETWORK = Compcoin.NETWORKS.MAINNET;
   static ENTROPIES = new Entropies([
     'BIP39'

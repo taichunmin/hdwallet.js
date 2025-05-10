@@ -14,12 +14,12 @@ import {
   XPublicKeyVersions
 } from '../const';
 import {
-  ICryptocurrency,
-  INetwork
-} from './icryptocurrency';
+  Cryptocurrency,
+  Network
+} from './cryptocurrency';
 
 
-export class Mainnet extends INetwork {
+export class Mainnet extends Network {
 
   static PUBLIC_KEY_ADDRESS_PREFIX = 0x4c;
   static SCRIPT_ADDRESS_PREFIX = 0x10;
@@ -35,7 +35,7 @@ export class Mainnet extends INetwork {
   static WIF_PREFIX = 0xcc;
 }
 
-export class Testnet extends INetwork {
+export class Testnet extends Network {
 
   static PUBLIC_KEY_ADDRESS_PREFIX = 0x8c;
   static SCRIPT_ADDRESS_PREFIX = 0x13;
@@ -51,7 +51,7 @@ export class Testnet extends INetwork {
   static WIF_PREFIX = 0xef;
 }
 
-export class Stash extends ICryptocurrency {
+export class Stash extends Cryptocurrency {
 
   static NAME = 'Stash';
   static SYMBOL = 'STASH';
@@ -59,7 +59,7 @@ export class Stash extends ICryptocurrency {
     SOURCE_CODE: 'https://docs.stash.capital',
     WHITEPAPER: 'https://docs.stash.capital',
     WEBSITES: [
-        'https://stash.capital',
+      'https://stash.capital',
         'https://app.stash.capital/#/dashboard'
     ]
   });

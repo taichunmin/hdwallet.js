@@ -14,12 +14,12 @@ import {
   XPublicKeyVersions
 } from '../const';
 import {
-  ICryptocurrency,
-  INetwork
-} from './icryptocurrency';
+  Cryptocurrency,
+  Network
+} from './cryptocurrency';
 
 
-export class Mainnet extends INetwork {
+export class Mainnet extends Network {
 
   static PUBLIC_KEY_ADDRESS_PREFIX = 0x37;
   static SCRIPT_ADDRESS_PREFIX = 0x0d;
@@ -35,7 +35,7 @@ export class Mainnet extends INetwork {
   static WIF_PREFIX = 0xd4;
 }
 
-export class Phore extends ICryptocurrency {
+export class Phore extends Cryptocurrency {
 
   static NAME = 'Phore';
   static SYMBOL = 'PHR';
@@ -43,13 +43,15 @@ export class Phore extends ICryptocurrency {
     SOURCE_CODE: 'https://github.com/phoreproject/Phore',
     WHITEPAPER: 'https://www.dropbox.com/s/6uf405mdbdvs6iq/Phore%20White%20Paper%20v.1.1a.pdf?dl=0',
     WEBSITES: [
-        'https://phore.io'
+      'https://phore.io'
     ]
   });
   static ECC = SLIP10Secp256k1ECC;
   static COIN_TYPE = CoinTypes.Phore;
   static SUPPORT_BIP38 = true;
-  static NETWORKS = new Networks({ MAINNET: Mainnet });
+  static NETWORKS = new Networks({
+    MAINNET: Mainnet
+  });
   static DEFAULT_NETWORK = Phore.NETWORKS.MAINNET;
   static ENTROPIES = new Entropies([
     'BIP39'

@@ -14,19 +14,23 @@ import {
   XPublicKeyVersions
 } from '../const';
 import {
-  ICryptocurrency,
-  INetwork
-} from './icryptocurrency';
+  Cryptocurrency,
+  Network
+} from './cryptocurrency';
 
 
-export class Mainnet extends INetwork {
+export class Mainnet extends Network {
 
   static HRP = 'erd';
-  static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({ P2PKH: 0x0488ade4 });
-  static XPUBLIC_KEY_VERSIONS = new XPublicKeyVersions({ P2PKH: 0x0488b21e });
+  static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
+    P2PKH: 0x0488ade4
+  });
+  static XPUBLIC_KEY_VERSIONS = new XPublicKeyVersions({
+    P2PKH: 0x0488b21e
+  });
 }
 
-export class MultiversX extends ICryptocurrency {
+export class MultiversX extends Cryptocurrency {
 
   static NAME = 'MultiversX';
   static SYMBOL = 'EGLD';
@@ -34,13 +38,15 @@ export class MultiversX extends ICryptocurrency {
     SOURCE_CODE: 'https://github.com/multiversx/mx-chain-go',
     WHITEPAPER: 'https://files.multiversx.com/multiversx-whitepaper.pdf',
     WEBSITES: [
-        'https://multiversx.com',
+      'https://multiversx.com',
         'https://multiversx.com/ecosystem'
     ]
   });
   static ECC = SLIP10Ed25519ECC;
   static COIN_TYPE = CoinTypes.MultiversX;
-  static NETWORKS = new Networks({ MAINNET: Mainnet });
+  static NETWORKS = new Networks({
+    MAINNET: Mainnet
+  });
   static DEFAULT_NETWORK = MultiversX.NETWORKS.MAINNET;
   static ENTROPIES = new Entropies([
     'BIP39'
@@ -56,6 +62,8 @@ export class MultiversX extends ICryptocurrency {
     'BIP44'
   ]);
   static DEFAULT_HD = MultiversX.HDS.BIP44;
-  static ADDRESSES = new Addresses({ MULTIVERSX: 'MultiversX' });
+  static ADDRESSES = new Addresses({
+    MULTIVERSX: 'MultiversX'
+  });
   static DEFAULT_ADDRESS = MultiversX.ADDRESSES.MULTIVERSX;
 }

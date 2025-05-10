@@ -14,12 +14,12 @@ import {
   XPublicKeyVersions
 } from '../const';
 import {
-  ICryptocurrency,
-  INetwork
-} from './icryptocurrency';
+  Cryptocurrency,
+  Network
+} from './cryptocurrency';
 
 
-export class Mainnet extends INetwork {
+export class Mainnet extends Network {
 
   static PUBLIC_KEY_ADDRESS_PREFIX = 0x32;
   static SCRIPT_ADDRESS_PREFIX = 0x61;
@@ -35,20 +35,22 @@ export class Mainnet extends INetwork {
   static WIF_PREFIX = 0xbf;
 }
 
-export class Argoneum extends ICryptocurrency {
+export class Argoneum extends Cryptocurrency {
 
   static NAME = 'Argoneum';
   static SYMBOL = 'AGM';
   static INFO = new Info({
     SOURCE_CODE: 'https://github.com/Argoneum/argoneum',
     WEBSITES: [
-        'https://www.argoneum.net'
+      'https://www.argoneum.net'
     ]
   });
   static ECC = SLIP10Secp256k1ECC;
   static COIN_TYPE = CoinTypes.Argoneum;
   static SUPPORT_BIP38 = true;
-  static NETWORKS = new Networks({ MAINNET: Mainnet });
+  static NETWORKS = new Networks({
+    MAINNET: Mainnet
+  });
   static DEFAULT_NETWORK = Argoneum.NETWORKS.MAINNET;
   static ENTROPIES = new Entropies([
     'BIP39'

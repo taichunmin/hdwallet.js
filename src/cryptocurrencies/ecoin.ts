@@ -14,12 +14,12 @@ import {
   XPublicKeyVersions
 } from '../const';
 import {
-  ICryptocurrency,
-  INetwork
-} from './icryptocurrency';
+  Cryptocurrency,
+  Network
+} from './cryptocurrency';
 
 
-export class Mainnet extends INetwork {
+export class Mainnet extends Network {
 
   static PUBLIC_KEY_ADDRESS_PREFIX = 0x5c;
   static SCRIPT_ADDRESS_PREFIX = 0x14;
@@ -35,20 +35,22 @@ export class Mainnet extends INetwork {
   static WIF_PREFIX = 0xdc;
 }
 
-export class ECoin extends ICryptocurrency {
+export class ECoin extends Cryptocurrency {
 
   static NAME = 'E-Coin';
   static SYMBOL = 'ECN';
   static INFO = new Info({
     SOURCE_CODE: 'https://github.com/ecoinclub/ecoin',
     WEBSITES: [
-        'https://www.ecoinsource.com'
+      'https://www.ecoinsource.com'
     ]
   });
   static ECC = SLIP10Secp256k1ECC;
   static COIN_TYPE = CoinTypes.ECoin;
   static SUPPORT_BIP38 = true;
-  static NETWORKS = new Networks({ MAINNET: Mainnet });
+  static NETWORKS = new Networks({
+    MAINNET: Mainnet
+  });
   static DEFAULT_NETWORK = ECoin.NETWORKS.MAINNET;
   static ENTROPIES = new Entropies([
     'BIP39'

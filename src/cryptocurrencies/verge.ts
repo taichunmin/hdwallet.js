@@ -14,12 +14,12 @@ import {
   XPublicKeyVersions
 } from '../const';
 import {
-  ICryptocurrency,
-  INetwork
-} from './icryptocurrency';
+  Cryptocurrency,
+  Network
+} from './cryptocurrency';
 
 
-export class Mainnet extends INetwork {
+export class Mainnet extends Network {
 
   static PUBLIC_KEY_ADDRESS_PREFIX = 0x1e;
   static SCRIPT_ADDRESS_PREFIX = 0x21;
@@ -35,7 +35,7 @@ export class Mainnet extends INetwork {
   static WIF_PREFIX = 0x9e;
 }
 
-export class Verge extends ICryptocurrency {
+export class Verge extends Cryptocurrency {
 
   static NAME = 'Verge';
   static SYMBOL = 'XVG';
@@ -43,13 +43,15 @@ export class Verge extends ICryptocurrency {
     SOURCE_CODE: 'https://github.com/vergecurrency/verge',
     WHITEPAPER: 'https://vergecurrency.com/static/blackpaper/verge-blackpaper-v5.0.pdf',
     WEBSITES: [
-        'http://vergecurrency.com'
+      'http://vergecurrency.com'
     ]
   });
   static ECC = SLIP10Secp256k1ECC;
   static COIN_TYPE = CoinTypes.Verge;
   static SUPPORT_BIP38 = true;
-  static NETWORKS = new Networks({ MAINNET: Mainnet });
+  static NETWORKS = new Networks({
+    MAINNET: Mainnet
+  });
   static DEFAULT_NETWORK = Verge.NETWORKS.MAINNET;
   static ENTROPIES = new Entropies([
     'BIP39'

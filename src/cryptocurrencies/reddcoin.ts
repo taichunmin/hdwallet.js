@@ -14,12 +14,12 @@ import {
   XPublicKeyVersions
 } from '../const';
 import {
-  ICryptocurrency,
-  INetwork
-} from './icryptocurrency';
+  Cryptocurrency,
+  Network
+} from './cryptocurrency';
 
 
-export class Mainnet extends INetwork {
+export class Mainnet extends Network {
 
   static PUBLIC_KEY_ADDRESS_PREFIX = 0x3d;
   static SCRIPT_ADDRESS_PREFIX = 0x05;
@@ -35,7 +35,7 @@ export class Mainnet extends INetwork {
   static WIF_PREFIX = 0xbd;
 }
 
-export class Reddcoin extends ICryptocurrency {
+export class Reddcoin extends Cryptocurrency {
 
   static NAME = 'Reddcoin';
   static SYMBOL = 'RDD';
@@ -43,14 +43,16 @@ export class Reddcoin extends ICryptocurrency {
     SOURCE_CODE: 'https://github.com/reddcoin-project/reddcoin',
     WHITEPAPER: 'https://redd.love/assets/doc/Redd-Paper.pdf',
     WEBSITES: [
-        'http://www.reddcoin.com',
+      'http://www.reddcoin.com',
         'https://redd.love'
     ]
   });
   static ECC = SLIP10Secp256k1ECC;
   static COIN_TYPE = CoinTypes.Reddcoin;
   static SUPPORT_BIP38 = true;
-  static NETWORKS = new Networks({ MAINNET: Mainnet });
+  static NETWORKS = new Networks({
+    MAINNET: Mainnet
+  });
   static DEFAULT_NETWORK = Reddcoin.NETWORKS.MAINNET;
   static ENTROPIES = new Entropies([
     'BIP39'

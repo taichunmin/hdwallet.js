@@ -14,12 +14,12 @@ import {
   XPublicKeyVersions
 } from '../const';
 import {
-  ICryptocurrency,
-  INetwork
-} from './icryptocurrency';
+  Cryptocurrency,
+  Network
+} from './cryptocurrency';
 
 
-export class Mainnet extends INetwork {
+export class Mainnet extends Network {
 
   static PUBLIC_KEY_ADDRESS_PREFIX = 0x37;
   static SCRIPT_ADDRESS_PREFIX = 0x10;
@@ -35,20 +35,22 @@ export class Mainnet extends INetwork {
   static WIF_PREFIX = 0xcc;
 }
 
-export class Axe extends ICryptocurrency {
+export class Axe extends Cryptocurrency {
 
   static NAME = 'Axe';
   static SYMBOL = 'AXE';
   static INFO = new Info({
     SOURCE_CODE: 'https://github.com/AXErunners/axe',
     WEBSITES: [
-        'https://axerunners.com'
+      'https://axerunners.com'
     ]
   });
   static ECC = SLIP10Secp256k1ECC;
   static COIN_TYPE = CoinTypes.Axe;
   static SUPPORT_BIP38 = true;
-  static NETWORKS = new Networks({ MAINNET: Mainnet });
+  static NETWORKS = new Networks({
+    MAINNET: Mainnet
+  });
   static DEFAULT_NETWORK = Axe.NETWORKS.MAINNET;
   static ENTROPIES = new Entropies([
     'BIP39'

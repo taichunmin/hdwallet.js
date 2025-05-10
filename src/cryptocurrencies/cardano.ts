@@ -17,9 +17,9 @@ import {
   XPublicKeyVersions
 } from '../const';
 import {
-  ICryptocurrency,
-  INetwork
-} from './icryptocurrency';
+  Cryptocurrency,
+  Network
+} from './cryptocurrency';
 
 
 export class Types extends NestedNamespace {
@@ -33,25 +33,33 @@ export class Types extends NestedNamespace {
   }
 }
 
-export class Mainnet extends INetwork {
+export class Mainnet extends Network {
 
   static TYPE = 0x01;
   static PAYMENT_ADDRESS_HRP = 'addr';
   static REWARD_ADDRESS_HRP = 'stake';
-  static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({ P2PKH: 0x0f4331d4 });
-  static XPUBLIC_KEY_VERSIONS = new XPublicKeyVersions({ P2PKH: 0x0488b21e });
+  static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
+    P2PKH: 0x0f4331d4
+  });
+  static XPUBLIC_KEY_VERSIONS = new XPublicKeyVersions({
+    P2PKH: 0x0488b21e
+  });
 }
 
-export class Testnet extends INetwork {
+export class Testnet extends Network {
 
   static TYPE = 0x00;
   static PAYMENT_ADDRESS_HRP = 'addr_test';
   static REWARD_ADDRESS_HRP = 'stake_test';
-  static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({ P2PKH: 0x04358394 });
-  static XPUBLIC_KEY_VERSIONS = new XPublicKeyVersions({ P2PKH: 0x043587cf });
+  static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
+    P2PKH: 0x04358394
+  });
+  static XPUBLIC_KEY_VERSIONS = new XPublicKeyVersions({
+    P2PKH: 0x043587cf
+  });
 }
 
-export class Cardano extends ICryptocurrency {
+export class Cardano extends Cryptocurrency {
 
   static NAME = 'Cardano';
   static SYMBOL = 'ADA';
@@ -59,7 +67,7 @@ export class Cardano extends ICryptocurrency {
     SOURCE_CODE: 'https://cardanoupdates.com',
     WHITEPAPER: 'https://docs.cardano.org/en/latest',
     WEBSITES: [
-        'https://www.cardano.org'
+      'https://www.cardano.org'
     ]
   });
   static ECC = KholawEd25519ECC;
@@ -75,8 +83,12 @@ export class Cardano extends ICryptocurrency {
   static MNEMONICS = new Mnemonics([
     'BIP39'
   ]);
-  static SEEDS = new Seeds({ CARDANO: 'Cardano' });
-  static HDS = new HDs({ CARDANO: 'Cardano' });
+  static SEEDS = new Seeds({
+    CARDANO: 'Cardano'
+  });
+  static HDS = new HDs({
+    CARDANO: 'Cardano'
+  });
   static DEFAULT_HD = Cardano.HDS.CARDANO;
   static TYPES = new Types({
     BYRON_ICARUS: 'byron-icarus',
@@ -85,7 +97,9 @@ export class Cardano extends ICryptocurrency {
     SHELLEY_ICARUS: 'shelley-icarus',
     SHELLEY_LEDGER: 'shelley-ledger'
   });
-  static ADDRESSES = new Addresses({ CARDANO: 'Cardano' });
+  static ADDRESSES = new Addresses({
+    CARDANO: 'Cardano'
+  });
   static DEFAULT_ADDRESS = Cardano.ADDRESSES.CARDANO;
   static ADDRESS_TYPES = new AddressTypes({
     PUBLIC_KEY: 'public-key',

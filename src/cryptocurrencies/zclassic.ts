@@ -14,12 +14,12 @@ import {
   XPublicKeyVersions
 } from '../const';
 import {
-  ICryptocurrency,
-  INetwork
-} from './icryptocurrency';
+  Cryptocurrency,
+  Network
+} from './cryptocurrency';
 
 
-export class Mainnet extends INetwork {
+export class Mainnet extends Network {
 
   static PUBLIC_KEY_ADDRESS_PREFIX = 0x00001cb8;
   static SCRIPT_ADDRESS_PREFIX = 0x00001cbd;
@@ -35,7 +35,7 @@ export class Mainnet extends INetwork {
   static WIF_PREFIX = 0x80;
 }
 
-export class ZClassic extends ICryptocurrency {
+export class ZClassic extends Cryptocurrency {
 
   static NAME = 'ZClassic';
   static SYMBOL = 'ZCL';
@@ -43,13 +43,15 @@ export class ZClassic extends ICryptocurrency {
     SOURCE_CODE: 'https://github.com/ZClassicCommunity/zclassic',
     WHITEPAPER: 'https://zclassic.org/zclassic-whitepaper.pdf',
     WEBSITES: [
-        'https://zclassic.org'
+      'https://zclassic.org'
     ]
   });
   static ECC = SLIP10Secp256k1ECC;
   static COIN_TYPE = CoinTypes.ZClassic;
   static SUPPORT_BIP38 = true;
-  static NETWORKS = new Networks({ MAINNET: Mainnet });
+  static NETWORKS = new Networks({
+    MAINNET: Mainnet
+  });
   static DEFAULT_NETWORK = ZClassic.NETWORKS.MAINNET;
   static ENTROPIES = new Entropies([
     'BIP39'

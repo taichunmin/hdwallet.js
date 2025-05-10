@@ -14,12 +14,12 @@ import {
   XPublicKeyVersions
 } from '../const';
 import {
-  ICryptocurrency,
-  INetwork
-} from './icryptocurrency';
+  Cryptocurrency,
+  Network
+} from './cryptocurrency';
 
 
-export class Mainnet extends INetwork {
+export class Mainnet extends Network {
 
   static PUBLIC_KEY_ADDRESS_PREFIX = 0x3c;
   static SCRIPT_ADDRESS_PREFIX = 0x55;
@@ -35,20 +35,22 @@ export class Mainnet extends INetwork {
   static WIF_PREFIX = 0xbc;
 }
 
-export class Rubycoin extends ICryptocurrency {
+export class Rubycoin extends Cryptocurrency {
 
   static NAME = 'Rubycoin';
   static SYMBOL = 'RBY';
   static INFO = new Info({
     SOURCE_CODE: 'https://github.com/rubycoinorg/rubycoin',
     WEBSITES: [
-        'http://www.rubycoin.org'
+      'http://www.rubycoin.org'
     ]
   });
   static ECC = SLIP10Secp256k1ECC;
   static COIN_TYPE = CoinTypes.Rubycoin;
   static SUPPORT_BIP38 = true;
-  static NETWORKS = new Networks({ MAINNET: Mainnet });
+  static NETWORKS = new Networks({
+    MAINNET: Mainnet
+  });
   static DEFAULT_NETWORK = Rubycoin.NETWORKS.MAINNET;
   static ENTROPIES = new Entropies([
     'BIP39'

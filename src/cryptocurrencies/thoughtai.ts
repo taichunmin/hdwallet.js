@@ -14,12 +14,12 @@ import {
   XPublicKeyVersions
 } from '../const';
 import {
-  ICryptocurrency,
-  INetwork
-} from './icryptocurrency';
+  Cryptocurrency,
+  Network
+} from './cryptocurrency';
 
 
-export class Mainnet extends INetwork {
+export class Mainnet extends Network {
 
   static PUBLIC_KEY_ADDRESS_PREFIX = 0x07;
   static SCRIPT_ADDRESS_PREFIX = 0x09;
@@ -35,7 +35,7 @@ export class Mainnet extends INetwork {
   static WIF_PREFIX = 0x7b;
 }
 
-export class ThoughtAI extends ICryptocurrency {
+export class ThoughtAI extends Cryptocurrency {
 
   static NAME = 'Thought-AI';
   static SYMBOL = 'THT';
@@ -43,13 +43,15 @@ export class ThoughtAI extends ICryptocurrency {
     SOURCE_CODE: 'https://github.com/thoughtnetwork',
     WHITEPAPER: 'https://github.com/thoughtnetwork/thought-whitepaper',
     WEBSITES: [
-        'https://thought.live'
+      'https://thought.live'
     ]
   });
   static ECC = SLIP10Secp256k1ECC;
   static COIN_TYPE = CoinTypes.ThoughtAI;
   static SUPPORT_BIP38 = true;
-  static NETWORKS = new Networks({ MAINNET: Mainnet });
+  static NETWORKS = new Networks({
+    MAINNET: Mainnet
+  });
   static DEFAULT_NETWORK = ThoughtAI.NETWORKS.MAINNET;
   static ENTROPIES = new Entropies([
     'BIP39'

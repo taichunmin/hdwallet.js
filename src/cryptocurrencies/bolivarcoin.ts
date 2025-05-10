@@ -14,12 +14,12 @@ import {
   XPublicKeyVersions
 } from '../const';
 import {
-  ICryptocurrency,
-  INetwork
-} from './icryptocurrency';
+  Cryptocurrency,
+  Network
+} from './cryptocurrency';
 
 
-export class Mainnet extends INetwork {
+export class Mainnet extends Network {
 
   static PUBLIC_KEY_ADDRESS_PREFIX = 0x55;
   static SCRIPT_ADDRESS_PREFIX = 0x05;
@@ -35,20 +35,22 @@ export class Mainnet extends INetwork {
   static WIF_PREFIX = 0xd5;
 }
 
-export class Bolivarcoin extends ICryptocurrency {
+export class Bolivarcoin extends Cryptocurrency {
 
   static NAME = 'Bolivarcoin';
   static SYMBOL = 'BOLI';
   static INFO = new Info({
     SOURCE_CODE: 'https://github.com/BOLI-Project/BolivarCoin',
     WEBSITES: [
-        'https://bolis.info'
+      'https://bolis.info'
     ]
   });
   static ECC = SLIP10Secp256k1ECC;
   static COIN_TYPE = CoinTypes.Bolivarcoin;
   static SUPPORT_BIP38 = true;
-  static NETWORKS = new Networks({ MAINNET: Mainnet });
+  static NETWORKS = new Networks({
+    MAINNET: Mainnet
+  });
   static DEFAULT_NETWORK = Bolivarcoin.NETWORKS.MAINNET;
   static ENTROPIES = new Entropies([
     'BIP39'

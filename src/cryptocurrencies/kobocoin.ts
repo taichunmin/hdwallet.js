@@ -14,12 +14,12 @@ import {
   XPublicKeyVersions
 } from '../const';
 import {
-  ICryptocurrency,
-  INetwork
-} from './icryptocurrency';
+  Cryptocurrency,
+  Network
+} from './cryptocurrency';
 
 
-export class Mainnet extends INetwork {
+export class Mainnet extends Network {
 
   static PUBLIC_KEY_ADDRESS_PREFIX = 0x23;
   static SCRIPT_ADDRESS_PREFIX = 0x1c;
@@ -35,7 +35,7 @@ export class Mainnet extends INetwork {
   static WIF_PREFIX = 0xa3;
 }
 
-export class Kobocoin extends ICryptocurrency {
+export class Kobocoin extends Cryptocurrency {
 
   static NAME = 'Kobocoin';
   static SYMBOL = 'KOBO';
@@ -43,13 +43,15 @@ export class Kobocoin extends ICryptocurrency {
     SOURCE_CODE: 'https://github.com/kobocoin/Kobocoin',
     WHITEPAPER: 'https://kobocoin.com/Tech.html',
     WEBSITES: [
-        'http://kobocoin.com'
+      'http://kobocoin.com'
     ]
   });
   static ECC = SLIP10Secp256k1ECC;
   static COIN_TYPE = CoinTypes.Kobocoin;
   static SUPPORT_BIP38 = true;
-  static NETWORKS = new Networks({ MAINNET: Mainnet });
+  static NETWORKS = new Networks({
+    MAINNET: Mainnet
+  });
   static DEFAULT_NETWORK = Kobocoin.NETWORKS.MAINNET;
   static ENTROPIES = new Entropies([
     'BIP39'

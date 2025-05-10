@@ -16,20 +16,24 @@ import {
   XPublicKeyVersions
 } from '../const';
 import {
-  ICryptocurrency,
-  INetwork
-} from './icryptocurrency';
+  Cryptocurrency,
+  Network
+} from './cryptocurrency';
 
 
-export class Mainnet extends INetwork {
+export class Mainnet extends Network {
 
   static HRP = 'avax';
-  static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({ P2PKH: 0x0488ade4 });
-  static XPUBLIC_KEY_VERSIONS = new XPublicKeyVersions({ P2PKH: 0x0488b21e });
+  static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
+    P2PKH: 0x0488ade4
+  });
+  static XPUBLIC_KEY_VERSIONS = new XPublicKeyVersions({
+    P2PKH: 0x0488b21e
+  });
   static WIF_PREFIX = 0x80;
 }
 
-export class Avalanche extends ICryptocurrency {
+export class Avalanche extends Cryptocurrency {
 
   static NAME = 'Avalanche';
   static SYMBOL = 'AVAX';
@@ -37,13 +41,15 @@ export class Avalanche extends ICryptocurrency {
     SOURCE_CODE: 'https://github.com/ava-labs/avalanchego',
     WHITEPAPER: 'https://www.avalabs.org/whitepapers',
     WEBSITES: [
-        'https://avax.network',
+      'https://avax.network',
         'https://www.avalabs.org'
     ]
   });
   static ECC = SLIP10Secp256k1ECC;
   static COIN_TYPE = CoinTypes.Avalanche;
-  static NETWORKS = new Networks({ MAINNET: Mainnet });
+  static NETWORKS = new Networks({
+    MAINNET: Mainnet
+  });
   static DEFAULT_NETWORK = Avalanche.NETWORKS.MAINNET;
   static ENTROPIES = new Entropies([
     'BIP39'
@@ -70,10 +76,10 @@ export class Avalanche extends ICryptocurrency {
     X_CHAIN: 'x-chain'
   });
   static DEFAULT_ADDRESS_TYPE = Avalanche.ADDRESS_TYPES.P_CHAIN;
-  static PARAMS = new Params({ 
-    ADDRESS_TYPES: { 
+  static PARAMS = new Params({
+    ADDRESS_TYPES: {
       P_CHAIN: 'P-',
-      X_CHAIN: 'X-'    
-    } 
+      X_CHAIN: 'X-'
+    }
   });
 }

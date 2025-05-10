@@ -14,12 +14,12 @@ import {
   XPublicKeyVersions
 } from '../const';
 import {
-  ICryptocurrency,
-  INetwork
-} from './icryptocurrency';
+  Cryptocurrency,
+  Network
+} from './cryptocurrency';
 
 
-export class Mainnet extends INetwork {
+export class Mainnet extends Network {
 
   static PUBLIC_KEY_ADDRESS_PREFIX = 0x26;
   static SCRIPT_ADDRESS_PREFIX = 0x00001cbd;
@@ -35,20 +35,22 @@ export class Mainnet extends INetwork {
   static WIF_PREFIX = 0x2e;
 }
 
-export class BitcoinGreen extends ICryptocurrency {
+export class BitcoinGreen extends Cryptocurrency {
 
   static NAME = 'Bitcoin-Green';
   static SYMBOL = 'BITG';
   static INFO = new Info({
     SOURCE_CODE: 'https://github.com/bitcoin-green/bitcoingreen',
     WEBSITES: [
-        'https://bitg.org'
+      'https://bitg.org'
     ]
   });
   static ECC = SLIP10Secp256k1ECC;
   static COIN_TYPE = CoinTypes.BitcoinGreen;
   static SUPPORT_BIP38 = true;
-  static NETWORKS = new Networks({ MAINNET: Mainnet });
+  static NETWORKS = new Networks({
+    MAINNET: Mainnet
+  });
   static DEFAULT_NETWORK = BitcoinGreen.NETWORKS.MAINNET;
   static ENTROPIES = new Entropies([
     'BIP39'

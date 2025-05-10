@@ -15,12 +15,12 @@ import {
   XPublicKeyVersions
 } from '../const';
 import {
-  ICryptocurrency,
-  INetwork
-} from './icryptocurrency';
+  Cryptocurrency,
+  Network
+} from './cryptocurrency';
 
 
-export class Mainnet extends INetwork {
+export class Mainnet extends Network {
 
   static PUBLIC_KEY_ADDRESS_PREFIX = 0x03;
   static SCRIPT_ADDRESS_PREFIX = 0x7d;
@@ -45,7 +45,7 @@ export class Mainnet extends INetwork {
   static WIF_PREFIX = 0x80;
 }
 
-export class Bitcore extends ICryptocurrency {
+export class Bitcore extends Cryptocurrency {
 
   static NAME = 'Bitcore';
   static SYMBOL = 'BTX';
@@ -53,13 +53,15 @@ export class Bitcore extends ICryptocurrency {
     SOURCE_CODE: 'https://github.com/bitcore-btx/BitCore',
     WHITEPAPER: 'https://bitcore.cc/#coinspec-anchor',
     WEBSITES: [
-        'https://bitcore.cc'
+      'https://bitcore.cc'
     ]
   });
   static ECC = SLIP10Secp256k1ECC;
   static COIN_TYPE = CoinTypes.Bitcore;
   static SUPPORT_BIP38 = true;
-  static NETWORKS = new Networks({ MAINNET: Mainnet });
+  static NETWORKS = new Networks({
+    MAINNET: Mainnet
+  });
   static DEFAULT_NETWORK = Bitcore.NETWORKS.MAINNET;
   static ENTROPIES = new Entropies([
     'BIP39'

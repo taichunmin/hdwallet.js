@@ -14,12 +14,12 @@ import {
   XPublicKeyVersions
 } from '../const';
 import {
-  ICryptocurrency,
-  INetwork
-} from './icryptocurrency';
+  Cryptocurrency,
+  Network
+} from './cryptocurrency';
 
 
-export class Mainnet extends INetwork {
+export class Mainnet extends Network {
 
   static PUBLIC_KEY_ADDRESS_PREFIX = 0x49;
   static SCRIPT_ADDRESS_PREFIX = 0x53;
@@ -35,7 +35,7 @@ export class Mainnet extends INetwork {
   static WIF_PREFIX = 0x42;
 }
 
-export class Testnet extends INetwork {
+export class Testnet extends Network {
 
   static PUBLIC_KEY_ADDRESS_PREFIX = 0x4c;
   static SCRIPT_ADDRESS_PREFIX = 0x89;
@@ -51,14 +51,14 @@ export class Testnet extends INetwork {
   static WIF_PREFIX = 0xed;
 }
 
-export class TWINS extends ICryptocurrency {
+export class TWINS extends Cryptocurrency {
 
   static NAME = 'TWINS';
   static SYMBOL = 'TWINS';
   static INFO = new Info({
     SOURCE_CODE: 'https://github.com/NewCapital/TWINS-Core',
     WEBSITES: [
-        'https://win.win'
+      'https://win.win'
     ]
   });
   static ECC = SLIP10Secp256k1ECC;

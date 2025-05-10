@@ -14,33 +14,33 @@ import {
   Params
 } from '../const';
 import {
-  ICryptocurrency,
-  INetwork
-} from './icryptocurrency';
+  Cryptocurrency,
+  Network
+} from './cryptocurrency';
 
 
-export class Mainnet extends INetwork {
+export class Mainnet extends Network {
 
   static STANDARD = 0x12;
   static INTEGRATED = 0x13;
   static SUB_ADDRESS = 0x2a;
 }
 
-export class Stagenet extends INetwork {
+export class Stagenet extends Network {
 
   static STANDARD = 0x18;
   static INTEGRATED = 0x19;
   static SUB_ADDRESS = 0x24;
 }
 
-export class Testnet extends INetwork {
+export class Testnet extends Network {
 
   static STANDARD = 0x35;
   static INTEGRATED = 0x36;
   static SUB_ADDRESS = 0x3f;
 }
 
-export class Monero extends ICryptocurrency {
+export class Monero extends Cryptocurrency {
 
   static NAME = 'Monero';
   static SYMBOL = 'XMR';
@@ -48,7 +48,7 @@ export class Monero extends ICryptocurrency {
     SOURCE_CODE: 'https://github.com/monero-project/monero',
     WHITEPAPER: 'https://github.com/monero-project/research-lab/blob/master/whitepaper/whitepaper.pdf',
     WEBSITES: [
-        'https://www.getmonero.org'
+      'https://www.getmonero.org'
     ]
   });
   static ECC = SLIP10Ed25519MoneroECC;
@@ -71,9 +71,13 @@ export class Monero extends ICryptocurrency {
     { MONERO: 'Monero' },
     'BIP39'
   ]);
-  static HDS = new HDs({ MONERO: 'Monero' });
+  static HDS = new HDs({
+    MONERO: 'Monero'
+  });
   static DEFAULT_HD = Monero.HDS.MONERO;
-  static ADDRESSES = new Addresses({ MONERO: 'Monero' });
+  static ADDRESSES = new Addresses({
+    MONERO: 'Monero'
+  });
   static DEFAULT_ADDRESS = Monero.ADDRESSES.MONERO;
   static ADDRESS_TYPES = new AddressTypes({
     STANDARD: 'standard',

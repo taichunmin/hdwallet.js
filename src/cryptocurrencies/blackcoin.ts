@@ -14,12 +14,12 @@ import {
   XPublicKeyVersions
 } from '../const';
 import {
-  ICryptocurrency,
-  INetwork
-} from './icryptocurrency';
+  Cryptocurrency,
+  Network
+} from './cryptocurrency';
 
 
-export class Mainnet extends INetwork {
+export class Mainnet extends Network {
 
   static PUBLIC_KEY_ADDRESS_PREFIX = 0x19;
   static SCRIPT_ADDRESS_PREFIX = 0x55;
@@ -35,7 +35,7 @@ export class Mainnet extends INetwork {
   static WIF_PREFIX = 0x99;
 }
 
-export class Blackcoin extends ICryptocurrency {
+export class Blackcoin extends Cryptocurrency {
 
   static NAME = 'Blackcoin';
   static SYMBOL = 'BLK';
@@ -43,14 +43,16 @@ export class Blackcoin extends ICryptocurrency {
     SOURCE_CODE: 'https://github.com/coinblack',
     WHITEPAPER: 'https://blackcoin.org/blackcoin-pos-protocol-v2-whitepaper.pdf',
     WEBSITES: [
-        'https://blackcoin.org',
+      'https://blackcoin.org',
         'https://blackcoinmore.org'
     ]
   });
   static ECC = SLIP10Secp256k1ECC;
   static COIN_TYPE = CoinTypes.Blackcoin;
   static SUPPORT_BIP38 = true;
-  static NETWORKS = new Networks({ MAINNET: Mainnet });
+  static NETWORKS = new Networks({
+    MAINNET: Mainnet
+  });
   static DEFAULT_NETWORK = Blackcoin.NETWORKS.MAINNET;
   static ENTROPIES = new Entropies([
     'BIP39'

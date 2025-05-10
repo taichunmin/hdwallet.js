@@ -14,12 +14,12 @@ import {
   XPublicKeyVersions
 } from '../const';
 import {
-  ICryptocurrency,
-  INetwork
-} from './icryptocurrency';
+  Cryptocurrency,
+  Network
+} from './cryptocurrency';
 
 
-export class Mainnet extends INetwork {
+export class Mainnet extends Network {
 
   static PUBLIC_KEY_ADDRESS_PREFIX = 0x35;
   static SCRIPT_ADDRESS_PREFIX = 0x55;
@@ -35,7 +35,7 @@ export class Mainnet extends INetwork {
   static WIF_PREFIX = 0x96;
 }
 
-export class Navcoin extends ICryptocurrency {
+export class Navcoin extends Cryptocurrency {
 
   static NAME = 'Navcoin';
   static SYMBOL = 'NAV';
@@ -43,13 +43,15 @@ export class Navcoin extends ICryptocurrency {
     SOURCE_CODE: 'https://github.com/navcoin/navcoin-core',
     WHITEPAPER: 'https://doc.nav.community',
     WEBSITES: [
-        'http://www.navcoin.org'
+      'http://www.navcoin.org'
     ]
   });
   static ECC = SLIP10Secp256k1ECC;
   static COIN_TYPE = CoinTypes.Navcoin;
   static SUPPORT_BIP38 = true;
-  static NETWORKS = new Networks({ MAINNET: Mainnet });
+  static NETWORKS = new Networks({
+    MAINNET: Mainnet
+  });
   static DEFAULT_NETWORK = Navcoin.NETWORKS.MAINNET;
   static ENTROPIES = new Entropies([
     'BIP39'

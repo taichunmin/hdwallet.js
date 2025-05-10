@@ -14,12 +14,12 @@ import {
   XPublicKeyVersions
 } from '../const';
 import {
-  ICryptocurrency,
-  INetwork
-} from './icryptocurrency';
+  Cryptocurrency,
+  Network
+} from './cryptocurrency';
 
 
-export class Mainnet extends INetwork {
+export class Mainnet extends Network {
 
   static PUBLIC_KEY_ADDRESS_PREFIX = 0x66;
   static SCRIPT_ADDRESS_PREFIX = 0x39;
@@ -35,7 +35,7 @@ export class Mainnet extends INetwork {
   static WIF_PREFIX = 0x37;
 }
 
-export class InsaneCoin extends ICryptocurrency {
+export class InsaneCoin extends Cryptocurrency {
 
   static NAME = 'InsaneCoin';
   static SYMBOL = 'INSN';
@@ -43,13 +43,15 @@ export class InsaneCoin extends ICryptocurrency {
     SOURCE_CODE: 'https://github.com/CryptoCoderz/INSN',
     WHITEPAPER: 'https://insane.network/velocity-bluepaper',
     WEBSITES: [
-        'https://insane.network'
+      'https://insane.network'
     ]
   });
   static ECC = SLIP10Secp256k1ECC;
   static COIN_TYPE = CoinTypes.InsaneCoin;
   static SUPPORT_BIP38 = true;
-  static NETWORKS = new Networks({ MAINNET: Mainnet });
+  static NETWORKS = new Networks({
+    MAINNET: Mainnet
+  });
   static DEFAULT_NETWORK = InsaneCoin.NETWORKS.MAINNET;
   static ENTROPIES = new Entropies([
     'BIP39'

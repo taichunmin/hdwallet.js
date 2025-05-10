@@ -14,20 +14,24 @@ import {
   XPublicKeyVersions
 } from '../const';
 import {
-  ICryptocurrency,
-  INetwork
-} from './icryptocurrency';
+  Cryptocurrency,
+  Network
+} from './cryptocurrency';
 
 
-export class Mainnet extends INetwork {
+export class Mainnet extends Network {
 
   static HRP = 'secret';
-  static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({ P2PKH: 0x0488ade4 });
-  static XPUBLIC_KEY_VERSIONS = new XPublicKeyVersions({ P2PKH: 0x0488b21e });
+  static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
+    P2PKH: 0x0488ade4
+  });
+  static XPUBLIC_KEY_VERSIONS = new XPublicKeyVersions({
+    P2PKH: 0x0488b21e
+  });
   static WIF_PREFIX = 0x80;
 }
 
-export class Secret extends ICryptocurrency {
+export class Secret extends Cryptocurrency {
 
   static NAME = 'Secret';
   static SYMBOL = 'SCRT';
@@ -35,12 +39,14 @@ export class Secret extends ICryptocurrency {
     SOURCE_CODE: 'https://github.com/scrtlabs/SecretNetwork',
     WHITEPAPER: 'https://docs.scrt.network',
     WEBSITES: [
-        'https://scrt.network'
+      'https://scrt.network'
     ]
   });
   static ECC = SLIP10Secp256k1ECC;
   static COIN_TYPE = CoinTypes.Secret;
-  static NETWORKS = new Networks({ MAINNET: Mainnet });
+  static NETWORKS = new Networks({
+    MAINNET: Mainnet
+  });
   static DEFAULT_NETWORK = Secret.NETWORKS.MAINNET;
   static ENTROPIES = new Entropies([
     'BIP39'
@@ -56,6 +62,8 @@ export class Secret extends ICryptocurrency {
     'BIP44'
   ]);
   static DEFAULT_HD = Secret.HDS.BIP44;
-  static ADDRESSES = new Addresses({ COSMOS: 'Cosmos' });
+  static ADDRESSES = new Addresses({
+    COSMOS: 'Cosmos'
+  });
   static DEFAULT_ADDRESS = Secret.ADDRESSES.COSMOS;
 }

@@ -15,12 +15,12 @@ import {
   XPublicKeyVersions
 } from '../const';
 import {
-  ICryptocurrency,
-  INetwork
-} from './icryptocurrency';
+  Cryptocurrency,
+  Network
+} from './cryptocurrency';
 
 
-export class Mainnet extends INetwork {
+export class Mainnet extends Network {
 
   static PUBLIC_KEY_ADDRESS_PREFIX = 0x41;
   static SCRIPT_ADDRESS_PREFIX = 0x05;
@@ -36,7 +36,7 @@ export class Mainnet extends INetwork {
   static WIF_PREFIX = 0x80;
 }
 
-export class Tron extends ICryptocurrency {
+export class Tron extends Cryptocurrency {
 
   static NAME = 'Tron';
   static SYMBOL = 'TRX';
@@ -44,13 +44,15 @@ export class Tron extends ICryptocurrency {
     SOURCE_CODE: 'https://github.com/tronprotocol/java-tron',
     WHITEPAPER: 'https://developers.tron.network/docs',
     WEBSITES: [
-        'https://trondao.org',
+      'https://trondao.org',
         'https://tron.network'
     ]
   });
   static ECC = SLIP10Secp256k1ECC;
   static COIN_TYPE = CoinTypes.Tron;
-  static NETWORKS = new Networks({ MAINNET: Mainnet });
+  static NETWORKS = new Networks({
+    MAINNET: Mainnet
+  });
   static DEFAULT_NETWORK = Tron.NETWORKS.MAINNET;
   static ENTROPIES = new Entropies([
     'BIP39'
@@ -66,7 +68,11 @@ export class Tron extends ICryptocurrency {
     'BIP44'
   ]);
   static DEFAULT_HD = Tron.HDS.BIP44;
-  static ADDRESSES = new Addresses({ TRON: 'Tron' });
+  static ADDRESSES = new Addresses({
+    TRON: 'Tron'
+  });
   static DEFAULT_ADDRESS = Tron.ADDRESSES.TRON;
-  static PARAMS = new Params({ ALPHABET: '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz' });
+  static PARAMS = new Params({
+    ALPHABET: '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz'
+  });
 }

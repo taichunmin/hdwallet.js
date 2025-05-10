@@ -14,12 +14,12 @@ import {
   XPublicKeyVersions
 } from '../const';
 import {
-  ICryptocurrency,
-  INetwork
-} from './icryptocurrency';
+  Cryptocurrency,
+  Network
+} from './cryptocurrency';
 
 
-export class Mainnet extends INetwork {
+export class Mainnet extends Network {
 
   static PUBLIC_KEY_ADDRESS_PREFIX = 0x35;
   static SCRIPT_ADDRESS_PREFIX = 0x05;
@@ -35,20 +35,22 @@ export class Mainnet extends INetwork {
   static WIF_PREFIX = 0xb1;
 }
 
-export class Neoscoin extends ICryptocurrency {
+export class Neoscoin extends Cryptocurrency {
 
   static NAME = 'Neoscoin';
   static SYMBOL = 'NEOS';
   static INFO = new Info({
     WHITEPAPER: 'http://neoscoin.com/whitepaper/neoscoin.pdf',
     WEBSITES: [
-        'http://www.getneos.com'
+      'http://www.getneos.com'
     ]
   });
   static ECC = SLIP10Secp256k1ECC;
   static COIN_TYPE = CoinTypes.Neoscoin;
   static SUPPORT_BIP38 = true;
-  static NETWORKS = new Networks({ MAINNET: Mainnet });
+  static NETWORKS = new Networks({
+    MAINNET: Mainnet
+  });
   static DEFAULT_NETWORK = Neoscoin.NETWORKS.MAINNET;
   static ENTROPIES = new Entropies([
     'BIP39'

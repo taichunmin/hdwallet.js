@@ -14,12 +14,12 @@ import {
   XPublicKeyVersions
 } from '../const';
 import {
-  ICryptocurrency,
-  INetwork
-} from './icryptocurrency';
+  Cryptocurrency,
+  Network
+} from './cryptocurrency';
 
 
-export class Mainnet extends INetwork {
+export class Mainnet extends Network {
 
   static PUBLIC_KEY_ADDRESS_PREFIX = 0x00000582;
   static SCRIPT_ADDRESS_PREFIX = 0x00005389;
@@ -35,7 +35,7 @@ export class Mainnet extends INetwork {
   static WIF_PREFIX = 0x80;
 }
 
-export class Anon extends ICryptocurrency {
+export class Anon extends Cryptocurrency {
 
   static NAME = 'Anon';
   static SYMBOL = 'ANON';
@@ -43,13 +43,15 @@ export class Anon extends ICryptocurrency {
     SOURCE_CODE: 'https://github.com/anonymousbitcoin/anon',
     WHITEPAPER: 'https://www.anon.community/whitepaper',
     WEBSITES: [
-        'https://www.anon.community'
+      'https://www.anon.community'
     ]
   });
   static ECC = SLIP10Secp256k1ECC;
   static COIN_TYPE = CoinTypes.Anon;
   static SUPPORT_BIP38 = true;
-  static NETWORKS = new Networks({ MAINNET: Mainnet });
+  static NETWORKS = new Networks({
+    MAINNET: Mainnet
+  });
   static DEFAULT_NETWORK = Anon.NETWORKS.MAINNET;
   static ENTROPIES = new Entropies([
     'BIP39'

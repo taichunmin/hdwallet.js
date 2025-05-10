@@ -14,12 +14,12 @@ import {
   XPublicKeyVersions
 } from '../const';
 import {
-  ICryptocurrency,
-  INetwork
-} from './icryptocurrency';
+  Cryptocurrency,
+  Network
+} from './cryptocurrency';
 
 
-export class Mainnet extends INetwork {
+export class Mainnet extends Network {
 
   static PUBLIC_KEY_ADDRESS_PREFIX = 0x66;
   static SCRIPT_ADDRESS_PREFIX = 0x05;
@@ -35,7 +35,7 @@ export class Mainnet extends INetwork {
   static WIF_PREFIX = 0xcc;
 }
 
-export class BitSend extends ICryptocurrency {
+export class BitSend extends Cryptocurrency {
 
   static NAME = 'Bit-Send';
   static SYMBOL = 'BSD';
@@ -43,14 +43,16 @@ export class BitSend extends ICryptocurrency {
     SOURCE_CODE: 'https://github.com/LIMXTEC/BitSend',
     WHITEPAPER: 'https://github.com/LIMXTEC/BitSend/releases/download/v0.14.0.5/Z.bitsend_whitePaper.Dec_17.pdf',
     WEBSITES: [
-        'https://bitsend.cc',
+      'https://bitsend.cc',
         'http://www.mybitsend.com'
     ]
   });
   static ECC = SLIP10Secp256k1ECC;
   static COIN_TYPE = CoinTypes.BitSend;
   static SUPPORT_BIP38 = true;
-  static NETWORKS = new Networks({ MAINNET: Mainnet });
+  static NETWORKS = new Networks({
+    MAINNET: Mainnet
+  });
   static DEFAULT_NETWORK = BitSend.NETWORKS.MAINNET;
   static ENTROPIES = new Entropies([
     'BIP39'

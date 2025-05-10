@@ -14,12 +14,12 @@ import {
   XPublicKeyVersions
 } from '../const';
 import {
-  ICryptocurrency,
-  INetwork
-} from './icryptocurrency';
+  Cryptocurrency,
+  Network
+} from './cryptocurrency';
 
 
-export class Mainnet extends INetwork {
+export class Mainnet extends Network {
 
   static PUBLIC_KEY_ADDRESS_PREFIX = 0x37;
   static SCRIPT_ADDRESS_PREFIX = 0x75;
@@ -35,7 +35,7 @@ export class Mainnet extends INetwork {
   static WIF_PREFIX = 0xb7;
 }
 
-export class Peercoin extends ICryptocurrency {
+export class Peercoin extends Cryptocurrency {
 
   static NAME = 'Peercoin';
   static SYMBOL = 'PPC';
@@ -43,13 +43,15 @@ export class Peercoin extends ICryptocurrency {
     SOURCE_CODE: 'https://github.com/peercoin/peercoin',
     WHITEPAPER: 'https://docs.peercoin.net',
     WEBSITES: [
-        'http://www.peercoin.net'
+      'http://www.peercoin.net'
     ]
   });
   static ECC = SLIP10Secp256k1ECC;
   static COIN_TYPE = CoinTypes.Peercoin;
   static SUPPORT_BIP38 = true;
-  static NETWORKS = new Networks({ MAINNET: Mainnet });
+  static NETWORKS = new Networks({
+    MAINNET: Mainnet
+  });
   static DEFAULT_NETWORK = Peercoin.NETWORKS.MAINNET;
   static ENTROPIES = new Entropies([
     'BIP39'

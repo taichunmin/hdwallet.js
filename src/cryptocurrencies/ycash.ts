@@ -14,12 +14,12 @@ import {
   XPublicKeyVersions
 } from '../const';
 import {
-  ICryptocurrency,
-  INetwork
-} from './icryptocurrency';
+  Cryptocurrency,
+  Network
+} from './cryptocurrency';
 
 
-export class Mainnet extends INetwork {
+export class Mainnet extends Network {
 
   static PUBLIC_KEY_ADDRESS_PREFIX = 0x00001c28;
   static SCRIPT_ADDRESS_PREFIX = 0x00001c2c;
@@ -35,21 +35,23 @@ export class Mainnet extends INetwork {
   static WIF_PREFIX = 0x80;
 }
 
-export class Ycash extends ICryptocurrency {
+export class Ycash extends Cryptocurrency {
 
   static NAME = 'Ycash';
   static SYMBOL = 'YEC';
   static INFO = new Info({
     SOURCE_CODE: 'https://github.com/ycashfoundation/ycash',
     WEBSITES: [
-        'https://y.cash',
+      'https://y.cash',
         'https://www.ycash.xyz'
     ]
   });
   static ECC = SLIP10Secp256k1ECC;
   static COIN_TYPE = CoinTypes.Ycash;
   static SUPPORT_BIP38 = true;
-  static NETWORKS = new Networks({ MAINNET: Mainnet });
+  static NETWORKS = new Networks({
+    MAINNET: Mainnet
+  });
   static DEFAULT_NETWORK = Ycash.NETWORKS.MAINNET;
   static ENTROPIES = new Entropies([
     'BIP39'

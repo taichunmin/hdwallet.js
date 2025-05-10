@@ -16,28 +16,36 @@ import {
   XPublicKeyVersions
 } from '../const';
 import {
-  ICryptocurrency,
-  INetwork
-} from './icryptocurrency';
+  Cryptocurrency,
+  Network
+} from './cryptocurrency';
 
 
-export class Mainnet extends INetwork {
+export class Mainnet extends Network {
 
   static TYPE = 0x00;
-  static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({ P2PKH: 0x0488ade4 });
-  static XPUBLIC_KEY_VERSIONS = new XPublicKeyVersions({ P2PKH: 0x0488b21e });
+  static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
+    P2PKH: 0x0488ade4
+  });
+  static XPUBLIC_KEY_VERSIONS = new XPublicKeyVersions({
+    P2PKH: 0x0488b21e
+  });
   static WIF_PREFIX = 0x80;
 }
 
-export class Testnet extends INetwork {
+export class Testnet extends Network {
 
   static TYPE = 0x10;
-  static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({ P2PKH: 0x04358394 });
-  static XPUBLIC_KEY_VERSIONS = new XPublicKeyVersions({ P2PKH: 0x043587cf });
+  static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
+    P2PKH: 0x04358394
+  });
+  static XPUBLIC_KEY_VERSIONS = new XPublicKeyVersions({
+    P2PKH: 0x043587cf
+  });
   static WIF_PREFIX = 0xef;
 }
 
-export class Ergo extends ICryptocurrency {
+export class Ergo extends Cryptocurrency {
 
   static NAME = 'Ergo';
   static SYMBOL = 'ERG';
@@ -45,7 +53,7 @@ export class Ergo extends ICryptocurrency {
     SOURCE_CODE: 'https://github.com/ergoplatform/ergo',
     WHITEPAPER: 'https://ergoplatform.org/en/documents',
     WEBSITES: [
-        'https://ergoplatform.org'
+      'https://ergoplatform.org'
     ]
   });
   static ECC = SLIP10Secp256k1ECC;
@@ -69,7 +77,9 @@ export class Ergo extends ICryptocurrency {
     'BIP44'
   ]);
   static DEFAULT_HD = Ergo.HDS.BIP44;
-  static ADDRESSES = new Addresses({ ERGO: 'Ergo' });
+  static ADDRESSES = new Addresses({
+    ERGO: 'Ergo'
+  });
   static DEFAULT_ADDRESS = Ergo.ADDRESSES.ERGO;
   static ADDRESS_TYPES = new AddressTypes({
     P2PKH: 'p2pkh',
@@ -79,8 +89,8 @@ export class Ergo extends ICryptocurrency {
   static PARAMS = new Params({
     CHECKSUM_LENGTH: 0x04,
     ADDRESS_TYPES: {
-        P2PKH: 0x01,
-        P2SH: 0x02
+      P2PKH: 0x01,
+      P2SH: 0x02
     }
   });
 }

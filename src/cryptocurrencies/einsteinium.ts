@@ -14,12 +14,12 @@ import {
   XPublicKeyVersions
 } from '../const';
 import {
-  ICryptocurrency,
-  INetwork
-} from './icryptocurrency';
+  Cryptocurrency,
+  Network
+} from './cryptocurrency';
 
 
-export class Mainnet extends INetwork {
+export class Mainnet extends Network {
 
   static PUBLIC_KEY_ADDRESS_PREFIX = 0x21;
   static SCRIPT_ADDRESS_PREFIX = 0x05;
@@ -35,7 +35,7 @@ export class Mainnet extends INetwork {
   static WIF_PREFIX = 0xa1;
 }
 
-export class Einsteinium extends ICryptocurrency {
+export class Einsteinium extends Cryptocurrency {
 
   static NAME = 'Einsteinium';
   static SYMBOL = 'EMC2';
@@ -43,13 +43,15 @@ export class Einsteinium extends ICryptocurrency {
     SOURCE_CODE: 'https://github.com/emc2foundation/einsteinium',
     WHITEPAPER: 'https://www.emc2.foundation/coin-specification',
     WEBSITES: [
-        'https://www.emc2.foundation'
+      'https://www.emc2.foundation'
     ]
   });
   static ECC = SLIP10Secp256k1ECC;
   static COIN_TYPE = CoinTypes.Einsteinium;
   static SUPPORT_BIP38 = true;
-  static NETWORKS = new Networks({ MAINNET: Mainnet });
+  static NETWORKS = new Networks({
+    MAINNET: Mainnet
+  });
   static DEFAULT_NETWORK = Einsteinium.NETWORKS.MAINNET;
   static ENTROPIES = new Entropies([
     'BIP39'

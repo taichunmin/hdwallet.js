@@ -14,12 +14,12 @@ import {
   XPublicKeyVersions
 } from '../const';
 import {
-  ICryptocurrency,
-  INetwork
-} from './icryptocurrency';
+  Cryptocurrency,
+  Network
+} from './cryptocurrency';
 
 
-export class Mainnet extends INetwork {
+export class Mainnet extends Network {
 
   static PUBLIC_KEY_ADDRESS_PREFIX = 0x19;
   static SCRIPT_ADDRESS_PREFIX = 0x05;
@@ -35,7 +35,7 @@ export class Mainnet extends INetwork {
   static WIF_PREFIX = 0x05;
 }
 
-export class Smileycoin extends ICryptocurrency {
+export class Smileycoin extends Cryptocurrency {
 
   static NAME = 'Smileycoin';
   static SYMBOL = 'SMLY';
@@ -43,13 +43,15 @@ export class Smileycoin extends ICryptocurrency {
     SOURCE_CODE: 'https://github.com/tutor-web/',
     WHITEPAPER: 'https://tutor-web.info/smileycoin',
     WEBSITES: [
-        'https://smileyco.in'
+      'https://smileyco.in'
     ]
   });
   static ECC = SLIP10Secp256k1ECC;
   static COIN_TYPE = CoinTypes.Smileycoin;
   static SUPPORT_BIP38 = true;
-  static NETWORKS = new Networks({ MAINNET: Mainnet });
+  static NETWORKS = new Networks({
+    MAINNET: Mainnet
+  });
   static DEFAULT_NETWORK = Smileycoin.NETWORKS.MAINNET;
   static ENTROPIES = new Entropies([
     'BIP39'

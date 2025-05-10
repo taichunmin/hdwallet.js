@@ -14,12 +14,12 @@ import {
   XPublicKeyVersions
 } from '../const';
 import {
-  ICryptocurrency,
-  INetwork
-} from './icryptocurrency';
+  Cryptocurrency,
+  Network
+} from './cryptocurrency';
 
 
-export class Mainnet extends INetwork {
+export class Mainnet extends Network {
 
   static PUBLIC_KEY_ADDRESS_PREFIX = 0x23;
   static SCRIPT_ADDRESS_PREFIX = 0x05;
@@ -35,20 +35,22 @@ export class Mainnet extends INetwork {
   static WIF_PREFIX = 0xa3;
 }
 
-export class Firstcoin extends ICryptocurrency {
+export class Firstcoin extends Cryptocurrency {
 
   static NAME = 'Firstcoin';
   static SYMBOL = 'FRST';
   static INFO = new Info({
     WHITEPAPER: 'https://first-coin-club.blogspot.com/2017/11/whitepaper.html',
     WEBSITES: [
-        'https://firstcoinproject.com'
+      'https://firstcoinproject.com'
     ]
   });
   static ECC = SLIP10Secp256k1ECC;
   static COIN_TYPE = CoinTypes.Firstcoin;
   static SUPPORT_BIP38 = true;
-  static NETWORKS = new Networks({ MAINNET: Mainnet });
+  static NETWORKS = new Networks({
+    MAINNET: Mainnet
+  });
   static DEFAULT_NETWORK = Firstcoin.NETWORKS.MAINNET;
   static ENTROPIES = new Entropies([
     'BIP39'

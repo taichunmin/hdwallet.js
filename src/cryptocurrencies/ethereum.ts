@@ -15,19 +15,23 @@ import {
   XPublicKeyVersions
 } from '../const';
 import {
-  ICryptocurrency,
-  INetwork
-} from './icryptocurrency';
+  Cryptocurrency,
+  Network
+} from './cryptocurrency';
 
 
-export class Mainnet extends INetwork {
+export class Mainnet extends Network {
 
-  static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({ P2PKH: 0x0488ade4 });
-  static XPUBLIC_KEY_VERSIONS = new XPublicKeyVersions({ P2PKH: 0x0488b21e });
+  static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
+    P2PKH: 0x0488ade4
+  });
+  static XPUBLIC_KEY_VERSIONS = new XPublicKeyVersions({
+    P2PKH: 0x0488b21e
+  });
   static WIF_PREFIX = 0x80;
 }
 
-export class Ethereum extends ICryptocurrency {
+export class Ethereum extends Cryptocurrency {
 
   static NAME = 'Ethereum';
   static SYMBOL = 'ETH';
@@ -35,13 +39,15 @@ export class Ethereum extends ICryptocurrency {
     SOURCE_CODE: 'https://github.com/ethereum/go-ethereum',
     WHITEPAPER: 'https://github.com/ethereum/wiki/wiki/White-Paper',
     WEBSITES: [
-        'https://www.ethereum.org',
+      'https://www.ethereum.org',
         'https://en.wikipedia.org/wiki/Ethereum'
     ]
   });
   static ECC = SLIP10Secp256k1ECC;
   static COIN_TYPE = CoinTypes.Ethereum;
-  static NETWORKS = new Networks({ MAINNET: Mainnet });
+  static NETWORKS = new Networks({
+    MAINNET: Mainnet
+  });
   static DEFAULT_NETWORK = Ethereum.NETWORKS.MAINNET;
   static ENTROPIES = new Entropies([
     'BIP39'
@@ -57,7 +63,11 @@ export class Ethereum extends ICryptocurrency {
     'BIP44'
   ]);
   static DEFAULT_HD = Ethereum.HDS.BIP44;
-  static ADDRESSES = new Addresses({ ETHEREUM: 'Ethereum' });
+  static ADDRESSES = new Addresses({
+    ETHEREUM: 'Ethereum'
+  });
   static DEFAULT_ADDRESS = Ethereum.ADDRESSES.ETHEREUM;
-  static PARAMS = new Params({ ADDRESS_PREFIX: '0x' });
+  static PARAMS = new Params({
+    ADDRESS_PREFIX: '0x'
+  });
 }

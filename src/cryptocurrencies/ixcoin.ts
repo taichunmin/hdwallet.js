@@ -14,12 +14,12 @@ import {
   XPublicKeyVersions
 } from '../const';
 import {
-  ICryptocurrency,
-  INetwork
-} from './icryptocurrency';
+  Cryptocurrency,
+  Network
+} from './cryptocurrency';
 
 
-export class Mainnet extends INetwork {
+export class Mainnet extends Network {
 
   static PUBLIC_KEY_ADDRESS_PREFIX = 0x8a;
   static SCRIPT_ADDRESS_PREFIX = 0x05;
@@ -35,7 +35,7 @@ export class Mainnet extends INetwork {
   static WIF_PREFIX = 0x80;
 }
 
-export class IXCoin extends ICryptocurrency {
+export class IXCoin extends Cryptocurrency {
 
   static NAME = 'IX-Coin';
   static SYMBOL = 'IXC';
@@ -43,13 +43,15 @@ export class IXCoin extends ICryptocurrency {
     SOURCE_CODE: 'https://github.com/ixcore/ixcoin',
     WHITEPAPER: 'https://www.scribd.com/document/357320345/Ixc-White-Paper-v3',
     WEBSITES: [
-        'https://www.ixcoin.net'
+      'https://www.ixcoin.net'
     ]
   });
   static ECC = SLIP10Secp256k1ECC;
   static COIN_TYPE = CoinTypes.IXCoin;
   static SUPPORT_BIP38 = true;
-  static NETWORKS = new Networks({ MAINNET: Mainnet });
+  static NETWORKS = new Networks({
+    MAINNET: Mainnet
+  });
   static DEFAULT_NETWORK = IXCoin.NETWORKS.MAINNET;
   static ENTROPIES = new Entropies([
     'BIP39'

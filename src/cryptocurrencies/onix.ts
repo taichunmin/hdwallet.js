@@ -14,12 +14,12 @@ import {
   XPublicKeyVersions
 } from '../const';
 import {
-  ICryptocurrency,
-  INetwork
-} from './icryptocurrency';
+  Cryptocurrency,
+  Network
+} from './cryptocurrency';
 
 
-export class Mainnet extends INetwork {
+export class Mainnet extends Network {
 
   static PUBLIC_KEY_ADDRESS_PREFIX = 0x4b;
   static SCRIPT_ADDRESS_PREFIX = 0x05;
@@ -35,20 +35,22 @@ export class Mainnet extends INetwork {
   static WIF_PREFIX = 0xcb;
 }
 
-export class Onix extends ICryptocurrency {
+export class Onix extends Cryptocurrency {
 
   static NAME = 'Onix';
   static SYMBOL = 'ONX';
   static INFO = new Info({
     SOURCE_CODE: 'https://github.com/onix-project',
     WEBSITES: [
-        'http://www.onixcoin.com'
+      'http://www.onixcoin.com'
     ]
   });
   static ECC = SLIP10Secp256k1ECC;
   static COIN_TYPE = CoinTypes.Onix;
   static SUPPORT_BIP38 = true;
-  static NETWORKS = new Networks({ MAINNET: Mainnet });
+  static NETWORKS = new Networks({
+    MAINNET: Mainnet
+  });
   static DEFAULT_NETWORK = Onix.NETWORKS.MAINNET;
   static ENTROPIES = new Entropies([
     'BIP39'

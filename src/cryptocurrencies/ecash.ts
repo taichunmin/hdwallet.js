@@ -16,12 +16,12 @@ import {
   XPublicKeyVersions
 } from '../const';
 import {
-  ICryptocurrency,
-  INetwork
-} from './icryptocurrency';
+  Cryptocurrency,
+  Network
+} from './cryptocurrency';
 
 
-export class Mainnet extends INetwork {
+export class Mainnet extends Network {
 
   static LEGACY_PUBLIC_KEY_ADDRESS_PREFIX = 0x00;
   static LEGACY_SCRIPT_ADDRESS_PREFIX = 0x05;
@@ -51,7 +51,7 @@ export class Mainnet extends INetwork {
   static WIF_PREFIX = 0x80;
 }
 
-export class Testnet extends INetwork {
+export class Testnet extends Network {
 
   static LEGACY_PUBLIC_KEY_ADDRESS_PREFIX = 0x6f;
   static LEGACY_SCRIPT_ADDRESS_PREFIX = 0xc4;
@@ -81,14 +81,14 @@ export class Testnet extends INetwork {
   static WIF_PREFIX = 0xef;
 }
 
-export class eCash extends ICryptocurrency {
+export class eCash extends Cryptocurrency {
 
   static NAME = 'eCash';
   static SYMBOL = 'XEC';
   static INFO = new Info({
     SOURCE_CODE: 'https://github.com/bitcoin-abc',
     WEBSITES: [
-        'https://e.cash'
+      'https://e.cash'
     ]
   });
   static ECC = SLIP10Secp256k1ECC;

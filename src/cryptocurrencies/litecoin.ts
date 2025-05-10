@@ -15,12 +15,12 @@ import {
   XPublicKeyVersions
 } from '../const';
 import {
-  ICryptocurrency,
-  INetwork
-} from './icryptocurrency';
+  Cryptocurrency,
+  Network
+} from './cryptocurrency';
 
 
-export class Mainnet extends INetwork {
+export class Mainnet extends Network {
 
   static PUBLIC_KEY_ADDRESS_PREFIX = 0x30;
   static SCRIPT_ADDRESS_PREFIX = 0x32;
@@ -49,7 +49,7 @@ export class Mainnet extends INetwork {
   static WIF_PREFIX = 0xb0;
 }
 
-export class Testnet extends INetwork {
+export class Testnet extends Network {
 
   static PUBLIC_KEY_ADDRESS_PREFIX = 0x6f;
   static SCRIPT_ADDRESS_PREFIX = 0x3a;
@@ -78,14 +78,14 @@ export class Testnet extends INetwork {
   static WIF_PREFIX = 0xef;
 }
 
-export class Litecoin extends ICryptocurrency {
+export class Litecoin extends Cryptocurrency {
 
   static NAME = 'Litecoin';
   static SYMBOL = 'LTC';
   static INFO = new Info({
     SOURCE_CODE: 'https://github.com/litecoin-project/litecoin',
     WEBSITES: [
-        'https://litecoin.org'
+      'https://litecoin.org'
     ]
   });
   static ECC = SLIP10Secp256k1ECC;

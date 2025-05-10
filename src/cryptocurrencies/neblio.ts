@@ -14,12 +14,12 @@ import {
   XPublicKeyVersions
 } from '../const';
 import {
-  ICryptocurrency,
-  INetwork
-} from './icryptocurrency';
+  Cryptocurrency,
+  Network
+} from './cryptocurrency';
 
 
-export class Mainnet extends INetwork {
+export class Mainnet extends Network {
 
   static PUBLIC_KEY_ADDRESS_PREFIX = 0x35;
   static SCRIPT_ADDRESS_PREFIX = 0x70;
@@ -35,7 +35,7 @@ export class Mainnet extends INetwork {
   static WIF_PREFIX = 0xb5;
 }
 
-export class Neblio extends ICryptocurrency {
+export class Neblio extends Cryptocurrency {
 
   static NAME = 'Neblio';
   static SYMBOL = 'NEBL';
@@ -43,13 +43,15 @@ export class Neblio extends ICryptocurrency {
     SOURCE_CODE: 'https://github.com/NeblioTeam/neblio',
     WHITEPAPER: 'https://nebl.io/wp-content/uploads/2019/06/NeblioWhitepaper.pdf',
     WEBSITES: [
-        'https://nebl.io'
+      'https://nebl.io'
     ]
   });
   static ECC = SLIP10Secp256k1ECC;
   static COIN_TYPE = CoinTypes.Neblio;
   static SUPPORT_BIP38 = true;
-  static NETWORKS = new Networks({ MAINNET: Mainnet });
+  static NETWORKS = new Networks({
+    MAINNET: Mainnet
+  });
   static DEFAULT_NETWORK = Neblio.NETWORKS.MAINNET;
   static ENTROPIES = new Entropies([
     'BIP39'

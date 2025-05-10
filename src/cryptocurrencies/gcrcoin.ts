@@ -14,12 +14,12 @@ import {
   XPublicKeyVersions
 } from '../const';
 import {
-  ICryptocurrency,
-  INetwork
-} from './icryptocurrency';
+  Cryptocurrency,
+  Network
+} from './cryptocurrency';
 
 
-export class Mainnet extends INetwork {
+export class Mainnet extends Network {
 
   static PUBLIC_KEY_ADDRESS_PREFIX = 0x26;
   static SCRIPT_ADDRESS_PREFIX = 0x61;
@@ -35,15 +35,21 @@ export class Mainnet extends INetwork {
   static WIF_PREFIX = 0x9a;
 }
 
-export class GCRCoin extends ICryptocurrency {
+export class GCRCoin extends Cryptocurrency {
 
   static NAME = 'GCR-Coin';
   static SYMBOL = 'GCR';
-  static INFO = new Info({ WEBSITES: [        'https://globalcoinresearch.com'    ] });
+  static INFO = new Info({
+    WEBSITES: [
+      'https://globalcoinresearch.com'
+    ]
+  });
   static ECC = SLIP10Secp256k1ECC;
   static COIN_TYPE = CoinTypes.GCRCoin;
   static SUPPORT_BIP38 = true;
-  static NETWORKS = new Networks({ MAINNET: Mainnet });
+  static NETWORKS = new Networks({
+    MAINNET: Mainnet
+  });
   static DEFAULT_NETWORK = GCRCoin.NETWORKS.MAINNET;
   static ENTROPIES = new Entropies([
     'BIP39'

@@ -15,12 +15,12 @@ import {
   XPublicKeyVersions
 } from '../const';
 import {
-  ICryptocurrency,
-  INetwork
-} from './icryptocurrency';
+  Cryptocurrency,
+  Network
+} from './cryptocurrency';
 
 
-export class Mainnet extends INetwork {
+export class Mainnet extends Network {
 
   static PUBLIC_KEY_ADDRESS_PREFIX = 0x3c;
   static SCRIPT_ADDRESS_PREFIX = 0x7a;
@@ -49,7 +49,7 @@ export class Mainnet extends INetwork {
   static WIF_PREFIX = 0x80;
 }
 
-export class Avian extends ICryptocurrency {
+export class Avian extends Cryptocurrency {
 
   static NAME = 'Avian';
   static SYMBOL = 'AVN';
@@ -57,13 +57,15 @@ export class Avian extends ICryptocurrency {
     SOURCE_CODE: 'https://github.com/AvianNetwork/Avian',
     WHITEPAPER: 'https://www.avn.network/_files/ugd/c493c9_83224e1867d24a4185421548cfd6a35a.pdf',
     WEBSITES: [
-        'https://avn.network'
+      'https://avn.network'
     ]
   });
   static ECC = SLIP10Secp256k1ECC;
   static COIN_TYPE = CoinTypes.Avian;
   static SUPPORT_BIP38 = true;
-  static NETWORKS = new Networks({ MAINNET: Mainnet });
+  static NETWORKS = new Networks({
+    MAINNET: Mainnet
+  });
   static DEFAULT_NETWORK = Avian.NETWORKS.MAINNET;
   static ENTROPIES = new Entropies([
     'BIP39'

@@ -14,12 +14,12 @@ import {
   XPublicKeyVersions
 } from '../const';
 import {
-  ICryptocurrency,
-  INetwork
-} from './icryptocurrency';
+  Cryptocurrency,
+  Network
+} from './cryptocurrency';
 
 
-export class Mainnet extends INetwork {
+export class Mainnet extends Network {
 
   static PUBLIC_KEY_ADDRESS_PREFIX = 0x32;
   static SCRIPT_ADDRESS_PREFIX = 0x09;
@@ -35,20 +35,22 @@ export class Mainnet extends INetwork {
   static WIF_PREFIX = 0xb2;
 }
 
-export class Myriadcoin extends ICryptocurrency {
+export class Myriadcoin extends Cryptocurrency {
 
   static NAME = 'Myriadcoin';
   static SYMBOL = 'XMY';
   static INFO = new Info({
     SOURCE_CODE: 'https://github.com/myriadteam/myriadcoin',
     WEBSITES: [
-        'http://myriadcoin.org'
+      'http://myriadcoin.org'
     ]
   });
   static ECC = SLIP10Secp256k1ECC;
   static COIN_TYPE = CoinTypes.Myriadcoin;
   static SUPPORT_BIP38 = true;
-  static NETWORKS = new Networks({ MAINNET: Mainnet });
+  static NETWORKS = new Networks({
+    MAINNET: Mainnet
+  });
   static DEFAULT_NETWORK = Myriadcoin.NETWORKS.MAINNET;
   static ENTROPIES = new Entropies([
     'BIP39'

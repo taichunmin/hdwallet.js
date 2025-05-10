@@ -16,18 +16,22 @@ import {
   XPublicKeyVersions
 } from '../const';
 import {
-  ICryptocurrency,
-  INetwork
-} from './icryptocurrency';
+  Cryptocurrency,
+  Network
+} from './cryptocurrency';
 
 
-export class Mainnet extends INetwork {
+export class Mainnet extends Network {
 
-  static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({ P2PKH: 0x0488ade4 });
-  static XPUBLIC_KEY_VERSIONS = new XPublicKeyVersions({ P2PKH: 0x0488b21e });
+  static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
+    P2PKH: 0x0488ade4
+  });
+  static XPUBLIC_KEY_VERSIONS = new XPublicKeyVersions({
+    P2PKH: 0x0488b21e
+  });
 }
 
-export class PiNetwork extends ICryptocurrency {
+export class PiNetwork extends Cryptocurrency {
 
   static NAME = 'Pi-Network';
   static SYMBOL = 'PI';
@@ -35,12 +39,14 @@ export class PiNetwork extends ICryptocurrency {
     SOURCE_CODE: 'https://github.com/pi-apps',
     WHITEPAPER: 'https://minepi.com/white-paper',
     WEBSITES: [
-        'https://minepi.com'
+      'https://minepi.com'
     ]
   });
   static ECC = SLIP10Ed25519ECC;
   static COIN_TYPE = CoinTypes.PiNetwork;
-  static NETWORKS = new Networks({ MAINNET: Mainnet });
+  static NETWORKS = new Networks({
+    MAINNET: Mainnet
+  });
   static DEFAULT_NETWORK = PiNetwork.NETWORKS.MAINNET;
   static ENTROPIES = new Entropies([
     'BIP39'
@@ -56,7 +62,9 @@ export class PiNetwork extends ICryptocurrency {
     'BIP44'
   ]);
   static DEFAULT_HD = PiNetwork.HDS.BIP44;
-  static ADDRESSES = new Addresses({ STELLAR: 'Stellar' });
+  static ADDRESSES = new Addresses({
+    STELLAR: 'Stellar'
+  });
   static DEFAULT_ADDRESS = PiNetwork.ADDRESSES.STELLAR;
   static ADDRESS_TYPES = new AddressTypes({
     PRIVATE_KEY: 'private_key',
@@ -66,7 +74,7 @@ export class PiNetwork extends ICryptocurrency {
   static PARAMS = new Params({
     CHECKSUM_LENGTH: 0x02,
     ADDRESS_TYPES: {
-        PRIVATE_KEY: 18 << 3,
+      PRIVATE_KEY: 18 << 3,
         PUBLIC_KEY: 6 << 3
     }
   });

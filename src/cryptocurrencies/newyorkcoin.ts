@@ -14,12 +14,12 @@ import {
   XPublicKeyVersions
 } from '../const';
 import {
-  ICryptocurrency,
-  INetwork
-} from './icryptocurrency';
+  Cryptocurrency,
+  Network
+} from './cryptocurrency';
 
 
-export class Mainnet extends INetwork {
+export class Mainnet extends Network {
 
   static PUBLIC_KEY_ADDRESS_PREFIX = 0x3c;
   static SCRIPT_ADDRESS_PREFIX = 0x16;
@@ -35,21 +35,23 @@ export class Mainnet extends INetwork {
   static WIF_PREFIX = 0xbc;
 }
 
-export class NewYorkCoin extends ICryptocurrency {
+export class NewYorkCoin extends Cryptocurrency {
 
   static NAME = 'New-York-Coin';
   static SYMBOL = 'NYC';
   static INFO = new Info({
     SOURCE_CODE: 'https://github.com/NewYorkCoinNYC/newyorkcoin',
     WEBSITES: [
-        'https://nycoin.net',
+      'https://nycoin.net',
         'https://newyorkcoin.net'
     ]
   });
   static ECC = SLIP10Secp256k1ECC;
   static COIN_TYPE = CoinTypes.NewYorkCoin;
   static SUPPORT_BIP38 = true;
-  static NETWORKS = new Networks({ MAINNET: Mainnet });
+  static NETWORKS = new Networks({
+    MAINNET: Mainnet
+  });
   static DEFAULT_NETWORK = NewYorkCoin.NETWORKS.MAINNET;
   static ENTROPIES = new Entropies([
     'BIP39'

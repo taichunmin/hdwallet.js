@@ -14,12 +14,12 @@ import {
   XPublicKeyVersions
 } from '../const';
 import {
-  ICryptocurrency,
-  INetwork
-} from './icryptocurrency';
+  Cryptocurrency,
+  Network
+} from './cryptocurrency';
 
 
-export class Mainnet extends INetwork {
+export class Mainnet extends Network {
 
   static PUBLIC_KEY_ADDRESS_PREFIX = 0x26;
   static SCRIPT_ADDRESS_PREFIX = 0x0a;
@@ -35,7 +35,7 @@ export class Mainnet extends INetwork {
   static WIF_PREFIX = 0xc6;
 }
 
-export class GoByte extends ICryptocurrency {
+export class GoByte extends Cryptocurrency {
 
   static NAME = 'Go-Byte';
   static SYMBOL = 'GBX';
@@ -43,13 +43,15 @@ export class GoByte extends ICryptocurrency {
     SOURCE_CODE: 'https://github.com/gobytecoin/gobyte',
     WHITEPAPER: 'https://gobyte-coin.readthedocs.io/en/latest/index.html',
     WEBSITES: [
-        'https://gobyte.network'
+      'https://gobyte.network'
     ]
   });
   static ECC = SLIP10Secp256k1ECC;
   static COIN_TYPE = CoinTypes.GoByte;
   static SUPPORT_BIP38 = true;
-  static NETWORKS = new Networks({ MAINNET: Mainnet });
+  static NETWORKS = new Networks({
+    MAINNET: Mainnet
+  });
   static DEFAULT_NETWORK = GoByte.NETWORKS.MAINNET;
   static ENTROPIES = new Entropies([
     'BIP39'

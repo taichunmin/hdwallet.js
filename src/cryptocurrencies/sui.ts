@@ -15,18 +15,22 @@ import {
   XPublicKeyVersions
 } from '../const';
 import {
-  ICryptocurrency,
-  INetwork
-} from './icryptocurrency';
+  Cryptocurrency,
+  Network
+} from './cryptocurrency';
 
 
-export class Mainnet extends INetwork {
+export class Mainnet extends Network {
 
-  static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({ P2PKH: 0x0488ade4 });
-  static XPUBLIC_KEY_VERSIONS = new XPublicKeyVersions({ P2PKH: 0x0488b21e });
+  static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
+    P2PKH: 0x0488ade4
+  });
+  static XPUBLIC_KEY_VERSIONS = new XPublicKeyVersions({
+    P2PKH: 0x0488b21e
+  });
 }
 
-export class Sui extends ICryptocurrency {
+export class Sui extends Cryptocurrency {
 
   static NAME = 'Sui';
   static SYMBOL = 'SUI';
@@ -34,12 +38,14 @@ export class Sui extends ICryptocurrency {
     SOURCE_CODE: 'https://github.com/MystenLabs/sui',
     WHITEPAPER: 'https://docs.sui.io',
     WEBSITES: [
-        'https://sui.io'
+      'https://sui.io'
     ]
   });
   static ECC = SLIP10Ed25519ECC;
   static COIN_TYPE = CoinTypes.Sui;
-  static NETWORKS = new Networks({ MAINNET: Mainnet });
+  static NETWORKS = new Networks({
+    MAINNET: Mainnet
+  });
   static DEFAULT_NETWORK = Sui.NETWORKS.MAINNET;
   static ENTROPIES = new Entropies([
     'BIP39'
@@ -55,7 +61,9 @@ export class Sui extends ICryptocurrency {
     'BIP44'
   ]);
   static DEFAULT_HD = Sui.HDS.BIP44;
-  static ADDRESSES = new Addresses({ SUI: 'Sui' });
+  static ADDRESSES = new Addresses({
+    SUI: 'Sui'
+  });
   static DEFAULT_ADDRESS = Sui.ADDRESSES.SUI;
   static PARAMS = new Params({
     KEY_TYPE: 0x00,

@@ -15,19 +15,23 @@ import {
   XPublicKeyVersions
 } from '../const';
 import {
-  ICryptocurrency,
-  INetwork
-} from './icryptocurrency';
+  Cryptocurrency,
+  Network
+} from './cryptocurrency';
 
 
-export class Mainnet extends INetwork {
+export class Mainnet extends Network {
 
-  static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({ P2PKH: 0x0488ade4 });
-  static XPUBLIC_KEY_VERSIONS = new XPublicKeyVersions({ P2PKH: 0x0488b21e });
+  static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
+    P2PKH: 0x0488ade4
+  });
+  static XPUBLIC_KEY_VERSIONS = new XPublicKeyVersions({
+    P2PKH: 0x0488b21e
+  });
   static WIF_PREFIX = 0x80;
 }
 
-export class XinFin extends ICryptocurrency {
+export class XinFin extends Cryptocurrency {
 
   static NAME = 'XinFin';
   static SYMBOL = 'XDC';
@@ -35,13 +39,15 @@ export class XinFin extends ICryptocurrency {
     SOURCE_CODE: 'https://github.com/XinFinOrg/XDPoSChain',
     WHITEPAPER: 'https://xinfin.org/docs/whitepaper-tech.pdf',
     WEBSITES: [
-        'https://www.xdc.org',
+      'https://www.xdc.org',
         'https://www.xinfin.org'
     ]
   });
   static ECC = SLIP10Secp256k1ECC;
   static COIN_TYPE = CoinTypes.XinFin;
-  static NETWORKS = new Networks({ MAINNET: Mainnet });
+  static NETWORKS = new Networks({
+    MAINNET: Mainnet
+  });
   static DEFAULT_NETWORK = XinFin.NETWORKS.MAINNET;
   static ENTROPIES = new Entropies([
     'BIP39'
@@ -57,7 +63,11 @@ export class XinFin extends ICryptocurrency {
     'BIP44'
   ]);
   static DEFAULT_HD = XinFin.HDS.BIP44;
-  static ADDRESSES = new Addresses({ XINFIN: 'XinFin' });
+  static ADDRESSES = new Addresses({
+    XINFIN: 'XinFin'
+  });
   static DEFAULT_ADDRESS = XinFin.ADDRESSES.XINFIN;
-  static PARAMS = new Params({ ADDRESS_PREFIX: 'xdc' });
+  static PARAMS = new Params({
+    ADDRESS_PREFIX: 'xdc'
+  });
 }

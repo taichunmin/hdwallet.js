@@ -14,12 +14,12 @@ import {
   XPublicKeyVersions
 } from '../const';
 import {
-  ICryptocurrency,
-  INetwork
-} from './icryptocurrency';
+  Cryptocurrency,
+  Network
+} from './cryptocurrency';
 
 
-export class Mainnet extends INetwork {
+export class Mainnet extends Network {
 
   static PUBLIC_KEY_ADDRESS_PREFIX = 0x44;
   static SCRIPT_ADDRESS_PREFIX = 0x7d;
@@ -35,7 +35,7 @@ export class Mainnet extends INetwork {
   static WIF_PREFIX = 0xbf;
 }
 
-export class UltimateSecureCash extends ICryptocurrency {
+export class UltimateSecureCash extends Cryptocurrency {
 
   static NAME = 'Ultimate-Secure-Cash';
   static SYMBOL = 'USC';
@@ -43,13 +43,15 @@ export class UltimateSecureCash extends ICryptocurrency {
     SOURCE_CODE: 'https://github.com/SilentTrader/UltimateSecureCash',
     WHITEPAPER: 'https://ultimatesecurecash.info/#spec',
     WEBSITES: [
-        'http://ultimatesecurecash.info'
+      'http://ultimatesecurecash.info'
     ]
   });
   static ECC = SLIP10Secp256k1ECC;
   static COIN_TYPE = CoinTypes.UltimateSecureCash;
   static SUPPORT_BIP38 = true;
-  static NETWORKS = new Networks({ MAINNET: Mainnet });
+  static NETWORKS = new Networks({
+    MAINNET: Mainnet
+  });
   static DEFAULT_NETWORK = UltimateSecureCash.NETWORKS.MAINNET;
   static ENTROPIES = new Entropies([
     'BIP39'

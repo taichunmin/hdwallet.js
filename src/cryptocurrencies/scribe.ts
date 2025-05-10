@@ -14,12 +14,12 @@ import {
   XPublicKeyVersions
 } from '../const';
 import {
-  ICryptocurrency,
-  INetwork
-} from './icryptocurrency';
+  Cryptocurrency,
+  Network
+} from './cryptocurrency';
 
 
-export class Mainnet extends INetwork {
+export class Mainnet extends Network {
 
   static PUBLIC_KEY_ADDRESS_PREFIX = 0x3c;
   static SCRIPT_ADDRESS_PREFIX = 0x7d;
@@ -35,20 +35,22 @@ export class Mainnet extends INetwork {
   static WIF_PREFIX = 0x6e;
 }
 
-export class Scribe extends ICryptocurrency {
+export class Scribe extends Cryptocurrency {
 
   static NAME = 'Scribe';
   static SYMBOL = 'SCRIBE';
   static INFO = new Info({
     SOURCE_CODE: 'https://github.com/scribenetwork/scribe',
     WEBSITES: [
-        'http://scribe.network'
+      'http://scribe.network'
     ]
   });
   static ECC = SLIP10Secp256k1ECC;
   static COIN_TYPE = CoinTypes.Scribe;
   static SUPPORT_BIP38 = true;
-  static NETWORKS = new Networks({ MAINNET: Mainnet });
+  static NETWORKS = new Networks({
+    MAINNET: Mainnet
+  });
   static DEFAULT_NETWORK = Scribe.NETWORKS.MAINNET;
   static ENTROPIES = new Entropies([
     'BIP39'

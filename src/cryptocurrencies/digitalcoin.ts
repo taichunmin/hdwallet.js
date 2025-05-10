@@ -14,12 +14,12 @@ import {
   XPublicKeyVersions
 } from '../const';
 import {
-  ICryptocurrency,
-  INetwork
-} from './icryptocurrency';
+  Cryptocurrency,
+  Network
+} from './cryptocurrency';
 
 
-export class Mainnet extends INetwork {
+export class Mainnet extends Network {
 
   static PUBLIC_KEY_ADDRESS_PREFIX = 0x1e;
   static SCRIPT_ADDRESS_PREFIX = 0x05;
@@ -35,7 +35,7 @@ export class Mainnet extends INetwork {
   static WIF_PREFIX = 0x9e;
 }
 
-export class Digitalcoin extends ICryptocurrency {
+export class Digitalcoin extends Cryptocurrency {
 
   static NAME = 'Digitalcoin';
   static SYMBOL = 'DGC';
@@ -43,14 +43,16 @@ export class Digitalcoin extends ICryptocurrency {
     SOURCE_CODE: 'https://github.com/lomtax/digitalcoin',
     WHITEPAPER: 'https://github.com/lomtax/digitalcoin/blob/master/README.md',
     WEBSITES: [
-        'http://digitalcoin.co',
+      'http://digitalcoin.co',
         'https://digitalcoin.tech'
     ]
   });
   static ECC = SLIP10Secp256k1ECC;
   static COIN_TYPE = CoinTypes.Digitalcoin;
   static SUPPORT_BIP38 = true;
-  static NETWORKS = new Networks({ MAINNET: Mainnet });
+  static NETWORKS = new Networks({
+    MAINNET: Mainnet
+  });
   static DEFAULT_NETWORK = Digitalcoin.NETWORKS.MAINNET;
   static ENTROPIES = new Entropies([
     'BIP39'

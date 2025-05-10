@@ -14,12 +14,12 @@ import {
   XPublicKeyVersions
 } from '../const';
 import {
-  ICryptocurrency,
-  INetwork
-} from './icryptocurrency';
+  Cryptocurrency,
+  Network
+} from './cryptocurrency';
 
 
-export class Mainnet extends INetwork {
+export class Mainnet extends Network {
 
   static PUBLIC_KEY_ADDRESS_PREFIX = 0x3d;
   static SCRIPT_ADDRESS_PREFIX = 0x06;
@@ -35,7 +35,7 @@ export class Mainnet extends INetwork {
   static WIF_PREFIX = 0x2e;
 }
 
-export class Rapids extends ICryptocurrency {
+export class Rapids extends Cryptocurrency {
 
   static NAME = 'Rapids';
   static SYMBOL = 'RPD';
@@ -43,13 +43,15 @@ export class Rapids extends ICryptocurrency {
     SOURCE_CODE: 'https://github.com/RapidsOfficial/Rapids',
     WHITEPAPER: 'https://www.rapidsnetwork.io/whitepaper',
     WEBSITES: [
-        'https://www.rapidsnetwork.io'
+      'https://www.rapidsnetwork.io'
     ]
   });
   static ECC = SLIP10Secp256k1ECC;
   static COIN_TYPE = CoinTypes.Rapids;
   static SUPPORT_BIP38 = true;
-  static NETWORKS = new Networks({ MAINNET: Mainnet });
+  static NETWORKS = new Networks({
+    MAINNET: Mainnet
+  });
   static DEFAULT_NETWORK = Rapids.NETWORKS.MAINNET;
   static ENTROPIES = new Entropies([
     'BIP39'

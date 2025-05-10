@@ -14,12 +14,12 @@ import {
   XPublicKeyVersions
 } from '../const';
 import {
-  ICryptocurrency,
-  INetwork
-} from './icryptocurrency';
+  Cryptocurrency,
+  Network
+} from './cryptocurrency';
 
 
-export class Mainnet extends INetwork {
+export class Mainnet extends Network {
 
   static PUBLIC_KEY_ADDRESS_PREFIX = 0x19;
   static SCRIPT_ADDRESS_PREFIX = 0x69;
@@ -35,7 +35,7 @@ export class Mainnet extends INetwork {
   static WIF_PREFIX = 0x8b;
 }
 
-export class Ritocoin extends ICryptocurrency {
+export class Ritocoin extends Cryptocurrency {
 
   static NAME = 'Ritocoin';
   static SYMBOL = 'RITO';
@@ -43,13 +43,15 @@ export class Ritocoin extends ICryptocurrency {
     SOURCE_CODE: 'https://github.com/RitoProject/Ritocoin',
     WHITEPAPER: 'https://ritocoin.org/docs/whitepaper_gfx.pdf',
     WEBSITES: [
-        'https://ritocoin.org'
+      'https://ritocoin.org'
     ]
   });
   static ECC = SLIP10Secp256k1ECC;
   static COIN_TYPE = CoinTypes.Ritocoin;
   static SUPPORT_BIP38 = true;
-  static NETWORKS = new Networks({ MAINNET: Mainnet });
+  static NETWORKS = new Networks({
+    MAINNET: Mainnet
+  });
   static DEFAULT_NETWORK = Ritocoin.NETWORKS.MAINNET;
   static ENTROPIES = new Entropies([
     'BIP39'

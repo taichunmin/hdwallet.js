@@ -14,12 +14,12 @@ import {
   XPublicKeyVersions
 } from '../const';
 import {
-  ICryptocurrency,
-  INetwork
-} from './icryptocurrency';
+  Cryptocurrency,
+  Network
+} from './cryptocurrency';
 
 
-export class Mainnet extends INetwork {
+export class Mainnet extends Network {
 
   static PUBLIC_KEY_ADDRESS_PREFIX = 0x2b;
   static SCRIPT_ADDRESS_PREFIX = 0x05;
@@ -35,15 +35,21 @@ export class Mainnet extends INetwork {
   static WIF_PREFIX = 0xab;
 }
 
-export class Jumbucks extends ICryptocurrency {
+export class Jumbucks extends Cryptocurrency {
 
   static NAME = 'Jumbucks';
   static SYMBOL = 'JBS';
-  static INFO = new Info({ WEBSITES: [        'http://getjumbucks.com'    ] });
+  static INFO = new Info({
+    WEBSITES: [
+      'http://getjumbucks.com'
+    ]
+  });
   static ECC = SLIP10Secp256k1ECC;
   static COIN_TYPE = CoinTypes.Jumbucks;
   static SUPPORT_BIP38 = true;
-  static NETWORKS = new Networks({ MAINNET: Mainnet });
+  static NETWORKS = new Networks({
+    MAINNET: Mainnet
+  });
   static DEFAULT_NETWORK = Jumbucks.NETWORKS.MAINNET;
   static ENTROPIES = new Entropies([
     'BIP39'

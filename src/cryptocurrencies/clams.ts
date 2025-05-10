@@ -14,12 +14,12 @@ import {
   XPublicKeyVersions
 } from '../const';
 import {
-  ICryptocurrency,
-  INetwork
-} from './icryptocurrency';
+  Cryptocurrency,
+  Network
+} from './cryptocurrency';
 
 
-export class Mainnet extends INetwork {
+export class Mainnet extends Network {
 
   static PUBLIC_KEY_ADDRESS_PREFIX = 0x89;
   static SCRIPT_ADDRESS_PREFIX = 0x0d;
@@ -35,20 +35,22 @@ export class Mainnet extends INetwork {
   static WIF_PREFIX = 0x85;
 }
 
-export class Clams extends ICryptocurrency {
+export class Clams extends Cryptocurrency {
 
   static NAME = 'Clams';
   static SYMBOL = 'CLAM';
   static INFO = new Info({
     SOURCE_CODE: 'https://github.com/nochowderforyou/clams',
     WEBSITES: [
-        'http://clamcoin.org'
+      'http://clamcoin.org'
     ]
   });
   static ECC = SLIP10Secp256k1ECC;
   static COIN_TYPE = CoinTypes.Clams;
   static SUPPORT_BIP38 = true;
-  static NETWORKS = new Networks({ MAINNET: Mainnet });
+  static NETWORKS = new Networks({
+    MAINNET: Mainnet
+  });
   static DEFAULT_NETWORK = Clams.NETWORKS.MAINNET;
   static ENTROPIES = new Entropies([
     'BIP39'

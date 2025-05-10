@@ -14,12 +14,12 @@ import {
   XPublicKeyVersions
 } from '../const';
 import {
-  ICryptocurrency,
-  INetwork
-} from './icryptocurrency';
+  Cryptocurrency,
+  Network
+} from './cryptocurrency';
 
 
-export class Mainnet extends INetwork {
+export class Mainnet extends Network {
 
   static PUBLIC_KEY_ADDRESS_PREFIX = 0x21;
   static SCRIPT_ADDRESS_PREFIX = 0x35;
@@ -35,22 +35,24 @@ export class Mainnet extends INetwork {
   static WIF_PREFIX = 0x6a;
 }
 
-export class Energi extends ICryptocurrency {
+export class Energi extends Cryptocurrency {
 
   static NAME = 'Energi';
   static SYMBOL = 'NRG';
   static INFO = new Info({
-    SOURCE_CODE: 'https://github.com/energicryptocurrency/go-energi',
+    SOURCE_CODE: 'https://github.com/energcryptocurrency/go-energi',
     WHITEPAPER: 'https://www.energi.world/whitepaper',
     WEBSITES: [
-        'https://energi.world',
+      'https://energi.world',
         'https://www.energiswap.exchange'
     ]
   });
   static ECC = SLIP10Secp256k1ECC;
   static COIN_TYPE = CoinTypes.Energi;
   static SUPPORT_BIP38 = true;
-  static NETWORKS = new Networks({ MAINNET: Mainnet });
+  static NETWORKS = new Networks({
+    MAINNET: Mainnet
+  });
   static DEFAULT_NETWORK = Energi.NETWORKS.MAINNET;
   static ENTROPIES = new Entropies([
     'BIP39'

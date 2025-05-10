@@ -14,12 +14,12 @@ import {
   XPublicKeyVersions
 } from '../const';
 import {
-  ICryptocurrency,
-  INetwork
-} from './icryptocurrency';
+  Cryptocurrency,
+  Network
+} from './cryptocurrency';
 
 
-export class Mainnet extends INetwork {
+export class Mainnet extends Network {
 
   static PUBLIC_KEY_ADDRESS_PREFIX = 0x17;
   static SCRIPT_ADDRESS_PREFIX = 0x00001cbd;
@@ -35,20 +35,22 @@ export class Mainnet extends INetwork {
   static WIF_PREFIX = 0x97;
 }
 
-export class Artax extends ICryptocurrency {
+export class Artax extends Cryptocurrency {
 
   static NAME = 'Artax';
   static SYMBOL = 'XAX';
   static INFO = new Info({
     SOURCE_CODE: 'https://github.com/artax-committee/Artax',
     WEBSITES: [
-        'http://www.artaxcoin.org'
+      'http://www.artaxcoin.org'
     ]
   });
   static ECC = SLIP10Secp256k1ECC;
   static COIN_TYPE = CoinTypes.Artax;
   static SUPPORT_BIP38 = true;
-  static NETWORKS = new Networks({ MAINNET: Mainnet });
+  static NETWORKS = new Networks({
+    MAINNET: Mainnet
+  });
   static DEFAULT_NETWORK = Artax.NETWORKS.MAINNET;
   static ENTROPIES = new Entropies([
     'BIP39'

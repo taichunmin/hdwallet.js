@@ -14,12 +14,12 @@ import {
   XPublicKeyVersions
 } from '../const';
 import {
-  ICryptocurrency,
-  INetwork
-} from './icryptocurrency';
+  Cryptocurrency,
+  Network
+} from './cryptocurrency';
 
 
-export class Mainnet extends INetwork {
+export class Mainnet extends Network {
 
   static PUBLIC_KEY_ADDRESS_PREFIX = 0x03;
   static SCRIPT_ADDRESS_PREFIX = 0x1c;
@@ -35,21 +35,23 @@ export class Mainnet extends INetwork {
   static WIF_PREFIX = 0x83;
 }
 
-export class Pinkcoin extends ICryptocurrency {
+export class Pinkcoin extends Cryptocurrency {
 
   static NAME = 'Pinkcoin';
   static SYMBOL = 'PINK';
   static INFO = new Info({
     SOURCE_CODE: 'https://github.com/Pink2Dev/Pink2',
     WEBSITES: [
-        'http://getstarted.with.pink',
+      'http://getstarted.with.pink',
         'https://beta.donate.with.pink'
     ]
   });
   static ECC = SLIP10Secp256k1ECC;
   static COIN_TYPE = CoinTypes.Pinkcoin;
   static SUPPORT_BIP38 = true;
-  static NETWORKS = new Networks({ MAINNET: Mainnet });
+  static NETWORKS = new Networks({
+    MAINNET: Mainnet
+  });
   static DEFAULT_NETWORK = Pinkcoin.NETWORKS.MAINNET;
   static ENTROPIES = new Entropies([
     'BIP39'

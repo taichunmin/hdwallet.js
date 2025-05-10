@@ -14,12 +14,12 @@ import {
   XPublicKeyVersions
 } from '../const';
 import {
-  ICryptocurrency,
-  INetwork
-} from './icryptocurrency';
+  Cryptocurrency,
+  Network
+} from './cryptocurrency';
 
 
-export class Mainnet extends INetwork {
+export class Mainnet extends Network {
 
   static PUBLIC_KEY_ADDRESS_PREFIX = 0x3f;
   static SCRIPT_ADDRESS_PREFIX = 0x7d;
@@ -35,7 +35,7 @@ export class Mainnet extends INetwork {
   static WIF_PREFIX = 0x46;
 }
 
-export class Testnet extends INetwork {
+export class Testnet extends Network {
 
   static PUBLIC_KEY_ADDRESS_PREFIX = 0x6f;
   static SCRIPT_ADDRESS_PREFIX = 0xc4;
@@ -51,14 +51,14 @@ export class Testnet extends INetwork {
   static WIF_PREFIX = 0x57;
 }
 
-export class Slimcoin extends ICryptocurrency {
+export class Slimcoin extends Cryptocurrency {
 
   static NAME = 'Slimcoin';
   static SYMBOL = 'SLM';
   static INFO = new Info({
     SOURCE_CODE: 'https://github.com/slimcoin-project/Slimcoin',
     WEBSITES: [
-        'http://slimco.in',
+      'http://slimco.in',
         'https://slimcoin-project.github.io'
     ]
   });

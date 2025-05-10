@@ -14,12 +14,12 @@ import {
   XPublicKeyVersions
 } from '../const';
 import {
-  ICryptocurrency,
-  INetwork
-} from './icryptocurrency';
+  Cryptocurrency,
+  Network
+} from './cryptocurrency';
 
 
-export class Mainnet extends INetwork {
+export class Mainnet extends Network {
 
   static PUBLIC_KEY_ADDRESS_PREFIX = 0x00000ab3;
   static SCRIPT_ADDRESS_PREFIX = 0x00000ab8;
@@ -35,7 +35,7 @@ export class Mainnet extends INetwork {
   static WIF_PREFIX = 0x80;
 }
 
-export class LitecoinZ extends ICryptocurrency {
+export class LitecoinZ extends Cryptocurrency {
 
   static NAME = 'LitecoinZ';
   static SYMBOL = 'LTZ';
@@ -43,13 +43,15 @@ export class LitecoinZ extends ICryptocurrency {
     SOURCE_CODE: 'https://github.com/litecoinz-project/litecoinz',
     WHITEPAPER: 'https://litecoinz.org/downloads/LITECOINZ-WHITE-PAPER.pdf',
     WEBSITES: [
-        'https://litecoinz.org'
+      'https://litecoinz.org'
     ]
   });
   static ECC = SLIP10Secp256k1ECC;
   static COIN_TYPE = CoinTypes.LitecoinZ;
   static SUPPORT_BIP38 = true;
-  static NETWORKS = new Networks({ MAINNET: Mainnet });
+  static NETWORKS = new Networks({
+    MAINNET: Mainnet
+  });
   static DEFAULT_NETWORK = LitecoinZ.NETWORKS.MAINNET;
   static ENTROPIES = new Entropies([
     'BIP39'

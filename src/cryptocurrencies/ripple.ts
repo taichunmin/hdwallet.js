@@ -15,12 +15,12 @@ import {
   XPublicKeyVersions
 } from '../const';
 import {
-  ICryptocurrency,
-  INetwork
-} from './icryptocurrency';
+  Cryptocurrency,
+  Network
+} from './cryptocurrency';
 
 
-export class Mainnet extends INetwork {
+export class Mainnet extends Network {
 
   static PUBLIC_KEY_ADDRESS_PREFIX = 0x00;
   static SCRIPT_ADDRESS_PREFIX = 0x00;
@@ -36,7 +36,7 @@ export class Mainnet extends INetwork {
   static WIF_PREFIX = 0x80;
 }
 
-export class Ripple extends ICryptocurrency {
+export class Ripple extends Cryptocurrency {
 
   static NAME = 'Ripple';
   static SYMBOL = 'XRP';
@@ -44,13 +44,15 @@ export class Ripple extends ICryptocurrency {
     SOURCE_CODE: 'https://github.com/ripple/rippled',
     WHITEPAPER: 'https://ripple.com/files/ripple_consensus_whitepaper.pdf',
     WEBSITES: [
-        'https://xrpl.org'
+      'https://xrpl.org'
     ]
   });
   static ECC = SLIP10Secp256k1ECC;
   static COIN_TYPE = CoinTypes.Ripple;
   static SUPPORT_BIP38 = true;
-  static NETWORKS = new Networks({ MAINNET: Mainnet });
+  static NETWORKS = new Networks({
+    MAINNET: Mainnet
+  });
   static DEFAULT_NETWORK = Ripple.NETWORKS.MAINNET;
   static ENTROPIES = new Entropies([
     'BIP39'
@@ -66,7 +68,11 @@ export class Ripple extends ICryptocurrency {
     'BIP44'
   ]);
   static DEFAULT_HD = Ripple.HDS.BIP44;
-  static ADDRESSES = new Addresses({ RIPPLE: 'Ripple' });
+  static ADDRESSES = new Addresses({
+    RIPPLE: 'Ripple'
+  });
   static DEFAULT_ADDRESS = Ripple.ADDRESSES.RIPPLE;
-  static PARAMS = new Params({ ALPHABET: 'rpshnaf39wBUDNEGHJKLM4PQRST7VWXYZ2bcdeCg65jkm8oFqi1tuvAxyz' });
+  static PARAMS = new Params({
+    ALPHABET: 'rpshnaf39wBUDNEGHJKLM4PQRST7VWXYZ2bcdeCg65jkm8oFqi1tuvAxyz'
+  });
 }

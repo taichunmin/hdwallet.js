@@ -14,12 +14,12 @@ import {
   XPublicKeyVersions
 } from '../const';
 import {
-  ICryptocurrency,
-  INetwork
-} from './icryptocurrency';
+  Cryptocurrency,
+  Network
+} from './cryptocurrency';
 
 
-export class Mainnet extends INetwork {
+export class Mainnet extends Network {
 
   static PUBLIC_KEY_ADDRESS_PREFIX = 0x3f;
   static SCRIPT_ADDRESS_PREFIX = 0xc4;
@@ -35,21 +35,23 @@ export class Mainnet extends INetwork {
   static WIF_PREFIX = 0xbf;
 }
 
-export class Saluscoin extends ICryptocurrency {
+export class Saluscoin extends Cryptocurrency {
 
   static NAME = 'Saluscoin';
   static SYMBOL = 'SLS';
   static INFO = new Info({
     SOURCE_CODE: 'https://github.com/saluscoin/SaluS',
     WEBSITES: [
-        'http://saluscoin.info',
+      'http://saluscoin.info',
         'https://divitia.com'
     ]
   });
   static ECC = SLIP10Secp256k1ECC;
   static COIN_TYPE = CoinTypes.Saluscoin;
   static SUPPORT_BIP38 = true;
-  static NETWORKS = new Networks({ MAINNET: Mainnet });
+  static NETWORKS = new Networks({
+    MAINNET: Mainnet
+  });
   static DEFAULT_NETWORK = Saluscoin.NETWORKS.MAINNET;
   static ENTROPIES = new Entropies([
     'BIP39'

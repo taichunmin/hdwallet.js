@@ -14,12 +14,12 @@ import {
   XPublicKeyVersions
 } from '../const';
 import {
-  ICryptocurrency,
-  INetwork
-} from './icryptocurrency';
+  Cryptocurrency,
+  Network
+} from './cryptocurrency';
 
 
-export class Mainnet extends INetwork {
+export class Mainnet extends Network {
 
   static PUBLIC_KEY_ADDRESS_PREFIX = 0x19;
   static SCRIPT_ADDRESS_PREFIX = 0x3f;
@@ -35,7 +35,7 @@ export class Mainnet extends INetwork {
   static WIF_PREFIX = 0x4b;
 }
 
-export class Testnet extends INetwork {
+export class Testnet extends Network {
 
   static PUBLIC_KEY_ADDRESS_PREFIX = 0x55;
   static SCRIPT_ADDRESS_PREFIX = 0x7d;
@@ -51,14 +51,14 @@ export class Testnet extends INetwork {
   static WIF_PREFIX = 0x89;
 }
 
-export class Blocknode extends ICryptocurrency {
+export class Blocknode extends Cryptocurrency {
 
   static NAME = 'Blocknode';
   static SYMBOL = 'BND';
   static INFO = new Info({
     SOURCE_CODE: 'https://github.com/blocknodetech/blocknode',
     WEBSITES: [
-        'https://blocknode.tech'
+      'https://blocknode.tech'
     ]
   });
   static ECC = SLIP10Secp256k1ECC;

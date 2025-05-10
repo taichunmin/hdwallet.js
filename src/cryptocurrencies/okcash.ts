@@ -14,12 +14,12 @@ import {
   XPublicKeyVersions
 } from '../const';
 import {
-  ICryptocurrency,
-  INetwork
-} from './icryptocurrency';
+  Cryptocurrency,
+  Network
+} from './cryptocurrency';
 
 
-export class Mainnet extends INetwork {
+export class Mainnet extends Network {
 
   static PUBLIC_KEY_ADDRESS_PREFIX = 0x37;
   static SCRIPT_ADDRESS_PREFIX = 0x1c;
@@ -35,7 +35,7 @@ export class Mainnet extends INetwork {
   static WIF_PREFIX = 0x03;
 }
 
-export class OKCash extends ICryptocurrency {
+export class OKCash extends Cryptocurrency {
 
   static NAME = 'OK-Cash';
   static SYMBOL = 'OK';
@@ -43,13 +43,15 @@ export class OKCash extends ICryptocurrency {
     SOURCE_CODE: 'https://github.com/okcashpro/okcash',
     WHITEPAPER: 'https://github.com/okcashpro/okcash-whitepaper',
     WEBSITES: [
-        'http://okcash.co'
+      'http://okcash.co'
     ]
   });
   static ECC = SLIP10Secp256k1ECC;
   static COIN_TYPE = CoinTypes.OKCash;
   static SUPPORT_BIP38 = true;
-  static NETWORKS = new Networks({ MAINNET: Mainnet });
+  static NETWORKS = new Networks({
+    MAINNET: Mainnet
+  });
   static DEFAULT_NETWORK = OKCash.NETWORKS.MAINNET;
   static ENTROPIES = new Entropies([
     'BIP39'

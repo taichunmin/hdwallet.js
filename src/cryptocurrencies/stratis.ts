@@ -14,12 +14,12 @@ import {
   XPublicKeyVersions
 } from '../const';
 import {
-  ICryptocurrency,
-  INetwork
-} from './icryptocurrency';
+  Cryptocurrency,
+  Network
+} from './cryptocurrency';
 
 
-export class Mainnet extends INetwork {
+export class Mainnet extends Network {
 
   static PUBLIC_KEY_ADDRESS_PREFIX = 0x3f;
   static SCRIPT_ADDRESS_PREFIX = 0x7d;
@@ -35,7 +35,7 @@ export class Mainnet extends INetwork {
   static WIF_PREFIX = 0xbf;
 }
 
-export class Testnet extends INetwork {
+export class Testnet extends Network {
 
   static PUBLIC_KEY_ADDRESS_PREFIX = 0x41;
   static SCRIPT_ADDRESS_PREFIX = 0x7d;
@@ -51,7 +51,7 @@ export class Testnet extends INetwork {
   static WIF_PREFIX = 0xbf;
 }
 
-export class Stratis extends ICryptocurrency {
+export class Stratis extends Cryptocurrency {
 
   static NAME = 'Stratis';
   static SYMBOL = 'STRAT';
@@ -59,7 +59,7 @@ export class Stratis extends ICryptocurrency {
     SOURCE_CODE: 'https://github.com/stratisproject',
     WHITEPAPER: 'https://www.stratisplatform.com/files/Stratis_Whitepaper.pdf',
     WEBSITES: [
-        'http://stratisplatform.com'
+      'http://stratisplatform.com'
     ]
   });
   static ECC = SLIP10Secp256k1ECC;

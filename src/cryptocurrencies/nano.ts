@@ -15,18 +15,22 @@ import {
   XPublicKeyVersions
 } from '../const';
 import {
-  ICryptocurrency,
-  INetwork
-} from './icryptocurrency';
+  Cryptocurrency,
+  Network
+} from './cryptocurrency';
 
 
-export class Mainnet extends INetwork {
+export class Mainnet extends Network {
 
-  static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({ P2PKH: 0x0488ade4 });
-  static XPUBLIC_KEY_VERSIONS = new XPublicKeyVersions({ P2PKH: 0x0488b21e });
+  static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
+    P2PKH: 0x0488ade4
+  });
+  static XPUBLIC_KEY_VERSIONS = new XPublicKeyVersions({
+    P2PKH: 0x0488b21e
+  });
 }
 
-export class Nano extends ICryptocurrency {
+export class Nano extends Cryptocurrency {
 
   static NAME = 'Nano';
   static SYMBOL = 'XNO';
@@ -34,12 +38,14 @@ export class Nano extends ICryptocurrency {
     SOURCE_CODE: 'https://github.com/nanocurrency/nano-node',
     WHITEPAPER: 'https://nano.org/en/whitepaper',
     WEBSITES: [
-        'http://nano.org/en'
+      'http://nano.org/en'
     ]
   });
   static ECC = SLIP10Ed25519Blake2bECC;
   static COIN_TYPE = CoinTypes.Nano;
-  static NETWORKS = new Networks({ MAINNET: Mainnet });
+  static NETWORKS = new Networks({
+    MAINNET: Mainnet
+  });
   static DEFAULT_NETWORK = Nano.NETWORKS.MAINNET;
   static ENTROPIES = new Entropies([
     'BIP39'
@@ -55,7 +61,9 @@ export class Nano extends ICryptocurrency {
     'BIP44'
   ]);
   static DEFAULT_HD = Nano.HDS.BIP44;
-  static ADDRESSES = new Addresses({ NANO: 'Nano' });
+  static ADDRESSES = new Addresses({
+    NANO: 'Nano'
+  });
   static DEFAULT_ADDRESS = Nano.ADDRESSES.NANO;
   static PARAMS = new Params({
     ADDRESS_PREFIX: 'nano_',

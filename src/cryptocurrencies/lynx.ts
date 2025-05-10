@@ -14,12 +14,12 @@ import {
   XPublicKeyVersions
 } from '../const';
 import {
-  ICryptocurrency,
-  INetwork
-} from './icryptocurrency';
+  Cryptocurrency,
+  Network
+} from './cryptocurrency';
 
 
-export class Mainnet extends INetwork {
+export class Mainnet extends Network {
 
   static PUBLIC_KEY_ADDRESS_PREFIX = 0x2d;
   static SCRIPT_ADDRESS_PREFIX = 0x32;
@@ -35,20 +35,22 @@ export class Mainnet extends INetwork {
   static WIF_PREFIX = 0xad;
 }
 
-export class Lynx extends ICryptocurrency {
+export class Lynx extends Cryptocurrency {
 
   static NAME = 'Lynx';
   static SYMBOL = 'LYNX';
   static INFO = new Info({
     SOURCE_CODE: 'https://github.com/doh9Xiet7weesh9va9th/lynx',
     WEBSITES: [
-        'https://getlynx.io'
+      'https://getlynx.io'
     ]
   });
   static ECC = SLIP10Secp256k1ECC;
   static COIN_TYPE = CoinTypes.Lynx;
   static SUPPORT_BIP38 = true;
-  static NETWORKS = new Networks({ MAINNET: Mainnet });
+  static NETWORKS = new Networks({
+    MAINNET: Mainnet
+  });
   static DEFAULT_NETWORK = Lynx.NETWORKS.MAINNET;
   static ENTROPIES = new Entropies([
     'BIP39'

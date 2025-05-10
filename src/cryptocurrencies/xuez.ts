@@ -14,12 +14,12 @@ import {
   XPublicKeyVersions
 } from '../const';
 import {
-  ICryptocurrency,
-  INetwork
-} from './icryptocurrency';
+  Cryptocurrency,
+  Network
+} from './cryptocurrency';
 
 
-export class Mainnet extends INetwork {
+export class Mainnet extends Network {
 
   static PUBLIC_KEY_ADDRESS_PREFIX = 0x4b;
   static SCRIPT_ADDRESS_PREFIX = 0x12;
@@ -35,7 +35,7 @@ export class Mainnet extends INetwork {
   static WIF_PREFIX = 0xd4;
 }
 
-export class XUEZ extends ICryptocurrency {
+export class XUEZ extends Cryptocurrency {
 
   static NAME = 'XUEZ';
   static SYMBOL = 'XUEZ';
@@ -43,13 +43,15 @@ export class XUEZ extends ICryptocurrency {
     SOURCE_CODE: 'https://github.com/XUEZ/Xuez-Core',
     WHITEPAPER: 'https://github.com/XUEZ/Whitepaper',
     WEBSITES: [
-        'https://xuezcoin.com'
+      'https://xuezcoin.com'
     ]
   });
   static ECC = SLIP10Secp256k1ECC;
   static COIN_TYPE = CoinTypes.XUEZ;
   static SUPPORT_BIP38 = true;
-  static NETWORKS = new Networks({ MAINNET: Mainnet });
+  static NETWORKS = new Networks({
+    MAINNET: Mainnet
+  });
   static DEFAULT_NETWORK = XUEZ.NETWORKS.MAINNET;
   static ENTROPIES = new Entropies([
     'BIP39'

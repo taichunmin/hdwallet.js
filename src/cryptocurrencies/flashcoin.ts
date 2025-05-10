@@ -14,12 +14,12 @@ import {
   XPublicKeyVersions
 } from '../const';
 import {
-  ICryptocurrency,
-  INetwork
-} from './icryptocurrency';
+  Cryptocurrency,
+  Network
+} from './cryptocurrency';
 
 
-export class Mainnet extends INetwork {
+export class Mainnet extends Network {
 
   static PUBLIC_KEY_ADDRESS_PREFIX = 0x44;
   static SCRIPT_ADDRESS_PREFIX = 0x82;
@@ -35,7 +35,7 @@ export class Mainnet extends INetwork {
   static WIF_PREFIX = 0xc4;
 }
 
-export class Flashcoin extends ICryptocurrency {
+export class Flashcoin extends Cryptocurrency {
 
   static NAME = 'Flashcoin';
   static SYMBOL = 'FLASH';
@@ -43,13 +43,15 @@ export class Flashcoin extends ICryptocurrency {
     SOURCE_CODE: 'https://github.com/flash-coin',
     WHITEPAPER: 'https://www.flashcoin.io/docs/FLASHWhitepaper.pdf',
     WEBSITES: [
-        'https://flashcoin.io'
+      'https://flashcoin.io'
     ]
   });
   static ECC = SLIP10Secp256k1ECC;
   static COIN_TYPE = CoinTypes.Flashcoin;
   static SUPPORT_BIP38 = true;
-  static NETWORKS = new Networks({ MAINNET: Mainnet });
+  static NETWORKS = new Networks({
+    MAINNET: Mainnet
+  });
   static DEFAULT_NETWORK = Flashcoin.NETWORKS.MAINNET;
   static ENTROPIES = new Entropies([
     'BIP39'

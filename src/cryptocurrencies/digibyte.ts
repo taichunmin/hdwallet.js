@@ -15,12 +15,12 @@ import {
   XPublicKeyVersions
 } from '../const';
 import {
-  ICryptocurrency,
-  INetwork
-} from './icryptocurrency';
+  Cryptocurrency,
+  Network
+} from './cryptocurrency';
 
 
-export class Mainnet extends INetwork {
+export class Mainnet extends Network {
 
   static PUBLIC_KEY_ADDRESS_PREFIX = 0x1e;
   static SCRIPT_ADDRESS_PREFIX = 0x05;
@@ -45,7 +45,7 @@ export class Mainnet extends INetwork {
   static WIF_PREFIX = 0x80;
 }
 
-export class DigiByte extends ICryptocurrency {
+export class DigiByte extends Cryptocurrency {
 
   static NAME = 'Digi-Byte';
   static SYMBOL = 'DGB';
@@ -53,14 +53,16 @@ export class DigiByte extends ICryptocurrency {
     SOURCE_CODE: 'https://github.com/DigiByte-Core/digibyte',
     WHITEPAPER: 'https://digibyte.io/docs/infopaper.pdf',
     WEBSITES: [
-        'https://digibyte.org',
+      'https://digibyte.org',
         'https://dgbwiki.com'
     ]
   });
   static ECC = SLIP10Secp256k1ECC;
   static COIN_TYPE = CoinTypes.DigiByte;
   static SUPPORT_BIP38 = true;
-  static NETWORKS = new Networks({ MAINNET: Mainnet });
+  static NETWORKS = new Networks({
+    MAINNET: Mainnet
+  });
   static DEFAULT_NETWORK = DigiByte.NETWORKS.MAINNET;
   static ENTROPIES = new Entropies([
     'BIP39'

@@ -14,12 +14,12 @@ import {
   XPublicKeyVersions
 } from '../const';
 import {
-  ICryptocurrency,
-  INetwork
-} from './icryptocurrency';
+  Cryptocurrency,
+  Network
+} from './cryptocurrency';
 
 
-export class Mainnet extends INetwork {
+export class Mainnet extends Network {
 
   static PUBLIC_KEY_ADDRESS_PREFIX = 0x5d;
   static SCRIPT_ADDRESS_PREFIX = 0x1c;
@@ -35,21 +35,23 @@ export class Mainnet extends INetwork {
   static WIF_PREFIX = 0xdd;
 }
 
-export class EDRCoin extends ICryptocurrency {
+export class EDRCoin extends Cryptocurrency {
 
   static NAME = 'EDR-Coin';
   static SYMBOL = 'EDRC';
   static INFO = new Info({
     SOURCE_CODE: 'https://github.com/EDRCoin/EDRcoin-src',
     WEBSITES: [
-        'https://www.edrcoin.cash',
+      'https://www.edrcoin.cash',
         'https://edrcoin.com'
     ]
   });
   static ECC = SLIP10Secp256k1ECC;
   static COIN_TYPE = CoinTypes.EDRCoin;
   static SUPPORT_BIP38 = true;
-  static NETWORKS = new Networks({ MAINNET: Mainnet });
+  static NETWORKS = new Networks({
+    MAINNET: Mainnet
+  });
   static DEFAULT_NETWORK = EDRCoin.NETWORKS.MAINNET;
   static ENTROPIES = new Entropies([
     'BIP39'

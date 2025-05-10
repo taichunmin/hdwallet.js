@@ -14,12 +14,12 @@ import {
   XPublicKeyVersions
 } from '../const';
 import {
-  ICryptocurrency,
-  INetwork
-} from './icryptocurrency';
+  Cryptocurrency,
+  Network
+} from './cryptocurrency';
 
 
-export class Mainnet extends INetwork {
+export class Mainnet extends Network {
 
   static PUBLIC_KEY_ADDRESS_PREFIX = 0x00001cb8;
   static SCRIPT_ADDRESS_PREFIX = 0x00001cbd;
@@ -35,7 +35,7 @@ export class Mainnet extends INetwork {
   static WIF_PREFIX = 0x80;
 }
 
-export class Flux extends ICryptocurrency {
+export class Flux extends Cryptocurrency {
 
   static NAME = 'Flux';
   static SYMBOL = 'FLUX';
@@ -43,14 +43,16 @@ export class Flux extends ICryptocurrency {
     SOURCE_CODE: 'https://github.com/RunOnFlux/fluxd',
     WHITEPAPER: 'https://fluxwhitepaper.app.runonflux.io',
     WEBSITES: [
-        'https://runonflux.io',
+      'https://runonflux.io',
         'https://home.runonflux.io'
     ]
   });
   static ECC = SLIP10Secp256k1ECC;
   static COIN_TYPE = CoinTypes.Flux;
   static SUPPORT_BIP38 = true;
-  static NETWORKS = new Networks({ MAINNET: Mainnet });
+  static NETWORKS = new Networks({
+    MAINNET: Mainnet
+  });
   static DEFAULT_NETWORK = Flux.NETWORKS.MAINNET;
   static ENTROPIES = new Entropies([
     'BIP39'

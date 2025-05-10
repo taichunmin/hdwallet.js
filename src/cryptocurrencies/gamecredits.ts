@@ -14,12 +14,12 @@ import {
   XPublicKeyVersions
 } from '../const';
 import {
-  ICryptocurrency,
-  INetwork
-} from './icryptocurrency';
+  Cryptocurrency,
+  Network
+} from './cryptocurrency';
 
 
-export class Mainnet extends INetwork {
+export class Mainnet extends Network {
 
   static PUBLIC_KEY_ADDRESS_PREFIX = 0x26;
   static SCRIPT_ADDRESS_PREFIX = 0x05;
@@ -35,20 +35,22 @@ export class Mainnet extends INetwork {
   static WIF_PREFIX = 0xa6;
 }
 
-export class GameCredits extends ICryptocurrency {
+export class GameCredits extends Cryptocurrency {
 
   static NAME = 'Game-Credits';
   static SYMBOL = 'GAME';
   static INFO = new Info({
     SOURCE_CODE: 'https://github.com/gamecredits-project/GameCredits',
     WEBSITES: [
-        'https://gamecredits.org'
+      'https://gamecredits.org'
     ]
   });
   static ECC = SLIP10Secp256k1ECC;
   static COIN_TYPE = CoinTypes.GameCredits;
   static SUPPORT_BIP38 = true;
-  static NETWORKS = new Networks({ MAINNET: Mainnet });
+  static NETWORKS = new Networks({
+    MAINNET: Mainnet
+  });
   static DEFAULT_NETWORK = GameCredits.NETWORKS.MAINNET;
   static ENTROPIES = new Entropies([
     'BIP39'

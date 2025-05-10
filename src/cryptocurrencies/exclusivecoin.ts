@@ -14,12 +14,12 @@ import {
   XPublicKeyVersions
 } from '../const';
 import {
-  ICryptocurrency,
-  INetwork
-} from './icryptocurrency';
+  Cryptocurrency,
+  Network
+} from './cryptocurrency';
 
 
-export class Mainnet extends INetwork {
+export class Mainnet extends Network {
 
   static PUBLIC_KEY_ADDRESS_PREFIX = 0x21;
   static SCRIPT_ADDRESS_PREFIX = 0x89;
@@ -35,20 +35,22 @@ export class Mainnet extends INetwork {
   static WIF_PREFIX = 0xa1;
 }
 
-export class ExclusiveCoin extends ICryptocurrency {
+export class ExclusiveCoin extends Cryptocurrency {
 
   static NAME = 'Exclusive-Coin';
   static SYMBOL = 'EXCL';
   static INFO = new Info({
     SOURCE_CODE: 'https://github.com/exclfork/excl-core',
     WEBSITES: [
-        'https://exclusivecoin.pw'
+      'https://exclusivecoin.pw'
     ]
   });
   static ECC = SLIP10Secp256k1ECC;
   static COIN_TYPE = CoinTypes.ExclusiveCoin;
   static SUPPORT_BIP38 = true;
-  static NETWORKS = new Networks({ MAINNET: Mainnet });
+  static NETWORKS = new Networks({
+    MAINNET: Mainnet
+  });
   static DEFAULT_NETWORK = ExclusiveCoin.NETWORKS.MAINNET;
   static ENTROPIES = new Entropies([
     'BIP39'

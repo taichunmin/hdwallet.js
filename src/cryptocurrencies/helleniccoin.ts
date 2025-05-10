@@ -14,12 +14,12 @@ import {
   XPublicKeyVersions
 } from '../const';
 import {
-  ICryptocurrency,
-  INetwork
-} from './icryptocurrency';
+  Cryptocurrency,
+  Network
+} from './cryptocurrency';
 
 
-export class Mainnet extends INetwork {
+export class Mainnet extends Network {
 
   static PUBLIC_KEY_ADDRESS_PREFIX = 0x30;
   static SCRIPT_ADDRESS_PREFIX = 0x05;
@@ -35,7 +35,7 @@ export class Mainnet extends INetwork {
   static WIF_PREFIX = 0xb0;
 }
 
-export class Helleniccoin extends ICryptocurrency {
+export class Helleniccoin extends Cryptocurrency {
 
   static NAME = 'Helleniccoin';
   static SYMBOL = 'HNC';
@@ -43,14 +43,16 @@ export class Helleniccoin extends ICryptocurrency {
     SOURCE_CODE: 'https://github.com/hnc-coin/hnc-coin',
     WHITEPAPER: 'https://hnc-coin.com/hnc_whitepaper.pdf',
     WEBSITES: [
-        'https://hnc-coin.com',
+      'https://hnc-coin.com',
         'http://www.helleniccoin.com'
     ]
   });
   static ECC = SLIP10Secp256k1ECC;
   static COIN_TYPE = CoinTypes.Helleniccoin;
   static SUPPORT_BIP38 = true;
-  static NETWORKS = new Networks({ MAINNET: Mainnet });
+  static NETWORKS = new Networks({
+    MAINNET: Mainnet
+  });
   static DEFAULT_NETWORK = Helleniccoin.NETWORKS.MAINNET;
   static ENTROPIES = new Entropies([
     'BIP39'

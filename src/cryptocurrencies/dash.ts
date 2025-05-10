@@ -14,12 +14,12 @@ import {
   XPublicKeyVersions
 } from '../const';
 import {
-  ICryptocurrency,
-  INetwork
-} from './icryptocurrency';
+  Cryptocurrency,
+  Network
+} from './cryptocurrency';
 
 
-export class Mainnet extends INetwork {
+export class Mainnet extends Network {
 
   static PUBLIC_KEY_ADDRESS_PREFIX = 0x4c;
   static SCRIPT_ADDRESS_PREFIX = 0x10;
@@ -35,7 +35,7 @@ export class Mainnet extends INetwork {
   static WIF_PREFIX = 0xcc;
 }
 
-export class Testnet extends INetwork {
+export class Testnet extends Network {
 
   static PUBLIC_KEY_ADDRESS_PREFIX = 0x8c;
   static SCRIPT_ADDRESS_PREFIX = 0x13;
@@ -51,7 +51,7 @@ export class Testnet extends INetwork {
   static WIF_PREFIX = 0xef;
 }
 
-export class Dash extends ICryptocurrency {
+export class Dash extends Cryptocurrency {
 
   static NAME = 'Dash';
   static SYMBOL = 'DASH';
@@ -59,7 +59,7 @@ export class Dash extends ICryptocurrency {
     SOURCE_CODE: 'https://github.com/dashpay/dash',
     WHITEPAPER: 'https://docs.dash.org',
     WEBSITES: [
-        'https://www.dash.org',
+      'https://www.dash.org',
         'https://newsroom.dash.org'
     ]
   });

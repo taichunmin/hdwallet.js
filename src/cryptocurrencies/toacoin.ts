@@ -14,12 +14,12 @@ import {
   XPublicKeyVersions
 } from '../const';
 import {
-  ICryptocurrency,
-  INetwork
-} from './icryptocurrency';
+  Cryptocurrency,
+  Network
+} from './cryptocurrency';
 
 
-export class Mainnet extends INetwork {
+export class Mainnet extends Network {
 
   static PUBLIC_KEY_ADDRESS_PREFIX = 0x41;
   static SCRIPT_ADDRESS_PREFIX = 0x17;
@@ -35,7 +35,7 @@ export class Mainnet extends INetwork {
   static WIF_PREFIX = 0xc1;
 }
 
-export class TOACoin extends ICryptocurrency {
+export class TOACoin extends Cryptocurrency {
 
   static NAME = 'TOA-Coin';
   static SYMBOL = 'TOA';
@@ -43,13 +43,15 @@ export class TOACoin extends ICryptocurrency {
     SOURCE_CODE: 'https://github.com/toacoin/TOA',
     WHITEPAPER: 'https://toacoin.com/toa-whitepaper',
     WEBSITES: [
-        'http://www.toacoin.com'
+      'http://www.toacoin.com'
     ]
   });
   static ECC = SLIP10Secp256k1ECC;
   static COIN_TYPE = CoinTypes.TOACoin;
   static SUPPORT_BIP38 = true;
-  static NETWORKS = new Networks({ MAINNET: Mainnet });
+  static NETWORKS = new Networks({
+    MAINNET: Mainnet
+  });
   static DEFAULT_NETWORK = TOACoin.NETWORKS.MAINNET;
   static ENTROPIES = new Entropies([
     'BIP39'

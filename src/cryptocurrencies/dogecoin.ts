@@ -15,12 +15,12 @@ import {
   XPublicKeyVersions
 } from '../const';
 import {
-  ICryptocurrency,
-  INetwork
-} from './icryptocurrency';
+  Cryptocurrency,
+  Network
+} from './cryptocurrency';
 
 
-export class Mainnet extends INetwork {
+export class Mainnet extends Network {
 
   static PUBLIC_KEY_ADDRESS_PREFIX = 0x1e;
   static SCRIPT_ADDRESS_PREFIX = 0x16;
@@ -47,7 +47,7 @@ export class Mainnet extends INetwork {
   static WIF_PREFIX = 0xf1;
 }
 
-export class Testnet extends INetwork {
+export class Testnet extends Network {
 
   static PUBLIC_KEY_ADDRESS_PREFIX = 0x71;
   static SCRIPT_ADDRESS_PREFIX = 0xc4;
@@ -74,7 +74,7 @@ export class Testnet extends INetwork {
   static WIF_PREFIX = 0xf1;
 }
 
-export class Dogecoin extends ICryptocurrency {
+export class Dogecoin extends Cryptocurrency {
 
   static NAME = 'Dogecoin';
   static SYMBOL = 'DOGE';
@@ -82,7 +82,7 @@ export class Dogecoin extends ICryptocurrency {
     SOURCE_CODE: 'https://github.com/dogecoin/dogecoin',
     WHITEPAPER: 'https://github.com/dogecoin/dogecoin/blob/master/README.md',
     WEBSITES: [
-        'http://dogecoin.com'
+      'http://dogecoin.com'
     ]
   });
   static ECC = SLIP10Secp256k1ECC;

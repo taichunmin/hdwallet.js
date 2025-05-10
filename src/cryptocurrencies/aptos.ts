@@ -15,18 +15,22 @@ import {
   XPublicKeyVersions
 } from '../const';
 import {
-  ICryptocurrency,
-  INetwork
-} from './icryptocurrency';
+  Cryptocurrency,
+  Network
+} from './cryptocurrency';
 
 
-export class Mainnet extends INetwork {
+export class Mainnet extends Network {
 
-  static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({ P2PKH: 0x0488ade4 });
-  static XPUBLIC_KEY_VERSIONS = new XPublicKeyVersions({ P2PKH: 0x0488b21e });
+  static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
+    P2PKH: 0x0488ade4
+  });
+  static XPUBLIC_KEY_VERSIONS = new XPublicKeyVersions({
+    P2PKH: 0x0488b21e
+  });
 }
 
-export class Aptos extends ICryptocurrency {
+export class Aptos extends Cryptocurrency {
 
   static NAME = 'Aptos';
   static SYMBOL = 'APT';
@@ -34,12 +38,14 @@ export class Aptos extends ICryptocurrency {
     SOURCE_CODE: 'https://github.com/aptos-labs',
     WHITEPAPER: 'https://aptosfoundation.org/whitepaper',
     WEBSITES: [
-        'https://aptosfoundation.org'
+      'https://aptosfoundation.org'
     ]
   });
   static ECC = SLIP10Ed25519ECC;
   static COIN_TYPE = CoinTypes.Aptos;
-  static NETWORKS = new Networks({ MAINNET: Mainnet });
+  static NETWORKS = new Networks({
+    MAINNET: Mainnet
+  });
   static DEFAULT_NETWORK = Aptos.NETWORKS.MAINNET;
   static ENTROPIES = new Entropies([
     'BIP39'
@@ -55,7 +61,9 @@ export class Aptos extends ICryptocurrency {
     'BIP44'
   ]);
   static DEFAULT_HD = Aptos.HDS.BIP44;
-  static ADDRESSES = new Addresses({ APTOS: 'Aptos' });
+  static ADDRESSES = new Addresses({
+    APTOS: 'Aptos'
+  });
   static DEFAULT_ADDRESS = Aptos.ADDRESSES.APTOS;
   static PARAMS = new Params({
     SUFFIX: 0x00,

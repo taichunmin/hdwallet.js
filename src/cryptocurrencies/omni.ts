@@ -14,12 +14,12 @@ import {
   XPublicKeyVersions
 } from '../const';
 import {
-  ICryptocurrency,
-  INetwork
-} from './icryptocurrency';
+  Cryptocurrency,
+  Network
+} from './cryptocurrency';
 
 
-export class Mainnet extends INetwork {
+export class Mainnet extends Network {
 
   static PUBLIC_KEY_ADDRESS_PREFIX = 0x00;
   static SCRIPT_ADDRESS_PREFIX = 0x05;
@@ -35,7 +35,7 @@ export class Mainnet extends INetwork {
   static WIF_PREFIX = 0x80;
 }
 
-export class Testnet extends INetwork {
+export class Testnet extends Network {
 
   static PUBLIC_KEY_ADDRESS_PREFIX = 0x6f;
   static SCRIPT_ADDRESS_PREFIX = 0xc4;
@@ -51,7 +51,7 @@ export class Testnet extends INetwork {
   static WIF_PREFIX = 0xef;
 }
 
-export class Omni extends ICryptocurrency {
+export class Omni extends Cryptocurrency {
 
   static NAME = 'Omni';
   static SYMBOL = 'OMNI';
@@ -59,7 +59,7 @@ export class Omni extends ICryptocurrency {
     SOURCE_CODE: 'https://github.com/omnilayer/omnicore',
     WHITEPAPER: 'https://github.com/OmniLayer/spec',
     WEBSITES: [
-        'http://www.omnilayer.org'
+      'http://www.omnilayer.org'
     ]
   });
   static ECC = SLIP10Secp256k1ECC;

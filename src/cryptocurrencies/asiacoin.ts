@@ -14,12 +14,12 @@ import {
   XPublicKeyVersions
 } from '../const';
 import {
-  ICryptocurrency,
-  INetwork
-} from './icryptocurrency';
+  Cryptocurrency,
+  Network
+} from './cryptocurrency';
 
 
-export class Mainnet extends INetwork {
+export class Mainnet extends Network {
 
   static PUBLIC_KEY_ADDRESS_PREFIX = 0x17;
   static SCRIPT_ADDRESS_PREFIX = 0x08;
@@ -35,15 +35,21 @@ export class Mainnet extends INetwork {
   static WIF_PREFIX = 0x97;
 }
 
-export class Asiacoin extends ICryptocurrency {
+export class Asiacoin extends Cryptocurrency {
 
   static NAME = 'Asiacoin';
   static SYMBOL = 'AC';
-  static INFO = new Info({ WEBSITES: [        'http://www.thecoin.asia'    ] });
+  static INFO = new Info({
+    WEBSITES: [
+      'http://www.thecoin.asia'
+    ]
+  });
   static ECC = SLIP10Secp256k1ECC;
   static COIN_TYPE = CoinTypes.Asiacoin;
   static SUPPORT_BIP38 = true;
-  static NETWORKS = new Networks({ MAINNET: Mainnet });
+  static NETWORKS = new Networks({
+    MAINNET: Mainnet
+  });
   static DEFAULT_NETWORK = Asiacoin.NETWORKS.MAINNET;
   static ENTROPIES = new Entropies([
     'BIP39'

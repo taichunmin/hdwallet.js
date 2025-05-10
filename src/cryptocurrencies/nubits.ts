@@ -14,12 +14,12 @@ import {
   XPublicKeyVersions
 } from '../const';
 import {
-  ICryptocurrency,
-  INetwork
-} from './icryptocurrency';
+  Cryptocurrency,
+  Network
+} from './cryptocurrency';
 
 
-export class Mainnet extends INetwork {
+export class Mainnet extends Network {
 
   static PUBLIC_KEY_ADDRESS_PREFIX = 0x19;
   static SCRIPT_ADDRESS_PREFIX = 0x1a;
@@ -35,7 +35,7 @@ export class Mainnet extends INetwork {
   static WIF_PREFIX = 0x96;
 }
 
-export class NuBits extends ICryptocurrency {
+export class NuBits extends Cryptocurrency {
 
   static NAME = 'NuBits';
   static SYMBOL = 'NBT';
@@ -43,13 +43,15 @@ export class NuBits extends ICryptocurrency {
     SOURCE_CODE: 'https://bitbucket.org/NuNetwork/nubits',
     WHITEPAPER: 'https://nubits.com/assets/nu-whitepaper-23_sept_2014-en.pdf',
     WEBSITES: [
-        'https://www.nubits.com'
+      'https://www.nubits.com'
     ]
   });
   static ECC = SLIP10Secp256k1ECC;
   static COIN_TYPE = CoinTypes.NuBits;
   static SUPPORT_BIP38 = true;
-  static NETWORKS = new Networks({ MAINNET: Mainnet });
+  static NETWORKS = new Networks({
+    MAINNET: Mainnet
+  });
   static DEFAULT_NETWORK = NuBits.NETWORKS.MAINNET;
   static ENTROPIES = new Entropies([
     'BIP39'

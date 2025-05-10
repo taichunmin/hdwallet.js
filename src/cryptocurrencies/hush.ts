@@ -14,12 +14,12 @@ import {
   XPublicKeyVersions
 } from '../const';
 import {
-  ICryptocurrency,
-  INetwork
-} from './icryptocurrency';
+  Cryptocurrency,
+  Network
+} from './cryptocurrency';
 
 
-export class Mainnet extends INetwork {
+export class Mainnet extends Network {
 
   static PUBLIC_KEY_ADDRESS_PREFIX = 0x00001cb8;
   static SCRIPT_ADDRESS_PREFIX = 0x00001cbd;
@@ -35,7 +35,7 @@ export class Mainnet extends INetwork {
   static WIF_PREFIX = 0x80;
 }
 
-export class Hush extends ICryptocurrency {
+export class Hush extends Cryptocurrency {
 
   static NAME = 'Hush';
   static SYMBOL = 'HUSH';
@@ -43,14 +43,16 @@ export class Hush extends ICryptocurrency {
     SOURCE_CODE: 'https://git.hush.is/hush/hush3',
     WHITEPAPER: 'https://git.hush.is',
     WEBSITES: [
-        'https://hush.is',
+      'https://hush.is',
         'https://hush.land'
     ]
   });
   static ECC = SLIP10Secp256k1ECC;
   static COIN_TYPE = CoinTypes.Hush;
   static SUPPORT_BIP38 = true;
-  static NETWORKS = new Networks({ MAINNET: Mainnet });
+  static NETWORKS = new Networks({
+    MAINNET: Mainnet
+  });
   static DEFAULT_NETWORK = Hush.NETWORKS.MAINNET;
   static ENTROPIES = new Entropies([
     'BIP39'

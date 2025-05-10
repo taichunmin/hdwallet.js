@@ -14,12 +14,12 @@ import {
   XPublicKeyVersions
 } from '../const';
 import {
-  ICryptocurrency,
-  INetwork
-} from './icryptocurrency';
+  Cryptocurrency,
+  Network
+} from './cryptocurrency';
 
 
-export class Mainnet extends INetwork {
+export class Mainnet extends Network {
 
   static PUBLIC_KEY_ADDRESS_PREFIX = 0x12;
   static SCRIPT_ADDRESS_PREFIX = 0x05;
@@ -35,7 +35,7 @@ export class Mainnet extends INetwork {
   static WIF_PREFIX = 0x92;
 }
 
-export class Solarcoin extends ICryptocurrency {
+export class Solarcoin extends Cryptocurrency {
 
   static NAME = 'Solarcoin';
   static SYMBOL = 'SLR';
@@ -43,13 +43,15 @@ export class Solarcoin extends ICryptocurrency {
     SOURCE_CODE: 'https://github.com/onsightit/solarcoin',
     WHITEPAPER: 'https://solarcoin.org/sites/default/files/slr-basic-page/2018-02/SolarCoin_Policy_Paper_FINAL.pdf',
     WEBSITES: [
-        'http://solarcoin.org'
+      'http://solarcoin.org'
     ]
   });
   static ECC = SLIP10Secp256k1ECC;
   static COIN_TYPE = CoinTypes.Solarcoin;
   static SUPPORT_BIP38 = true;
-  static NETWORKS = new Networks({ MAINNET: Mainnet });
+  static NETWORKS = new Networks({
+    MAINNET: Mainnet
+  });
   static DEFAULT_NETWORK = Solarcoin.NETWORKS.MAINNET;
   static ENTROPIES = new Entropies([
     'BIP39'

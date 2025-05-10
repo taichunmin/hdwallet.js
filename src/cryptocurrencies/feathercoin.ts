@@ -14,12 +14,12 @@ import {
   XPublicKeyVersions
 } from '../const';
 import {
-  ICryptocurrency,
-  INetwork
-} from './icryptocurrency';
+  Cryptocurrency,
+  Network
+} from './cryptocurrency';
 
 
-export class Mainnet extends INetwork {
+export class Mainnet extends Network {
 
   static PUBLIC_KEY_ADDRESS_PREFIX = 0x0e;
   static SCRIPT_ADDRESS_PREFIX = 0x05;
@@ -35,7 +35,7 @@ export class Mainnet extends INetwork {
   static WIF_PREFIX = 0x8e;
 }
 
-export class Feathercoin extends ICryptocurrency {
+export class Feathercoin extends Cryptocurrency {
 
   static NAME = 'Feathercoin';
   static SYMBOL = 'FTC';
@@ -43,13 +43,15 @@ export class Feathercoin extends ICryptocurrency {
     SOURCE_CODE: 'https://github.com/FeatherCoin/Feathercoin',
     WHITEPAPER: 'https://feathercoin.com/about',
     WEBSITES: [
-        'http://feathercoin.com'
+      'http://feathercoin.com'
     ]
   });
   static ECC = SLIP10Secp256k1ECC;
   static COIN_TYPE = CoinTypes.Feathercoin;
   static SUPPORT_BIP38 = true;
-  static NETWORKS = new Networks({ MAINNET: Mainnet });
+  static NETWORKS = new Networks({
+    MAINNET: Mainnet
+  });
   static DEFAULT_NETWORK = Feathercoin.NETWORKS.MAINNET;
   static ENTROPIES = new Entropies([
     'BIP39'

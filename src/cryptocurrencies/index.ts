@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-import { ICryptocurrency } from './icryptocurrency';
+import { Cryptocurrency } from './cryptocurrency';
 import { Adcoin } from './adcoin';
 import { AkashNetwork } from './akashnetwork';
 import { Algorand } from './algorand';
@@ -215,7 +215,7 @@ import { CryptocurrencyError, SymbolError } from '../exceptions';
 
 export class CRYPTOCURRENCIES {
 
-  private static readonly dictionary: Record<string, typeof ICryptocurrency> = {
+  private static readonly dictionary: Record<string, typeof Cryptocurrency> = {
     [Adcoin.NAME]: Adcoin,
     [AkashNetwork.NAME]: AkashNetwork,
     [Algorand.NAME]: Algorand,
@@ -432,11 +432,11 @@ export class CRYPTOCURRENCIES {
     return Object.keys(this.dictionary);
   }
 
-  static getClasses(): Array<typeof ICryptocurrency> {
+  static getClasses(): Array<typeof Cryptocurrency> {
     return Object.values(this.dictionary);
   }
 
-  static cryptocurrency(name: string): typeof ICryptocurrency {
+  static cryptocurrency(name: string): typeof Cryptocurrency {
     if (!this.isCryptocurrency(name)) {
       throw new CryptocurrencyError(
         'Invalid cryptocurrency name', { expected: this.getNames(), got: name }
@@ -450,7 +450,7 @@ export class CRYPTOCURRENCIES {
   }
 }
 
-export function getCryptocurrency(symbol: string): typeof ICryptocurrency {
+export function getCryptocurrency(symbol: string): typeof Cryptocurrency {
 
   for (const cls of CRYPTOCURRENCIES.getClasses()) {
     if ((cls as any).SYMBOL === symbol) {
@@ -463,7 +463,7 @@ export function getCryptocurrency(symbol: string): typeof ICryptocurrency {
 }
 
 export {
-  ICryptocurrency,
+  Cryptocurrency,
   Adcoin,
   AkashNetwork,
   Algorand,

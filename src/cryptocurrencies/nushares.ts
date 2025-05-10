@@ -14,12 +14,12 @@ import {
   XPublicKeyVersions
 } from '../const';
 import {
-  ICryptocurrency,
-  INetwork
-} from './icryptocurrency';
+  Cryptocurrency,
+  Network
+} from './cryptocurrency';
 
 
-export class Mainnet extends INetwork {
+export class Mainnet extends Network {
 
   static PUBLIC_KEY_ADDRESS_PREFIX = 0x3f;
   static SCRIPT_ADDRESS_PREFIX = 0x40;
@@ -35,7 +35,7 @@ export class Mainnet extends INetwork {
   static WIF_PREFIX = 0x95;
 }
 
-export class NuShares extends ICryptocurrency {
+export class NuShares extends Cryptocurrency {
 
   static NAME = 'NuShares';
   static SYMBOL = 'NSR';
@@ -43,13 +43,15 @@ export class NuShares extends ICryptocurrency {
     SOURCE_CODE: 'https://bitbucket.org/JordanLeePeershares/nubit/overview',
     WHITEPAPER: 'https://nubits.com/whitepaper',
     WEBSITES: [
-        'https://nubits.com/nushares'
+      'https://nubits.com/nushares'
     ]
   });
   static ECC = SLIP10Secp256k1ECC;
   static COIN_TYPE = CoinTypes.NuShares;
   static SUPPORT_BIP38 = true;
-  static NETWORKS = new Networks({ MAINNET: Mainnet });
+  static NETWORKS = new Networks({
+    MAINNET: Mainnet
+  });
   static DEFAULT_NETWORK = NuShares.NETWORKS.MAINNET;
   static ENTROPIES = new Entropies([
     'BIP39'

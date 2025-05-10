@@ -14,20 +14,24 @@ import {
   XPublicKeyVersions
 } from '../const';
 import {
-  ICryptocurrency,
-  INetwork
-} from './icryptocurrency';
+  Cryptocurrency,
+  Network
+} from './cryptocurrency';
 
 
-export class Mainnet extends INetwork {
+export class Mainnet extends Network {
 
   static HRP = 'terra';
-  static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({ P2PKH: 0x0488ade4 });
-  static XPUBLIC_KEY_VERSIONS = new XPublicKeyVersions({ P2PKH: 0x0488b21e });
+  static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
+    P2PKH: 0x0488ade4
+  });
+  static XPUBLIC_KEY_VERSIONS = new XPublicKeyVersions({
+    P2PKH: 0x0488b21e
+  });
   static WIF_PREFIX = 0x80;
 }
 
-export class Terra extends ICryptocurrency {
+export class Terra extends Cryptocurrency {
 
   static NAME = 'Terra';
   static SYMBOL = 'LUNA';
@@ -35,12 +39,14 @@ export class Terra extends ICryptocurrency {
     SOURCE_CODE: 'https://github.com/terra-money/core',
     WHITEPAPER: 'https://docs.terra.money',
     WEBSITES: [
-        'https://terra.money'
+      'https://terra.money'
     ]
   });
   static ECC = SLIP10Secp256k1ECC;
   static COIN_TYPE = CoinTypes.Terra;
-  static NETWORKS = new Networks({ MAINNET: Mainnet });
+  static NETWORKS = new Networks({
+    MAINNET: Mainnet
+  });
   static DEFAULT_NETWORK = Terra.NETWORKS.MAINNET;
   static ENTROPIES = new Entropies([
     'BIP39'
@@ -56,6 +62,8 @@ export class Terra extends ICryptocurrency {
     'BIP44'
   ]);
   static DEFAULT_HD = Terra.HDS.BIP44;
-  static ADDRESSES = new Addresses({ COSMOS: 'Cosmos' });
+  static ADDRESSES = new Addresses({
+    COSMOS: 'Cosmos'
+  });
   static DEFAULT_ADDRESS = Terra.ADDRESSES.COSMOS;
 }

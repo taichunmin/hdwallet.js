@@ -15,12 +15,12 @@ import {
   XPublicKeyVersions
 } from '../const';
 import {
-  ICryptocurrency,
-  INetwork
-} from './icryptocurrency';
+  Cryptocurrency,
+  Network
+} from './cryptocurrency';
 
 
-export class Mainnet extends INetwork {
+export class Mainnet extends Network {
 
   static PUBLIC_KEY_ADDRESS_PREFIX = 0x33;
   static SCRIPT_ADDRESS_PREFIX = 0x1c;
@@ -45,7 +45,7 @@ export class Mainnet extends INetwork {
   static WIF_PREFIX = 0x37;
 }
 
-export class Monk extends ICryptocurrency {
+export class Monk extends Cryptocurrency {
 
   static NAME = 'Monk';
   static SYMBOL = 'MONK';
@@ -53,13 +53,15 @@ export class Monk extends ICryptocurrency {
     SOURCE_CODE: 'https://github.com/decenomy/MONK',
     WHITEPAPER: 'https://decenomy.net/wp-content/uploads/DECENOMY_WP_v1.0_EN.pdf',
     WEBSITES: [
-        'http://www.monkey.vision'
+      'http://www.monkey.vision'
     ]
   });
   static ECC = SLIP10Secp256k1ECC;
   static COIN_TYPE = CoinTypes.Monk;
   static SUPPORT_BIP38 = true;
-  static NETWORKS = new Networks({ MAINNET: Mainnet });
+  static NETWORKS = new Networks({
+    MAINNET: Mainnet
+  });
   static DEFAULT_NETWORK = Monk.NETWORKS.MAINNET;
   static ENTROPIES = new Entropies([
     'BIP39'

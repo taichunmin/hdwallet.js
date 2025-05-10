@@ -15,12 +15,12 @@ import {
   XPublicKeyVersions
 } from '../const';
 import {
-  ICryptocurrency,
-  INetwork
-} from './icryptocurrency';
+  Cryptocurrency,
+  Network
+} from './cryptocurrency';
 
 
-export class Mainnet extends INetwork {
+export class Mainnet extends Network {
 
   static PUBLIC_KEY_ADDRESS_PREFIX = 0x26;
   static SCRIPT_ADDRESS_PREFIX = 0x17;
@@ -49,7 +49,7 @@ export class Mainnet extends INetwork {
   static WIF_PREFIX = 0x80;
 }
 
-export class BitcoinGold extends ICryptocurrency {
+export class BitcoinGold extends Cryptocurrency {
 
   static NAME = 'Bitcoin-Gold';
   static SYMBOL = 'BTG';
@@ -57,13 +57,15 @@ export class BitcoinGold extends ICryptocurrency {
     SOURCE_CODE: 'https://github.com/BTCGPU/BTCGPU',
     WHITEPAPER: 'https://github.com/BTCGPU/BTCGPU/wiki/Technical-Spec',
     WEBSITES: [
-        'https://bitcoingold.org'
+      'https://bitcoingold.org'
     ]
   });
   static ECC = SLIP10Secp256k1ECC;
   static COIN_TYPE = CoinTypes.BitcoinGold;
   static SUPPORT_BIP38 = true;
-  static NETWORKS = new Networks({ MAINNET: Mainnet });
+  static NETWORKS = new Networks({
+    MAINNET: Mainnet
+  });
   static DEFAULT_NETWORK = BitcoinGold.NETWORKS.MAINNET;
   static ENTROPIES = new Entropies([
     'BIP39'

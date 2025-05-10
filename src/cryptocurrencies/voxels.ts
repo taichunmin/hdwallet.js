@@ -14,12 +14,12 @@ import {
   XPublicKeyVersions
 } from '../const';
 import {
-  ICryptocurrency,
-  INetwork
-} from './icryptocurrency';
+  Cryptocurrency,
+  Network
+} from './cryptocurrency';
 
 
-export class Mainnet extends INetwork {
+export class Mainnet extends Network {
 
   static PUBLIC_KEY_ADDRESS_PREFIX = 0x46;
   static SCRIPT_ADDRESS_PREFIX = 0x05;
@@ -35,15 +35,22 @@ export class Mainnet extends INetwork {
   static WIF_PREFIX = 0xc6;
 }
 
-export class Voxels extends ICryptocurrency {
+export class Voxels extends Cryptocurrency {
 
   static NAME = 'Voxels';
   static SYMBOL = 'VOX';
-  static INFO = new Info({ WEBSITES: [        'http://revolutionvr.live',        'https://thevoxel.com'    ] });
+  static INFO = new Info({
+    WEBSITES: [
+      'http://revolutionvr.live',
+        'https://thevoxel.com'
+    ]
+  });
   static ECC = SLIP10Secp256k1ECC;
   static COIN_TYPE = CoinTypes.Voxels;
   static SUPPORT_BIP38 = true;
-  static NETWORKS = new Networks({ MAINNET: Mainnet });
+  static NETWORKS = new Networks({
+    MAINNET: Mainnet
+  });
   static DEFAULT_NETWORK = Voxels.NETWORKS.MAINNET;
   static ENTROPIES = new Entropies([
     'BIP39'

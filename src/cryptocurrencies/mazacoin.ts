@@ -14,12 +14,12 @@ import {
   XPublicKeyVersions
 } from '../const';
 import {
-  ICryptocurrency,
-  INetwork
-} from './icryptocurrency';
+  Cryptocurrency,
+  Network
+} from './cryptocurrency';
 
 
-export class Mainnet extends INetwork {
+export class Mainnet extends Network {
 
   static PUBLIC_KEY_ADDRESS_PREFIX = 0x32;
   static SCRIPT_ADDRESS_PREFIX = 0x09;
@@ -35,20 +35,22 @@ export class Mainnet extends INetwork {
   static WIF_PREFIX = 0xe0;
 }
 
-export class Mazacoin extends ICryptocurrency {
+export class Mazacoin extends Cryptocurrency {
 
   static NAME = 'Mazacoin';
   static SYMBOL = 'MZC';
   static INFO = new Info({
     SOURCE_CODE: 'https://github.com/MazaCoin/maza',
     WEBSITES: [
-        'http://www.mazacoin.org'
+      'http://www.mazacoin.org'
     ]
   });
   static ECC = SLIP10Secp256k1ECC;
   static COIN_TYPE = CoinTypes.Mazacoin;
   static SUPPORT_BIP38 = true;
-  static NETWORKS = new Networks({ MAINNET: Mainnet });
+  static NETWORKS = new Networks({
+    MAINNET: Mainnet
+  });
   static DEFAULT_NETWORK = Mazacoin.NETWORKS.MAINNET;
   static ENTROPIES = new Entropies([
     'BIP39'

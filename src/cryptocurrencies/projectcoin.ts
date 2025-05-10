@@ -14,12 +14,12 @@ import {
   XPublicKeyVersions
 } from '../const';
 import {
-  ICryptocurrency,
-  INetwork
-} from './icryptocurrency';
+  Cryptocurrency,
+  Network
+} from './cryptocurrency';
 
 
-export class Mainnet extends INetwork {
+export class Mainnet extends Network {
 
   static PUBLIC_KEY_ADDRESS_PREFIX = 0x37;
   static SCRIPT_ADDRESS_PREFIX = 0x08;
@@ -35,20 +35,22 @@ export class Mainnet extends INetwork {
   static WIF_PREFIX = 0x75;
 }
 
-export class ProjectCoin extends ICryptocurrency {
+export class ProjectCoin extends Cryptocurrency {
 
   static NAME = 'Project-Coin';
   static SYMBOL = 'PRJ';
   static INFO = new Info({
     SOURCE_CODE: 'https://github.com/projectcoincore/ProjectCoin',
     WEBSITES: [
-        'https://projectcoin.net'
+      'https://projectcoin.net'
     ]
   });
   static ECC = SLIP10Secp256k1ECC;
   static COIN_TYPE = CoinTypes.ProjectCoin;
   static SUPPORT_BIP38 = true;
-  static NETWORKS = new Networks({ MAINNET: Mainnet });
+  static NETWORKS = new Networks({
+    MAINNET: Mainnet
+  });
   static DEFAULT_NETWORK = ProjectCoin.NETWORKS.MAINNET;
   static ENTROPIES = new Entropies([
     'BIP39'

@@ -14,12 +14,12 @@ import {
   XPublicKeyVersions
 } from '../const';
 import {
-  ICryptocurrency,
-  INetwork
-} from './icryptocurrency';
+  Cryptocurrency,
+  Network
+} from './cryptocurrency';
 
 
-export class Mainnet extends INetwork {
+export class Mainnet extends Network {
 
   static PUBLIC_KEY_ADDRESS_PREFIX = 0x32;
   static SCRIPT_ADDRESS_PREFIX = 0x05;
@@ -35,7 +35,7 @@ export class Mainnet extends INetwork {
   static WIF_PREFIX = 0xb2;
 }
 
-export class Megacoin extends ICryptocurrency {
+export class Megacoin extends Cryptocurrency {
 
   static NAME = 'Megacoin';
   static SYMBOL = 'MEC';
@@ -43,13 +43,15 @@ export class Megacoin extends ICryptocurrency {
     SOURCE_CODE: 'https://github.com/LIMXTEC/Megacoin',
     WHITEPAPER: 'https://megacoin.eu/Megacoin.pdf',
     WEBSITES: [
-        'https://megacoin-mec.cc'
+      'https://megacoin-mec.cc'
     ]
   });
   static ECC = SLIP10Secp256k1ECC;
   static COIN_TYPE = CoinTypes.Megacoin;
   static SUPPORT_BIP38 = true;
-  static NETWORKS = new Networks({ MAINNET: Mainnet });
+  static NETWORKS = new Networks({
+    MAINNET: Mainnet
+  });
   static DEFAULT_NETWORK = Megacoin.NETWORKS.MAINNET;
   static ENTROPIES = new Entropies([
     'BIP39'
