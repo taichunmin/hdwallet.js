@@ -30,7 +30,7 @@ export class HDWDerivation extends Derivation {
     super(options);
     this.account = normalizeIndex(options.account ?? 0, true);
     this.ecc = normalizeIndex(this.getECCValue(
-      options.change ?? ECCS.SLIP10_SECP256K1
+      options.ecc ?? ECCS.SLIP10_SECP256K1
     ), false);
     this.address = normalizeIndex(options.address ?? 0, false);
     this.updateDerivation();

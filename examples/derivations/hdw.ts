@@ -1,70 +1,90 @@
 // SPDX-License-Identifier: MIT
 
-import { ECCS } from '../../src/derivations/hdw';
-import { DERIVATIONS, HDWDerivation } from '../../src/derivations';
+import { DERIVATIONS, HDWDerivation, ECCS } from '../../src/derivations';
+import { isAllEqual } from '../../src/utils';
 
-const HDWClass = DERIVATIONS.getDerivationClass('HDW') as typeof HDWDerivation;
-console.log(
-  'Retrieve class:',
-  HDWClass === HDWDerivation,
-  HDWClass.prototype.getName() === 'HDW'
-);
+const data = {
+  name: 'HDW',
+  account: 0,
+  ecc: ECCS.KHOLAW_ED25519,
+  address: 123,
+  path: "m/0'/3/123",
+  indexes: [ 2147483648, 3, 123 ],
+  depth: 3,
+  derivations: [
+    {
+      account: 0, ecc: ECCS.KHOLAW_ED25519, address: 123
+    },
+    {
+      account: '0', ecc: '3', address: '123'
+    },
+    {
+      account: '0', ecc: 3, address: '78-123'
+    }
+  ],
+  default: {
+    account: 0,
+    ecc: ECCS.SLIP10_SECP256K1,
+    address: 0,
+    path: "m/0'/0/0",
+    indexes: [ 2147483648, 0, 0 ],
+    depth: 3
+  }
+}
 
-const deriv = new HDWDerivation();
-console.log(
-  'Default:',
-  deriv instanceof HDWDerivation,
-  deriv.getName(),
-  deriv.toString(),
-  deriv.getIndexes()
-);
+const HDWDerivationClass: typeof HDWDerivation = DERIVATIONS.getDerivationClass(data.name);
 
-deriv.fromAccount(1);
-console.log(
-  'fromAccount:',
-  deriv.getAccount(),
-  deriv.toString(),
-  deriv.getIndexes()
-);
+for (let derivation of data.derivations) {
 
-deriv.fromEcc(ECCS.SLIP10Ed25519);
-console.log(
-  'fromEcc:',
-  deriv.getEcc(),
-  deriv.toString(),
-  deriv.getIndexes()
-);
+  const hdwDerivationClass: HDWDerivation = new HDWDerivationClass({
+    account: derivation.account, ecc: derivation.ecc, address: derivation.address
+  });
+  const hdwDerivation: HDWDerivation = new HDWDerivation({
+    account: derivation.account, ecc: derivation.ecc, address: derivation.address
+  });
 
-deriv.fromAddress(5);
-console.log(
-  'fromAddress:',
-  deriv.getAddress(),
-  deriv.toString(),
-  deriv.getIndexes()
-);
+  console.log(
+    isAllEqual(hdwDerivationClass.getAccount(), hdwDerivation.getAccount(), data.account),
+    isAllEqual(hdwDerivationClass.getECC(true), hdwDerivation.getECC(true), data.ecc),
+    isAllEqual(hdwDerivationClass.getAddress(), hdwDerivation.getAddress(), data.address),
+    isAllEqual(hdwDerivationClass.getPath(), hdwDerivation.getPath(), data.path),
+    isAllEqual(hdwDerivationClass.getIndexes(), hdwDerivation.getIndexes(), data.indexes),
+    isAllEqual(hdwDerivationClass.getDepth(), hdwDerivation.getDepth(), data.depth),
+  );
 
-console.log(
-  'Depth:',
-  deriv.getDepth()
-);
+  hdwDerivationClass.clean();
+  hdwDerivation.clean();
 
-deriv.clean();
-console.log(
-  'Cleaned:',
-  deriv.toString(),
-  deriv.getIndexes()
-);
+  console.log(
+    isAllEqual(hdwDerivationClass.getAccount(), hdwDerivation.getAccount(), data.default.account),
+    isAllEqual(hdwDerivationClass.getECC(true), hdwDerivation.getECC(true), data.default.ecc),
+    isAllEqual(hdwDerivationClass.getAddress(), hdwDerivation.getAddress(), data.default.address),
+    isAllEqual(hdwDerivationClass.getPath(), hdwDerivation.getPath(), data.default.path),
+    isAllEqual(hdwDerivationClass.getIndexes(), hdwDerivation.getIndexes(), data.default.indexes),
+    isAllEqual(hdwDerivationClass.getDepth(), hdwDerivation.getDepth(), data.default.depth),
+  );
 
-const rangeArray = new HDWDerivation({ address: [2, 4] });
-console.log(
-  'Range address [2,4]:',
-  rangeArray.toString(),
-  rangeArray.getIndexes()
-);
+  hdwDerivationClass.fromAccount(derivation.account);
+  hdwDerivation.fromAccount(derivation.account);
+  hdwDerivationClass.fromECC(derivation.ecc);
+  hdwDerivation.fromECC(derivation.ecc);
+  hdwDerivationClass.fromAddress(derivation.address);
+  hdwDerivation.fromAddress(derivation.address);
 
-const rangeString = new HDWDerivation({ address: '2-4' });
-console.log(
-  'Range address \'2-4\':',
-  rangeString.toString(),
-  rangeString.getIndexes()
-);
+  console.log(
+    isAllEqual(hdwDerivationClass.getAccount(), hdwDerivation.getAccount(), data.account),
+    isAllEqual(hdwDerivationClass.getECC(true), hdwDerivation.getECC(true), data.ecc),
+    isAllEqual(hdwDerivationClass.getAddress(), hdwDerivation.getAddress(), data.address),
+    isAllEqual(hdwDerivationClass.getPath(), hdwDerivation.getPath(), data.path),
+    isAllEqual(hdwDerivationClass.getIndexes(), hdwDerivation.getIndexes(), data.indexes),
+    isAllEqual(hdwDerivationClass.getDepth(), hdwDerivation.getDepth(), data.depth), '\n'
+  );
+}
+
+console.log('Account:', data.account);
+console.log('ECC:', data.ecc);
+console.log('Address:', data.address, '\n');
+
+console.log('Path:', data.path);
+console.log('Indexes:', data.indexes);
+console.log('Depth:', data.depth);
