@@ -1,45 +1,87 @@
 // SPDX-License-Identifier: MIT
 
-import {ELECTRUM_V1_ENTROPY_STRENGTHS, ElectrumV1Entropy} from "../../../src/entropies/electrum/v1";
-import { hexToBytes } from "../../../src/utils";
-import jsonData from "../../data/json/entropies.json"
+import {
+  ENTROPIES,
+  ElectrumV1Entropy,
+  ELECTRUM_V1_ENTROPY_STRENGTHS
+} from '../../../src/entropies';
+import { EntropyError } from '../../../src/exceptions';
+import vectors from '../../data/json/entropies.json';
 
-describe("ElectrumV1Entropy", () => {
-  it("should accept valid hex entropy", () => {
-    const entropy: string = jsonData['Electrum-V1']['128']['entropy'];
-    expect(ElectrumV1Entropy.isValid(entropy)).toBe(true);
+describe("Electrum-V1 Entropy", () => {
+  const vector = vectors["Electrum-V1"]["128"];
+  const strength = vector.strength as number;
+  const entropy  = vector.entropy as string;
+
+  it("defines the constant correctly", () => {
+    expect(
+      ELECTRUM_V1_ENTROPY_STRENGTHS.ONE_HUNDRED_TWENTY_EIGHT
+    ).toBe(strength);
   });
 
-  it("should store correct byte array", () => {
-    const entropy: string = jsonData['Electrum-V1']['128']['entropy'];
-    const electrumv1Entropy = new ElectrumV1Entropy(entropy);
-    const bytes = hexToBytes(entropy);
-    expect(electrumv1Entropy.entropy()).toEqual(entropy);
+  it("validates supported strengths", () => {
+    expect(ElectrumV1Entropy.isValidStrength(strength)).toBe(true);
+    expect(ElectrumV1Entropy.isValidStrength(strength - 8)).toBe(false);
   });
 
-  it("should throw error on invalid hex format", () => {
-    const badHex = "g123";
-    expect(() => new ElectrumV1Entropy(badHex)).toThrowError();
-  });
-
-  it("should generate a hex string of the correct length for all supported strengths", () => {
-    for (const strength of ElectrumV1Entropy.strengths) {
-      const entropy = ElectrumV1Entropy.generate(strength);
-      expect(typeof entropy).toBe("string");
-      expect(entropy.length).toBe(strength / 4);
+  it("generates hex of correct length for each supported strength", () => {
+    for (const s of ElectrumV1Entropy.strengths) {
+      const hex = ElectrumV1Entropy.generate(s);
+      expect(typeof hex).toBe("string");
+      expect(hex).toHaveLength(s / 4);
     }
   });
 
-  it("should return the original entropy and strength when given a 128-bit hex string", () => {
-    const entropy: string = ElectrumV1Entropy.generate(
-        ELECTRUM_V1_ENTROPY_STRENGTHS.ONE_HUNDRED_TWENTY_EIGHT
-    );
-    const electrumv1Entropy: ElectrumV1Entropy = new ElectrumV1Entropy(entropy);
-    expect(typeof electrumv1Entropy.entropy()).toBe("string");
-    expect(electrumv1Entropy.entropy()).toBe(entropy);
-    expect(typeof electrumv1Entropy.strength()).toBe("number");
-    expect(electrumv1Entropy.strength()).toBe(
-        ELECTRUM_V1_ENTROPY_STRENGTHS.ONE_HUNDRED_TWENTY_EIGHT
-    );
+  it("round-trips entropy and strength", () => {
+    const inst = new ElectrumV1Entropy(entropy);
+    expect(inst.getEntropy()).toBe(entropy);
+    expect(inst.getStrength()).toBe(strength);
+  });
+
+  it("reports its name correctly", () => {
+    expect(ElectrumV1Entropy.getName()).toBe(vector.name);
+  });
+
+  it("validates hex statically", () => {
+    expect(ElectrumV1Entropy.isValid(entropy)).toBe(true);
+    expect(ElectrumV1Entropy.isValid("00")).toBe(false);
+  });
+
+  it("throws on totally invalid hex", () => {
+    expect(() => new ElectrumV1Entropy("NOT_HEX")).toThrow(EntropyError);
+  });
+
+  it("rejects hex of unsupported length", () => {
+    const bad = entropy.slice(1); // drop one hex character
+    expect(ElectrumV1Entropy.isValid(bad)).toBe(false);
+  });
+
+  const RegistryClass = ENTROPIES.getEntropyClass(vector.name);
+
+  it("registry returns the same class", () => {
+    expect(RegistryClass).toBe(ElectrumV1Entropy);
+  });
+
+  it("registry instance matches direct instance", () => {
+    const fromReg = new RegistryClass(entropy);
+    const direct  = new ElectrumV1Entropy(entropy);
+    expect(fromReg.getEntropy()).toBe(direct.getEntropy());
+    expect(fromReg.getStrength()).toBe(direct.getStrength());
+  });
+
+  it("static methods and generate() are consistent", () => {
+    expect(RegistryClass.isValidStrength(strength)).toBe(ElectrumV1Entropy.isValidStrength(strength));
+    expect(RegistryClass.isValid(entropy)).toBe(ElectrumV1Entropy.isValid(entropy));
+
+    const genA = RegistryClass.generate(strength);
+    const genB = ElectrumV1Entropy.generate(strength);
+
+    expect(genA).toMatch(/^[0-9a-f]+$/);
+    expect(genB).toMatch(/^[0-9a-f]+$/);
+
+    expect(genA).toHaveLength(strength / 4);
+    expect(genB).toHaveLength(strength / 4);
+
+    expect(genA.length).toBe(genB.length);
   });
 });
