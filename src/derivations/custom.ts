@@ -20,7 +20,7 @@ export class CustomDerivation extends Derivation {
     const [
       _path, indexes, derivations
     ] = normalizeDerivation(
-      undefined, undefined
+      path, undefined
     );
     this.derivations = derivations;
     this.indexes = indexes;
@@ -41,12 +41,10 @@ export class CustomDerivation extends Derivation {
   }
 
   fromIndex(index: number, hardened = false): this {
-    this.indexes.push(
-      hardened ? index + 0x80000000 : index
-    );
     const path = hardened ? `${index}'` : `${index}`;
-    this.path = this.path === 'm/' ? `${this.path}${path}` : `${this.path}/${path}`;
-    return this;
+    return this.fromPath(
+      this.path === 'm/' ? `${this.path}${path}` : `${this.path}/${path}`
+    );
   }
 
   clean(): this {
