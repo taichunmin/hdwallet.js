@@ -1,62 +1,62 @@
 // SPDX-License-Identifier: MIT
 
-import {
-  normalizeIndex,
-  normalizeDerivation,
-  indexTupleToString,
-  IndexTuple
-} from '../utils';
 import { Derivation } from './derivation';
-import { DerivationOptions } from '../interfaces';
+import { normalizeIndex, normalizeDerivation, indexTupleToString } from '../utils';
+import { DerivationOptionsInterface } from '../interfaces';
+import { IndexType, DerivationsType } from '../types';
 
 export class ElectrumDerivation extends Derivation {
-  private _change: IndexTuple;
-  private _address: IndexTuple;
 
-  constructor(options: DerivationOptions = {}) {
+  private change: DerivationsType;
+  private address: DerivationsType;
+
+  constructor(options: DerivationOptionsInterface = {
+    change: 0, address: 0
+  }) {
     super(options);
-    const { change = 0, address = 0 } = options;
-    this._change = normalizeIndex(change, false);
-    this._address = normalizeIndex(address, false);
-    this.updatePath();
+    this.change = normalizeIndex(options.change ?? 0, false);
+    this.address = normalizeIndex(options.address ?? 0, false);
+    this.updateDerivation();
   }
 
   getName(): string {
     return 'Electrum';
   }
 
-  fromChange(change: string | number): this {
-    this._change = normalizeIndex(change, false);
-    this.updatePath();
+  private updateDerivation(): void {
+    const [path, indexes, derivations] = normalizeDerivation(
+      `m/${indexTupleToString(this.change)}/` +
+      `${indexTupleToString(this.address)}`
+    );
+    this.derivations = derivations;
+    this.indexes = indexes;
+    this.path = path;
+  }
+
+  fromChange(change: IndexType): this {
+    this.change = normalizeIndex(change, false);
+    this.updateDerivation();
     return this;
   }
 
-  fromAddress(address: string | number): this {
-    this._address = normalizeIndex(address, false);
-    this.updatePath();
+  fromAddress(address: IndexType): this {
+    this.address = normalizeIndex(address, false);
+    this.updateDerivation();
     return this;
   }
 
   clean(): this {
-    this._change = normalizeIndex(0, false);
-    this._address = normalizeIndex(0, false);
-    this.updatePath();
+    this.change = normalizeIndex(0, false);
+    this.address = normalizeIndex(0, false);
+    this.updateDerivation();
     return this;
   }
 
   getChange(): number {
-    return this._change.length === 3 ? this._change[1] : this._change[0];
+    return this.change.length === 3 ? this.change[1] : this.change[0];
   }
 
   getAddress(): number {
-    return this._address.length === 3 ? this._address[1] : this._address[0];
-  }
-
-  private updatePath(): void {
-    const path = `m/${indexTupleToString(this._change)}/${indexTupleToString(this._address)}`;
-    const [p, idxs, ders] = normalizeDerivation(path);
-    this._path = p;
-    this._indexes = idxs;
-    this._derivations = ders;
+    return this.address.length === 3 ? this.address[1] : this.address[0];
   }
 }

@@ -1,149 +1,135 @@
 // SPDX-License-Identifier: MIT
 
-import {
-  normalizeIndex,
-  normalizeDerivation,
-  indexTupleToString,
-  IndexTuple
-} from '../utils';
 import { Derivation } from './derivation';
-import { DerivationOptions } from '../interfaces';
+import { Cardano } from '../cryptocurrencies';
+import { normalizeIndex, normalizeDerivation, indexTupleToString } from '../utils';
+import { DerivationOptionsInterface } from '../interfaces';
+import { IndexType, DerivationType, DerivationsType } from '../types';
 import { DerivationError } from '../exceptions';
 
-export enum ROLES {
-  ExternalChain = 'external-chain',
-  InternalChain = 'internal-chain',
-  StakingKey    = 'staking-key'
-}
+export const ROLES = {
+  EXTERNAL_CHANGE: 'external-chain',
+  INTERNAL_CHANGE: 'internal-chain',
+  STAKING_KEY: 'staking-key'
+} as const;
 
 export class CIP1852Derivation extends Derivation {
-  protected _purpose: [number, boolean] = [1852, true];
-  private _coinType: IndexTuple;
-  private _account: IndexTuple;
-  private _role: IndexTuple;
-  private _address: IndexTuple;
-  private static roles: Record<string, number> = {
-    [ROLES.ExternalChain]: 0,
-    [ROLES.InternalChain]: 1,
-    [ROLES.StakingKey]:    2
-  };
+  
+  protected purpose: DerivationType = [ 1852, true ];
 
-  constructor(options: DerivationOptions = {}) {
+  private coinType: DerivationsType;
+  private account: DerivationsType;
+  private role: DerivationsType;
+  private address: DerivationsType;
+  
+  constructor(options: DerivationOptionsInterface = {
+    coinType: Cardano.COIN_TYPE, account: 0, role: ROLES.EXTERNAL_CHANGE, address: 0
+  }) {
     super(options);
-    const {
-      coinType = 1815,
-      account  = 0,
-      role     = ROLES.ExternalChain,
-      address  = 0
-    } = options;
-    const allowed = [
-      ...Object.keys(CIP1852Derivation.roles),
-      ...Object.values(CIP1852Derivation.roles),
-      ...Object.values(CIP1852Derivation.roles).map(String)
-    ];
-    if (!allowed.includes(role as any)) {
-      throw new DerivationError(
-        'Bad CIP1852 role index',
-        { expected: allowed, got: role }
-      );
-    }
-    this._coinType = normalizeIndex(coinType, true);
-    this._account  = normalizeIndex(account, true);
-    const roleVal = typeof role === 'string'
-      ? CIP1852Derivation.roles[role]
-      : (role as number);
-    this._role    = normalizeIndex(roleVal, false);
-    this._address = normalizeIndex(address, false);
-    this.updatePath();
+    this.coinType = normalizeIndex(options.coinType ?? Cardano.COIN_TYPE, true);
+    this.account = normalizeIndex(options.account ?? 0, true);
+    this.role = normalizeIndex(this.getRoleValue(
+      options.role ?? ROLES.EXTERNAL_CHANGE
+    ), false);
+    this.address = normalizeIndex(options.address ?? 0, false);
+    this.updateDerivation();
   }
 
   getName(): string {
     return 'CIP1852';
   }
 
+  protected getRoleValue(
+    role: IndexType, nameOnly: boolean = false
+  ): any {
+    if (Array.isArray(role)) {
+      throw new DerivationError('Bad role instance', {
+        expected: 'number | string', got: typeof role
+      });
+    }
+    const externalChange = [ ROLES.EXTERNAL_CHANGE, 0, '0' ];
+    const internalChange = [ ROLES.INTERNAL_CHANGE, 1, '1' ];
+    const stakingKey = [ ROLES.STAKING_KEY, 2, '2' ];
+    const exceptedRole = [
+      ...externalChange, ...internalChange, ...stakingKey
+    ];
+    if (!exceptedRole.includes(role)) {
+      throw new DerivationError(
+        `Bad ${this.getName()} role index`, {
+          expected: exceptedRole, got: role
+        }
+      );
+    }
+    if (externalChange.includes(role)) return nameOnly ? ROLES.EXTERNAL_CHANGE : 0;
+    if (internalChange.includes(role)) return nameOnly ? ROLES.INTERNAL_CHANGE : 1;
+    if (stakingKey.includes(role)) return nameOnly ? ROLES.STAKING_KEY : 2;
+  }
+
+  private updateDerivation(): void {
+    const [path, indexes, derivations] = normalizeDerivation(
+      `m/${indexTupleToString(this.purpose)}/` +
+      `${indexTupleToString(this.coinType)}/` +
+      `${indexTupleToString(this.account)}/` +
+      `${indexTupleToString(this.role)}/` +
+      `${indexTupleToString(this.address)}`
+    );
+    this.derivations = derivations;
+    this.indexes = indexes;
+    this.path = path;
+  }
+
   fromCoinType(coinType: string | number): this {
-    this._coinType = normalizeIndex(coinType, true);
-    this.updatePath();
+    this.coinType = normalizeIndex(coinType, true);
+    this.updateDerivation();
     return this;
   }
 
-  fromAccount(account: string | number | [number, number]): this {
-    this._account = normalizeIndex(account, true);
-    this.updatePath();
+  fromAccount(account: IndexType): this {
+    this.account = normalizeIndex(account, true);
+    this.updateDerivation();
     return this;
   }
 
   fromRole(role: string | number): this {
-    const allowed = [
-      ...Object.keys(CIP1852Derivation.roles),
-      ...Object.values(CIP1852Derivation.roles),
-      ...Object.values(CIP1852Derivation.roles).map(String)
-    ];
-    if (!allowed.includes(role as any)) {
-      throw new DerivationError(
-        'Bad CIP1852 role index',
-        { expected: allowed, got: role }
-      );
-    }
-    const roleVal = typeof role === 'string'
-      ? CIP1852Derivation.roles[role]
-      : (role as number);
-    this._role = normalizeIndex(roleVal, false);
-    this.updatePath();
+    this.role = normalizeIndex(this.getRoleValue(role), false);
+    this.updateDerivation();
     return this;
   }
 
-  fromAddress(address: string | number | [number, number]): this {
-    this._address = normalizeIndex(address, false);
-    this.updatePath();
+  fromAddress(address: IndexType): this {
+    this.address = normalizeIndex(address, false);
+    this.updateDerivation();
     return this;
   }
 
   clean(): this {
-    this._account  = normalizeIndex(0, true);
-    this._role     = normalizeIndex(CIP1852Derivation.roles[ROLES.ExternalChain], false);
-    this._address  = normalizeIndex(0, false);
-    this.updatePath();
+    this.coinType = normalizeIndex(Cardano.COIN_TYPE, true);
+    this.account = normalizeIndex(0, true);
+    this.role = normalizeIndex(
+      this.getRoleValue(ROLES.EXTERNAL_CHANGE), false
+    );
+    this.address = normalizeIndex(0, false);
+    this.updateDerivation();
     return this;
   }
 
   getPurpose(): number {
-    return this._purpose[0];
+    return this.purpose[0];
   }
 
   getCoinType(): number {
-    return this._coinType[0];
+    return this.coinType[0];
   }
 
   getAccount(): number {
-    return this._account.length === 3
-      ? this._account[1]
-      : this._account[0];
+    return this.account.length === 3 ? this.account[1] : this.account[0];
   }
 
-  getRole(): string {
-    const val = this._role[0];
-    for (const [k, v] of Object.entries(CIP1852Derivation.roles)) {
-      if (v === val) return k;
-    }
-    return '';
+  getRole(nameOnly: boolean = true): string {
+    return this.getRoleValue(this.role[0], nameOnly);
   }
 
   getAddress(): number {
-    return this._address.length === 3
-      ? this._address[1]
-      : this._address[0];
-  }
-
-  private updatePath(): void {
-    const path = `m/${indexTupleToString(this._purpose)}/` +
-      `${indexTupleToString(this._coinType)}/` +
-      `${indexTupleToString(this._account)}/` +
-      `${indexTupleToString(this._role)}/` +
-      `${indexTupleToString(this._address)}`;
-    const [p, idxs, ders] = normalizeDerivation(path);
-    this._path        = p;
-    this._indexes     = idxs;
-    this._derivations = ders;
+    return this.address.length === 3 ? this.address[1] : this.address[0];
   }
 }

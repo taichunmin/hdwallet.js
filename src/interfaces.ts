@@ -1,5 +1,8 @@
 // SPDX-License-Identifier: MIT
 
+import { EllipticCurveCryptography } from './ecc';
+import { IndexType } from './types';
+
 export interface OptionsPrivateKey {
   extendedKey?: Uint8Array;
 }
@@ -101,6 +104,24 @@ export interface SeedOptionsInterface {
   mnemonicType?: string;
 }
 
+export interface DerivationOptionsInterface {
+  // Custom
+  path?: string;
+  indexes?: number[];
+  // BIP | Electrum
+  coinType?: IndexType;
+  account?: IndexType;
+  change?: IndexType;
+  address?: IndexType;
+  // Cardano
+  role?: IndexType;
+  // Monero
+  minor?: IndexType;
+  major?: IndexType;
+  // HDW
+  ecc?: string | number;
+}
+
 export interface AddressOptionsInterface {
   hrp?: string,
   addressPrefix?: string;
@@ -112,22 +133,4 @@ export interface AddressOptionsInterface {
   witnessVersion?: number;
   skipChecksumEncode?: boolean;
   alphabet?: string;
-}
-
-export interface DerivationOptions {
-  // Custom
-  path?: string;
-  indexes?: number[];
-  // BIP | Electrum
-  coinType?: string | number;
-  account?: string | number | [number, number];
-  change?: string | number;
-  address?: string | number | [number, number];
-  // Cardano
-  role?: string | number;
-  // Monero
-  minor?: string | number | [number, number];
-  major?: string | number | [number, number];
-  // HDW
-  ecc?: string | number | typeof EllipticCurveCryptography;
 }

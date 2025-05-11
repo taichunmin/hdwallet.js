@@ -1,63 +1,63 @@
 // SPDX-License-Identifier: MIT
 
-import { normalizeDerivation } from '../utils';
 import { Derivation } from './derivation';
+import { normalizeDerivation } from '../utils';
 import { DerivationError } from '../exceptions';
-import { DerivationOptions } from '../interfaces';
 
 export class CustomDerivation extends Derivation {
-  constructor(options?: DerivationOptions) {
-    super(options);
-  }
 
   getName(): string {
     return 'Custom';
   }
 
   fromPath(path: string): this {
-    if (typeof path !== 'string') {
-      throw new DerivationError('Bad path instance', { expected: 'string', got: typeof path });
-    }
     if (!path.startsWith('m/')) {
       throw new DerivationError(
         'Bad path format',
         { expected: "like this type of path \'m/0'/0\'", got: path }
       );
     }
-    const [p, idxs, ders] = normalizeDerivation(path, undefined);
-    this._path = p;
-    this._indexes = idxs;
-    this._derivations = ders;
+    const [
+      _path, indexes, derivations
+    ] = normalizeDerivation(
+      undefined, undefined
+    );
+    this.derivations = derivations;
+    this.indexes = indexes;
+    this.path = _path;
     return this;
   }
 
   fromIndexes(indexes: number[]): this {
-    if (!Array.isArray(indexes)) {
-      throw new DerivationError('Bad indexes instance', { expected: 'number[]', got: typeof indexes });
-    }
-    const [p, idxs, ders] = normalizeDerivation(undefined, indexes);
-    this._path = p;
-    this._indexes = idxs;
-    this._derivations = ders;
+    const [
+      path, _indexes, derivations
+    ] = normalizeDerivation(
+      undefined, indexes
+    );
+    this.derivations = derivations;
+    this.indexes = _indexes;
+    this.path = path;
     return this;
   }
 
   fromIndex(index: number, hardened = false): this {
-    if (typeof index !== 'number') {
-      throw new DerivationError('Bad index instance', { expected: 'number', got: typeof index });
-    }
-    const i = hardened ? index + 0x80000000 : index;
-    this._indexes.push(i);
-    const seg = hardened ? `${index}'` : `${index}`;
-    this._path = this._path === 'm/' ? `${this._path}${seg}` : `${this._path}/${seg}`;
+    this.indexes.push(
+      hardened ? index + 0x80000000 : index
+    );
+    const path = hardened ? `${index}'` : `${index}`;
+    this.path = this.path === 'm/' ? `${this.path}${path}` : `${this.path}/${path}`;
     return this;
   }
 
   clean(): this {
-    const [p, idxs, ders] = normalizeDerivation(undefined, undefined);
-    this._path = p;
-    this._indexes = idxs;
-    this._derivations = ders;
+    const [
+      path, indexes, derivations
+    ] = normalizeDerivation(
+      undefined, undefined
+    );
+    this.derivations = derivations;
+    this.indexes = indexes;
+    this.path = path;
     return this;
   }
 }

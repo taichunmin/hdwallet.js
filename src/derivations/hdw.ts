@@ -1,146 +1,130 @@
 // SPDX-License-Identifier: MIT
 
-import {
-  normalizeIndex,
-  normalizeDerivation,
-  indexTupleToString,
-  IndexTuple
-} from '../utils';
-import {
-  ECCS as EllipticCurveCryptographies, 
-  EllipticCurveCryptography
-} from '../ecc';
 import { Derivation } from './derivation';
+import {
+  normalizeIndex, normalizeDerivation, indexTupleToString, validateAndGetData
+} from '../utils';
+import { EllipticCurveCryptography } from '../ecc';
+import { DerivationOptionsInterface } from '../interfaces';
+import { IndexType, DerivationsType } from '../types';
 import { DerivationError } from '../exceptions';
-import { DerivationOptions } from '../interfaces';
 
-export enum ECCS {
-  SLIP10Secp256k1      = 'SLIP10-Secp256k1',
-  SLIP10Ed25519        = 'SLIP10-Ed25519',
-  SLIP10Nist256p1      = 'SLIP10-Nist256p1',
-  KholawEd25519        = 'Kholaw-Ed25519',
-  SLIP10Ed25519Blake2b = 'SLIP10-Ed25519-Blake2b',
-  SLIP10Ed25519Monero  = 'SLIP10-Ed25519-Monero'
-}
+export const ECCS = {
+  SLIP10_SECP256K1: 'SLIP10-Secp256k1',
+  SLIP10_ED25519: 'SLIP10-Ed25519',
+  SLIP10_NIST256P1: 'SLIP10-Nist256p1',
+  KHOLAW_ED25519: 'Kholaw-Ed25519',
+  SLIP10_ED25519BLAKE2B: 'SLIP10-Ed25519-Blake2b',
+  SLIP10_ED25519MONERO: 'SLIP10-Ed25519-Monero'
+} as const;
 
 export class HDWDerivation extends Derivation {
-  private _account: IndexTuple;
-  private _ecc: IndexTuple;
-  private _address: IndexTuple;
-  private static eccs: Record<string, number> = {
-    [ECCS.SLIP10Secp256k1]:       0,
-    [ECCS.SLIP10Ed25519]:         1,
-    [ECCS.SLIP10Nist256p1]:       2,
-    [ECCS.KholawEd25519]:         3,
-    [ECCS.SLIP10Ed25519Blake2b]:  4,
-    [ECCS.SLIP10Ed25519Monero]:   5
-  };
 
-  constructor(options: DerivationOptions = {}) {
+  private account: DerivationsType;
+  private ecc: DerivationsType;
+  private address: DerivationsType;
+
+  constructor(options: DerivationOptionsInterface = {
+    account: 0, ecc: ECCS.SLIP10_SECP256K1, address: 0
+  }) {
     super(options);
-    const {
-      account = 0,
-      ecc     = ECCS.SLIP10Secp256k1,
-      address = 0
-    } = options;
-    const allowed = [
-      ...Object.keys(HDWDerivation.eccs),
-      ...Object.values(HDWDerivation.eccs),
-      ...EllipticCurveCryptographies.getClasses().map(c => c.NAME),
-      ...Object.values(HDWDerivation.eccs).map(String)
-    ];
-    if (!allowed.includes(ecc as any)) {
-      throw new DerivationError(
-        'Bad HDW ecc index',
-        { expected: allowed, got: ecc }
-      );
-    }
-    const eccKey = typeof ecc === 'string' || typeof ecc === 'number'
-      ? ecc as string | number
-      : (ecc as typeof EllipticCurveCryptography).NAME;
-    this._account = normalizeIndex(account, true);
-    const eccVal = typeof eccKey === 'string' && eccKey in HDWDerivation.eccs
-      ? HDWDerivation.eccs[eccKey]
-      : eccKey as number;
-    this._ecc     = normalizeIndex(eccVal, false);
-    this._address = normalizeIndex(address, false);
-    this.updatePath();
+    this.account = normalizeIndex(options.account ?? 0, true);
+    this.ecc = normalizeIndex(this.getECCValue(
+      options.change ?? ECCS.SLIP10_SECP256K1
+    ), false);
+    this.address = normalizeIndex(options.address ?? 0, false);
+    this.updateDerivation();
   }
 
   getName(): string {
     return 'HDW';
   }
 
-  fromAccount(account: string | number | [number, number]): this {
-    this._account = normalizeIndex(account, true);
-    this.updatePath();
-    return this;
-  }
-
-  fromEcc(ecc: string | number | typeof EllipticCurveCryptography): this {
-    const allowed = [
-      ...Object.keys(HDWDerivation.eccs),
-      ...Object.values(HDWDerivation.eccs),
-      ...EllipticCurveCryptographies.getClasses().map(c => c.NAME),
-      ...Object.values(HDWDerivation.eccs).map(String)
+  protected getECCValue(
+    ecc: IndexType | EllipticCurveCryptography, nameOnly: boolean = false
+  ): any {
+    if (Array.isArray(ecc)) {
+      throw new DerivationError('Bad ECC instance', {
+        expected: 'number | string', got: typeof ecc
+      });
+    }
+    let [curve, isECCClass] = validateAndGetData(
+      ecc, EllipticCurveCryptography
+    );
+    curve = isECCClass ? curve.NAME : ecc;
+    const slip10Secp256k1 = [ ECCS.SLIP10_SECP256K1, 0, '0' ];
+    const slip10Ed25519 = [ ECCS.SLIP10_ED25519, 1, '1' ];
+    const slip10Nist256p1 = [ ECCS.SLIP10_NIST256P1, 2, '2' ];
+    const kholawEd25519 = [ ECCS.KHOLAW_ED25519, 3, '3' ];
+    const slip10Ed25519Blake2b = [ ECCS.SLIP10_ED25519BLAKE2B, 4, '4' ];
+    const slip10Ed25519Monero = [ ECCS.SLIP10_ED25519MONERO, 5, '5' ];
+    const exceptedECC = [
+      ...slip10Secp256k1, ...slip10Ed25519, ...slip10Nist256p1,
+      ...kholawEd25519, ...slip10Ed25519Blake2b, ...slip10Ed25519Monero
     ];
-    if (!allowed.includes(ecc as any)) {
+    if (!exceptedECC.includes(curve)) {
       throw new DerivationError(
-        'Bad HDW ecc index',
-        { expected: allowed, got: ecc }
+        `Bad ${this.getName()} ECC index`, {
+          expected: exceptedECC, got: curve
+        }
       );
     }
-    const eccKey = typeof ecc === 'string' || typeof ecc === 'number'
-      ? ecc as string | number
-      : (ecc as typeof EllipticCurveCryptography).NAME;
-    const eccVal = typeof eccKey === 'string' && eccKey in HDWDerivation.eccs
-      ? HDWDerivation.eccs[eccKey]
-      : eccKey as number;
-    this._ecc = normalizeIndex(eccVal, false);
-    this.updatePath();
+    if (slip10Secp256k1.includes(curve)) return nameOnly ? ECCS.SLIP10_SECP256K1 : 0;
+    if (slip10Ed25519.includes(curve)) return nameOnly ? ECCS.SLIP10_ED25519 : 1;
+    if (slip10Nist256p1.includes(curve)) return nameOnly ? ECCS.SLIP10_NIST256P1 : 2;
+    if (kholawEd25519.includes(curve)) return nameOnly ? ECCS.KHOLAW_ED25519 : 3;
+    if (slip10Ed25519Blake2b.includes(curve)) return nameOnly ? ECCS.SLIP10_ED25519BLAKE2B : 4;
+    if (slip10Ed25519Monero.includes(curve)) return nameOnly ? ECCS.SLIP10_ED25519MONERO : 5;
+  }
+
+  private updateDerivation(): void {
+    const [path, indexes, derivations] = normalizeDerivation(
+      `m/${indexTupleToString(this.account)}/` +
+      `${indexTupleToString(this.ecc)}/` +
+      `${indexTupleToString(this.address)}`
+    );
+    this.derivations = derivations;
+    this.indexes = indexes;
+    this.path = path;
+  }
+
+  fromAccount(account: IndexType): this {
+    this.account = normalizeIndex(account, true);
+    this.updateDerivation();
     return this;
   }
 
-  fromAddress(address: string | number | [number, number]): this {
-    this._address = normalizeIndex(address, false);
-    this.updatePath();
+  fromECC(ecc: string | number | EllipticCurveCryptography): this {
+    this.ecc = normalizeIndex(this.getECCValue(ecc), false);
+    this.updateDerivation();
+    return this;
+  }
+
+  fromAddress(address: IndexType): this {
+    this.address = normalizeIndex(address, false);
+    this.updateDerivation();
     return this;
   }
 
   clean(): this {
-    this._account = normalizeIndex(0, true);
-    this._address = normalizeIndex(0, false);
-    this.updatePath();
+    this.account = normalizeIndex(0, true);
+    this.ecc = normalizeIndex(
+      this.getECCValue(ECCS.SLIP10_SECP256K1), false
+    );
+    this.address = normalizeIndex(0, false);
+    this.updateDerivation();
     return this;
   }
 
   getAccount(): number {
-    return this._account.length === 3
-      ? this._account[1]
-      : this._account[0];
+    return this.account.length === 3 ? this.account[1] : this.account[0];
   }
 
-  getEcc(): string {
-    const val = this._ecc[0];
-    for (const [k, v] of Object.entries(HDWDerivation.eccs)) {
-      if (v === val) return k;
-    }
-    return '';
+  getECC(nameOnly: boolean = true): string {
+    return this.getECCValue(this.ecc[0], nameOnly);
   }
 
   getAddress(): number {
-    return this._address.length === 3
-      ? this._address[1]
-      : this._address[0];
-  }
-
-  private updatePath(): void {
-    const path = `m/${indexTupleToString(this._account)}/` +
-      `${indexTupleToString(this._ecc)}/` +
-      `${indexTupleToString(this._address)}`;
-    const [p, idxs, ders] = normalizeDerivation(path);
-    this._path        = p;
-    this._indexes     = idxs;
-    this._derivations = ders;
+    return this.address.length === 3 ? this.address[1] : this.address[0];
   }
 }

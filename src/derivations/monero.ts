@@ -1,63 +1,63 @@
 // SPDX-License-Identifier: MIT
 
-import {
-    normalizeIndex,
-    normalizeDerivation,
-    indexTupleToString,
-    IndexTuple
-  } from '../utils';
-  import { Derivation } from './derivation';
-  import { DerivationOptions } from '../interfaces';
+import { Derivation } from './derivation';
+import { normalizeIndex, normalizeDerivation, indexTupleToString } from '../utils';
+import { DerivationOptionsInterface } from '../interfaces';
+import { IndexType, DerivationsType } from '../types';
 
-  export class MoneroDerivation extends Derivation {
-    private _minor: IndexTuple;
-    private _major: IndexTuple;
-  
-    constructor(options: DerivationOptions = {}) {
-      super(options);
-      const { minor = 1, major = 0 } = options;
-      this._minor = normalizeIndex(minor, false);
-      this._major = normalizeIndex(major, false);
-      this.updatePath();
-    }
-  
-    getName(): string {
-      return 'Monero';
-    }
-  
-    fromMinor(minor: string | number | [number, number]): this {
-      this._minor = normalizeIndex(minor, false);
-      this.updatePath();
-      return this;
-    }
-  
-    fromMajor(major: string | number | [number, number]): this {
-      this._major = normalizeIndex(major, false);
-      this.updatePath();
-      return this;
-    }
-  
-    clean(): this {
-      this._minor = normalizeIndex(1, false);
-      this._major = normalizeIndex(0, false);
-      this.updatePath();
-      return this;
-    }
-  
-    getMinor(): number {
-      return this._minor.length === 3 ? this._minor[1] : this._minor[0];
-    }
-  
-    getMajor(): number {
-      return this._major.length === 3 ? this._major[1] : this._major[0];
-    }
-  
-    private updatePath(): void {
-      const path = `m/${indexTupleToString(this._minor)}/${indexTupleToString(this._major)}`;
-      const [p, idxs, ders] = normalizeDerivation(path);
-      this._path = p;
-      this._indexes = idxs;
-      this._derivations = ders;
-    }
+export class MoneroDerivation extends Derivation {
+
+  private minor: DerivationsType;
+  private major: DerivationsType;
+
+  constructor(options: DerivationOptionsInterface = {
+    minor: 1, major: 0
+  }) {
+    super(options);
+    this.minor = normalizeIndex(options.minor ?? 0, false);
+    this.major = normalizeIndex(options.major ?? 0, false);
+    this.updateDerivation();
   }
+
+  getName(): string {
+    return 'Monero';
+  }
+
+  private updateDerivation(): void {
+    const [path, indexes, derivations] = normalizeDerivation(
+      `m/${indexTupleToString(this.minor)}/` +
+      `${indexTupleToString(this.major)}`
+    );
+    this.derivations = derivations;
+    this.indexes = indexes;
+    this.path = path;
+  }
+
+  fromMinor(minor: IndexType): this {
+    this.minor = normalizeIndex(minor, false);
+    this.updateDerivation();
+    return this;
+  }
+
+  fromMajor(major: IndexType): this {
+    this.major = normalizeIndex(major, false);
+    this.updateDerivation();
+    return this;
+  }
+
+  clean(): this {
+    this.minor = normalizeIndex(1, false);
+    this.major = normalizeIndex(0, false);
+    this.updateDerivation();
+    return this;
+  }
+
+  getMinor(): number {
+    return this.minor.length === 3 ? this.minor[1] : this.minor[0];
+  }
+
+  getMajor(): number {
+    return this.major.length === 3 ? this.major[1] : this.major[0];
+  }
+}
   

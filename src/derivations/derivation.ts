@@ -1,78 +1,45 @@
 // SPDX-License-Identifier: MIT
 
-import { EllipticCurveCryptography } from '../ecc';
-import { normalizeDerivation, IndexTuple } from '../utils';
-import { DerivationOptions } from '../interfaces';
+import { normalizeDerivation } from '../utils';
+import { DerivationOptionsInterface } from '../interfaces';
+import { DerivationsType, DerivationType } from '../types';
 
 export class Derivation {
-  protected _path: string;
-  protected _indexes: number[];
-  protected _derivations: IndexTuple[];
 
-  constructor(options?: DerivationOptions) {
-    const [p, idxs, ders] = normalizeDerivation(options?.path, options?.indexes);
-    this._path = p;
-    this._indexes = idxs;
-    this._derivations = ders;
-  }
+  path: string;
+  indexes: number[];
+  derivations: DerivationsType[];
 
-  toString(): string {
-    return this._path;
+  protected purpose: DerivationType = [ 0, true ];
+
+  constructor(
+    options: DerivationOptionsInterface = { }
+  ) {
+    const [path, indexes, derivations] = normalizeDerivation(
+      options?.path, options?.indexes
+    );
+    this.derivations = derivations;
+    this.indexes = indexes;
+    this.path = path;
   }
 
   getName(): string {
-    throw new Error('Not implemented: getName()');
-  }
-
-  clean(): this {
-    throw new Error('Not implemented: clean()');
+    throw new Error('Must override getName()');
   }
 
   getPath(): string {
-    return this._path;
+    return this.path;
   }
 
   getIndexes(): number[] {
-    return this._indexes;
+    return this.indexes;
   }
 
-  getDerivations(): IndexTuple[] {
-    return this._derivations;
+  getDerivations(): DerivationsType[] {
+    return this.derivations;
   }
 
   getDepth(): number {
-    return this._derivations.length;
-  }
-
-  getPurpose(): number {
-    throw new Error('Not implemented: getPurpose()');
-  }
-
-  getCoinType(): number {
-    throw new Error('Not implemented: getCoinType()');
-  }
-
-  getAccount(): number {
-    throw new Error('Not implemented: getAccount()');
-  }
-
-  getChange(): number | string {
-    throw new Error('Not implemented: getChange()');
-  }
-
-  getRole(): string {
-    throw new Error('Not implemented: getRole()');
-  }
-
-  getAddress(): number {
-    throw new Error('Not implemented: getAddress()');
-  }
-
-  getMinor(): number {
-    throw new Error('Not implemented: getMinor()');
-  }
-
-  getMajor(): number {
-    throw new Error('Not implemented: getMajor()');
+    return this.derivations.length;
   }
 }
