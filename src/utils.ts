@@ -4,6 +4,7 @@ import crypto from 'crypto';
 import { Buffer } from 'buffer';
 
 import { DerivationError } from './exceptions';
+import { DerivationsType, IndexType } from './types';
 
 /**
  * Normalize any Buffer / Uint8Array / string into a Node.js Buffer.
@@ -265,20 +266,30 @@ export function binaryStringToBytes(
 
 /**
  * Returns true if every input (all of the same type) is equal:
- *  - strings, numbers or booleans compared with `===`
- *  - Buffer/Uint8Array/ArrayBuffer/TypedArray/DataView by length + byte-by-byte
+ * - strings, numbers or booleans compared with `===`
+ * - Array of primitives (e.g., number[], string[], boolean[]) by length + deep comparison
+ * - Buffer/Uint8Array/ArrayBuffer/TypedArray/DataView by byte-by-byte comparison
  * If any two inputs differ in type, returns false.
  */
 export function isAllEqual(
-  ...inputs: (Uint8Array | Buffer | ArrayBuffer | ArrayBufferView | string | number | boolean)[]
+  ...inputs: (
+    Uint8Array | Buffer | ArrayBuffer | ArrayBufferView |
+    string | number | boolean |
+    string[] | number[] | boolean[]
+  )[]
 ): boolean {
   if (inputs.length < 2) return true;
 
-  // classify into a simple type tag
   const getTag = (v: unknown): string => {
     if (typeof v === 'string')   return 'string';
     if (typeof v === 'number')   return 'number';
     if (typeof v === 'boolean')  return 'boolean';
+    if (Array.isArray(v)) {
+      if (v.every(i => typeof i === 'number'))  return 'array:number';
+      if (v.every(i => typeof i === 'string'))  return 'array:string';
+      if (v.every(i => typeof i === 'boolean')) return 'array:boolean';
+      return 'array:unknown';
+    }
     if (v instanceof Uint8Array) return 'uint8array';
     if (Buffer.isBuffer(v))      return 'buffer';
     if (v instanceof ArrayBuffer) return 'arraybuffer';
@@ -287,27 +298,35 @@ export function isAllEqual(
   };
 
   const firstTag = getTag(inputs[0]);
-  if (firstTag === 'unknown') return false;
+  if (firstTag === 'unknown' || firstTag === 'array:unknown') return false;
 
-  // all must share the same tag
   for (const v of inputs.slice(1)) {
     if (getTag(v) !== firstTag) return false;
   }
 
-  // primitive equality
   if (firstTag === 'string' || firstTag === 'number' || firstTag === 'boolean') {
     const first = inputs[0] as string | number | boolean;
     return inputs.every(v => v === first);
   }
 
-  // byte-array equality
+  if (firstTag.startsWith('array:')) {
+    const firstArr = inputs[0] as (string[] | number[] | boolean[]);
+    const len = firstArr.length;
+    return inputs.slice(1).every(item => {
+      const arr = item as typeof firstArr;
+      if (arr.length !== len) return false;
+      for (let i = 0; i < len; i++) {
+        if (arr[i] !== firstArr[i]) return false;
+      }
+      return true;
+    });
+  }
+
   const normalize = (v: any): Uint8Array => {
     if (v instanceof Uint8Array) return v;
     if (Buffer.isBuffer(v))      return Uint8Array.from(v);
     if (v instanceof ArrayBuffer) return new Uint8Array(v);
-    // any TypedArray or DataView
-    const view = v as ArrayBufferView;
-    return new Uint8Array(view.buffer, view.byteOffset, view.byteLength);
+    return new Uint8Array(v.buffer, v.byteOffset, v.byteLength);
   };
 
   const firstArr = normalize(inputs[0]);
@@ -409,14 +428,12 @@ export function indexesToPath(indexes: number[]): string {
   );
 }
 
-export type IndexTuple = [number, boolean] | [number, number, boolean];
-
 /**
  * Normalize an index input.
  */
 export function normalizeIndex(
-  index: number | string | [number, number], hardened = false
-): IndexTuple {
+  index: IndexType, hardened = false
+): DerivationsType {
   if (typeof index === 'number') {
     if (index < 0) throw new DerivationError(`Bad index: ${index}`);
     return [index, hardened];
@@ -461,10 +478,10 @@ export function normalizeIndex(
  */
 export function normalizeDerivation(
   path?: string, indexes?: number[]
-): [string, number[], IndexTuple[]] {
+): [string, number[], DerivationsType[]] {
   let _path = 'm';
   const _indexes: number[] = [];
-  const _deriv: IndexTuple[] = [];
+  const _deriv: DerivationsType[] = [];
 
   if (indexes && path) {
     throw new DerivationError('Provide either path or indexes, not both');
@@ -507,7 +524,7 @@ export function normalizeDerivation(
 /**
  * Convert an IndexTuple back to a single integer.
  */
-export function indexTupleToInteger(idx: IndexTuple): number {
+export function indexTupleToInteger(idx: DerivationsType): number {
   if (idx.length === 2) {
     const [i, h] = idx;
     return i + (h ? 0x80000000 : 0);
@@ -520,7 +537,7 @@ export function indexTupleToInteger(idx: IndexTuple): number {
 /**
  * Convert an IndexTuple to its string form.
  */
-export function indexTupleToString(idx: IndexTuple): string {
+export function indexTupleToString(idx: DerivationsType): string {
   if (idx.length === 2) {
     const [i, h] = idx;
     return `${i}${h ? "'" : ''}`;
