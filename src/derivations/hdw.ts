@@ -15,12 +15,12 @@ import { DerivationError } from '../exceptions';
 import { DerivationOptions } from '../interfaces';
 
 export enum ECCS {
-  SLIP10_Secp256k1      = 'SLIP10-Secp256k1',
-  SLIP10_Ed25519        = 'SLIP10-Ed25519',
-  SLIP10_Nist256p1      = 'SLIP10-Nist256p1',
-  KHOLAW_ED25519        = 'Kholaw-Ed25519',
-  SLIP10_Ed25519_Blake2b= 'SLIP10-Ed25519-Blake2b',
-  SLIP10_Ed25519_Monero = 'SLIP10-Ed25519-Monero'
+  SLIP10Secp256k1      = 'SLIP10-Secp256k1',
+  SLIP10Ed25519        = 'SLIP10-Ed25519',
+  SLIP10Nist256p1      = 'SLIP10-Nist256p1',
+  KholawEd25519        = 'Kholaw-Ed25519',
+  SLIP10Ed25519Blake2b = 'SLIP10-Ed25519-Blake2b',
+  SLIP10Ed25519Monero  = 'SLIP10-Ed25519-Monero'
 }
 
 export class HDWDerivation extends Derivation {
@@ -28,19 +28,19 @@ export class HDWDerivation extends Derivation {
   private _ecc: IndexTuple;
   private _address: IndexTuple;
   private static eccs: Record<string, number> = {
-    [ECCS.SLIP10_Secp256k1]:       0,
-    [ECCS.SLIP10_Ed25519]:         1,
-    [ECCS.SLIP10_Nist256p1]:       2,
-    [ECCS.KHOLAW_ED25519]:         3,
-    [ECCS.SLIP10_Ed25519_Blake2b]: 4,
-    [ECCS.SLIP10_Ed25519_Monero]:  5
+    [ECCS.SLIP10Secp256k1]:       0,
+    [ECCS.SLIP10Ed25519]:         1,
+    [ECCS.SLIP10Nist256p1]:       2,
+    [ECCS.KholawEd25519]:         3,
+    [ECCS.SLIP10Ed25519Blake2b]:  4,
+    [ECCS.SLIP10Ed25519Monero]:   5
   };
 
   constructor(options: DerivationOptions = {}) {
     super(options);
     const {
       account = 0,
-      ecc     = ECCS.SLIP10_Secp256k1,
+      ecc     = ECCS.SLIP10Secp256k1,
       address = 0
     } = options;
     const allowed = [
