@@ -56,7 +56,7 @@ for (let derivation of data.derivations) {
     isAllEqual(cip1852DerivationClass.getAddress(), cip1852Derivation.getAddress(), data.address),
     isAllEqual(cip1852DerivationClass.getPath(), cip1852Derivation.getPath(), data.path),
     isAllEqual(cip1852DerivationClass.getIndexes(), cip1852Derivation.getIndexes(), data.indexes),
-    isAllEqual(cip1852DerivationClass.getDepth(), cip1852Derivation.getDepth(), data.depth), '\n'
+    isAllEqual(cip1852DerivationClass.getDepth(), cip1852Derivation.getDepth(), data.depth)
   );
 
   cip1852DerivationClass.clean();
@@ -70,7 +70,7 @@ for (let derivation of data.derivations) {
     isAllEqual(cip1852DerivationClass.getAddress(), cip1852Derivation.getAddress(), data.default.address),
     isAllEqual(cip1852DerivationClass.getPath(), cip1852Derivation.getPath(), data.default.path),
     isAllEqual(cip1852DerivationClass.getIndexes(), cip1852Derivation.getIndexes(), data.default.indexes),
-    isAllEqual(cip1852DerivationClass.getDepth(), cip1852Derivation.getDepth(), data.default.depth), '\n'
+    isAllEqual(cip1852DerivationClass.getDepth(), cip1852Derivation.getDepth(), data.default.depth)
   );
 
   cip1852DerivationClass.fromCoinType(derivation.coinType);

@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-import { DERIVATIONS, ElectrumDerivation, CHANGES } from '../../src/derivations';
+import { DERIVATIONS, ElectrumDerivation } from '../../src/derivations';
 import { isAllEqual } from '../../src/utils';
 
 const data = {

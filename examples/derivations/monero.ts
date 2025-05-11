@@ -1,61 +1,82 @@
 // SPDX-License-Identifier: MIT
 
 import { DERIVATIONS, MoneroDerivation } from '../../src/derivations';
+import { isAllEqual } from '../../src/utils';
 
-const MoneroClass = DERIVATIONS.getDerivationClass('Monero');
-console.log(
-  'Retrieve class:',
-  MoneroClass === MoneroDerivation,
-  MoneroClass.prototype.getName() === 'Monero'
-);
+const data = {
+  name: 'Monero',
+  minor: 67,
+  major: 77,
+  path: "m/67/77",
+  indexes: [ 67, 77 ],
+  depth: 2,
+  derivations: [
+    {
+      minor: 67, major: 77
+    },
+    {
+      minor: '0-67', major: '77'
+    },
+    {
+      minor: [0, 67], major: '77'
+    }
+  ],
+  default: {
+    minor: 1,
+    major: 0,
+    path: "m/1/0",
+    indexes: [ 1, 0 ],
+    depth: 2
+  }
+}
 
-const deriv = new MoneroDerivation();
-console.log(
-  'Default:',
-  deriv instanceof MoneroDerivation,
-  deriv.getName(),
-  deriv.toString(),
-  deriv.getIndexes()
-);
+const MoneroDerivationClass: typeof MoneroDerivation = DERIVATIONS.getDerivationClass(data.name);
 
-deriv.fromMinor(2);
-console.log(
-  'fromMinor:',
-  deriv.getMinor(),
-  deriv.toString(),
-  deriv.getIndexes()
-);
+for (let derivation of data.derivations) {
 
-deriv.fromMajor(3);
-console.log(
-  'fromMajor:',
-  deriv.getMajor(),
-  deriv.toString(),
-  deriv.getIndexes()
-);
+  const moneroDerivationClass: MoneroDerivation = new MoneroDerivationClass({
+    minor: derivation.minor, major: derivation.major
+  });
+  const moneroDerivation: MoneroDerivation = new MoneroDerivation({
+    minor: derivation.minor, major: derivation.major
+  });
 
-console.log(
-  'Depth:',
-  deriv.getDepth()
-);
+  console.log(
+    isAllEqual(moneroDerivationClass.getMinor(), moneroDerivation.getMinor(), data.minor),
+    isAllEqual(moneroDerivationClass.getMajor(), moneroDerivation.getMajor(), data.major),
+    isAllEqual(moneroDerivationClass.getPath(), moneroDerivation.getPath(), data.path),
+    isAllEqual(moneroDerivationClass.getIndexes(), moneroDerivation.getIndexes(), data.indexes),
+    isAllEqual(moneroDerivationClass.getDepth(), moneroDerivation.getDepth(), data.depth),
+  );
 
-deriv.clean();
-console.log(
-  'Cleaned:',
-  deriv.toString(),
-  deriv.getIndexes()
-);
+  moneroDerivationClass.clean();
+  moneroDerivation.clean();
 
-const rangeArray = new MoneroDerivation({ minor: [0, 5] });
-console.log(
-  'Range minor [0,5]:',
-  rangeArray.toString(),
-  rangeArray.getIndexes()
-);
+  console.log(
+    isAllEqual(moneroDerivationClass.getMinor(), moneroDerivation.getMinor(), data.default.minor),
+    isAllEqual(moneroDerivationClass.getMajor(), moneroDerivation.getMajor(), data.default.major),
+    isAllEqual(moneroDerivationClass.getPath(), moneroDerivation.getPath(), data.default.path),
+    isAllEqual(moneroDerivationClass.getIndexes(), moneroDerivation.getIndexes(), data.default.indexes),
+    isAllEqual(moneroDerivationClass.getDepth(), moneroDerivation.getDepth(), data.default.depth),
+  );
 
-const rangeString = new MoneroDerivation({ minor: '0-5' });
-console.log(
-  'Range minor \'0-5\':',
-  rangeString.toString(),
-  rangeString.getIndexes()
-);
+  moneroDerivationClass.fromMinor(derivation.minor);
+  moneroDerivation.fromMinor(derivation.minor);
+  moneroDerivationClass.fromMajor(derivation.major);
+  moneroDerivation.fromMajor(derivation.major);
+
+  console.log(
+    isAllEqual(moneroDerivationClass.getMinor(), moneroDerivation.getMinor(), data.minor),
+    isAllEqual(moneroDerivationClass.getMajor(), moneroDerivation.getMajor(), data.major),
+    isAllEqual(moneroDerivationClass.getPath(), moneroDerivation.getPath(), data.path),
+    isAllEqual(moneroDerivationClass.getIndexes(), moneroDerivation.getIndexes(), data.indexes),
+    isAllEqual(moneroDerivationClass.getDepth(), moneroDerivation.getDepth(), data.depth), '\n'
+  );
+}
+
+console.log('Minor:', data.minor);
+console.log('Major:', data.major, '\n');
+
+console.log('Path:', data.path);
+console.log('Indexes:', data.indexes);
+console.log('Depth:', data.depth);

@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-export type IndexType = string | number | [number, number];
+export type IndexType = string | number | number[];
 
 export type DerivationType = [ number, boolean ];
 
