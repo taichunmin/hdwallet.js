@@ -1,61 +1,82 @@
 // SPDX-License-Identifier: MIT
 
-import { DERIVATIONS, ElectrumDerivation } from '../../src/derivations';
+import { DERIVATIONS, ElectrumDerivation, CHANGES } from '../../src/derivations';
+import { isAllEqual } from '../../src/utils';
 
-const ElectrumClass = DERIVATIONS.getDerivationClass('Electrum');
-console.log(
-  'Retrieve class:',
-  ElectrumClass === ElectrumDerivation,
-  ElectrumClass.prototype.getName() === 'Electrum'
-);
+const data = {
+  name: 'Electrum',
+  change: 10,
+  address: 234234,
+  path: "m/10/234234",
+  indexes: [ 10, 234234 ],
+  depth: 2,
+  derivations: [
+    {
+      change: 10, address: 234234
+    },
+    {
+      change: '0-10', address: '234234'
+    },
+    {
+      change: [0, 10], address: '234234'
+    }
+  ],
+  default: {
+    change: 0,
+    address: 0,
+    path: "m/0/0",
+    indexes: [ 0, 0 ],
+    depth: 2
+  }
+}
 
-const deriv = new ElectrumDerivation();
-console.log(
-  'Default:',
-  deriv instanceof ElectrumDerivation,
-  deriv.getName(),
-  deriv.toString(),
-  deriv.getIndexes()
-);
+const ElectrumDerivationClass: typeof ElectrumDerivation = DERIVATIONS.getDerivationClass(data.name);
 
-deriv.fromChange(1);
-console.log(
-  'fromChange:',
-  deriv.getChange(),
-  deriv.toString(),
-  deriv.getIndexes()
-);
+for (let derivation of data.derivations) {
 
-deriv.fromAddress(10);
-console.log(
-  'fromAddress:',
-  deriv.getAddress(),
-  deriv.toString(),
-  deriv.getIndexes()
-);
+  const electrumDerivationClass: ElectrumDerivation = new ElectrumDerivationClass({
+    change: derivation.change, address: derivation.address
+  });
+  const electrumDerivation: ElectrumDerivation = new ElectrumDerivation({
+    change: derivation.change, address: derivation.address
+  });
 
-console.log(
-  'Depth:',
-  deriv.getDepth()
-);
+  console.log(
+    isAllEqual(electrumDerivationClass.getChange(), electrumDerivation.getChange(), data.change),
+    isAllEqual(electrumDerivationClass.getAddress(), electrumDerivation.getAddress(), data.address),
+    isAllEqual(electrumDerivationClass.getPath(), electrumDerivation.getPath(), data.path),
+    isAllEqual(electrumDerivationClass.getIndexes(), electrumDerivation.getIndexes(), data.indexes),
+    isAllEqual(electrumDerivationClass.getDepth(), electrumDerivation.getDepth(), data.depth),
+  );
 
-deriv.clean();
-console.log(
-  'Cleaned:',
-  deriv.toString(),
-  deriv.getIndexes()
-);
+  electrumDerivationClass.clean();
+  electrumDerivation.clean();
 
-const rangeArray = new ElectrumDerivation({ address: [0, 5] });
-console.log(
-  'Range array [0,5]:',
-  rangeArray.toString(),
-  rangeArray.getIndexes()
-);
+  console.log(
+    isAllEqual(electrumDerivationClass.getChange(), electrumDerivation.getChange(), data.default.change),
+    isAllEqual(electrumDerivationClass.getAddress(), electrumDerivation.getAddress(), data.default.address),
+    isAllEqual(electrumDerivationClass.getPath(), electrumDerivation.getPath(), data.default.path),
+    isAllEqual(electrumDerivationClass.getIndexes(), electrumDerivation.getIndexes(), data.default.indexes),
+    isAllEqual(electrumDerivationClass.getDepth(), electrumDerivation.getDepth(), data.default.depth),
+  );
 
-const rangeString = new ElectrumDerivation({ address: '0-5' });
-console.log(
-  'Range string \'0-5\':',
-  rangeString.toString(),
-  rangeString.getIndexes()
-);
+  electrumDerivationClass.fromChange(derivation.change);
+  electrumDerivation.fromChange(derivation.change);
+  electrumDerivationClass.fromAddress(derivation.address);
+  electrumDerivation.fromAddress(derivation.address);
+
+  console.log(
+    isAllEqual(electrumDerivationClass.getChange(), electrumDerivation.getChange(), data.change),
+    isAllEqual(electrumDerivationClass.getAddress(), electrumDerivation.getAddress(), data.address),
+    isAllEqual(electrumDerivationClass.getPath(), electrumDerivation.getPath(), data.path),
+    isAllEqual(electrumDerivationClass.getIndexes(), electrumDerivation.getIndexes(), data.indexes),
+    isAllEqual(electrumDerivationClass.getDepth(), electrumDerivation.getDepth(), data.depth), '\n'
+  );
+}
+
+console.log('Change:', data.change);
+console.log('Address:', data.address, '\n');
+
+console.log('Path:', data.path);
+console.log('Indexes:', data.indexes);
+console.log('Depth:', data.depth);
