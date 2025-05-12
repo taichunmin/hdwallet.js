@@ -154,24 +154,40 @@ export class XPrivateKeyVersions extends ExtendedKeyVersions { }
 
 export class XPublicKeyVersions extends ExtendedKeyVersions { }
 
-export const PUBLIC_KEY_TYPES = {
-  UNCOMPRESSED: 'uncompressed',
-  COMPRESSED: 'compressed'
-} as const;
+export class PUBLIC_KEY_TYPES {
+  static readonly UNCOMPRESSED: string = 'uncompressed';
+  static readonly COMPRESSED: string = 'compressed';
 
-export const WIF_TYPES: Record<string, any> = {
-  WIF: 'wif',
-  WIF_COMPRESSED: 'wif-compressed'
-} as const;
+  static getTypes(): string[] {
+    return [this.UNCOMPRESSED, this.COMPRESSED];
+  }
+}
 
-export const SEMANTICS: Record<string, any> = {
-  P2WPKH: 'p2wpkh',
-  P2WPKH_IN_P2SH: 'p2wpkh-in-p2sh',
-  P2WSH: 'p2wsh',
-  P2WSH_IN_P2SH: 'p2wsh-in-p2sh'
-} as const;
+export class WIF_TYPES {
+  static readonly WIF: string = 'wif';
+  static readonly WIF_COMPRESSED: string = 'wif-compressed';
 
-export const MODES: Record<string, any> = {
-  STANDARD: 'standard',
-  SEGWIT: 'segwit'
-} as const;
+  static getTypes(): string[] {
+    return [this.WIF, this.WIF_COMPRESSED];
+  }
+}
+
+export class SEMANTICS {
+  static readonly P2WPKH: string = 'p2wpkh';
+  static readonly P2WPKH_IN_P2SH: string = 'p2wpkh-in-p2sh';
+  static readonly P2WSH: string = 'p2wsh';
+  static readonly P2WSH_IN_P2SH: string = 'p2wsh-in-p2sh';
+
+  static getTypes(): string[] {
+    return [this.P2WPKH, this.P2WPKH_IN_P2SH, this.P2WSH, this.P2WSH_IN_P2SH];
+  }
+}
+
+export class MODES {
+  static readonly STANDARD: string = 'standard';
+  static readonly SEGWIT: string = 'segwit';
+
+  static getTypes(): string[] {
+    return [this.STANDARD, this.SEGWIT];
+  }
+}

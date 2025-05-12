@@ -8,15 +8,11 @@ import { SLIP10_SECP256K1_CONST } from './const';
 import { toBuffer, integerToBytes } from './utils';
 
 export function hmacSha256(key: Buffer | Uint8Array | string, data: Buffer | Uint8Array | string): Buffer {
-  return createHmac('sha256', toBuffer(key))
-    .update(toBuffer(data))
-    .digest();
+  return createHmac('sha256', toBuffer(key)).update(toBuffer(data)).digest();
 }
 
 export function hmacSha512(key: Buffer | Uint8Array | string, data: Buffer | Uint8Array | string): Buffer {
-  return createHmac('sha512', toBuffer(key))
-    .update(toBuffer(data))
-    .digest();
+  return createHmac('sha512', toBuffer(key)).update(toBuffer(data)).digest();
 }
 
 function blake2b(
