@@ -29,6 +29,16 @@ export class SeedError extends BaseError { }
 
 export class ECCError extends BaseError { }
 
+export class ExtendedKeyError extends BaseError { }
+
+export class XPrivateKeyError extends BaseError { }
+
+export class XPublicKeyError extends BaseError { }
+
+export class PrivateKeyError extends BaseError { }
+
+export class WIFError extends BaseError { }
+
 export class PublicKeyError extends BaseError { }
 
 export class ChecksumError extends BaseError { }

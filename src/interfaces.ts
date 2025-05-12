@@ -122,6 +122,13 @@ export interface DerivationOptionsInterface {
   ecc?: string | number;
 }
 
+export interface HDOptionsInterface {
+  publicKeyType?: string;
+  wifPrefix?: number;
+  path?: string;
+  indexes?: number[];
+}
+
 export interface AddressOptionsInterface {
   hrp?: string,
   addressPrefix?: string;
