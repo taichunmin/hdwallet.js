@@ -3,7 +3,7 @@
 import crypto from 'crypto';
 import { Buffer } from 'buffer';
 
-import { DerivationError } from './exceptions';
+import { BaseError, DerivationError } from './exceptions';
 import { DerivationsType, IndexType } from './types';
 
 /**
@@ -197,6 +197,17 @@ export function integerToBytes(
   return endianness === 'little' ? result.reverse() : result;
 }
 
+export function concatBytes(...chunks: Uint8Array[]): Uint8Array {
+  const totalLength = chunks.reduce((sum, arr) => sum + arr.length, 0);
+  const result = new Uint8Array(totalLength);
+  let offset = 0;
+  for (const chunk of chunks) {
+    result.set(chunk, offset);
+    offset += chunk.length;
+  }
+  return result;
+}
+
 /**
  * Convert a byte array to its binary string, optionally zero-padding.
  */
@@ -358,12 +369,9 @@ export function generatePassphrase(length = 32): string {
 /**
  * Return the HMAC seed for the specified elliptic curve algorithm.
  */
-export function getHMAC(eccName: string): Buffer {
+export function getHmac(eccName: string): Buffer {
   if ([
-    'Kholaw-Ed25519',
-    'SLIP10-Ed25519',
-    'SLIP10-Ed25519-Blake2b',
-    'SLIP10-Ed25519-Monero',
+    'Kholaw-Ed25519', 'SLIP10-Ed25519', 'SLIP10-Ed25519-Blake2b', 'SLIP10-Ed25519-Monero',
   ].includes(eccName)) {
     return Buffer.from('ed25519 seed', 'utf-8');
   } else if (eccName === 'SLIP10-Nist256p1') {
@@ -371,7 +379,7 @@ export function getHMAC(eccName: string): Buffer {
   } else if (eccName === 'SLIP10-Secp256k1') {
     return Buffer.from('Bitcoin seed', 'utf-8');
   }
-  throw new DerivationError(`Unknown ECC name '${eccName}'`);
+  throw new DerivationError('Unknown ECC name');
 }
 
 /**

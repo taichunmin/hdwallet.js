@@ -36,9 +36,9 @@ export class DERIVATIONS {
 
   static getDerivationClass(name: string): typeof Derivation | any {
     if (!this.isDerivation(name)) {
-      throw new DerivationError('Invalid derivation name', {
-        expected: this.getNames(), got: name
-      });
+      throw new DerivationError(
+        'Invalid derivation name', { expected: this.getNames(), got: name }
+      );
     }
     return this.dictionary[name];
   }

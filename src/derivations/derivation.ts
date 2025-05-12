@@ -27,6 +27,10 @@ export class Derivation {
     throw new Error('Must override getName()');
   }
 
+  clean(): this {
+    throw new Error('Must override getName()');
+  }
+
   getPath(): string {
     return this.path;
   }
