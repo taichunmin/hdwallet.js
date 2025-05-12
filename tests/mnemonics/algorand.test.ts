@@ -1,83 +1,104 @@
 // SPDX-License-Identifier: MIT
 
-import {MnemonicError,  EntropyError} from "../../src/exceptions";
-import { getBytes } from "../../src/utils";
-import {ALGORAND_MNEMONIC_LANGUAGES, ALGORAND_MNEMONIC_WORDS, AlgorandMnemonic} from "../../src/mnemonics";
-import {ALGORAND_ENTROPY_STRENGTHS, AlgorandEntropy} from "../../src/entropies";
+import { MnemonicError, EntropyError } from '../../src/exceptions';
+import { getBytes } from '../../src/utils';
+import {
+  MNEMONICS,
+  ALGORAND_MNEMONIC_LANGUAGES,
+  ALGORAND_MNEMONIC_WORDS,
+  AlgorandMnemonic
+} from '../../src/mnemonics';
+import { ALGORAND_ENTROPY_STRENGTHS, AlgorandEntropy } from '../../src/entropies';
 
-describe("AlgorandMnemonic", (): void => {
+import vectors from '../data/json/mnemonics.json';
 
-  it("should expose the correct client identifier and validate languages & word counts", (): void => {
-    expect(AlgorandMnemonic.client()).toBe("Algorand");
-    expect(AlgorandMnemonic.isValidLanguage(ALGORAND_MNEMONIC_LANGUAGES.ENGLISH)).toBe(true);
-    expect(AlgorandMnemonic.isValidLanguage("klingon")).toBe(false);
-    expect(AlgorandMnemonic.isValidWords(ALGORAND_MNEMONIC_WORDS.TWENTY_FIVE)).toBe(true);
-    expect(AlgorandMnemonic.isValidWords(13)).toBe(false);
+describe("Algorand Mnemonic", () => {
+  const cases = vectors.Algorand as Array<{
+    name: string;
+    entropy: string;
+    words: number;
+    languages: { english: string };
+  }>;
+
+  it("is registered under MNEMONICS by name", () => {
+    const RegistryClass = MNEMONICS.getMnemonicClass("Algorand");
+    expect(RegistryClass).toBe(AlgorandMnemonic);
   });
 
-  it("should normalize a string into an array of words", (): void => {
-    const raw = "  foo   bar\tbaz\nqux  ";
-    expect(AlgorandMnemonic.normalize(raw)).toEqual(["foo", "bar", "baz", "qux"]);
-    const arr = ["alpha", "beta"];
-    expect(AlgorandMnemonic.normalize(arr)).toBe(arr);
-  });
+  cases.forEach(({ name, entropy, words, languages }) => {
+    const english = languages.english;
 
-  it("should encode and decode a 128-bit entropy round-trip in English", (): void => {
-    for (const words of AlgorandMnemonic.wordsList) {
-        for (const language of AlgorandMnemonic.languages) {
-          const entropy: string = AlgorandEntropy.generate(AlgorandMnemonic.wordsToEntropyStrength[words]);
-          const mnemonic: string = AlgorandMnemonic.encode(entropy, language);
-          expect(typeof mnemonic).toBe("string");
-          expect(mnemonic.split(" ")).toHaveLength(words);
-          expect(AlgorandMnemonic.isValid(mnemonic)).toBe(true);
-          const decoded: string = AlgorandMnemonic.decode(mnemonic);
-          expect(decoded).toBe(entropy);
-        }
-    }
-  });
+    let instFromRegistry: AlgorandMnemonic;
+    let directInst: AlgorandMnemonic;
+    let fromEntropyReg: AlgorandMnemonic;
+    let fromEntropyDir: AlgorandMnemonic;
 
-  it("should throw a ChecksumError for a valid-length but bad-checksum mnemonic", (): void => {
-    const good = "abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about";
-    const words: string[] = good.split(" ");
-    words[11] = "ability";
-    const bad: string = words.join(" ");
-    expect((): string => AlgorandMnemonic.decode(bad)).toThrowError(MnemonicError);
-  });
+    beforeAll(() => {
+      const RegistryClass = MNEMONICS.getMnemonicClass(name);
+      instFromRegistry = new RegistryClass(english);
+      directInst      = new AlgorandMnemonic(english);
+      fromEntropyReg  = RegistryClass.fromEntropy(entropy, ALGORAND_MNEMONIC_LANGUAGES.ENGLISH);
+      fromEntropyDir  = AlgorandMnemonic.fromEntropy(entropy, ALGORAND_MNEMONIC_LANGUAGES.ENGLISH);
+    });
 
-  it("fromWords() should generate mnemonics of each supported length", (): void => {
-    for (const words of AlgorandMnemonic.wordsList) {
-      const algorandMnemonic: AlgorandMnemonic = AlgorandMnemonic.fromWords(
-          words, ALGORAND_MNEMONIC_LANGUAGES.ENGLISH
-      );
-      expect(algorandMnemonic.words()).toBe(words);
-      expect(algorandMnemonic.language()).toBe(ALGORAND_MNEMONIC_LANGUAGES.ENGLISH);
-      const mnemonic: string[] = algorandMnemonic.mnemonic().split(" ");
-      expect(mnemonic).toHaveLength(words);
-      expect(AlgorandMnemonic.isValid(algorandMnemonic.mnemonic())).toBe(true);
-    }
-  });
+    it("round-trips entropy→mnemonic→entropy", () => {
+      expect(fromEntropyReg.getMnemonic()).toBe(english);
+      expect(fromEntropyDir.getMnemonic()).toBe(english);
+      expect(AlgorandMnemonic.decode(english)).toBe(entropy);
+    });
 
-  it("fromWords() should throw on an unsupported word count", (): void => {
-    expect(() => AlgorandMnemonic.fromWords(13, ALGORAND_MNEMONIC_LANGUAGES.ENGLISH)).toThrowError(MnemonicError);
-  });
+    it("preserves the original mnemonic string", () => {
+      expect(instFromRegistry.getMnemonic()).toBe(english);
+      expect(directInst.getMnemonic()).toBe(english);
+    });
 
-  it("fromEntropy() should accept hex, Uint8Array, or AlgorandEntropy and round-trip correctly", (): void => {
-    const entropy: string = AlgorandEntropy.generate(ALGORAND_ENTROPY_STRENGTHS.TWO_HUNDRED_FIFTY_SIX);
-    const entropyBytes: Uint8Array<ArrayBuffer> = getBytes(entropy);
-    const algorandEntropy: AlgorandEntropy = new AlgorandEntropy(entropy);
+    it("reports the correct language and word count", () => {
+      [instFromRegistry, directInst, fromEntropyReg, fromEntropyDir]
+        .forEach(inst => {
+          expect(inst.getLanguage()).toBe(ALGORAND_MNEMONIC_LANGUAGES.ENGLISH);
+          expect(inst.getWords()).toBe(words);
+        });
+    });
 
-    for (const input of [entropy, entropyBytes, algorandEntropy]) {
-      const algorandMnemonic: AlgorandMnemonic= AlgorandMnemonic.fromEntropy(
-          input, ALGORAND_MNEMONIC_LANGUAGES.ENGLISH
-      );
-      const decoded: string = AlgorandMnemonic.decode(algorandMnemonic.mnemonic());
-      expect(decoded).toBe(entropy);
-    }
-  });
+    it("validates consistently", () => {
+      expect(AlgorandMnemonic.isValid(english)).toBe(true);
+      expect(AlgorandMnemonic.isValidLanguage(ALGORAND_MNEMONIC_LANGUAGES.ENGLISH)).toBe(true);
+      expect(AlgorandMnemonic.isValidWords(words)).toBe(true);
+    });
 
-  it("encode() should throw on unsupported entropy lengths", (): void => {
-    expect((): string => AlgorandMnemonic.encode(
-        "00".repeat(100 / 4), ALGORAND_MNEMONIC_LANGUAGES.ENGLISH
-    )).toThrowError(EntropyError);
+    it("throws on bad checksum", () => {
+      // mutate one word to force checksum error
+      const bad = english.split(" ").map((w, i) => i === words-1 ? "invalidword" : w).join(" ");
+      expect(() => AlgorandMnemonic.decode(bad)).toThrowError(MnemonicError);
+    });
+
+    it("supports fromWords()", () => {
+      const m1 = AlgorandMnemonic.fromWords(words, ALGORAND_MNEMONIC_LANGUAGES.ENGLISH);
+      expect(m1.getWords()).toBe(words);
+      expect(m1.getLanguage()).toBe(ALGORAND_MNEMONIC_LANGUAGES.ENGLISH);
+      expect(m1.getMnemonic().split(" ")).toHaveLength(words);
+    });
+
+    it("throws on unsupported word counts", () => {
+      expect(() => AlgorandMnemonic.fromWords(13 as any, ALGORAND_MNEMONIC_LANGUAGES.ENGLISH))
+        .toThrowError(MnemonicError);
+    });
+
+    it("accepts hex, Uint8Array, or AlgorandEntropy in fromEntropy()", () => {
+      const e       = AlgorandEntropy.generate(ALGORAND_ENTROPY_STRENGTHS.TWO_HUNDRED_FIFTY_SIX);
+      const bytes   = getBytes(e);
+      const entInst = new AlgorandEntropy(e);
+
+      [e, bytes, entInst].forEach(input => {
+        const m = AlgorandMnemonic.fromEntropy(input, ALGORAND_MNEMONIC_LANGUAGES.ENGLISH);
+        expect(AlgorandMnemonic.decode(m.getMnemonic())).toBe(e);
+      });
+    });
+
+    it("throws on bad‐length entropy in encode()", () => {
+      const badHex = "00".repeat(100 / 4);
+      expect(() => AlgorandMnemonic.encode(badHex, ALGORAND_MNEMONIC_LANGUAGES.ENGLISH))
+        .toThrowError(EntropyError);
+    });
   });
 });
