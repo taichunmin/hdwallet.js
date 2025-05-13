@@ -41,7 +41,7 @@ export class ECCS {
   static getECCClass(name: string): typeof _EllipticCurveCryptography | any {
     if (!this.isECC(name)) {
       throw new ECCError(
-        `Invalid ECC name: ${name}`, { expected: this.getNames(), got: name }
+        `Invalid ECC name`, { expected: this.getNames(), got: name }
       );
     }
     return this.dictionary[name];
