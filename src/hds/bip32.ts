@@ -668,6 +668,7 @@ export class BIP32HD extends HD {
     hrp: Bitcoin.NETWORKS.MAINNET.HRP,
     witnessVersion: Bitcoin.NETWORKS.MAINNET.WITNESS_VERSIONS.P2WPKH
   }): string {
+
     const address = options.address ?? Bitcoin.ADDRESSES.P2PKH;
     const publicKeyAddressPrefix = options.publicKeyAddressPrefix ?? Bitcoin.NETWORKS.MAINNET.PUBLIC_KEY_ADDRESS_PREFIX;
     const scriptAddressPrefix = options.scriptAddressPrefix ?? Bitcoin.NETWORKS.MAINNET.SCRIPT_ADDRESS_PREFIX;
