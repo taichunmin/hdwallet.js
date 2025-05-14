@@ -682,42 +682,31 @@ export function wordsToBytesChunk(
   return Buffer.from(u8);
 }
 
-/**
- * Returns [data, ok], where ok indicates whether data matches typeOrName.
- */
-export function validateAndGetData(
-  data: any, typeOrName: any
-): [any, boolean] {
-  if (typeOrName === 'any') {
-    return [data, true];
+export function checkTypeMatch(
+  instance: any, expectedType: any, strict: boolean = false
+): { instance: any, isValid: boolean } {
+  if (expectedType === 'any') {
+    return { instance, isValid: true };
   }
-  if (typeOrName === 'null') {
-    return [data, data === null];
+  if (expectedType === 'null') {
+    return { instance, isValid: instance === null };
   }
-  if (typeOrName === 'array') {
-    return [data, Array.isArray(data)];
+  if (expectedType === 'array') {
+    return { instance, isValid: Array.isArray(instance) };
   }
-  if (typeof typeOrName === 'string') {
-    return [data, typeof data === typeOrName];
+  if (typeof expectedType === 'string') {
+    return { instance, isValid: typeof instance === expectedType };
   }
-  if (typeof typeOrName === 'function') {
-    if (typeof data === 'function') {
-      if (data === typeOrName) {
-        return [data, true];
-      }
-      let ctor: any = data;
-      while ((ctor = Object.getPrototypeOf(ctor))) {
-        if (ctor === typeOrName) {
-          return [data, true];
-        }
-      }
-      return [data, false];
-    }
+  if (typeof expectedType === 'function') {
     try {
-      return [data, data instanceof typeOrName];
+      if (strict) {
+        return { instance, isValid: instance?.constructor === expectedType };
+      } else {
+        return { instance, isValid: instance instanceof expectedType };
+      }
     } catch {
-      return [data, false];
+      return { instance, isValid: false };
     }
   }
-  return [data, false];
+  return { instance, isValid: false };
 }

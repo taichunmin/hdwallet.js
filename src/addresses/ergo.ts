@@ -6,7 +6,7 @@ import { PublicKey, SLIP10Secp256k1PublicKey, validateAndGetPublicKey } from '..
 import { Network } from '../cryptocurrencies/cryptocurrency';
 import { Ergo } from '../cryptocurrencies';
 import { blake2b256 } from '../crypto';
-import { bytesToString, integerToBytes, validateAndGetData, toBuffer } from '../utils';
+import { bytesToString, integerToBytes, checkTypeMatch, toBuffer } from '../utils';
 import { Address } from './address';
 import { AddressOptionsInterface } from '../interfaces';
 import { AddressError, NetworkError } from '../exceptions';
@@ -41,9 +41,10 @@ export class ErgoAddress implements Address {
   ): string {
 
     const network = options.networkType ?? this.networkType;
-    let [networkKey, isValid] = validateAndGetData(network, Network);
-    networkKey = isValid ? networkKey.getName() : networkKey;
-    const networkType = this.networkTypes[networkKey];
+    const { instance, isValid } = checkTypeMatch(network, Network);
+    const networkType = this.networkTypes[
+      isValid ? instance.getName() : network
+    ];
     if (networkType === undefined) {
       throw new NetworkError('Invalid Ergo network type', {
         expected: Object.keys(this.networkTypes),
@@ -73,9 +74,10 @@ export class ErgoAddress implements Address {
   ): string {
 
     const network = options.networkType ?? this.networkType;
-    let [networkKey, isValid] = validateAndGetData(network, Network);
-    networkKey = isValid ? networkKey.getName() : networkKey;
-    const networkType = this.networkTypes[networkKey];
+    const { instance, isValid } = checkTypeMatch(network, Network);
+    const networkType = this.networkTypes[
+      isValid ? instance.getName() : network
+    ];
     if (networkType === undefined) {
       throw new NetworkError('Invalid Ergo network type', {
         expected: Object.keys(this.networkTypes), got: network

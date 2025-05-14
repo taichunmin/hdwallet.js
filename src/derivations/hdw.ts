@@ -2,7 +2,7 @@
 
 import { Derivation } from './derivation';
 import {
-  normalizeIndex, normalizeDerivation, indexTupleToString, validateAndGetData
+  normalizeIndex, normalizeDerivation, indexTupleToString, checkTypeMatch
 } from '../utils';
 import { EllipticCurveCryptography } from '../ecc';
 import { DerivationOptionsInterface } from '../interfaces';
@@ -48,10 +48,10 @@ export class HDWDerivation extends Derivation {
         expected: 'number | string', got: typeof ecc
       });
     }
-    let [curve, isECCClass] = validateAndGetData(
+    const { instance, isValid } = checkTypeMatch(
       ecc, EllipticCurveCryptography
     );
-    curve = isECCClass ? curve.NAME : ecc;
+    const curve = isValid ? instance.NAME : ecc;
     const slip10Secp256k1 = [ ECCS.SLIP10_SECP256K1, 0, '0' ];
     const slip10Ed25519 = [ ECCS.SLIP10_ED25519, 1, '1' ];
     const slip10Nist256p1 = [ ECCS.SLIP10_NIST256P1, 2, '2' ];
