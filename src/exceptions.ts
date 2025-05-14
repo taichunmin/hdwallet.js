@@ -43,6 +43,8 @@ export class PublicKeyError extends BaseError { }
 
 export class ChecksumError extends BaseError { }
 
+export class SemanticError extends BaseError { }
+
 export class NetworkError extends BaseError { }
 
 export class AddressError extends BaseError { }
