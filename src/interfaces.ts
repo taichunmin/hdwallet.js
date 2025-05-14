@@ -2,6 +2,7 @@
 
 import { EllipticCurveCryptography } from './ecc';
 import { IndexType } from './types';
+import { Bitcoin } from './cryptocurrencies';
 
 export interface OptionsPrivateKey {
   extendedKey?: Uint8Array;
@@ -125,8 +126,20 @@ export interface DerivationOptionsInterface {
 export interface HDOptionsInterface {
   publicKeyType?: string;
   wifPrefix?: number;
+  coinType?: number;
+  account?: number;
+  change?: string;
+  address?: number;
   path?: string;
   indexes?: number[];
+}
+
+export interface HDAddressOptionsInterface {
+  address?: string;
+  publicKeyAddressPrefix?: number;
+  scriptAddressPrefix?: number;
+  hrp?: string;
+  witnessVersion?: number;
 }
 
 export interface AddressOptionsInterface {
