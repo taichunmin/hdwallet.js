@@ -132,6 +132,16 @@ export interface HDOptionsInterface {
   address?: number;
   path?: string;
   indexes?: number[];
+  // BIP141
+  semantic?: string;
+  p2wpkhXPrivateKeyVersion?: number;
+  p2wpkhXPublicKeyVersion?: number;
+  p2wpkhInP2SHXPrivateKeyVersion?: number;
+  p2wpkhInP2SHXPublicKeyVersion?: number;
+  p2wshXPrivateKeyVersion?: number;
+  p2wshXPublicKeyVersion?: number;
+  p2wshInP2SHXPrivateKeyVersion?: number;
+  p2wshInP2SHXPublicKeyVersion?: number;
 }
 
 export interface HDAddressOptionsInterface {
@@ -140,6 +150,17 @@ export interface HDAddressOptionsInterface {
   scriptAddressPrefix?: number;
   hrp?: string;
   witnessVersion?: number;
+}
+
+export interface BIP141HDSemanticOptionsInterface {
+  p2wpkhXPrivateKeyVersion?: number;
+  p2wpkhXPublicKeyVersion?: number;
+  p2wpkhInP2SHXPrivateKeyVersion?: number;
+  p2wpkhInP2SHXPublicKeyVersion?: number;
+  p2wshXPrivateKeyVersion?: number;
+  p2wshXPublicKeyVersion?: number;
+  p2wshInP2SHXPrivateKeyVersion?: number;
+  p2wshInP2SHXPublicKeyVersion?: number;
 }
 
 export interface AddressOptionsInterface {
