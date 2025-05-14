@@ -86,7 +86,7 @@ export class BIP44HD extends BIP32HD {
       this.derivation = new BIP44Derivation({
         coinType: this.coinType, account: 0, change: CHANGES.EXTERNAL_CHANGE, address: 0
       });
-      this.depth = 0;
+      this.depth = 5;
     } else if (this.rootPublicKey) {
       this.publicKey = this.rootPublicKey;
       this.chainCode = this.rootChainCode;
@@ -94,7 +94,7 @@ export class BIP44HD extends BIP32HD {
       this.derivation = new BIP44Derivation({
         coinType: this.coinType, account: 0, change: CHANGES.EXTERNAL_CHANGE, address: 0
       });
-      this.depth = 0;
+      this.depth = 5;
     }
     return this;
   }

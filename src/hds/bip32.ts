@@ -39,7 +39,6 @@ export class BIP32HD extends HD {
   protected fingerprint?: Uint8Array;
   protected parentFingerprint?: Uint8Array;
   protected strict?: boolean;
-  protected derivation: Derivation | CustomDerivation;
   protected rootDepth: number = 0;
   protected rootIndex: number = 0;
   protected depth: number = 0;
@@ -477,7 +476,9 @@ export class BIP32HD extends HD {
     return this.seed ? bytesToString(this.seed) : undefined;
   }
 
-  getRootXPrivateKey(version: Uint8Array | number = Bitcoin.NETWORKS.MAINNET.XPRIVATE_KEY_VERSIONS.P2PKH, encoded = true): string | undefined {
+  getRootXPrivateKey(
+    version: Uint8Array | number = Bitcoin.NETWORKS.MAINNET.XPRIVATE_KEY_VERSIONS.P2PKH, encoded = true
+  ): string | undefined {
     if (!this.getRootPrivateKey() || !this.getRootChainCode()) return undefined;
 
     return serialize(
@@ -491,7 +492,9 @@ export class BIP32HD extends HD {
     );
   }
 
-  getRootXPublicKey(version: Uint8Array | number = Bitcoin.NETWORKS.MAINNET.XPUBLIC_KEY_VERSIONS.P2PKH, encoded = true): string | undefined {
+  getRootXPublicKey(
+    version: Uint8Array | number = Bitcoin.NETWORKS.MAINNET.XPUBLIC_KEY_VERSIONS.P2PKH, encoded = true
+  ): string | undefined {
     if (!this.getRootChainCode()) return undefined;
 
     return serialize(
