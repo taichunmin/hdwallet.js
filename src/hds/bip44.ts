@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 
 import { EllipticCurveCryptography } from '../ecc';
-import { BIP44Derivation, CHANGES } from '../derivations';
+import { BIP44Derivation, CHANGES, Derivation } from '../derivations';
 import { Bitcoin } from '../cryptocurrencies';
 import { P2PKHAddress } from '../addresses';
 import { BIP32HD } from './bip32';
@@ -68,6 +68,12 @@ export class BIP44HD extends BIP32HD {
     for (const index of this.derivation.getIndexes()) {
       this.drive(index);
     }
+    return this;
+  }
+
+  updateDerivation(derivation: BIP44Derivation): this {
+    this.cleanDerivation();
+    this.fromDerivation(derivation);
     return this;
   }
 
