@@ -61,7 +61,7 @@ export class BIP32HD extends HD {
       });
     }
 
-    this.wifPrefix = options.wifPrefix;
+    this.wifPrefix = options.wifPrefix ?? Bitcoin.NETWORKS.MAINNET.WIF_PREFIX;
     this.derivation = new CustomDerivation({
       path: options.path, indexes: options.indexes
     });
@@ -604,7 +604,7 @@ export class BIP32HD extends HD {
     return this.chainCode ? bytesToString(this.chainCode) : undefined;
   }
 
-  getPublicKey(publicKeyType: string = this.publicKeyType): string | undefined {
+  getPublicKey(publicKeyType: string = this.publicKeyType): string {
     const type = publicKeyType ?? this.publicKeyType;
 
     if (!Object.values(PUBLIC_KEY_TYPES).includes(type)) {
@@ -713,7 +713,6 @@ export class BIP32HD extends HD {
         publicKeyType: this.publicKeyType
       });
     }
-
     throw new AddressError(`Invalid ${this.getName()} address`, {
       expected: [
         P2PKHAddress.getName(),
