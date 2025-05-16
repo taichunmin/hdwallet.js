@@ -1,8 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-import { EllipticCurveCryptography } from './ecc';
 import { IndexType } from './types';
-import { Bitcoin } from './cryptocurrencies';
 
 export interface OptionsPrivateKey {
   extendedKey?: Uint8Array;
@@ -142,6 +140,8 @@ export interface HDOptionsInterface {
   p2wshXPublicKeyVersion?: number;
   p2wshInP2SHXPrivateKeyVersion?: number;
   p2wshInP2SHXPublicKeyVersion?: number;
+  // Electrum-V2
+  mode?: string;
 }
 
 export interface HDAddressOptionsInterface {
