@@ -23,6 +23,7 @@ import { OKTChainAddress } from './okt-chain';
 import { HarmonyAddress } from './harmony';
 import { ZilliqaAddress } from './zilliqa';
 import { InjectiveAddress } from './injective';
+import { CardanoAddress } from './cardano';
 
 export class ADDRESSES {
 
@@ -48,6 +49,7 @@ export class ADDRESSES {
     [HarmonyAddress.getName()]: HarmonyAddress,
     [ZilliqaAddress.getName()]: ZilliqaAddress,
     [InjectiveAddress.getName()]: InjectiveAddress,
+    [CardanoAddress.getName()]: CardanoAddress,
   };
 
   public static getNames(): string[] {
@@ -94,5 +96,6 @@ export {
   OKTChainAddress,
   HarmonyAddress,
   ZilliqaAddress,
-  InjectiveAddress
+  InjectiveAddress,
+  CardanoAddress
 };
