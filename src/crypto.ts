@@ -65,7 +65,7 @@ export function chacha20Poly1305Encrypt(
   nonce: Buffer | Uint8Array | string,
   aad: Buffer | Uint8Array | string,
   plaintext: Buffer | Uint8Array | string
-): { ciphertext: Buffer; tag: Buffer } {
+): { cipherText: Buffer; tag: Buffer } {
   const keyBuf = toBuffer(key);
   const iv = toBuffer(nonce);
   const ptBuf = toBuffer(plaintext);
@@ -80,14 +80,14 @@ export function chacha20Poly1305Encrypt(
   cipher.setAAD(aadBuf, { plaintextLength: ptBuf.length });
 
   // encrypt
-  const ciphertext = Buffer.concat([
+  const cipherText = Buffer.concat([
     cipher.update(ptBuf),
     cipher.final(),
   ]);
 
   // grab the auth tag
   const tag = cipher.getAuthTag();
-  return { ciphertext, tag };
+  return { cipherText, tag };
 }
 
 export function chacha20Poly1305Decrypt(
