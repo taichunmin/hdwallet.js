@@ -44,7 +44,6 @@ function baseBech32Encode(hrp: string, data: number[]): string {
 
 function baseBech32Decode(bech: string): [string | null, number[] | null] {
   if (
-    bech.length < 8 || bech.length > 90 ||
     [...bech].some(c => c.charCodeAt(0) < 33 || c.charCodeAt(0) > 126) ||
     (bech.toLowerCase() !== bech && bech.toUpperCase() !== bech)
   ) {
@@ -53,16 +52,25 @@ function baseBech32Decode(bech: string): [string | null, number[] | null] {
 
   bech = bech.toLowerCase();
   const pos = bech.lastIndexOf('1');
-  if (pos < 1 || pos + 7 > bech.length) return [null, null];
+  if (pos < 1 || pos + 7 > bech.length || pos + 1 >= bech.length) {
+    return [null, null];
+  }
 
   const hrp = bech.slice(0, pos);
-  const data = Array.from(bech.slice(pos + 1)).map(c => CHARSET_REV[c]);
-  // @ts-ignore
-  if (data.includes(undefined)) return [null, null];
+  const dataPart = bech.slice(pos + 1);
 
-  if (!bech32VerifyChecksum(hrp, data as number[])) return [null, null];
+  const data: number[] = [];
+  for (const c of dataPart) {
+    const val = CHARSET_REV[c];
+    if (val === undefined) return [null, null];
+    data.push(val);
+  }
 
-  return [hrp, data.slice(0, -6) as number[]];
+  if (!bech32VerifyChecksum(hrp, data)) {
+    return [null, null];
+  }
+
+  return [hrp, data.slice(0, -6)];
 }
 
 function convertBits(data: number[] | Uint8Array, fromBits: number, toBits: number, pad = true): number[] | null {
@@ -92,10 +100,11 @@ function convertBits(data: number[] | Uint8Array, fromBits: number, toBits: numb
 }
 
 // Final export: exposed API for encoding/decoding Bech32
-
-export function bech32Encode(hrp: string, witprog: Buffer): string | null {
+export function bech32Encode(hrp: string, witprog: Buffer): string {
   const data = convertBits([...witprog], 8, 5);
-  if (!data) return null;
+  if (!data) {
+    throw new Error('bech32Encode: Failed to convert bits from 8 to 5');
+  }
 
   const ret = baseBech32Encode(hrp, data);
   const [decodedHrp, decodedData] = baseBech32Decode(ret);
@@ -106,18 +115,20 @@ export function bech32Encode(hrp: string, witprog: Buffer): string | null {
     decodedData.length !== data.length ||
     !decodedData.every((v, i) => v === data[i])
   ) {
-    return null;
+    throw new Error('bech32Encode: Sanity check failed after encoding');
   }
-
   return ret;
 }
 
-export function bech32Decode(expectedHrp: string, addr: string): [string, Buffer] | [null, null] {
+export function bech32Decode(expectedHrp: string, addr: string): [string, Buffer] {
   const [hrp, data] = baseBech32Decode(addr);
-  if (hrp !== expectedHrp || !data || data.length === 0) return [null, null];
+  if (hrp !== expectedHrp || !data || data.length === 0) {
+    throw new Error('bech32Decode: Invalid HRP or data format');
+  }
 
   const decoded = convertBits(data, 5, 8, false);
-  if (!decoded) return [null, null];
-
+  if (!decoded) {
+    throw new Error('bech32Decode: Failed to convert bits from 5 to 8');
+  }
   return [hrp, Buffer.from(decoded)];
 }
