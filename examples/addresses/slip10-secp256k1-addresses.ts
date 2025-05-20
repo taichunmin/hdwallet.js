@@ -27,21 +27,21 @@ import {
   InjectiveAddress
 } from '../../src/addresses';
 import { PUBLIC_KEY_TYPES } from '../../src/const';
-import { bytesToString } from '../../src/utils';
+import { bytesToString, getBytes } from '../../src/utils';
 import {
   Bitcoin, Cosmos, Filecoin, Avalanche, Ergo, OKTChain, Harmony, Zilliqa, Injective
 } from '../../src/cryptocurrencies';
 
-const PRIVATE_KEY: PrivateKey = SLIP10Secp256k1PrivateKey.fromBytes(
-  Buffer.from('be3851aa7822b92deb2f34655e41a40fd510f6cf9aa2a4f0c4d7a4bc81f0ad74', 'hex')
-);
-const PUBLIC_KEY: PublicKey = PRIVATE_KEY.getPublicKey();
+const privateKey: PrivateKey = SLIP10Secp256k1PrivateKey.fromBytes(getBytes(
+  'be3851aa7822b92deb2f34655e41a40fd510f6cf9aa2a4f0c4d7a4bc81f0ad74'
+));
+const publicKey: PublicKey = privateKey.getPublicKey();
 
-console.log('Private Key:', bytesToString(PRIVATE_KEY.getRaw()));
-console.log('Uncompressed Public Key:', bytesToString(PUBLIC_KEY.getRawUncompressed()));
-console.log('Compressed Public Key:', bytesToString(PUBLIC_KEY.getRawCompressed()), '\n');
+console.log('Private Key:', bytesToString(privateKey.getRaw()));
+console.log('Uncompressed Public Key:', bytesToString(publicKey.getRawUncompressed()));
+console.log('Compressed Public Key:', bytesToString(publicKey.getRawCompressed()), '\n');
 
-const p2pkhAddress: string = P2PKHAddress.encode(PUBLIC_KEY, {
+const p2pkhAddress: string = P2PKHAddress.encode(publicKey, {
   publicKeyAddressPrefix: Bitcoin.NETWORKS.MAINNET.PUBLIC_KEY_ADDRESS_PREFIX,
   publicKeyType: PUBLIC_KEY_TYPES.UNCOMPRESSED
 });
@@ -50,7 +50,7 @@ const p2pkhAddressHash: string = P2PKHAddress.decode(p2pkhAddress, {
 });
 console.log('P2PKH Address:', p2pkhAddress, p2pkhAddressHash);
 
-const p2shAddress: string = P2SHAddress.encode(PUBLIC_KEY, {
+const p2shAddress: string = P2SHAddress.encode(publicKey, {
   scriptAddressPrefix: Bitcoin.NETWORKS.MAINNET.SCRIPT_ADDRESS_PREFIX,
   publicKeyType: PUBLIC_KEY_TYPES.COMPRESSED
 });
@@ -59,7 +59,7 @@ const p2shAddressHash: string = P2SHAddress.decode(p2shAddress, {
 });
 console.log('P2SH Address:', p2shAddress, p2shAddressHash);
 
-const p2trAddress: string = P2TRAddress.encode(PUBLIC_KEY, {
+const p2trAddress: string = P2TRAddress.encode(publicKey, {
   hrp: Bitcoin.NETWORKS.MAINNET.HRP,
   witnessVersion: Bitcoin.NETWORKS.MAINNET.WITNESS_VERSIONS.P2TR
 });
@@ -68,7 +68,7 @@ const p2trAddressHash: string = P2TRAddress.decode(p2trAddress, {
 });
 console.log('P2TR Address:', p2trAddress, p2trAddressHash);
 
-const p2wpkhAddress: string = P2WPKHAddress.encode(PUBLIC_KEY, {
+const p2wpkhAddress: string = P2WPKHAddress.encode(publicKey, {
   hrp: Bitcoin.NETWORKS.MAINNET.HRP,
   publicKeyType: PUBLIC_KEY_TYPES.COMPRESSED,
   witnessVersion: Bitcoin.NETWORKS.MAINNET.WITNESS_VERSIONS.P2WPKH
@@ -78,7 +78,7 @@ const p2wpkhAddressHash: string = P2WPKHAddress.decode(p2wpkhAddress, {
 });
 console.log('P2WPKH Address:', p2wpkhAddress, p2wpkhAddressHash);
 
-const p2wpkhInP2SHAddress: string = P2WPKHInP2SHAddress.encode(PUBLIC_KEY, {
+const p2wpkhInP2SHAddress: string = P2WPKHInP2SHAddress.encode(publicKey, {
   scriptAddressPrefix: Bitcoin.NETWORKS.MAINNET.SCRIPT_ADDRESS_PREFIX,
   publicKeyType: PUBLIC_KEY_TYPES.COMPRESSED
 });
@@ -87,7 +87,7 @@ const p2wpkhInP2SHAddressHash: string = P2WPKHInP2SHAddress.decode(p2wpkhInP2SHA
 });
 console.log('P2WPKH-In-P2SH Address:', p2wpkhInP2SHAddress, p2wpkhInP2SHAddressHash);
 
-const p2wshAddress: string = P2WSHAddress.encode(PUBLIC_KEY, {
+const p2wshAddress: string = P2WSHAddress.encode(publicKey, {
   hrp: Bitcoin.NETWORKS.MAINNET.HRP,
   publicKeyType: PUBLIC_KEY_TYPES.COMPRESSED,
   witnessVersion: Bitcoin.NETWORKS.MAINNET.WITNESS_VERSIONS.P2WSH
@@ -97,7 +97,7 @@ const p2wshAddressHash: string = P2WSHAddress.decode(p2wshAddress, {
 });
 console.log('P2WSH Address:', p2wshAddress, p2wshAddressHash);
 
-const p2wshInP2SHAddress: string = P2WSHInP2SHAddress.encode(PUBLIC_KEY, {
+const p2wshInP2SHAddress: string = P2WSHInP2SHAddress.encode(publicKey, {
   scriptAddressPrefix: Bitcoin.NETWORKS.MAINNET.SCRIPT_ADDRESS_PREFIX,
   publicKeyType: PUBLIC_KEY_TYPES.COMPRESSED
 });
@@ -106,7 +106,7 @@ const p2wshInP2SHAddressHash: string = P2WSHInP2SHAddress.decode(p2wshInP2SHAddr
 });
 console.log('P2WSH-In-P2SH Address:', p2wshInP2SHAddress, p2wshInP2SHAddressHash);
 
-const ethereumAddress: string = EthereumAddress.encode(PUBLIC_KEY, {
+const ethereumAddress: string = EthereumAddress.encode(publicKey, {
   skipChecksumEncode: false
 });
 const ethereumAddressHash: string = EthereumAddress.decode(ethereumAddress, {
@@ -114,7 +114,7 @@ const ethereumAddressHash: string = EthereumAddress.decode(ethereumAddress, {
 });
 console.log('Ethereum Address:', ethereumAddress, ethereumAddressHash);
 
-const cosmosAddress: string = CosmosAddress.encode(PUBLIC_KEY, {
+const cosmosAddress: string = CosmosAddress.encode(publicKey, {
   hrp: Cosmos.NETWORKS.MAINNET.HRP
 });
 const cosmosAddressHash: string = CosmosAddress.decode(cosmosAddress, {
@@ -122,7 +122,7 @@ const cosmosAddressHash: string = CosmosAddress.decode(cosmosAddress, {
 });
 console.log('Cosmos Address:', cosmosAddress, cosmosAddressHash);
 
-const xinfinAddress: string = XinFinAddress.encode(PUBLIC_KEY, {
+const xinfinAddress: string = XinFinAddress.encode(publicKey, {
   skipChecksumEncode: false
 });
 const xinfinAddressHash: string = XinFinAddress.decode(xinfinAddress, {
@@ -130,15 +130,15 @@ const xinfinAddressHash: string = XinFinAddress.decode(xinfinAddress, {
 });
 console.log('XinFin Address:', xinfinAddress, xinfinAddressHash);
 
-const tronAddress: string = TronAddress.encode(PUBLIC_KEY);
+const tronAddress: string = TronAddress.encode(publicKey);
 const tronAddressHash: string = TronAddress.decode(tronAddress);
 console.log('Tron Address:', tronAddress, tronAddressHash);
 
-const rippleAddress: string = RippleAddress.encode(PUBLIC_KEY);
+const rippleAddress: string = RippleAddress.encode(publicKey);
 const rippleAddressHash: string = RippleAddress.decode(rippleAddress);
 console.log('Ripple Address:', rippleAddress, rippleAddressHash);
 
-const secp256k1FilecoinAddress: string = FilecoinAddress.encode(PUBLIC_KEY, {
+const secp256k1FilecoinAddress: string = FilecoinAddress.encode(publicKey, {
   addressType: Filecoin.ADDRESS_TYPES.SECP256K1
 });
 const secp256k1FilecoinAddressHash: string = FilecoinAddress.decode(secp256k1FilecoinAddress, {
@@ -146,7 +146,7 @@ const secp256k1FilecoinAddressHash: string = FilecoinAddress.decode(secp256k1Fil
 });
 console.log('(Secp256k1) Filecoin Address:', secp256k1FilecoinAddress, secp256k1FilecoinAddressHash);
 
-const blsFilecoinAddress: string = FilecoinAddress.encode(PUBLIC_KEY, {
+const blsFilecoinAddress: string = FilecoinAddress.encode(publicKey, {
   addressType: Filecoin.ADDRESS_TYPES.BLS
 });
 const blsFilecoinAddressHash: string = FilecoinAddress.decode(blsFilecoinAddress, {
@@ -154,7 +154,7 @@ const blsFilecoinAddressHash: string = FilecoinAddress.decode(blsFilecoinAddress
 });
 console.log('(BLX) Filecoin Address:', blsFilecoinAddress, blsFilecoinAddressHash);
 
-const pAvalancheAddress: string = AvalancheAddress.encode(PUBLIC_KEY, {
+const pAvalancheAddress: string = AvalancheAddress.encode(publicKey, {
   addressType: Avalanche.ADDRESS_TYPES.P_CHAIN
 });
 const pAvalancheAddressHash: string = AvalancheAddress.decode(pAvalancheAddress, {
@@ -162,7 +162,7 @@ const pAvalancheAddressHash: string = AvalancheAddress.decode(pAvalancheAddress,
 });
 console.log('(P-Chain) Avalanche Address:', pAvalancheAddress, pAvalancheAddressHash);
 
-const xAvalancheAddress: string = AvalancheAddress.encode(PUBLIC_KEY, {
+const xAvalancheAddress: string = AvalancheAddress.encode(publicKey, {
   addressType: Avalanche.ADDRESS_TYPES.X_CHAIN
 });
 const xAvalancheAddressHash: string = AvalancheAddress.decode(xAvalancheAddress, {
@@ -170,11 +170,11 @@ const xAvalancheAddressHash: string = AvalancheAddress.decode(xAvalancheAddress,
 });
 console.log('(X-Chain) Avalanche Address:', xAvalancheAddress, xAvalancheAddressHash);
 
-const eosAddress: string = EOSAddress.encode(PUBLIC_KEY);
+const eosAddress: string = EOSAddress.encode(publicKey);
 const eosAddressHash: string = EOSAddress.decode(eosAddress);
 console.log("EOS Address:", eosAddress, eosAddressHash);
 
-const p2pkhErgoAddress: string = ErgoAddress.encode(PUBLIC_KEY, {
+const p2pkhErgoAddress: string = ErgoAddress.encode(publicKey, {
   addressType: Ergo.ADDRESS_TYPES.P2PKH, networkType: Ergo.NETWORKS.TESTNET
 });
 const p2pkhErgoAddressHash: string = ErgoAddress.decode(p2pkhErgoAddress, {
@@ -182,7 +182,7 @@ const p2pkhErgoAddressHash: string = ErgoAddress.decode(p2pkhErgoAddress, {
 });
 console.log("(P2PKH) Ergo Address:", p2pkhErgoAddress, p2pkhErgoAddressHash);
 
-const p2shErgoAddress: string = ErgoAddress.encode(PUBLIC_KEY, {
+const p2shErgoAddress: string = ErgoAddress.encode(publicKey, {
   addressType: Ergo.ADDRESS_TYPES.P2SH, networkType: Ergo.NETWORKS.TESTNET
 });
 const p2shErgoAddressHash: string = ErgoAddress.decode(p2shErgoAddress, {
@@ -190,11 +190,11 @@ const p2shErgoAddressHash: string = ErgoAddress.decode(p2shErgoAddress, {
 });
 console.log("(P2SH) Ergo Address:", p2shErgoAddress, p2shErgoAddressHash);
 
-const iconAddress: string = IconAddress.encode(PUBLIC_KEY);
+const iconAddress: string = IconAddress.encode(publicKey);
 const iconAddressHash: string = IconAddress.decode(iconAddress);
 console.log("Icon Address:", iconAddress, iconAddressHash);
 
-const oktChainAddress: string = OKTChainAddress.encode(PUBLIC_KEY, {
+const oktChainAddress: string = OKTChainAddress.encode(publicKey, {
   hrp: OKTChain.NETWORKS.MAINNET.HRP
 });
 const oktChainAddressHash: string = OKTChainAddress.decode(oktChainAddress, {
@@ -202,7 +202,7 @@ const oktChainAddressHash: string = OKTChainAddress.decode(oktChainAddress, {
 });
 console.log("OKTChain Address:", oktChainAddress, oktChainAddressHash);
 
-const harmonyAddress: string = HarmonyAddress.encode(PUBLIC_KEY, {
+const harmonyAddress: string = HarmonyAddress.encode(publicKey, {
   hrp: Harmony.NETWORKS.MAINNET.HRP
 });
 const harmonyAddressHash: string = HarmonyAddress.decode(harmonyAddress, {
@@ -210,7 +210,7 @@ const harmonyAddressHash: string = HarmonyAddress.decode(harmonyAddress, {
 });
 console.log("Harmony Address:", harmonyAddress, harmonyAddressHash);
 
-const zilliqaAddress: string = ZilliqaAddress.encode(PUBLIC_KEY, {
+const zilliqaAddress: string = ZilliqaAddress.encode(publicKey, {
   hrp: Zilliqa.NETWORKS.MAINNET.HRP
 });
 const zilliqaAddressHash: string = ZilliqaAddress.decode(zilliqaAddress, {
@@ -218,7 +218,7 @@ const zilliqaAddressHash: string = ZilliqaAddress.decode(zilliqaAddress, {
 });
 console.log("Zilliqa Address:", zilliqaAddress, zilliqaAddressHash);
 
-const injectiveAddress: string = InjectiveAddress.encode(PUBLIC_KEY, {
+const injectiveAddress: string = InjectiveAddress.encode(publicKey, {
   hrp: Injective.NETWORKS.MAINNET.HRP
 });
 const injectiveAddressHash: string = InjectiveAddress.decode(injectiveAddress, {
