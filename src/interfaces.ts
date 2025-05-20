@@ -174,4 +174,12 @@ export interface AddressOptionsInterface {
   witnessVersion?: number;
   skipChecksumEncode?: boolean;
   alphabet?: string;
+  // Cardano
+  encodeType?: string;
+  decodeType?: string;
+  path?: string;
+  pathKey?: string | Uint8Array;
+  chainCode?: string | Uint8Array;
+  stakingPublicKey?: any;
+  network?: string;
 }
