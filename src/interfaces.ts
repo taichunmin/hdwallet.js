@@ -182,4 +182,6 @@ export interface AddressOptionsInterface {
   chainCode?: string | Uint8Array;
   stakingPublicKey?: any;
   network?: string;
+  // Monero
+  paymentID?: string;
 }

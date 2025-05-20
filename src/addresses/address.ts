@@ -10,14 +10,14 @@ export abstract class Address {
   }
 
   static encode(
-    publicKey: Buffer | string | PublicKey, options?: AddressOptionsInterface
+    publicKey: Buffer | string | PublicKey | Object, options?: AddressOptionsInterface
   ): string {
     throw new Error('IAddress.encode() not implemented');
   }
 
   public static decode(
     address: string, options?: AddressOptionsInterface
-  ): string {
+  ): string | [string, string] {
     throw new Error('IAddress.decode() not implemented');
   }
 }

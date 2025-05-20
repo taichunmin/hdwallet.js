@@ -24,6 +24,7 @@ import { HarmonyAddress } from './harmony';
 import { ZilliqaAddress } from './zilliqa';
 import { InjectiveAddress } from './injective';
 import { CardanoAddress } from './cardano';
+import { MoneroAddress } from './monero';
 
 export class ADDRESSES {
 
@@ -50,6 +51,7 @@ export class ADDRESSES {
     [ZilliqaAddress.getName()]: ZilliqaAddress,
     [InjectiveAddress.getName()]: InjectiveAddress,
     [CardanoAddress.getName()]: CardanoAddress,
+    [MoneroAddress.getName()]: MoneroAddress,
   };
 
   public static getNames(): string[] {
@@ -97,5 +99,6 @@ export {
   HarmonyAddress,
   ZilliqaAddress,
   InjectiveAddress,
-  CardanoAddress
+  CardanoAddress,
+  MoneroAddress
 };
