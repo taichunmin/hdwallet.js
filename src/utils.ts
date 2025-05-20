@@ -683,30 +683,42 @@ export function wordsToBytesChunk(
 }
 
 export function checkTypeMatch(
-  instance: any, expectedType: any, strict: boolean = false
-): { instance: any, isValid: boolean } {
-  if (expectedType === 'any') {
-    return { instance, isValid: true };
-  }
-  if (expectedType === 'null') {
-    return { instance, isValid: instance === null };
-  }
-  if (expectedType === 'array') {
-    return { instance, isValid: Array.isArray(instance) };
-  }
+  instanceOrClass: any, expectedType: any, strict = false
+): { instance: any; isValid: boolean } {
+  if (expectedType === 'any') return {
+    instance: instanceOrClass, isValid: true
+  };
+  if (expectedType === 'null') return {
+    instance: instanceOrClass, isValid: instanceOrClass === null
+  };
+  if (expectedType === 'array') return {
+    instance: instanceOrClass, isValid: Array.isArray(instanceOrClass)
+  };
   if (typeof expectedType === 'string') {
-    return { instance, isValid: typeof instance === expectedType };
+    return { instance: instanceOrClass, isValid: typeof instanceOrClass === expectedType };
   }
   if (typeof expectedType === 'function') {
-    try {
-      if (strict) {
-        return { instance, isValid: instance?.constructor === expectedType };
-      } else {
-        return { instance, isValid: instance instanceof expectedType };
+    // Check: class extends class
+    if (typeof instanceOrClass === 'function') {
+      let proto = instanceOrClass;
+      while (proto && proto !== Function.prototype) {
+        if (proto === expectedType) {
+          return { instance: instanceOrClass, isValid: true };
+        }
+        proto = Object.getPrototypeOf(proto);
       }
-    } catch {
-      return { instance, isValid: false };
+      return { instance: instanceOrClass, isValid: false };
     }
+    if (strict) {
+      return {
+        instance: instanceOrClass,
+        isValid: instanceOrClass?.constructor === expectedType
+      };
+    }
+    return {
+      instance: instanceOrClass,
+      isValid: instanceOrClass instanceof expectedType
+    };
   }
-  return { instance, isValid: false };
+  return { instance: instanceOrClass, isValid: false };
 }
