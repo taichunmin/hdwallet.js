@@ -27,6 +27,14 @@ import { CardanoAddress } from './cardano';
 import { MoneroAddress } from './monero';
 import { NanoAddress } from './nano';
 import { NeoAddress } from './neo';
+import { AlgorandAddress } from './algorand';
+import { MultiversXAddress } from './multiversx';
+import { SolanaAddress } from './solana';
+import { StellarAddress } from './stellar';
+import { TezosAddress } from './tezos';
+import { SuiAddress } from './sui';
+import { AptosAddress } from './aptos';
+import { NearAddress } from './near';
 
 export class ADDRESSES {
 
@@ -56,6 +64,14 @@ export class ADDRESSES {
     [MoneroAddress.getName()]: MoneroAddress,
     [NanoAddress.getName()]: NanoAddress,
     [NeoAddress.getName()]: NeoAddress,
+    [AlgorandAddress.getName()]: AlgorandAddress,
+    [MultiversXAddress.getName()]: MultiversXAddress,
+    [SolanaAddress.getName()]: SolanaAddress,
+    [StellarAddress.getName()]: StellarAddress,
+    [TezosAddress.getName()]: TezosAddress,
+    [SuiAddress.getName()]: SuiAddress,
+    [AptosAddress.getName()]: AptosAddress,
+    [NearAddress.getName()]: NearAddress
   };
 
   public static getNames(): string[] {
@@ -107,4 +123,12 @@ export {
   MoneroAddress,
   NanoAddress,
   NeoAddress,
+  AlgorandAddress,
+  MultiversXAddress,
+  SolanaAddress,
+  StellarAddress,
+  TezosAddress,
+  SuiAddress,
+  AptosAddress,
+  NearAddress
 };
