@@ -18,6 +18,14 @@ function translateAlphabet(data: string, fromAlphabet: string, toAlphabet: strin
 }
 
 /**
+ * Add padding to make Base32 string length a multiple of 8.
+ */
+function addPadding(data: string): string {
+  const rem = data.length % 8;
+  return rem === 0 ? data : data + "=".repeat(8 - rem);
+}
+
+/**
  * Encode hex string to Base32 (with optional custom alphabet).
  */
 export function encode(hex: string, customAlphabet?: string): string {
@@ -37,7 +45,7 @@ export function encodeNoPadding(hex: string, customAlphabet?: string): string {
  */
 export function decode(data: string, customAlphabet?: string): string {
   try {
-    let input = data.toUpperCase();
+    let input = addPadding(data);
     if (customAlphabet) {
       input = translateAlphabet(input, customAlphabet, DEFAULT_ALPHABET);
     }
