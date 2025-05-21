@@ -184,4 +184,6 @@ export interface AddressOptionsInterface {
   network?: string;
   // Monero
   paymentID?: string;
+  // Neo
+  addressVersion?: string | Uint8Array
 }

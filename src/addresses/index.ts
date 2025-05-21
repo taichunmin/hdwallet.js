@@ -26,6 +26,7 @@ import { InjectiveAddress } from './injective';
 import { CardanoAddress } from './cardano';
 import { MoneroAddress } from './monero';
 import { NanoAddress } from './nano';
+import { NeoAddress } from './neo';
 
 export class ADDRESSES {
 
@@ -54,6 +55,7 @@ export class ADDRESSES {
     [CardanoAddress.getName()]: CardanoAddress,
     [MoneroAddress.getName()]: MoneroAddress,
     [NanoAddress.getName()]: NanoAddress,
+    [NeoAddress.getName()]: NeoAddress,
   };
 
   public static getNames(): string[] {
@@ -103,5 +105,6 @@ export {
   InjectiveAddress,
   CardanoAddress,
   MoneroAddress,
-  NanoAddress
+  NanoAddress,
+  NeoAddress,
 };
