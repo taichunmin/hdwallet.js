@@ -64,7 +64,7 @@ export class Nano extends Cryptocurrency {
   static PARAMS = new Params({
     ADDRESS_PREFIX: 'nano_',
     ALPHABET: '13456789abcdefghijkmnopqrstuwxyz',
-    PAYLOAD_PADDING_DECODED: '\x00\x00\x00',
+    PAYLOAD_PADDING_DECODED: '000000',
     PAYLOAD_PADDING_ENCODED: '1111'
   });
 }
