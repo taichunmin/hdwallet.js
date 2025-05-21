@@ -70,9 +70,9 @@ export class Tezos extends Cryptocurrency {
   static DEFAULT_ADDRESS_PREFIX = Tezos.ADDRESS_PREFIXES.TZ1;
   static PARAMS = new Params({
     ADDRESS_PREFIXES: {
-      TZ1: '\x06\xa1\x9f',
-      TZ2: '\x06\xa1\xa1',
-      TZ3: '\x06\xa1\xa4'
+      TZ1: '06a19f',
+      TZ2: '06a1a1',
+      TZ3: '06a1a4'
     }
   });
 }

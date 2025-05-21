@@ -63,8 +63,8 @@ export class Stellar extends Cryptocurrency {
   });
   static DEFAULT_ADDRESS = Stellar.ADDRESSES.STELLAR;
   static ADDRESS_TYPES = new AddressTypes({
-    PRIVATE_KEY: 'private_key',
-    PUBLIC_KEY: 'public_key'
+    PRIVATE_KEY: 'privateKey',
+    PUBLIC_KEY: 'publicKey'
   });
   static DEFAULT_ADDRESS_TYPE = Stellar.ADDRESS_TYPES.PRIVATE_KEY;
   static PARAMS = new Params({
