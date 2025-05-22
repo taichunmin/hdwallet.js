@@ -5,7 +5,7 @@ import { decodeMonero, encodeMonero } from '../libs/base58';
 import { keccak256 } from '../crypto';
 import { Network } from '../cryptocurrencies/cryptocurrency';
 import { SLIP10Ed25519MoneroPublicKey, PublicKey, validateAndGetPublicKey } from '../ecc';
-import { bytesToString, checkTypeMatch, concatBytes, integerToBytes, toBuffer } from '../utils';
+import { bytesToString, checkTypeMatch, concatBytes, getBytes, integerToBytes, toBuffer } from '../utils';
 import { AddressOptionsInterface } from '../interfaces';
 import { AddressError, BaseError } from '../exceptions';
 import { Address } from './address';
@@ -63,13 +63,15 @@ export class MoneroAddress implements Address {
     const network = isValid ? instance.getName() : networkType;
 
     const addressType = options.addressType ?? this.addressType;
-    const paymentID = options.paymentID;
+    const paymentID = options.paymentID ? getBytes(options.paymentID) : undefined;
 
     const spend = validateAndGetPublicKey(spendPublicKey, SLIP10Ed25519MoneroPublicKey);
     const view = validateAndGetPublicKey(viewPublicKey, SLIP10Ed25519MoneroPublicKey);
 
     if (paymentID && paymentID.length !== this.paymentIDLength) {
-      throw new BaseError('Invalid payment ID length');
+      throw new BaseError('Invalid payment ID length', {
+        expected: this.paymentIDLength, got: paymentID.length
+      });
     }
 
     const version = integerToBytes(this.networks[network].addressTypes[addressType]);
