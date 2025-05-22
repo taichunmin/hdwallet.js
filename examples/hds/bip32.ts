@@ -19,30 +19,31 @@ const privateKey = '7f60ec0fa89064a37e208ade560c098586dd887e2133bee4564af1de52bc
 const wif = 'L1VKQooPmgVLD35vHMeprus1zFYx58bHGMfTz8QYTEnRCzbjwMoo';
 const publicKey = '023e23967b818fb3959f2056b6e6449a65c4982c1267398d8897b921ab53b0be4b';
 
-// bip32HD.fromSeed(seed);
-bip32HD.fromXPrivateKey(xPrivateKey, true);
-// bip32HD.fromXPublicKey(xPublicKey, true);
-
-const customDerivation: CustomDerivation = new CustomDerivation({
-  path: `m/0/0`
-});
-
-bip32HD.fromDerivation(customDerivation)
-
-// bip32HD.fromPrivateKey(privateKey);
-// bip32HD.fromWIF(wif);
-// bip32HD.fromPublicKey(publicKey);
+bip32HD.fromSeed(seed);
+// bip32HD.fromXPrivateKey(xPrivateKey);
+// bip32HD.fromXPublicKey(xPublicKey);
 
 console.log('Seed:', bip32HD.getSeed());
+console.log('Strict:', bip32HD.getStrict());
 console.log('Root XPrivate Key:', bip32HD.getRootXPrivateKey());
 console.log('Root XPublic Key:', bip32HD.getRootXPublicKey());
 console.log('Root Private Key:', bip32HD.getRootPrivateKey());
 console.log('Root WIF:', bip32HD.getRootWIF());
 console.log('Root Chain Code:', bip32HD.getRootChainCode());
 console.log('Root Public Key:', bip32HD.getRootPublicKey());
+
+const customDerivation: CustomDerivation = new CustomDerivation({
+  path: `m/0'/0`
+});
+
+bip32HD.fromDerivation(customDerivation);
+
+// bip32HD.fromPrivateKey(privateKey);
+// bip32HD.fromWIF(wif);
+// bip32HD.fromPublicKey(publicKey);
+
 console.log('XPrivate Key:', bip32HD.getXPrivateKey());
 console.log('XPublic Key:', bip32HD.getXPublicKey());
-
 console.log('Private Key:', bip32HD.getPrivateKey());
 console.log('WIF:', bip32HD.getWIF());
 console.log('WIF Type:', bip32HD.getWIFType());

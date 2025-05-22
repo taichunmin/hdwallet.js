@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 
 import { BIP86HD } from '../../src/hds/bip86';
-import { Bitcoin, Bitcoin as Cryptocurrency } from '../../src/cryptocurrencies';
+import { Bitcoin as Cryptocurrency } from '../../src/cryptocurrencies';
 import { BIP86Derivation, CHANGES } from '../../src/derivations';
 import { PUBLIC_KEY_TYPES } from '../../src/const';
 
@@ -19,36 +19,36 @@ const wif = 'L1VKQooPmgVLD35vHMeprus1zFYx58bHGMfTz8QYTEnRCzbjwMoo';
 const privateKey = '7f60ec0fa89064a37e208ade560c098586dd887e2133bee4564af1de52bc7f5c';
 const publicKey = '023e23967b818fb3959f2056b6e6449a65c4982c1267398d8897b921ab53b0be4b';
 
-// bip86HD.fromSeed(seed);
-bip86HD.fromXPrivateKey(xPrivateKey, true);
-// bip86HD.fromXPublicKey(xPublicKey, true);
-
-const bip86Derivation: BIP86Derivation = new BIP86Derivation({
-  coinType: Bitcoin.COIN_TYPE, account: 10, change: CHANGES.INTERNAL_CHANGE, address: 5
-});
-
-bip86HD.fromDerivation(bip86Derivation);
-
-// bip86HD.fromCoinType(Bitcoin.COIN_TYPE);
-// bip86HD.fromAccount(10);
-// bip86HD.fromChange(CHANGES.INTERNAL_CHANGE);
-// bip86HD.fromAddress(5);
-
-// bip86HD.fromWIF(wif);
-// bip86HD.fromPrivateKey(privateKey);
-// bip86HD.fromPublicKey(publicKey);
+bip86HD.fromSeed(seed);
+// bip86HD.fromXPrivateKey(xPrivateKey);
+// bip86HD.fromXPublicKey(xPublicKey);
 
 console.log('Seed:', bip86HD.getSeed());
+console.log('Strict:', bip86HD.getStrict());
 console.log('Root XPrivate Key:', bip86HD.getRootXPrivateKey());
 console.log('Root XPublic Key:', bip86HD.getRootXPublicKey());
 console.log('Root Private Key:', bip86HD.getRootPrivateKey());
 console.log('Root WIF:', bip86HD.getRootWIF());
 console.log('Root Chain Code:', bip86HD.getRootChainCode());
 console.log('Root Public Key:', bip86HD.getRootPublicKey());
+
+// const bip86Derivation: BIP86Derivation = new BIP86Derivation({
+//   coinType: Bitcoin.COIN_TYPE, account: 0, change: CHANGES.EXTERNAL_CHANGE, address: 0
+// });
+//
+// bip86HD.fromDerivation(bip86Derivation);
+
+bip86HD.fromCoinType(Cryptocurrency.COIN_TYPE);
+bip86HD.fromAccount(0);
+bip86HD.fromChange(CHANGES.EXTERNAL_CHANGE);
+bip86HD.fromAddress(0);
+
+// bip86HD.fromPrivateKey(privateKey);
+// bip86HD.fromWIF(wif);
+// bip86HD.fromPublicKey(publicKey);
+
 console.log('XPrivate Key:', bip86HD.getXPrivateKey());
 console.log('XPublic Key:', bip86HD.getXPublicKey());
-console.log('Strict:', bip86HD.getStrict());
-
 console.log('Private Key:', bip86HD.getPrivateKey());
 console.log('WIF:', bip86HD.getWIF());
 console.log('WIF Type:', bip86HD.getWIFType());
