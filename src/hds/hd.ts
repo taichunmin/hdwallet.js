@@ -133,7 +133,7 @@ export class HD {
     throw new Error('Not implemented');
   }
 
-  getSpendPrivateKey(): string {
+  getSpendPrivateKey(): string | undefined {
     throw new Error('Not implemented');
   }
 

@@ -135,6 +135,8 @@ export interface HDOptionsInterface {
   p2wshInP2SHXPrivateKeyVersion?: number;
   p2wshInP2SHXPublicKeyVersion?: number;
   mode?: string;
+  minor?: number;
+  major?: number;
 }
 
 export interface HDAddressOptionsInterface {
@@ -146,6 +148,9 @@ export interface HDAddressOptionsInterface {
   addressType?: string;
   stakingPublicKey?: any;
   network?: string;
+  minor?: number;
+  major?: number;
+  paymentID?: string;
 }
 
 export interface BIP141HDSemanticOptionsInterface {
