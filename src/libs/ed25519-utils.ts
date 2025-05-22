@@ -1,11 +1,31 @@
 // SPDX-License-Identifier: MIT
 
 import * as sodium from 'sodium-native';
+import { bytesToInteger, integerToBytes } from '../utils';
 
 // constants replaced with BigInt(...) calls
 const ZERO = BigInt(0);
 const MASK8 = BigInt(0xff);   // 255
 const SHIFT8 = BigInt(8);     // 8 bits
+const COORD_BYTE_LEN = 32;
+
+/**
+ * Decodes a little-endian Uint8Array into a bigint.
+ * @param input Uint8Array representing the integer in little-endian format.
+ * @returns bigint
+ */
+export function intDecode(input: Uint8Array): bigint {
+  return bytesToInteger(input, true); // true = little-endian
+}
+
+/**
+ * Encodes a bigint into a little-endian Uint8Array of length 32.
+ * @param value bigint to encode.
+ * @returns Uint8Array
+ */
+export function intEncode(value: bigint): Uint8Array {
+  return integerToBytes(value, COORD_BYTE_LEN, 'little');
+}
 
 /** normalize a number|bigint|Uint8Array into a 32-byte LE Uint8Array */
 function normalizeScalar32(input: Uint8Array | number | bigint): Uint8Array {
