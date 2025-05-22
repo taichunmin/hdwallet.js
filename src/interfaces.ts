@@ -104,20 +104,15 @@ export interface SeedOptionsInterface {
 }
 
 export interface DerivationOptionsInterface {
-  // Custom
   path?: string;
   indexes?: number[];
-  // BIP | Electrum
   coinType?: IndexType;
   account?: IndexType;
   change?: IndexType;
   address?: IndexType;
-  // Cardano
   role?: IndexType;
-  // Monero
   minor?: IndexType;
   major?: IndexType;
-  // HDW
   ecc?: string | number;
 }
 
@@ -130,7 +125,6 @@ export interface HDOptionsInterface {
   address?: number;
   path?: string;
   indexes?: number[];
-  // BIP141
   semantic?: string;
   p2wpkhXPrivateKeyVersion?: number;
   p2wpkhXPublicKeyVersion?: number;
@@ -140,7 +134,6 @@ export interface HDOptionsInterface {
   p2wshXPublicKeyVersion?: number;
   p2wshInP2SHXPrivateKeyVersion?: number;
   p2wshInP2SHXPublicKeyVersion?: number;
-  // Electrum-V2
   mode?: string;
 }
 
@@ -150,6 +143,9 @@ export interface HDAddressOptionsInterface {
   scriptAddressPrefix?: number;
   hrp?: string;
   witnessVersion?: number;
+  addressType?: string;
+  stakingPublicKey?: any;
+  network?: string;
 }
 
 export interface BIP141HDSemanticOptionsInterface {
@@ -174,7 +170,6 @@ export interface AddressOptionsInterface {
   witnessVersion?: number;
   skipChecksumEncode?: boolean;
   alphabet?: string;
-  // Cardano
   encodeType?: string;
   decodeType?: string;
   path?: string;
@@ -182,8 +177,6 @@ export interface AddressOptionsInterface {
   chainCode?: string | Uint8Array;
   stakingPublicKey?: any;
   network?: string;
-  // Monero
   paymentID?: string;
-  // Neo
   addressVersion?: string | Uint8Array
 }

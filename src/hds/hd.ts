@@ -201,7 +201,7 @@ export class HD {
     throw new Error('Not implemented');
   }
 
-  getPathKey(): string {
+  getPathKey(): string | undefined {
     throw new Error('Not implemented');
   }
 
