@@ -18,9 +18,9 @@ const privateKey = '7f60ec0fa89064a37e208ade560c098586dd887e2133bee4564af1de52bc
 const wif = 'L1VKQooPmgVLD35vHMeprus1zFYx58bHGMfTz8QYTEnRCzbjwMoo';
 const publicKey = '023e23967b818fb3959f2056b6e6449a65c4982c1267398d8897b921ab53b0be4b';
 
-// bip44HD.fromSeed(seed);
-bip44HD.fromXPrivateKey(xPrivateKey, true);
-// bip44HD.fromXPublicKey(xPublicKey, true);
+bip44HD.fromSeed(seed);
+// bip44HD.fromXPrivateKey(xPrivateKey);
+// bip44HD.fromXPublicKey(xPublicKey);
 
 console.log('Seed:', bip44HD.getSeed());
 console.log('Strict:', bip44HD.getStrict());
