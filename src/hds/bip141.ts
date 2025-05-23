@@ -15,10 +15,10 @@ export class BIP141HD extends BIP32HD {
   protected xpublicKeyVersion!: number | Uint8Array;
   protected semantic!: string;
 
-  constructor(ecc: typeof EllipticCurveCryptography, options: HDOptionsInterface = {
+  constructor(options: HDOptionsInterface = {
     publicKeyType: PUBLIC_KEY_TYPES.COMPRESSED
   }) {
-    super(ecc, options);
+    super(options);
 
     if (options.semantic === undefined) {
       throw new SemanticError('Semantic is required');

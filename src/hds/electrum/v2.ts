@@ -50,8 +50,8 @@ export class ElectrumV2HD extends HD {
     this.derivation = new ElectrumDerivation({
       change: options.change, address: options.address
     });
-    this.bip32HD = new BIP32HD(Bitcoin.ECC, {
-      publicKeyType: this.publicKeyType
+    this.bip32HD = new BIP32HD({
+      ecc: Bitcoin.ECC, publicKeyType: this.publicKeyType
     });
   }
 

@@ -4,7 +4,7 @@ import { HD } from './hd';
 import { Bitcoin } from '../cryptocurrencies';
 import { Derivation, CustomDerivation } from '../derivations';
 import {
-  EllipticCurveCryptography, PublicKey, PrivateKey, KholawEd25519PrivateKey
+  EllipticCurveCryptography, PublicKey, PrivateKey, KholawEd25519PrivateKey, ECCS
 } from '../ecc';
 import { Seed } from '../seeds';
 import {
@@ -18,7 +18,16 @@ import {
   getBytes, getHmac, bytesToInteger, integerToBytes, bytesToString, resetBits, setBits, concatBytes, checkTypeMatch
 } from '../utils';
 import {
-  AddressError, DerivationError, BaseError, PrivateKeyError, PublicKeyError, SeedError, WIFError, XPrivateKeyError, XPublicKeyError
+  AddressError,
+  DerivationError,
+  BaseError,
+  PrivateKeyError,
+  PublicKeyError,
+  SeedError,
+  WIFError,
+  XPrivateKeyError,
+  XPublicKeyError,
+  ECCError
 } from '../exceptions';
 import { checkDecode } from '../libs/base58';
 import { HDAddressOptionsInterface, HDOptionsInterface } from '../interfaces';
@@ -44,12 +53,15 @@ export class BIP32HD extends HD {
   protected depth: number = 0;
   protected index: number = 0;
 
-  constructor(ecc: typeof EllipticCurveCryptography, options: HDOptionsInterface = {
+  constructor(options: HDOptionsInterface = {
     publicKeyType: PUBLIC_KEY_TYPES.COMPRESSED
   }) {
     super(options);
 
-    this.ecc = ecc;
+    if(!options.ecc) {
+      throw new ECCError('Elliptic Curve Cryptography (ECC) is required');
+    }
+    this.ecc = options.ecc;
     this.publicKeyType = options.publicKeyType ?? PUBLIC_KEY_TYPES.COMPRESSED;
     if (this.publicKeyType === PUBLIC_KEY_TYPES.UNCOMPRESSED) {
       this.wifType = WIF_TYPES.WIF;

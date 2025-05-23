@@ -33,16 +33,16 @@ export class MoneroHD extends HD {
 
   protected derivation: MoneroDerivation;
 
-  constructor(network: string | Network, options: HDOptionsInterface = {
+  constructor(options: HDOptionsInterface = {
     minor: 1, major: 0
   }) {
     super(options);
 
-    const { instance, isValid } = checkTypeMatch(network, Network);
-    const networkType = isValid ? instance.getName() : network;
+    const { instance, isValid } = checkTypeMatch(options.network, Network);
+    const networkType = isValid ? instance.getName() : options.network;
     if (!Monero.NETWORKS.isNetwork(networkType)) {
       throw new NetworkError(`Wrong Monero network`, {
-        expected: Monero.NETWORKS.getNetworks(), got: network
+        expected: Monero.NETWORKS.getNetworks(), got: options.network
       });
     }
     this.network = Monero.NETWORKS.getNetwork(networkType);

@@ -13,15 +13,15 @@ export class HD {
     throw new Error('Not implemented');
   }
 
-  fromSeed(seed: Uint8Array | string, _kwargs?: Record<string, any>): this {
+  fromSeed(...args: any[]): this {
     throw new Error('Not implemented');
   }
 
-  fromXPrivateKey(xprivateKey: string, _encoded?: boolean, _strict?: boolean): this {
+  fromXPrivateKey(...args: any[]): this {
     throw new Error('Not implemented');
   }
 
-  fromXPublicKey(xpublicKey: string, _encoded?: boolean, _strict?: boolean): this {
+  fromXPublicKey(...args: any[]): this {
     throw new Error('Not implemented');
   }
 

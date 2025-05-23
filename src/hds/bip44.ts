@@ -15,10 +15,11 @@ export class BIP44HD extends BIP32HD {
   protected coinType: number;
   protected derivation: BIP44Derivation;
 
-  constructor(ecc: typeof EllipticCurveCryptography, options: HDOptionsInterface = {
+  constructor(options: HDOptionsInterface = {
     publicKeyType: PUBLIC_KEY_TYPES.COMPRESSED
   }) {
-    super(ecc, options);
+    super(options);
+
     this.coinType = options.coinType ?? Bitcoin.COIN_TYPE;
     this.derivation = new BIP44Derivation({
       coinType: this.coinType,

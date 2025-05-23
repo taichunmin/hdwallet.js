@@ -22,17 +22,18 @@ export class CardanoHD extends BIP32HD {
 
   protected cardanoType!: string;
 
-  constructor(cardanoType: string, options: HDOptionsInterface = {
+  constructor(options: HDOptionsInterface = {
     publicKeyType: PUBLIC_KEY_TYPES.COMPRESSED
   }) {
-    super(KholawEd25519ECC, options);
+    options.ecc = KholawEd25519ECC;
+    super(options);
 
-    if (!Cardano.TYPES.getCardanoTypes().includes(cardanoType)) {
+    if (!options.cardanoType || !Cardano.TYPES.getCardanoTypes().includes(options.cardanoType)) {
       throw new BaseError('Invalid Cardano type', {
-        expected: Cardano.TYPES.getCardanoTypes(), got: cardanoType
+        expected: Cardano.TYPES.getCardanoTypes(), got: options.cardanoType
       });
     }
-    this.cardanoType = cardanoType;
+    this.cardanoType = options.cardanoType;
   }
 
   getName(): string {
