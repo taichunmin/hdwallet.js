@@ -63,6 +63,7 @@ export class Anon extends Cryptocurrency {
     'BIP44'
   ]);
   static DEFAULT_HD = Anon.HDS.BIP44;
+  static DEFAULT_PATH = `m/44'/${Anon.COIN_TYPE}'/0'/0/0`;
   static ADDRESSES = new Addresses([
     'P2PKH',
     'P2SH'

@@ -40,6 +40,7 @@ export class OKTChain extends Cryptocurrency {
   });
   static ECC = SLIP10Secp256k1ECC;
   static COIN_TYPE = CoinTypes.OKTChain;
+  static SUPPORT_BIP38 = false;
   static NETWORKS = new Networks({
     MAINNET: Mainnet
   });
@@ -58,6 +59,7 @@ export class OKTChain extends Cryptocurrency {
     'BIP44'
   ]);
   static DEFAULT_HD = OKTChain.HDS.BIP44;
+  static DEFAULT_PATH = `m/44'/${OKTChain.COIN_TYPE}'/0'/0/0`;
   static ADDRESSES = new Addresses({
     OKT_CHAIN: 'OKT-Chain'
   });

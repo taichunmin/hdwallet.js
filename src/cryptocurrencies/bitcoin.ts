@@ -132,6 +132,7 @@ export class Bitcoin extends Cryptocurrency {
     { ELECTRUM_V2: 'Electrum-V2' }
   ]);
   static DEFAULT_HD = Bitcoin.HDS.BIP44;
+  static DEFAULT_PATH = `m/44'/${Bitcoin.COIN_TYPE}'/0'/0/0`;
   static ADDRESSES = new Addresses([
     'P2PKH',
     'P2SH',

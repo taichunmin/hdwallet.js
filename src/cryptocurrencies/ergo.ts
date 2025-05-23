@@ -54,6 +54,7 @@ export class Ergo extends Cryptocurrency {
   });
   static ECC = SLIP10Secp256k1ECC;
   static COIN_TYPE = CoinTypes.Ergo;
+  static SUPPORT_BIP38 = false;
   static NETWORKS = new Networks({
     MAINNET: Mainnet,
     TESTNET: Testnet
@@ -73,6 +74,7 @@ export class Ergo extends Cryptocurrency {
     'BIP44'
   ]);
   static DEFAULT_HD = Ergo.HDS.BIP44;
+  static DEFAULT_PATH = `m/44'/${Ergo.COIN_TYPE}'/0'/0/0`;
   static ADDRESSES = new Addresses({
     ERGO: 'Ergo'
   });

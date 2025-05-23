@@ -40,6 +40,7 @@ export class Zilliqa extends Cryptocurrency {
   });
   static ECC = SLIP10Secp256k1ECC;
   static COIN_TYPE = CoinTypes.Zilliqa;
+  static SUPPORT_BIP38 = false;
   static NETWORKS = new Networks({
     MAINNET: Mainnet
   });
@@ -58,6 +59,7 @@ export class Zilliqa extends Cryptocurrency {
     'BIP44'
   ]);
   static DEFAULT_HD = Zilliqa.HDS.BIP44;
+  static DEFAULT_PATH = `m/44'/${Zilliqa.COIN_TYPE}'/0'/0/0`;
   static ADDRESSES = new Addresses({
     ZILLIQA: 'Zilliqa'
   });

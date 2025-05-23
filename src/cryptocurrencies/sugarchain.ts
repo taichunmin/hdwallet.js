@@ -99,6 +99,7 @@ export class Sugarchain extends Cryptocurrency {
     'BIP44'
   ]);
   static DEFAULT_HD = Sugarchain.HDS.BIP44;
+  static DEFAULT_PATH = `m/44'/${Sugarchain.COIN_TYPE}'/0'/0/0`;
   static ADDRESSES = new Addresses([
     'P2PKH',
     'P2SH',

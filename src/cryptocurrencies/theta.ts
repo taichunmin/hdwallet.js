@@ -39,6 +39,7 @@ export class Theta extends Cryptocurrency {
   });
   static ECC = SLIP10Secp256k1ECC;
   static COIN_TYPE = CoinTypes.Theta;
+  static SUPPORT_BIP38 = false;
   static NETWORKS = new Networks({
     MAINNET: Mainnet
   });
@@ -57,6 +58,7 @@ export class Theta extends Cryptocurrency {
     'BIP44'
   ]);
   static DEFAULT_HD = Theta.HDS.BIP44;
+  static DEFAULT_PATH = `m/44'/${Theta.COIN_TYPE}'/0'/0/0`;
   static ADDRESSES = new Addresses({
     ETHEREUM: 'Ethereum'
   });

@@ -68,6 +68,7 @@ export class Cardano extends Cryptocurrency {
   });
   static ECC = KholawEd25519ECC;
   static COIN_TYPE = CoinTypes.Cardano;
+  static SUPPORT_BIP38 = false;
   static NETWORKS = new Networks({
     MAINNET: Mainnet,
     TESTNET: Testnet
@@ -86,6 +87,7 @@ export class Cardano extends Cryptocurrency {
     CARDANO: 'Cardano'
   });
   static DEFAULT_HD = Cardano.HDS.CARDANO;
+  static DEFAULT_PATH = `m/44'/${Cardano.COIN_TYPE}'/0'/0/0`;
   static TYPES = new Types({
     BYRON_ICARUS: 'byron-icarus',
     BYRON_LEDGER: 'byron-ledger',

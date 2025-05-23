@@ -38,6 +38,7 @@ export class Near extends Cryptocurrency {
   });
   static ECC = SLIP10Ed25519ECC;
   static COIN_TYPE = CoinTypes.Near;
+  static SUPPORT_BIP38 = false;
   static NETWORKS = new Networks({
     MAINNET: Mainnet
   });
@@ -56,6 +57,7 @@ export class Near extends Cryptocurrency {
     'BIP44'
   ]);
   static DEFAULT_HD = Near.HDS.BIP44;
+  static DEFAULT_PATH = `m/44'/${Near.COIN_TYPE}'/0'/0/0`;
   static ADDRESSES = new Addresses({
     NEAR: 'Near'
   });

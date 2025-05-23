@@ -38,6 +38,7 @@ export class HuobiToken extends Cryptocurrency {
   });
   static ECC = SLIP10Secp256k1ECC;
   static COIN_TYPE = CoinTypes.HuobiToken;
+  static SUPPORT_BIP38 = false;
   static NETWORKS = new Networks({
     MAINNET: Mainnet
   });
@@ -56,6 +57,7 @@ export class HuobiToken extends Cryptocurrency {
     'BIP44'
   ]);
   static DEFAULT_HD = HuobiToken.HDS.BIP44;
+  static DEFAULT_PATH = `m/44'/${HuobiToken.COIN_TYPE}'/0'/0/0`;
   static ADDRESSES = new Addresses({
     ETHEREUM: 'Ethereum'
   });

@@ -62,6 +62,7 @@ export class Gulden extends Cryptocurrency {
     'BIP44'
   ]);
   static DEFAULT_HD = Gulden.HDS.BIP44;
+  static DEFAULT_PATH = `m/44'/${Gulden.COIN_TYPE}'/0'/0/0`;
   static ADDRESSES = new Addresses([
     'P2PKH',
     'P2SH'

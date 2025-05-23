@@ -49,6 +49,7 @@ export class Monero extends Cryptocurrency {
   });
   static ECC = SLIP10Ed25519MoneroECC;
   static COIN_TYPE = CoinTypes.Monero;
+  static SUPPORT_BIP38 = false;
   static NETWORKS = new Networks({
     MAINNET: Mainnet,
     STAGENET: Stagenet,
@@ -71,6 +72,7 @@ export class Monero extends Cryptocurrency {
     MONERO: 'Monero'
   });
   static DEFAULT_HD = Monero.HDS.MONERO;
+  static DEFAULT_PATH = `m/44'/${Monero.COIN_TYPE}'/0'/0/0`;
   static ADDRESSES = new Addresses({
     MONERO: 'Monero'
   });

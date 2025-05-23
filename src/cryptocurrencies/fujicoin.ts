@@ -73,6 +73,7 @@ export class FujiCoin extends Cryptocurrency {
     'BIP44'
   ]);
   static DEFAULT_HD = FujiCoin.HDS.BIP44;
+  static DEFAULT_PATH = `m/44'/${FujiCoin.COIN_TYPE}'/0'/0/0`;
   static ADDRESSES = new Addresses([
     'P2PKH',
     'P2SH',

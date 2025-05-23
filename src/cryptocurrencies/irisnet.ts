@@ -40,6 +40,7 @@ export class IRISnet extends Cryptocurrency {
   });
   static ECC = SLIP10Secp256k1ECC;
   static COIN_TYPE = CoinTypes.IRISnet;
+  static SUPPORT_BIP38 = false;
   static NETWORKS = new Networks({
     MAINNET: Mainnet
   });
@@ -58,6 +59,7 @@ export class IRISnet extends Cryptocurrency {
     'BIP44'
   ]);
   static DEFAULT_HD = IRISnet.HDS.BIP44;
+  static DEFAULT_PATH = `m/44'/${IRISnet.COIN_TYPE}'/0'/0/0`;
   static ADDRESSES = new Addresses({
     COSMOS: 'Cosmos'
   });

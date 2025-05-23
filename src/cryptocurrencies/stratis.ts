@@ -80,6 +80,7 @@ export class Stratis extends Cryptocurrency {
     'BIP44'
   ]);
   static DEFAULT_HD = Stratis.HDS.BIP44;
+  static DEFAULT_PATH = `m/44'/${Stratis.COIN_TYPE}'/0'/0/0`;
   static ADDRESSES = new Addresses([
     'P2PKH',
     'P2SH'

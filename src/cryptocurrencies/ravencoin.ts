@@ -108,6 +108,7 @@ export class Ravencoin extends Cryptocurrency {
     'BIP44'
   ]);
   static DEFAULT_HD = Ravencoin.HDS.BIP44;
+  static DEFAULT_PATH = `m/44'/${Ravencoin.COIN_TYPE}'/0'/0/0`;
   static ADDRESSES = new Addresses([
     'P2PKH',
     'P2SH',

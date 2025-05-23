@@ -39,6 +39,7 @@ export class Arbitrum extends Cryptocurrency {
   });
   static ECC = SLIP10Secp256k1ECC;
   static COIN_TYPE = CoinTypes.Arbitrum;
+  static SUPPORT_BIP38 = false;
   static NETWORKS = new Networks({
     MAINNET: Mainnet
   });
@@ -57,6 +58,7 @@ export class Arbitrum extends Cryptocurrency {
     'BIP44'
   ]);
   static DEFAULT_HD = Arbitrum.HDS.BIP44;
+  static DEFAULT_PATH = `m/44'/${Arbitrum.COIN_TYPE}'/0'/0/0`;
   static ADDRESSES = new Addresses({
     ETHEREUM: 'Ethereum'
   });

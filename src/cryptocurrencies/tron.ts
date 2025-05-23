@@ -46,6 +46,7 @@ export class Tron extends Cryptocurrency {
   });
   static ECC = SLIP10Secp256k1ECC;
   static COIN_TYPE = CoinTypes.Tron;
+  static SUPPORT_BIP38 = false;
   static NETWORKS = new Networks({
     MAINNET: Mainnet
   });
@@ -64,6 +65,7 @@ export class Tron extends Cryptocurrency {
     'BIP44'
   ]);
   static DEFAULT_HD = Tron.HDS.BIP44;
+  static DEFAULT_PATH = `m/44'/${Tron.COIN_TYPE}'/0'/0/0`;
   static ADDRESSES = new Addresses({
     TRON: 'Tron'
   });

@@ -94,6 +94,7 @@ export class BitcoinCash extends Cryptocurrency {
   });
   static ECC = SLIP10Secp256k1ECC;
   static COIN_TYPE = CoinTypes.BitcoinCash;
+  static SUPPORT_BIP38 = false;
   static NETWORKS = new Networks({
     MAINNET: Mainnet,
     TESTNET: Testnet,
@@ -114,6 +115,7 @@ export class BitcoinCash extends Cryptocurrency {
     'BIP44'
   ]);
   static DEFAULT_HD = BitcoinCash.HDS.BIP44;
+  static DEFAULT_PATH = `m/44'/${BitcoinCash.COIN_TYPE}'/0'/0/0`;
   static ADDRESSES = new Addresses([
     'P2PKH',
     'P2SH',

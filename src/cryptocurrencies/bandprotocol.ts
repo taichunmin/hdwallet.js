@@ -40,6 +40,7 @@ export class BandProtocol extends Cryptocurrency {
   });
   static ECC = SLIP10Secp256k1ECC;
   static COIN_TYPE = CoinTypes.BandProtocol;
+  static SUPPORT_BIP38 = false;
   static NETWORKS = new Networks({
     MAINNET: Mainnet
   });
@@ -58,6 +59,7 @@ export class BandProtocol extends Cryptocurrency {
     'BIP44'
   ]);
   static DEFAULT_HD = BandProtocol.HDS.BIP44;
+  static DEFAULT_PATH = `m/44'/${BandProtocol.COIN_TYPE}'/0'/0/0`;
   static ADDRESSES = new Addresses({
     COSMOS: 'Cosmos'
   });

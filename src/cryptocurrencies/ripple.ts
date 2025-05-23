@@ -64,6 +64,7 @@ export class Ripple extends Cryptocurrency {
     'BIP44'
   ]);
   static DEFAULT_HD = Ripple.HDS.BIP44;
+  static DEFAULT_PATH = `m/44'/${Ripple.COIN_TYPE}'/0'/0/0`;
   static ADDRESSES = new Addresses({
     RIPPLE: 'Ripple'
   });

@@ -40,6 +40,7 @@ export class Stellar extends Cryptocurrency {
   });
   static ECC = SLIP10Ed25519ECC;
   static COIN_TYPE = CoinTypes.Stellar;
+  static SUPPORT_BIP38 = false;
   static NETWORKS = new Networks({
     MAINNET: Mainnet
   });
@@ -58,6 +59,7 @@ export class Stellar extends Cryptocurrency {
     'BIP44'
   ]);
   static DEFAULT_HD = Stellar.HDS.BIP44;
+  static DEFAULT_PATH = `m/44'/${Stellar.COIN_TYPE}'/0'/0/0`;
   static ADDRESSES = new Addresses({
     STELLAR: 'Stellar'
   });

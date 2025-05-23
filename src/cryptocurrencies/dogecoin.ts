@@ -103,6 +103,7 @@ export class Dogecoin extends Cryptocurrency {
     'BIP44'
   ]);
   static DEFAULT_HD = Dogecoin.HDS.BIP44;
+  static DEFAULT_PATH = `m/44'/${Dogecoin.COIN_TYPE}'/0'/0/0`;
   static ADDRESSES = new Addresses([
     'P2PKH',
     'P2SH',

@@ -40,6 +40,7 @@ export class Cosmos extends Cryptocurrency {
   });
   static ECC = SLIP10Secp256k1ECC;
   static COIN_TYPE = CoinTypes.Cosmos;
+  static SUPPORT_BIP38 = false;
   static NETWORKS = new Networks({
     MAINNET: Mainnet
   });
@@ -58,6 +59,7 @@ export class Cosmos extends Cryptocurrency {
     'BIP44'
   ]);
   static DEFAULT_HD = Cosmos.HDS.BIP44;
+  static DEFAULT_PATH = `m/44'/${Cosmos.COIN_TYPE}'/0'/0/0`;
   static ADDRESSES = new Addresses({
     COSMOS: 'Cosmos'
   });

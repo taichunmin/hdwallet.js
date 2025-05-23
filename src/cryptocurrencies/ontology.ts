@@ -39,6 +39,7 @@ export class Ontology extends Cryptocurrency {
   });
   static ECC = SLIP10Nist256p1ECC;
   static COIN_TYPE = CoinTypes.Ontology;
+  static SUPPORT_BIP38 = false;
   static NETWORKS = new Networks({
     MAINNET: Mainnet
   });
@@ -57,6 +58,7 @@ export class Ontology extends Cryptocurrency {
     'BIP44'
   ]);
   static DEFAULT_HD = Ontology.HDS.BIP44;
+  static DEFAULT_PATH = `m/44'/${Ontology.COIN_TYPE}'/0'/0/0`;
   static ADDRESSES = new Addresses({
     NEO: 'Neo'
   });

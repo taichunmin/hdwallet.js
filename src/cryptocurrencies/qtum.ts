@@ -114,6 +114,7 @@ export class Qtum extends Cryptocurrency {
     'BIP141'
   ]);
   static DEFAULT_HD = Qtum.HDS.BIP44;
+  static DEFAULT_PATH = `m/44'/${Qtum.COIN_TYPE}'/0'/0/0`;
   static ADDRESSES = new Addresses([
     'P2PKH',
     'P2SH',

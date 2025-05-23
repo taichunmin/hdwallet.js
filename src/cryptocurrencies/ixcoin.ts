@@ -63,6 +63,7 @@ export class IXCoin extends Cryptocurrency {
     'BIP44'
   ]);
   static DEFAULT_HD = IXCoin.HDS.BIP44;
+  static DEFAULT_PATH = `m/44'/${IXCoin.COIN_TYPE}'/0'/0/0`;
   static ADDRESSES = new Addresses([
     'P2PKH',
     'P2SH'

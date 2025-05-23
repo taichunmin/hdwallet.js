@@ -39,6 +39,7 @@ export class Metis extends Cryptocurrency {
   });
   static ECC = SLIP10Secp256k1ECC;
   static COIN_TYPE = CoinTypes.Metis;
+  static SUPPORT_BIP38 = false;
   static NETWORKS = new Networks({
     MAINNET: Mainnet
   });
@@ -57,6 +58,7 @@ export class Metis extends Cryptocurrency {
     'BIP44'
   ]);
   static DEFAULT_HD = Metis.HDS.BIP44;
+  static DEFAULT_PATH = `m/44'/${Metis.COIN_TYPE}'/0'/0/0`;
   static ADDRESSES = new Addresses({
     ETHEREUM: 'Ethereum'
   });

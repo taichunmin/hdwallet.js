@@ -79,6 +79,7 @@ export class Blocknode extends Cryptocurrency {
     'BIP44'
   ]);
   static DEFAULT_HD = Blocknode.HDS.BIP44;
+  static DEFAULT_PATH = `m/44'/${Blocknode.COIN_TYPE}'/0'/0/0`;
   static ADDRESSES = new Addresses([
     'P2PKH',
     'P2SH'

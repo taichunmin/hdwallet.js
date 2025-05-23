@@ -63,6 +63,7 @@ export class LitecoinZ extends Cryptocurrency {
     'BIP44'
   ]);
   static DEFAULT_HD = LitecoinZ.HDS.BIP44;
+  static DEFAULT_PATH = `m/44'/${LitecoinZ.COIN_TYPE}'/0'/0/0`;
   static ADDRESSES = new Addresses([
     'P2PKH',
     'P2SH'

@@ -43,6 +43,7 @@ export class Avalanche extends Cryptocurrency {
   });
   static ECC = SLIP10Secp256k1ECC;
   static COIN_TYPE = CoinTypes.Avalanche;
+  static SUPPORT_BIP38 = false;
   static NETWORKS = new Networks({
     MAINNET: Mainnet
   });
@@ -61,6 +62,7 @@ export class Avalanche extends Cryptocurrency {
     'BIP44'
   ]);
   static DEFAULT_HD = Avalanche.HDS.BIP44;
+  static DEFAULT_PATH = `m/44'/${Avalanche.COIN_TYPE}'/0'/0/0`;
   static ADDRESSES = new Addresses({
     AVALANCHE: 'Avalanche',
     ETHEREUM: 'Ethereum'

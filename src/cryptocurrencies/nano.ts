@@ -39,6 +39,7 @@ export class Nano extends Cryptocurrency {
   });
   static ECC = SLIP10Ed25519Blake2bECC;
   static COIN_TYPE = CoinTypes.Nano;
+  static SUPPORT_BIP38 = false;
   static NETWORKS = new Networks({
     MAINNET: Mainnet
   });
@@ -57,6 +58,7 @@ export class Nano extends Cryptocurrency {
     'BIP44'
   ]);
   static DEFAULT_HD = Nano.HDS.BIP44;
+  static DEFAULT_PATH = `m/44'/${Nano.COIN_TYPE}'/0'/0/0`;
   static ADDRESSES = new Addresses({
     NANO: 'Nano'
   });
