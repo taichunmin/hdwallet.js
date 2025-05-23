@@ -117,6 +117,8 @@ export interface DerivationOptionsInterface {
 }
 
 export interface HDOptionsInterface {
+  ecc?: any,
+  network?: any,
   publicKeyType?: string;
   wifPrefix?: number;
   coinType?: number;
@@ -126,6 +128,7 @@ export interface HDOptionsInterface {
   path?: string;
   indexes?: number[];
   semantic?: string;
+  cardanoType?: string;
   p2wpkhXPrivateKeyVersion?: number;
   p2wpkhXPublicKeyVersion?: number;
   p2wpkhInP2SHXPrivateKeyVersion?: number;
