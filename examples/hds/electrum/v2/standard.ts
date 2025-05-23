@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-import { ElectrumV2HD } from '../../../../src/hds/electrum/v2';
+import { ElectrumV2HD } from '../../../../src/hds';
 import { Bitcoin as Cryptocurrency } from '../../../../src/cryptocurrencies';
 import { MODES, PUBLIC_KEY_TYPES } from '../../../../src/const';
 import { ElectrumDerivation } from '../../../../src/derivations';

@@ -1,12 +1,12 @@
 // SPDX-License-Identifier: MIT
 
-import { CardanoHD } from '../../../src/hds/cardano';
+import { CardanoHD } from '../../../src/hds';
 import { CustomDerivation } from '../../../src/derivations';
 import { Cardano } from '../../../src/cryptocurrencies';
 
-const cardanoHD: CardanoHD = new CardanoHD(
-  Cardano.TYPES.BYRON_LEGACY
-);
+const cardanoHD: CardanoHD = new CardanoHD({
+  cardanoType: Cardano.TYPES.BYRON_LEGACY
+});
 
 const seed = 'aa88d53b805f411823f57c797c88bfab1454f5eee5f7b2bafeabeadac2cc59fe';
 const xPrivateKey = 'xprv3QESAWYc9vDdZTncakVdLLPy3cLJYsPCkkFseh6jb96oDBK4x4ZGBpjvRtTSmgeho8L2CDXEBsGdziVKgdFs9Fs34AcnR9d2jGVQa2DDSfsTbTunTdQTjFZMpoDFt4xb2Eg4xoU4cRA5KNUmCSnuGJG';

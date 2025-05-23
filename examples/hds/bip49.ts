@@ -1,16 +1,15 @@
 // SPDX-License-Identifier: MIT
 
-import { BIP49HD } from '../../src/hds/bip49';
+import { BIP49HD } from '../../src/hds';
 import { Bitcoin as Cryptocurrency } from '../../src/cryptocurrencies';
 import { BIP49Derivation, CHANGES } from '../../src/derivations';
 import { PUBLIC_KEY_TYPES } from '../../src/const';
 
-const bip49HD: BIP49HD = new BIP49HD(
-  Cryptocurrency.ECC, {
-    publicKeyType: PUBLIC_KEY_TYPES.COMPRESSED,
-    wifPrefix: Cryptocurrency.NETWORKS.MAINNET.WIF_PREFIX
-  }
-);
+const bip49HD: BIP49HD = new BIP49HD({
+  ecc: Cryptocurrency.ECC,
+  publicKeyType: PUBLIC_KEY_TYPES.COMPRESSED,
+  wifPrefix: Cryptocurrency.NETWORKS.MAINNET.WIF_PREFIX
+});
 
 const seed = '5eb00bbddcf069084889a8ab9155568165f5c453ccb85e70811aaed6f6da5fc19a5ac40b389cd370d086206dec8aa6c43daea6690f20ad3d8d48b2d2ce9e38e4';
 const xPrivateKey = 'xprv9s21ZrQH143K4L18AD5Ko2ELW8bqaGLW4vfASZzo9yEN8fkZPZLdECXWXAMovtonu7DdEFwJuYH31QT96FWJUfkiLUVT8t8e3WNDiwZkuLJ';

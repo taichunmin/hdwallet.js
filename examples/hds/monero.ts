@@ -1,14 +1,12 @@
 // SPDX-License-Identifier: MIT
 
-import { MoneroHD } from '../../src/hds/monero';
+import { MoneroHD } from '../../src/hds';
 import { MoneroDerivation } from '../../src/derivations';
 import { Monero } from '../../src/cryptocurrencies';
 
-const moneroHD: MoneroHD = new MoneroHD(
-  Monero.NETWORKS.MAINNET, {
-    minor: 1, major: 0
-  }
-);
+const moneroHD: MoneroHD = new MoneroHD({
+  network: Monero.NETWORKS.MAINNET, minor: 1, major: 0
+});
 
 const seed = '7700d24525cd55c703aa3bf96590938b60d6408d6c56cc1d6d28bdb4d768b893';
 const privateKey = 'ab37a127a265102d9910702a41eefd879adedec8de3f2f9142b6d3361df3323d';

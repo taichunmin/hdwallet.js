@@ -1,17 +1,15 @@
 // SPDX-License-Identifier: MIT
 
-import { BIP141HD } from '../../src/hds/bip141';
+import { BIP141HD } from '../../src/hds';
 import { Bitcoin as Cryptocurrency } from '../../src/cryptocurrencies';
 import { CustomDerivation } from '../../src/derivations';
 import { PUBLIC_KEY_TYPES, SEMANTICS } from '../../src/const';
 
-const bip141HD: BIP141HD = new BIP141HD(
-  Cryptocurrency.ECC, {
-    semantic: SEMANTICS.P2WSH_IN_P2SH,
-    publicKeyType: PUBLIC_KEY_TYPES.COMPRESSED,
-    wifPrefix: Cryptocurrency.NETWORKS.MAINNET.WIF_PREFIX
-  }
-);
+const bip141HD: BIP141HD = new BIP141HD({
+  ecc: Cryptocurrency.ECC,
+  publicKeyType: PUBLIC_KEY_TYPES.COMPRESSED,
+  wifPrefix: Cryptocurrency.NETWORKS.MAINNET.WIF_PREFIX
+});
 
 // bip141HD.fromSemantic(SEMANTICS.P2WSH_IN_P2SH)
 

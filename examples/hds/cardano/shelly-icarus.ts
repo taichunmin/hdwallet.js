@@ -1,12 +1,12 @@
 // SPDX-License-Identifier: MIT
 
-import { CardanoHD } from '../../../src/hds/cardano';
+import { CardanoHD } from '../../../src/hds';
 import { CIP1852Derivation, ROLES } from '../../../src/derivations';
 import { Cardano } from '../../../src/cryptocurrencies';
 
-const cardanoHD: CardanoHD = new CardanoHD(
-  Cardano.TYPES.SHELLEY_ICARUS
-);
+const cardanoHD: CardanoHD = new CardanoHD({
+  cardanoType: Cardano.TYPES.SHELLEY_ICARUS
+});
 
 const seed = 'dd585f208c3adf2726d6437bf5278d05';
 const passphrase = 'talonlab';
