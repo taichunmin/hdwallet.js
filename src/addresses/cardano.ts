@@ -8,7 +8,7 @@ import { encode as base58Encode, decode as base58Decode, ensureString } from '..
 import { KholawEd25519PublicKey, PublicKey, validateAndGetPublicKey } from '../ecc';
 import { crc32, blake2b224, sha3_256, chacha20Poly1305Encrypt } from '../crypto';
 import {
-  getBytes, bytesToInteger, bytesToString, integerToBytes, pathToIndexes, concatBytes, toBuffer, checkTypeMatch
+  getBytes, bytesToInteger, bytesToString, integerToBytes, pathToIndexes, concatBytes, toBuffer
 } from '../utils';
 import { AddressError, BaseError } from '../exceptions';
 import { AddressOptionsInterface } from '../interfaces';
@@ -196,7 +196,7 @@ export class CardanoAddress implements Address {
       throw new AddressError('Invalid address type', { expected: this.addressTypes[addressType], got: tagType });
     }
 
-    if (!checkTypeMatch(rootHash, Uint8Array).isValid || rootHash.length !== 28) {
+    if (rootHash.length !== 28) {
       throw new AddressError('Invalid root hash length', { expected: 28, got: rootHash.length });
     }
 

@@ -3,9 +3,8 @@
 import { Monero } from '../cryptocurrencies';
 import { decodeMonero, encodeMonero } from '../libs/base58';
 import { keccak256 } from '../crypto';
-import { Network } from '../cryptocurrencies/cryptocurrency';
 import { SLIP10Ed25519MoneroPublicKey, PublicKey, validateAndGetPublicKey } from '../ecc';
-import { bytesToString, checkTypeMatch, concatBytes, getBytes, integerToBytes, toBuffer } from '../utils';
+import { bytesToString, concatBytes, getBytes, integerToBytes, toBuffer } from '../utils';
 import { AddressOptionsInterface } from '../interfaces';
 import { AddressError, BaseError } from '../exceptions';
 import { Address } from './address';
@@ -15,7 +14,7 @@ export class MoneroAddress implements Address {
   static checksumLength: number = Monero.PARAMS.CHECKSUM_LENGTH;
   static paymentIDLength: number = Monero.PARAMS.PAYMENT_ID_LENGTH;
 
-  static network: string = Monero.DEFAULT_NETWORK;
+  static network: string = Monero.DEFAULT_NETWORK.getName();
   static addressType: string = Monero.DEFAULT_ADDRESS_TYPE;
   static networks: Record<string, { addressTypes: Record<string, number> }> = {
     mainnet: {
@@ -58,10 +57,6 @@ export class MoneroAddress implements Address {
   ): string {
     const { spendPublicKey, viewPublicKey } = publicKeys;
 
-    const networkType = options.network ?? this.network;
-    const { instance, isValid } = checkTypeMatch(networkType, Network);
-    const network = isValid ? instance.getName() : networkType;
-
     const addressType = options.addressType ?? this.addressType;
     const paymentID = options.paymentID ? getBytes(options.paymentID) : undefined;
 
@@ -74,7 +69,9 @@ export class MoneroAddress implements Address {
       });
     }
 
-    const version = integerToBytes(this.networks[network].addressTypes[addressType]);
+    const version = integerToBytes(
+      this.networks[options.network ?? this.network].addressTypes[addressType]
+    );
     const payload = concatBytes(
       version, spend.getRawCompressed(), view.getRawCompressed(), toBuffer(paymentID ?? Buffer.alloc(0))
     );
@@ -86,10 +83,6 @@ export class MoneroAddress implements Address {
   static decode(address: string, options: AddressOptionsInterface = {
     network: this.network, addressType: this.addressType
   }): [string, string] {
-
-    const networkType = options.network ?? this.network;
-    const { instance, isValid } = checkTypeMatch(networkType, Network);
-    const network = isValid ? instance.getName() : networkType;
 
     const addressType = options.addressType ?? this.addressType;
     const paymentID = toBuffer(options.paymentID ?? Buffer.alloc(0));
@@ -105,7 +98,9 @@ export class MoneroAddress implements Address {
       });
     }
 
-    const version = integerToBytes(this.networks[network].addressTypes[addressType]);
+    const version = integerToBytes(
+      this.networks[options.network ?? this.network].addressTypes[addressType]
+    );
     const versionGot = payloadWithPrefix.subarray(0, version.length);
     if (!versionGot.equals(version)) {
       throw new AddressError('Invalid version', { expected: version, got: versionGot });
