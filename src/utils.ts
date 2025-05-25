@@ -3,8 +3,9 @@
 import crypto from 'crypto';
 import { Buffer } from 'buffer';
 
-import { BaseError, DerivationError } from './exceptions';
+import { TypeError, DerivationError } from './exceptions';
 import { DerivationsType, IndexType } from './types';
+import { EnsureTypeMatchOptionsInterface } from './interfaces';
 
 /**
  * Normalize any Buffer / Uint8Array / string into a Node.js Buffer.
@@ -682,43 +683,53 @@ export function wordsToBytesChunk(
   return Buffer.from(u8);
 }
 
-export function checkTypeMatch(
-  instanceOrClass: any, expectedType: any, strict = false
-): { instance: any; isValid: boolean } {
-  if (expectedType === 'any') return {
-    instance: instanceOrClass, isValid: true
-  };
-  if (expectedType === 'null') return {
-    instance: instanceOrClass, isValid: instanceOrClass === null
-  };
-  if (expectedType === 'array') return {
-    instance: instanceOrClass, isValid: Array.isArray(instanceOrClass)
-  };
-  if (typeof expectedType === 'string') {
-    return { instance: instanceOrClass, isValid: typeof instanceOrClass === expectedType };
-  }
-  if (typeof expectedType === 'function') {
-    // Check: class extends class
-    if (typeof instanceOrClass === 'function') {
-      let proto = instanceOrClass;
-      while (proto && proto !== Function.prototype) {
-        if (proto === expectedType) {
-          return { instance: instanceOrClass, isValid: true };
+export function ensureTypeMatch(
+  instanceOrClass: any, expectedType: any, options: EnsureTypeMatchOptionsInterface = { }
+): any {
+  const tryMatch = (type: any): boolean => {
+    if (type === 'any') return true;
+    if (type === 'null') return instanceOrClass === null;
+    if (type === 'array') return Array.isArray(instanceOrClass);
+    if (typeof type === 'string') return typeof instanceOrClass === type;
+    if (typeof type === 'function') {
+      if (typeof instanceOrClass === 'function') {
+        let proto = instanceOrClass;
+        while (proto && proto !== Function.prototype) {
+          if (proto === type) return true;
+          proto = Object.getPrototypeOf(proto);
         }
-        proto = Object.getPrototypeOf(proto);
+        return false;
       }
-      return { instance: instanceOrClass, isValid: false };
+      return options.strict
+        ? instanceOrClass?.constructor === type
+        : instanceOrClass instanceof type;
     }
-    if (strict) {
-      return {
-        instance: instanceOrClass,
-        isValid: instanceOrClass?.constructor === expectedType
-      };
+    return false;
+  };
+
+  const allExpectedTypes = [expectedType, ...(options.otherTypes || [])];
+  const matched = allExpectedTypes.find(tryMatch);
+
+  if (!matched && (options.errorClass || options.otherTypes)) {
+    const expectedNames = allExpectedTypes.map((type) =>
+      typeof type === 'function' ? type.name : String(type)
+    );
+    const gotName = typeof instanceOrClass === 'function'
+      ? instanceOrClass.name
+      : instanceOrClass?.constructor?.name ?? typeof instanceOrClass;
+
+    if (options.errorClass) {
+      throw new options.errorClass(`Invalid type`, {
+        expected: expectedNames, got: gotName
+      });
+    } else {
+      throw new TypeError(`Invalid type`, {
+        expected: expectedNames, got: gotName
+      });
     }
-    return {
-      instance: instanceOrClass,
-      isValid: instanceOrClass instanceof expectedType
-    };
   }
-  return { instance: instanceOrClass, isValid: false };
+
+  return matched && options.errorClass ? instanceOrClass : {
+    value: instanceOrClass, isValid: tryMatch(expectedType)
+  };
 }

@@ -1,8 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-export interface ErrorOptionsInterface {
-  expected?: any; got?: any; detail?: string;
-}
+import { ErrorOptionsInterface } from './interfaces';
 
 export class BaseError extends Error {
 
@@ -20,6 +18,8 @@ export class BaseError extends Error {
     }
   }
 }
+
+export class TypeError extends BaseError { }
 
 export class EntropyError extends BaseError { }
 

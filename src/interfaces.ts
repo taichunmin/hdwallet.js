@@ -2,6 +2,10 @@
 
 import { IndexType } from './types';
 
+export interface ErrorOptionsInterface {
+  expected?: any; got?: any; detail?: string;
+}
+
 export interface OptionsPrivateKey {
   extendedKey?: Uint8Array;
 }
@@ -187,4 +191,26 @@ export interface AddressOptionsInterface {
   network?: string;
   paymentID?: string;
   addressVersion?: string | Uint8Array
+}
+
+export interface EnsureTypeMatchOptionsInterface {
+  strict?: boolean;
+  errorClass?: any;
+  otherTypes?: any[];
+}
+
+export interface HDWalletOptionsInterface {
+  publicKeyType?: string,
+  cardanoType?: string;
+  mode?: string;
+  mnemonicType?: string;
+  checksum?: boolean;
+  addressType?: string;
+  addressPrefix?: string;
+  language?: string;
+  passphrase?: string;
+  useDefaultPath?: boolean;
+  stakingPublicKey?: string;
+  paymentID?: string;
+  semantic?: string;
 }
