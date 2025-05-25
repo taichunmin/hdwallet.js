@@ -7,7 +7,7 @@ import {
   PublicKey, PrivateKey, SLIP10Secp256k1ECC, SLIP10Secp256k1PrivateKey, SLIP10Secp256k1PublicKey
 } from '../../ecc';
 import {
-  getBytes, bytesToString, bytesToInteger, integerToBytes, checkTypeMatch, concatBytes
+  getBytes, bytesToString, bytesToInteger, integerToBytes, ensureTypeMatch, concatBytes
 } from '../../utils';
 import { doubleSha256 } from '../../crypto';
 import { WIF_TYPES, PUBLIC_KEY_TYPES } from '../../const';
@@ -92,13 +92,9 @@ export class ElectrumV1HD extends HD {
   }
 
   fromDerivation(derivation: ElectrumDerivation): this {
-    if (!checkTypeMatch(derivation, ElectrumDerivation).isValid) {
-      throw new DerivationError('Invalid derivation instance', {
-        expected: ElectrumDerivation.name, got: derivation.constructor.name
-      });
-    }
-
-    this.derivation = derivation;
+    this.derivation = ensureTypeMatch(
+      derivation, ElectrumDerivation, { errorClass: DerivationError }
+    );
     this.drive(derivation.getChange(), derivation.getAddress());
     return this;
   }

@@ -7,7 +7,7 @@ import { P2PKHAddress, P2WPKHAddress } from '../../addresses';
 import { privateKeyToWIF } from '../../wif';
 import { Bitcoin } from '../../cryptocurrencies';
 import { BIP32HD } from '../bip32';
-import { checkTypeMatch } from '../../utils';
+import { ensureTypeMatch } from '../../utils';
 import { Seed } from '../../seeds';
 import { BaseError, AddressError, DerivationError } from '../../exceptions';
 import { HDAddressOptionsInterface, HDOptionsInterface } from '../../interfaces';
@@ -66,13 +66,9 @@ export class ElectrumV2HD extends HD {
   }
 
   fromDerivation(derivation: ElectrumDerivation): this {
-    if (!checkTypeMatch(derivation, ElectrumDerivation).isValid) {
-      throw new DerivationError('Invalid derivation instance', {
-        expected: ElectrumDerivation.name, got: derivation.constructor.name
-      });
-    }
-
-    this.derivation = derivation;
+    this.derivation = ensureTypeMatch(
+      derivation, ElectrumDerivation, { errorClass: DerivationError }
+    );
     this.drive(derivation.getChange(), derivation.getAddress());
     return this;
   }

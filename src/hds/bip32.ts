@@ -15,7 +15,7 @@ import { hmacSha256, hmacSha512, ripemd160, sha256 } from '../crypto';
 import { privateKeyToWIF, wifToPrivateKey, getWIFType } from '../wif';
 import { serialize, deserialize, isValidKey, isRootKey } from '../keys';
 import {
-  getBytes, getHmac, bytesToInteger, integerToBytes, bytesToString, resetBits, setBits, concatBytes, checkTypeMatch
+  getBytes, getHmac, bytesToInteger, integerToBytes, bytesToString, resetBits, setBits, concatBytes, ensureTypeMatch
 } from '../utils';
 import {
   AddressError,
@@ -267,13 +267,9 @@ export class BIP32HD extends HD {
   }
 
   fromDerivation(derivation: Derivation): this {
-    if (!checkTypeMatch(derivation, Derivation).isValid) {
-      throw new DerivationError('Invalid derivation instance', {
-        expected: typeof Derivation, got: derivation.constructor.name
-      });
-    }
-
-    this.derivation = derivation;
+    this.derivation = ensureTypeMatch(
+      derivation, Derivation, { errorClass: DerivationError }
+    );
     for (const index of this.derivation.getIndexes()) {
       this.drive(index);
     }

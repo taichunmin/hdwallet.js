@@ -1,13 +1,12 @@
 // SPDX-License-Identifier: MIT
 
-import { EllipticCurveCryptography } from '../ecc';
-import { BIP44Derivation, CHANGES, Derivation } from '../derivations';
+import { BIP44Derivation, CHANGES } from '../derivations';
 import { Bitcoin } from '../cryptocurrencies';
 import { P2PKHAddress } from '../addresses';
 import { BIP32HD } from './bip32';
 import { PUBLIC_KEY_TYPES } from '../const';
 import { HDAddressOptionsInterface, HDOptionsInterface } from '../interfaces';
-import { integerToBytes, checkTypeMatch } from '../utils';
+import { ensureTypeMatch, integerToBytes } from '../utils';
 import { DerivationError } from '../exceptions';
 
 export class BIP44HD extends BIP32HD {
@@ -58,14 +57,9 @@ export class BIP44HD extends BIP32HD {
   }
 
   fromDerivation(derivation: BIP44Derivation): this {
-    if (!checkTypeMatch(derivation, BIP44Derivation).isValid) {
-      throw new DerivationError('Invalid derivation instance', {
-        expected: BIP44Derivation.name, got: derivation.constructor.name
-      });
-    }
-
-    this.cleanDerivation();
-    this.derivation = derivation;
+    this.derivation = ensureTypeMatch(
+      derivation, BIP44Derivation, { errorClass: DerivationError }
+    );
     for (const index of this.derivation.getIndexes()) {
       this.drive(index);
     }

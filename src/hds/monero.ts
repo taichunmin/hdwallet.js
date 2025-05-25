@@ -12,7 +12,7 @@ import {
   PrivateKey,
   PublicKey
 } from '../ecc';
-import { getBytes, bytesToString, integerToBytes, bytesToInteger, checkTypeMatch } from '../utils';
+import { getBytes, bytesToString, integerToBytes, bytesToInteger, ensureTypeMatch } from '../utils';
 import { MoneroDerivation } from '../derivations';
 import { DerivationError, AddressError, NetworkError, PrivateKeyError, PublicKeyError, SeedError } from '../exceptions';
 import { HDAddressOptionsInterface, HDOptionsInterface } from '../interfaces';
@@ -38,8 +38,8 @@ export class MoneroHD extends HD {
   }) {
     super(options);
 
-    const { instance, isValid } = checkTypeMatch(options.network, Network);
-    const networkType = isValid ? instance.getName() : options.network;
+    const network = ensureTypeMatch(options.network, Network, { otherTypes: ['string'] });
+    const networkType = network.isValid ? network.value.getName() : options.network;
     if (!Monero.NETWORKS.isNetwork(networkType)) {
       throw new NetworkError(`Wrong Monero network`, {
         expected: Monero.NETWORKS.getNetworks(), got: options.network
@@ -60,8 +60,7 @@ export class MoneroHD extends HD {
     try {
       this.seed = getBytes(seed instanceof Seed ? seed.getSeed() : seed);
       const spendPrivateKey = this.seed.length === SLIP10Ed25519MoneroPrivateKey.getLength()
-        ? this.seed
-        : keccak256(this.seed);
+        ? this.seed : keccak256(this.seed);
 
       return this.fromSpendPrivateKey(scalarReduce(spendPrivateKey));
     } catch {
@@ -81,13 +80,9 @@ export class MoneroHD extends HD {
   }
 
   fromDerivation(derivation: MoneroDerivation): this {
-
-    if (!checkTypeMatch(derivation, MoneroDerivation).isValid) {
-      throw new DerivationError(`Invalid ${this.getName()} derivation instance`, {
-        expected: MoneroDerivation.name, got: derivation.constructor.name
-      });
-    }
-    this.derivation = derivation;
+    this.derivation = ensureTypeMatch(
+      derivation, MoneroDerivation, { errorClass: DerivationError }
+    );
     return this;
   }
 
