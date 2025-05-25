@@ -32,7 +32,7 @@ console.log('Root Chain Code:', bip44HD.getRootChainCode());
 console.log('Root Public Key:', bip44HD.getRootPublicKey());
 
 // const bip44Derivation: BIP44Derivation = new BIP44Derivation({
-//   coinType: Bitcoin.COIN_TYPE, account: 0, change: CHANGES.EXTERNAL_CHANGE, address: 0
+//   coinType: Cryptocurrency.COIN_TYPE, account: 0, change: CHANGES.EXTERNAL_CHANGE, address: 0
 // });
 //
 // bip44HD.fromDerivation(bip44Derivation);
