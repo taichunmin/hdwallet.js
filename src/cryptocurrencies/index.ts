@@ -436,7 +436,7 @@ export class CRYPTOCURRENCIES {
     return Object.values(this.dictionary);
   }
 
-  static cryptocurrency(name: string): typeof Cryptocurrency {
+  static getCryptocurrencyClass(name: string): typeof Cryptocurrency {
     if (!this.isCryptocurrency(name)) {
       throw new CryptocurrencyError(
         'Invalid cryptocurrency name', { expected: this.getNames(), got: name }
