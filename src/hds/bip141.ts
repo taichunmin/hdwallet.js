@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: MIT
 
 import { Bitcoin } from '../cryptocurrencies';
-import { EllipticCurveCryptography } from '../ecc';
 import { PUBLIC_KEY_TYPES, SEMANTICS } from '../const';
 import { P2WPKHAddress, P2WPKHInP2SHAddress, P2WSHAddress, P2WSHInP2SHAddress } from '../addresses';
 import { BIP141HDSemanticOptionsInterface, HDAddressOptionsInterface, HDOptionsInterface } from '../interfaces';

@@ -33,6 +33,7 @@ export class BIP49HD extends BIP44HD {
   }
 
   fromDerivation(derivation: BIP49Derivation): this {
+    this.cleanDerivation();
     this.derivation = ensureTypeMatch(
       derivation, BIP49Derivation, { errorClass: DerivationError }
     );
@@ -43,7 +44,6 @@ export class BIP49HD extends BIP44HD {
   }
 
   updateDerivation(derivation: BIP49Derivation): this {
-    this.cleanDerivation();
     this.fromDerivation(derivation);
     return this;
   }
