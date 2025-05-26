@@ -73,30 +73,45 @@ export class WitnessVersions extends NestedNamespace {
 }
 
 export class Entropies extends NestedNamespace {
+  isEntropy(entropy: string): boolean {
+    return this.getEntropies().includes(entropy);
+  }
   getEntropies(): string[] {
     return Object.values(this as any) as string[];
   }
 }
 
 export class Mnemonics extends NestedNamespace {
+  isMnemonic(mnemonic: string): boolean {
+    return this.getMnemonics().includes(mnemonic);
+  }
   getMnemonics(): string[] {
     return Object.values(this as any) as string[];
   }
 }
 
 export class Seeds extends NestedNamespace {
+  isSeed(seed: string): boolean {
+    return this.getSeeds().includes(seed);
+  }
   getSeeds(): string[] {
     return Object.values(this as any) as string[];
   }
 }
 
 export class HDs extends NestedNamespace {
+  isHD(hd: string): boolean {
+    return this.getHDS().includes(hd);
+  }
   getHDS(): string[] {
     return Object.values(this as any) as string[];
   }
 }
 
 export class Addresses extends NestedNamespace {
+  isAddress(address: string): boolean {
+    return this.getAddresses().includes(address);
+  }
   getAddresses(): string[] {
     return Object.values(this as any) as string[];
   }
