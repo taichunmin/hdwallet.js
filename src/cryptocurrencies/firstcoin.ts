@@ -68,4 +68,5 @@ export class Firstcoin extends Cryptocurrency {
     'P2SH'
   ]);
   static DEFAULT_ADDRESS = Firstcoin.ADDRESSES.P2PKH;
+  static DEFAULT_SEMANTIC = 'p2pkh';
 }

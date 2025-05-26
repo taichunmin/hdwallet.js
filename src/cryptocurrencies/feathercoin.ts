@@ -69,4 +69,5 @@ export class Feathercoin extends Cryptocurrency {
     'P2SH'
   ]);
   static DEFAULT_ADDRESS = Feathercoin.ADDRESSES.P2PKH;
+  static DEFAULT_SEMANTIC = 'p2pkh';
 }

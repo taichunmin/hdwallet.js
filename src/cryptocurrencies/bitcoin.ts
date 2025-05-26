@@ -143,6 +143,7 @@ export class Bitcoin extends Cryptocurrency {
     { P2WSH_IN_P2SH: 'P2WSH-In-P2SH' }
   ]);
   static DEFAULT_ADDRESS = Bitcoin.ADDRESSES.P2PKH;
+  static DEFAULT_SEMANTIC = 'p2pkh';
   static PARAMS = new Params({
     ALPHABET: '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz',
     FIELD_SIZE: '0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEFFFFFC2F',

@@ -116,4 +116,5 @@ export class Foxdcoin extends Cryptocurrency {
     { P2WSH_IN_P2SH: 'P2WSH-In-P2SH' }
   ]);
   static DEFAULT_ADDRESS = Foxdcoin.ADDRESSES.P2PKH;
+  static DEFAULT_SEMANTIC = 'p2pkh';
 }

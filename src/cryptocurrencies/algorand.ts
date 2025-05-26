@@ -67,6 +67,7 @@ export class Algorand extends Cryptocurrency {
     ALGORAND: 'Algorand'
   });
   static DEFAULT_ADDRESS = Algorand.ADDRESSES.ALGORAND;
+  static DEFAULT_SEMANTIC = 'p2pkh';
   static PARAMS = new Params({
     CHECKSUM_LENGTH: 0x04
   });

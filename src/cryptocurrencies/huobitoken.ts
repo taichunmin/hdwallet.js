@@ -62,4 +62,5 @@ export class HuobiToken extends Cryptocurrency {
     ETHEREUM: 'Ethereum'
   });
   static DEFAULT_ADDRESS = HuobiToken.ADDRESSES.ETHEREUM;
+  static DEFAULT_SEMANTIC = 'p2pkh';
 }

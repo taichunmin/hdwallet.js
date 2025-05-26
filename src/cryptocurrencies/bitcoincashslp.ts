@@ -119,6 +119,7 @@ export class BitcoinCashSLP extends Cryptocurrency {
     { P2WSH_IN_P2SH: 'P2WSH-In-P2SH' }
   ]);
   static DEFAULT_ADDRESS = BitcoinCashSLP.ADDRESSES.P2PKH;
+  static DEFAULT_SEMANTIC = 'p2pkh';
   static ADDRESS_TYPES = new AddressTypes({
     STD: 'std',
     LEGACY: 'legacy'

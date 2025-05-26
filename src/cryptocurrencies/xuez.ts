@@ -69,4 +69,5 @@ export class XUEZ extends Cryptocurrency {
     'P2SH'
   ]);
   static DEFAULT_ADDRESS = XUEZ.ADDRESSES.P2PKH;
+  static DEFAULT_SEMANTIC = 'p2pkh';
 }

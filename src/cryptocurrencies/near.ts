@@ -62,4 +62,5 @@ export class Near extends Cryptocurrency {
     NEAR: 'Near'
   });
   static DEFAULT_ADDRESS = Near.ADDRESSES.NEAR;
+  static DEFAULT_SEMANTIC = 'p2pkh';
 }

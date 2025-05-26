@@ -64,4 +64,5 @@ export class OKTChain extends Cryptocurrency {
     OKT_CHAIN: 'OKT-Chain'
   });
   static DEFAULT_ADDRESS = OKTChain.ADDRESSES.OKT_CHAIN;
+  static DEFAULT_SEMANTIC = 'p2pkh';
 }

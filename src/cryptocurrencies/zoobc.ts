@@ -76,4 +76,5 @@ export class ZooBC extends Cryptocurrency {
     'P2SH'
   ]);
   static DEFAULT_ADDRESS = ZooBC.ADDRESSES.P2PKH;
+  static DEFAULT_SEMANTIC = 'p2pkh';
 }

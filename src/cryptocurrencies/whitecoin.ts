@@ -70,4 +70,5 @@ export class Whitecoin extends Cryptocurrency {
     'P2SH'
   ]);
   static DEFAULT_ADDRESS = Whitecoin.ADDRESSES.P2PKH;
+  static DEFAULT_SEMANTIC = 'p2pkh';
 }

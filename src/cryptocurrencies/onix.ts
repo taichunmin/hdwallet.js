@@ -68,4 +68,5 @@ export class Onix extends Cryptocurrency {
     'P2SH'
   ]);
   static DEFAULT_ADDRESS = Onix.ADDRESSES.P2PKH;
+  static DEFAULT_SEMANTIC = 'p2pkh';
 }

@@ -69,4 +69,5 @@ export class EuropeCoin extends Cryptocurrency {
     'P2SH'
   ]);
   static DEFAULT_ADDRESS = EuropeCoin.ADDRESSES.P2PKH;
+  static DEFAULT_SEMANTIC = 'p2pkh';
 }

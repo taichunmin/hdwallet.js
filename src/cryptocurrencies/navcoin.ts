@@ -69,4 +69,5 @@ export class Navcoin extends Cryptocurrency {
     'P2SH'
   ]);
   static DEFAULT_ADDRESS = Navcoin.ADDRESSES.P2PKH;
+  static DEFAULT_SEMANTIC = 'p2pkh';
 }

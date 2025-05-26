@@ -68,4 +68,5 @@ export class VPNCoin extends Cryptocurrency {
     'P2SH'
   ]);
   static DEFAULT_ADDRESS = VPNCoin.ADDRESSES.P2PKH;
+  static DEFAULT_SEMANTIC = 'p2pkh';
 }

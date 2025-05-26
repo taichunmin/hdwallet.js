@@ -64,4 +64,5 @@ export class Secret extends Cryptocurrency {
     COSMOS: 'Cosmos'
   });
   static DEFAULT_ADDRESS = Secret.ADDRESSES.COSMOS;
+  static DEFAULT_SEMANTIC = 'p2pkh';
 }

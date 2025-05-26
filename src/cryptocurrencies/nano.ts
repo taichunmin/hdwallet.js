@@ -63,6 +63,7 @@ export class Nano extends Cryptocurrency {
     NANO: 'Nano'
   });
   static DEFAULT_ADDRESS = Nano.ADDRESSES.NANO;
+  static DEFAULT_SEMANTIC = 'p2pkh';
   static PARAMS = new Params({
     ADDRESS_PREFIX: 'nano_',
     ALPHABET: '13456789abcdefghijkmnopqrstuwxyz',

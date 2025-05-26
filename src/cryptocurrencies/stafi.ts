@@ -64,4 +64,5 @@ export class Stafi extends Cryptocurrency {
     COSMOS: 'Cosmos'
   });
   static DEFAULT_ADDRESS = Stafi.ADDRESSES.COSMOS;
+  static DEFAULT_SEMANTIC = 'p2pkh';
 }

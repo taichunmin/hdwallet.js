@@ -69,4 +69,5 @@ export class NewYorkCoin extends Cryptocurrency {
     'P2SH'
   ]);
   static DEFAULT_ADDRESS = NewYorkCoin.ADDRESSES.P2PKH;
+  static DEFAULT_SEMANTIC = 'p2pkh';
 }

@@ -69,4 +69,5 @@ export class Wincoin extends Cryptocurrency {
     'P2SH'
   ]);
   static DEFAULT_ADDRESS = Wincoin.ADDRESSES.P2PKH;
+  static DEFAULT_SEMANTIC = 'p2pkh';
 }

@@ -63,4 +63,5 @@ export class Fantom extends Cryptocurrency {
     ETHEREUM: 'Ethereum'
   });
   static DEFAULT_ADDRESS = Fantom.ADDRESSES.ETHEREUM;
+  static DEFAULT_SEMANTIC = 'p2pkh';
 }

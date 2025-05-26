@@ -80,4 +80,5 @@ export class BitcoinAtom extends Cryptocurrency {
     { P2WPKH_IN_P2SH: 'P2WPKH-In-P2SH' }
   ]);
   static DEFAULT_ADDRESS = BitcoinAtom.ADDRESSES.P2PKH;
+  static DEFAULT_SEMANTIC = 'p2pkh';
 }

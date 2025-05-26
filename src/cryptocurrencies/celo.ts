@@ -64,4 +64,5 @@ export class Celo extends Cryptocurrency {
     ETHEREUM: 'Ethereum'
   });
   static DEFAULT_ADDRESS = Celo.ADDRESSES.ETHEREUM;
+  static DEFAULT_SEMANTIC = 'p2pkh';
 }

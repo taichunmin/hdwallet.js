@@ -64,4 +64,5 @@ export class Neutron extends Cryptocurrency {
     COSMOS: 'Cosmos'
   });
   static DEFAULT_ADDRESS = Neutron.ADDRESSES.COSMOS;
+  static DEFAULT_SEMANTIC = 'p2pkh';
 }

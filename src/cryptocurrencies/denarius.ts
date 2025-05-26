@@ -69,4 +69,5 @@ export class Denarius extends Cryptocurrency {
     'P2SH'
   ]);
   static DEFAULT_ADDRESS = Denarius.ADDRESSES.P2PKH;
+  static DEFAULT_SEMANTIC = 'p2pkh';
 }

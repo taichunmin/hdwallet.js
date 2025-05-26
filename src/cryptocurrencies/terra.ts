@@ -64,4 +64,5 @@ export class Terra extends Cryptocurrency {
     COSMOS: 'Cosmos'
   });
   static DEFAULT_ADDRESS = Terra.ADDRESSES.COSMOS;
+  static DEFAULT_SEMANTIC = 'p2pkh';
 }

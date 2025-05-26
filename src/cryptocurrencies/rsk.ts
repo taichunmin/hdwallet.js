@@ -86,4 +86,5 @@ export class RSK extends Cryptocurrency {
     'P2SH'
   ]);
   static DEFAULT_ADDRESS = RSK.ADDRESSES.P2PKH;
+  static DEFAULT_SEMANTIC = 'p2pkh';
 }

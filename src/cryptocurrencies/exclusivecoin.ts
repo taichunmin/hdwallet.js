@@ -68,4 +68,5 @@ export class ExclusiveCoin extends Cryptocurrency {
     'P2SH'
   ]);
   static DEFAULT_ADDRESS = ExclusiveCoin.ADDRESSES.P2PKH;
+  static DEFAULT_SEMANTIC = 'p2pkh';
 }

@@ -64,6 +64,7 @@ export class Tezos extends Cryptocurrency {
     TEZOS: 'Tezos'
   });
   static DEFAULT_ADDRESS = Tezos.ADDRESSES.TEZOS;
+  static DEFAULT_SEMANTIC = 'p2pkh';
   static ADDRESS_PREFIXES = new AddressPrefixes({
     TZ1: 'tz1',
     TZ2: 'tz2',

@@ -68,6 +68,7 @@ export class Avalanche extends Cryptocurrency {
     ETHEREUM: 'Ethereum'
   });
   static DEFAULT_ADDRESS = Avalanche.ADDRESSES.AVALANCHE;
+  static DEFAULT_SEMANTIC = 'p2pkh';
   static ADDRESS_TYPES = new AddressTypes({
     C_CHAIN: 'c-chain',
     P_CHAIN: 'p-chain',

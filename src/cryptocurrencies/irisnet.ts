@@ -64,4 +64,5 @@ export class IRISnet extends Cryptocurrency {
     COSMOS: 'Cosmos'
   });
   static DEFAULT_ADDRESS = IRISnet.ADDRESSES.COSMOS;
+  static DEFAULT_SEMANTIC = 'p2pkh';
 }

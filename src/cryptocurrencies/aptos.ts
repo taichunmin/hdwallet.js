@@ -63,6 +63,7 @@ export class Aptos extends Cryptocurrency {
     APTOS: 'Aptos'
   });
   static DEFAULT_ADDRESS = Aptos.ADDRESSES.APTOS;
+  static DEFAULT_SEMANTIC = 'p2pkh';
   static PARAMS = new Params({
     SUFFIX: 0x00,
     ADDRESS_PREFIX: '0x'

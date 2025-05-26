@@ -65,6 +65,7 @@ export class Icon extends Cryptocurrency {
     ICON: 'Icon'
   });
   static DEFAULT_ADDRESS = Icon.ADDRESSES.ICON;
+  static DEFAULT_SEMANTIC = 'p2pkh';
   static PARAMS = new Params({
     ADDRESS_PREFIX: 'hx',
     KEY_HASH_LENGTH: 0x14

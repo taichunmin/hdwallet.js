@@ -64,4 +64,5 @@ export class VeChain extends Cryptocurrency {
     ETHEREUM: 'Ethereum'
   });
   static DEFAULT_ADDRESS = VeChain.ADDRESSES.ETHEREUM;
+  static DEFAULT_SEMANTIC = 'p2pkh';
 }

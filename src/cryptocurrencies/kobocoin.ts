@@ -69,4 +69,5 @@ export class Kobocoin extends Cryptocurrency {
     'P2SH'
   ]);
   static DEFAULT_ADDRESS = Kobocoin.ADDRESSES.P2PKH;
+  static DEFAULT_SEMANTIC = 'p2pkh';
 }

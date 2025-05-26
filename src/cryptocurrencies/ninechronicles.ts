@@ -63,4 +63,5 @@ export class NineChronicles extends Cryptocurrency {
     ETHEREUM: 'Ethereum'
   });
   static DEFAULT_ADDRESS = NineChronicles.ADDRESSES.ETHEREUM;
+  static DEFAULT_SEMANTIC = 'p2pkh';
 }

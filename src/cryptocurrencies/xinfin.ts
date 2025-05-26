@@ -65,6 +65,7 @@ export class XinFin extends Cryptocurrency {
     XINFIN: 'XinFin'
   });
   static DEFAULT_ADDRESS = XinFin.ADDRESSES.XINFIN;
+  static DEFAULT_SEMANTIC = 'p2pkh';
   static PARAMS = new Params({
     ADDRESS_PREFIX: 'xdc'
   });

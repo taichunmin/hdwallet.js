@@ -64,6 +64,7 @@ export class EOS extends Cryptocurrency {
     'EOS'
   ]);
   static DEFAULT_ADDRESS = EOS.ADDRESSES.EOS;
+  static DEFAULT_SEMANTIC = 'p2pkh';
   static PARAMS = new Params({
     ADDRESS_PREFIX: 'EOS',
     CHECKSUM_LENGTH: 0x04

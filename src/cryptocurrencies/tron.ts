@@ -70,6 +70,7 @@ export class Tron extends Cryptocurrency {
     TRON: 'Tron'
   });
   static DEFAULT_ADDRESS = Tron.ADDRESSES.TRON;
+  static DEFAULT_SEMANTIC = 'p2pkh';
   static PARAMS = new Params({
     ALPHABET: '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz'
   });

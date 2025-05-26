@@ -86,4 +86,5 @@ export class ShadowCash extends Cryptocurrency {
     'P2SH'
   ]);
   static DEFAULT_ADDRESS = ShadowCash.ADDRESSES.P2PKH;
+  static DEFAULT_SEMANTIC = 'p2pkh';
 }

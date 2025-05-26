@@ -69,4 +69,5 @@ export class Potcoin extends Cryptocurrency {
     'P2SH'
   ]);
   static DEFAULT_ADDRESS = Potcoin.ADDRESSES.P2PKH;
+  static DEFAULT_SEMANTIC = 'p2pkh';
 }

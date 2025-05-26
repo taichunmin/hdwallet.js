@@ -63,6 +63,7 @@ export class Sui extends Cryptocurrency {
     SUI: 'Sui'
   });
   static DEFAULT_ADDRESS = Sui.ADDRESSES.SUI;
+  static DEFAULT_SEMANTIC = 'p2pkh';
   static PARAMS = new Params({
     KEY_TYPE: 0x00,
     ADDRESS_PREFIX: '0x'

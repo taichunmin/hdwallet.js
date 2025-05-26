@@ -68,4 +68,5 @@ export class GameCredits extends Cryptocurrency {
     'P2SH'
   ]);
   static DEFAULT_ADDRESS = GameCredits.ADDRESSES.P2PKH;
+  static DEFAULT_SEMANTIC = 'p2pkh';
 }

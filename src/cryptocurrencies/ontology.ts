@@ -63,6 +63,7 @@ export class Ontology extends Cryptocurrency {
     NEO: 'Neo'
   });
   static DEFAULT_ADDRESS = Ontology.ADDRESSES.NEO;
+  static DEFAULT_SEMANTIC = 'p2pkh';
   static PARAMS = new Params({
     ADDRESS_VERSION: 0x17
   });

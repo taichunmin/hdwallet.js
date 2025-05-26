@@ -64,4 +64,5 @@ export class MultiversX extends Cryptocurrency {
     MULTIVERSX: 'MultiversX'
   });
   static DEFAULT_ADDRESS = MultiversX.ADDRESSES.MULTIVERSX;
+  static DEFAULT_SEMANTIC = 'p2pkh';
 }

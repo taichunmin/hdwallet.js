@@ -87,4 +87,5 @@ export class Dash extends Cryptocurrency {
     'P2SH'
   ]);
   static DEFAULT_ADDRESS = Dash.ADDRESSES.P2PKH;
+  static DEFAULT_SEMANTIC = 'p2pkh';
 }

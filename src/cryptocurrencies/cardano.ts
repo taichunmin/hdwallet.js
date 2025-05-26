@@ -99,6 +99,7 @@ export class Cardano extends Cryptocurrency {
     CARDANO: 'Cardano'
   });
   static DEFAULT_ADDRESS = Cardano.ADDRESSES.CARDANO;
+  static DEFAULT_SEMANTIC = 'p2pkh';
   static ADDRESS_TYPES = new AddressTypes({
     PUBLIC_KEY: 'public-key',
     REDEMPTION: 'redemption',
