@@ -41,6 +41,10 @@ export class Mnemonic {
     throw new Error('Must override getName()');
   }
 
+  getName(): string {
+    return (this.constructor as typeof Mnemonic).getName();
+  }
+
   getMnemonic(): string {
     return this.mnemonic.join(' ');
   }

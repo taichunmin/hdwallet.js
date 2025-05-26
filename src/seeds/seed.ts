@@ -19,6 +19,10 @@ export class Seed {
     throw new Error("Must override getName()");
   }
 
+  getName(): string {
+    return (this.constructor as typeof Seed).getName();
+  }
+
   getSeed(): string {
     return this.seed;
   }

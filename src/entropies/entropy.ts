@@ -33,6 +33,10 @@ export class Entropy {
     throw new Error('Must override getName()');
   }
 
+  getName(): string {
+    return (this.constructor as typeof Entropy).getName();
+  }
+
   getEntropy(): string {
     return this.entropy;
   }
