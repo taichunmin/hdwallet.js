@@ -4,7 +4,7 @@ import { Point as _Point } from './point';
 import { PublicKey as _PublicKey } from './public-key';
 import { PrivateKey as _PrivateKey } from './private-key';
 
-export abstract class EllipticCurveCryptography {
+export class EllipticCurveCryptography {
 
   static NAME: string;
   static ORDER: bigint;

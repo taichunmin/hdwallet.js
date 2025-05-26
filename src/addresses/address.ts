@@ -3,7 +3,7 @@
 import { PublicKey } from '../ecc';
 import { AddressOptionsInterface } from '../interfaces';
 
-export abstract class Address {
+export class Address {
 
   static getName(): string {
     throw new Error('IAddress.getName() not implemented');

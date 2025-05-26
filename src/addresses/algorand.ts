@@ -10,7 +10,7 @@ import { Address } from './address';
 
 export class AlgorandAddress implements Address {
 
-  static readonly checksumLength: number = Algorand.PARAMS.CHECKSUM_LENGTH;
+  static checksumLength: number = Algorand.PARAMS.CHECKSUM_LENGTH;
 
   static getName(): string {
     return 'Algorand';

@@ -17,9 +17,9 @@ import {
   XPublicKeyVersions,
 } from '../const';
 
-export abstract class Network {
+export class Network {
 
-  // Bitcoin network
+  // Bitcoin
   static PUBLIC_KEY_ADDRESS_PREFIX?: number;
   static SCRIPT_ADDRESS_PREFIX?: number;
   static HRP?: string;
@@ -28,7 +28,7 @@ export abstract class Network {
   static XPUBLIC_KEY_VERSIONS: XPublicKeyVersions;
   static MESSAGE_PREFIX?: string | null;
   static WIF_PREFIX?: number;
-  // Bitcoin-Cash / eCash
+  // Bitcoin-Cash | Bitcoin-Cash-SLP | eCash
   static LEGACY_PUBLIC_KEY_ADDRESS_PREFIX?: number;
   static STD_PUBLIC_KEY_ADDRESS_PREFIX?: number;
   static LEGACY_SCRIPT_ADDRESS_PREFIX?: number;
@@ -47,14 +47,14 @@ export abstract class Network {
   }
 }
 
-export abstract class Cryptocurrency {
+export class Cryptocurrency {
   
   static NAME: string;
   static SYMBOL: string;
   static INFO: Info;
   static ECC: typeof EllipticCurveCryptography;
   static COIN_TYPE: number;
-  static SUPPORT_BIP38?: boolean = false;
+  static SUPPORT_BIP38?: boolean;
   static NETWORKS: Networks;
   static DEFAULT_NETWORK: typeof Network;
   static ENTROPIES: Entropies;
@@ -68,6 +68,6 @@ export abstract class Cryptocurrency {
   static DEFAULT_ADDRESS_TYPE?: string;
   static ADDRESS_PREFIXES?: AddressPrefixes;
   static DEFAULT_ADDRESS_PREFIX?: string;
+  static DEFAULT_SEMANTIC?: string;
   static PARAMS?: Params;
-  static DEFAULT_SEMANTIC?: string = 'p2pkh';
 }
