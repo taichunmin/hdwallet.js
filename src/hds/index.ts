@@ -36,7 +36,7 @@ export class HDS {
     return Object.values(this.dictionary);
   }
 
-  static getHDClass(name: string): typeof HD | any {
+  static getHDClass(name: string): typeof HD {
     if (!this.isHD(name)) {
       throw new BaseError(
         'Invalid HD name', { expected: this.getNames(), got: name }

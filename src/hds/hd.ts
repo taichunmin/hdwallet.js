@@ -41,7 +41,7 @@ export class HD {
     throw new Error('Not implemented');
   }
 
-  fromWatchOnly(viewPrivateKey: string, _spendPublicKey: string): this {
+  fromWatchOnly(viewPrivateKey: string, spendPublicKey: string): this {
     throw new Error('Not implemented');
   }
 
