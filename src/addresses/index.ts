@@ -82,7 +82,7 @@ export class ADDRESSES {
     return Object.values(this.dictionary);
   }
 
-  public static address(name: string): typeof Address {
+  public static getAddressClass(name: string): typeof Address {
     if (!this.isAddress(name)) {
       throw new AddressError(
         'Invalid address name', { expected: this.getNames(), got: name }
