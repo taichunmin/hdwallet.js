@@ -7,7 +7,7 @@ import { AddressOptionsInterface } from '../interfaces';
 import { Address } from './address';
 import { AddressError } from '../exceptions';
 
-export class AvalancheAddress implements Address {
+export class AvalancheAddress extends Address {
 
   static hrp: string = Avalanche.NETWORKS.MAINNET.HRP;
   static addressType: string = Avalanche.DEFAULT_ADDRESS_TYPE;

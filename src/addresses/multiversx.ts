@@ -8,7 +8,7 @@ import { AddressOptionsInterface } from '../interfaces';
 import { AddressError } from '../exceptions';
 import { Address } from './address';
 
-export class MultiversXAddress implements Address {
+export class MultiversXAddress extends Address {
 
   static hrp: string = MultiversX.NETWORKS.MAINNET.HRP;
 

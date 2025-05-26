@@ -9,7 +9,7 @@ import { AddressError } from '../exceptions';
 import { Address } from './address';
 import { AddressOptionsInterface } from '../interfaces';
 
-export class EthereumAddress implements Address {
+export class EthereumAddress extends Address {
 
   static addressPrefix: string = Ethereum.PARAMS.ADDRESS_PREFIX;
 

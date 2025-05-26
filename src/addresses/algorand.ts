@@ -8,7 +8,7 @@ import { bytesToString, concatBytes, toBuffer } from '../utils';
 import { AddressError } from '../exceptions';
 import { Address } from './address';
 
-export class AlgorandAddress implements Address {
+export class AlgorandAddress extends Address {
 
   static checksumLength: number = Algorand.PARAMS.CHECKSUM_LENGTH;
 

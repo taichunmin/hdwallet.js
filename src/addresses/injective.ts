@@ -9,7 +9,7 @@ import { Address } from './address';
 import { AddressOptionsInterface } from '../interfaces';
 import { AddressError } from '../exceptions';
 
-export class InjectiveAddress implements Address {
+export class InjectiveAddress extends Address {
 
   static readonly hrp: string = Injective.NETWORKS.MAINNET.HRP;
 

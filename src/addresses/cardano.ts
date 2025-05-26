@@ -14,7 +14,7 @@ import { AddressError, BaseError } from '../exceptions';
 import { AddressOptionsInterface } from '../interfaces';
 import { Address } from './address';
 
-export class CardanoAddress implements Address {
+export class CardanoAddress extends Address {
 
   static readonly addressTypes: any = {
     'public-key': Cardano.PARAMS.PUBLIC_KEY_ADDRESS,

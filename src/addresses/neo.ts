@@ -9,7 +9,7 @@ import { AddressOptionsInterface } from '../interfaces';
 import { AddressError } from '../exceptions';
 import { Address } from './address';
 
-export class NeoAddress implements Address {
+export class NeoAddress extends Address {
 
   static addressPrefix = integerToBytes(Neo.PARAMS.ADDRESS_PREFIX);
   static addressSuffix = integerToBytes(Neo.PARAMS.ADDRESS_SUFFIX);

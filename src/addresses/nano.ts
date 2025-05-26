@@ -8,7 +8,7 @@ import { SLIP10Ed25519Blake2bPublicKey, PublicKey, validateAndGetPublicKey } fro
 import { bytesToString, bytesReverse, toBuffer, concatBytes, getBytes } from '../utils';
 import { Address } from './address';
 
-export class NanoAddress implements Address {
+export class NanoAddress extends Address {
 
   static addressPrefix: string = Nano.PARAMS.ADDRESS_PREFIX;
   static alphabet: string = Nano.PARAMS.ALPHABET;

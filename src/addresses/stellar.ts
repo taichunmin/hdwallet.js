@@ -9,7 +9,7 @@ import { AddressOptionsInterface } from '../interfaces';
 import { AddressError } from '../exceptions';
 import { Address } from './address';
 
-export class StellarAddress implements Address {
+export class StellarAddress extends Address {
 
   static checksumLength: number = Stellar.PARAMS.CHECKSUM_LENGTH;
   static addressType = Stellar.DEFAULT_ADDRESS_TYPE;

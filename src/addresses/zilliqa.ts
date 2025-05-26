@@ -9,7 +9,7 @@ import { Address } from './address';
 import { AddressOptionsInterface } from '../interfaces';
 import { AddressError } from '../exceptions';
 
-export class ZilliqaAddress implements Address {
+export class ZilliqaAddress extends Address {
 
   static readonly hrp: string = Zilliqa.NETWORKS.MAINNET.HRP;
 

@@ -9,7 +9,7 @@ import { AddressOptionsInterface } from '../interfaces';
 import { Address } from './address';
 import { AddressError } from '../exceptions';
 
-export class OKTChainAddress implements Address {
+export class OKTChainAddress extends Address {
 
   static hrp: string = OKTChain.NETWORKS.MAINNET.HRP;
 

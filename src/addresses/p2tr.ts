@@ -13,7 +13,7 @@ import { AddressOptionsInterface } from '../interfaces';
 import { Address } from './address';
 
 
-export class P2TRAddress implements Address {
+export class P2TRAddress extends Address {
   
   static hrp: string = Bitcoin.NETWORKS.MAINNET.HRP;
   static fieldSize: bigint = BigInt(Bitcoin.PARAMS.FIELD_SIZE);

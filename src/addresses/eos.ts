@@ -10,7 +10,7 @@ import { AddressOptionsInterface } from '../interfaces';
 import { Address } from './address';
 import { AddressError } from '../exceptions';
 
-export class EOSAddress implements Address {
+export class EOSAddress extends Address {
 
   static addressPrefix: string = EOS.PARAMS.ADDRESS_PREFIX;
   static checksumLength: number = EOS.PARAMS.CHECKSUM_LENGTH;

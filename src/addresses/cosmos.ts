@@ -10,7 +10,7 @@ import { AddressOptionsInterface } from '../interfaces';
 import { Address } from './address';
 import { AddressError } from '../exceptions';
 
-export class CosmosAddress implements Address {
+export class CosmosAddress extends Address {
 
   static readonly hrp: string = Cosmos.NETWORKS.MAINNET.HRP;
 

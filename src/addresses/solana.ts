@@ -7,7 +7,7 @@ import { bytesToString, toBuffer } from '../utils';
 import { AddressError } from '../exceptions';
 import { Address } from './address';
 
-export class SolanaAddress implements Address {
+export class SolanaAddress extends Address {
 
   static alphabet: string = Solana.PARAMS.ALPHABET;
 

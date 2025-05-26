@@ -8,7 +8,7 @@ import { Address } from './address';
 import { AddressOptionsInterface } from '../interfaces';
 import { AddressError } from '../exceptions';
 
-export class IconAddress implements Address {
+export class IconAddress extends Address {
 
   static addressPrefix: string = Icon.PARAMS.ADDRESS_PREFIX;
   static keyHashLength: number = Icon.PARAMS.KEY_HASH_LENGTH;

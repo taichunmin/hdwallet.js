@@ -9,7 +9,7 @@ import { AddressOptionsInterface } from '../interfaces';
 import { AddressError } from '../exceptions';
 import { Address } from './address';
 
-export class TezosAddress implements Address {
+export class TezosAddress extends Address {
 
   static addressPrefix = Tezos.DEFAULT_ADDRESS_PREFIX;
   static addressPrefixes: Record<string, Uint8Array> = {

@@ -10,7 +10,7 @@ import { AddressOptionsInterface } from '../interfaces';
 import { Address } from './address';
 import { AddressError } from '../exceptions';
 
-export class FilecoinAddress implements Address {
+export class FilecoinAddress extends Address {
 
   static alphabet: string = Filecoin.PARAMS.ALPHABET;
   static addressPrefix: string = Filecoin.PARAMS.ADDRESS_PREFIX;

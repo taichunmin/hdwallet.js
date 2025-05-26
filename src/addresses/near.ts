@@ -5,7 +5,7 @@ import { SLIP10Ed25519PublicKey, PublicKey, validateAndGetPublicKey } from '../e
 import { bytesToString, getBytes } from '../utils';
 import { Address } from './address';
 
-export class NearAddress implements Address {
+export class NearAddress extends Address {
 
   static getName(): string {
     return 'Near';

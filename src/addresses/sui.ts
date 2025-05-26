@@ -7,7 +7,7 @@ import { bytesToString, integerToBytes, toBuffer } from '../utils';
 import { AddressError } from '../exceptions';
 import { Address } from './address';
 
-export class SuiAddress implements Address {
+export class SuiAddress extends Address {
 
   static keyType: Uint8Array = integerToBytes(Sui.PARAMS.KEY_TYPE);
   static addressPrefix: string = Sui.PARAMS.ADDRESS_PREFIX;

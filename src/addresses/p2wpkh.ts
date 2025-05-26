@@ -13,7 +13,7 @@ import { bytesToString } from '../utils';
 import { Address } from './address';
 import { AddressOptionsInterface } from '../interfaces';
 
-export class P2WPKHAddress implements Address {
+export class P2WPKHAddress extends Address {
 
   static hrp: string = Bitcoin.NETWORKS.MAINNET.HRP;
   static witnessVersion: number = Bitcoin.NETWORKS.MAINNET.WITNESS_VERSIONS.P2WPKH;

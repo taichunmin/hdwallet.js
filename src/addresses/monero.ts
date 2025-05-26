@@ -9,7 +9,7 @@ import { AddressOptionsInterface } from '../interfaces';
 import { AddressError, BaseError } from '../exceptions';
 import { Address } from './address';
 
-export class MoneroAddress implements Address {
+export class MoneroAddress extends Address {
 
   static checksumLength: number = Monero.PARAMS.CHECKSUM_LENGTH;
   static paymentIDLength: number = Monero.PARAMS.PAYMENT_ID_LENGTH;

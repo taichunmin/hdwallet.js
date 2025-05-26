@@ -12,7 +12,7 @@ import { bytesToString, integerToBytes, toBuffer } from '../utils';
 import { AddressOptionsInterface } from '../interfaces';
 import { Address } from './address';
 
-export class P2PKHAddress implements Address {
+export class P2PKHAddress extends Address {
 
   static publicKeyAddressPrefix: number = Bitcoin.NETWORKS.MAINNET.PUBLIC_KEY_ADDRESS_PREFIX;
   static alphabet: string = Bitcoin.PARAMS.ALPHABET;

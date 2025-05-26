@@ -10,7 +10,7 @@ import { Address } from './address';
 import { AddressOptionsInterface } from '../interfaces';
 import { AddressError, NetworkError } from '../exceptions';
 
-export class ErgoAddress implements Address {
+export class ErgoAddress extends Address {
 
   static checksumLength: number = Ergo.PARAMS.CHECKSUM_LENGTH;
   static addressType: string = Ergo.DEFAULT_ADDRESS_TYPE;

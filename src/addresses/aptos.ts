@@ -7,7 +7,7 @@ import { bytesToString, integerToBytes, toBuffer } from '../utils';
 import { AddressError } from '../exceptions';
 import { Address } from './address';
 
-export class AptosAddress implements Address {
+export class AptosAddress extends Address {
 
   static suffix: Uint8Array = integerToBytes(Aptos.PARAMS.SUFFIX);
   static addressPrefix: string = Aptos.PARAMS.ADDRESS_PREFIX;

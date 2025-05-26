@@ -14,7 +14,7 @@ import { Address } from './address';
 import { AddressError } from '../exceptions';
 import { AddressOptionsInterface } from '../interfaces';
 
-export class TronAddress implements Address {
+export class TronAddress extends Address {
 
   static publicKeyAddressPrefix: number = Tron.NETWORKS.MAINNET.PUBLIC_KEY_ADDRESS_PREFIX;
   static alphabet: string = Tron.PARAMS.ALPHABET;
