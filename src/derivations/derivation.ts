@@ -28,7 +28,7 @@ export class Derivation {
   }
 
   clean(): this {
-    throw new Error('Must override getName()');
+    throw new Error('Must override clean()');
   }
 
   getPath(): string {
@@ -45,5 +45,37 @@ export class Derivation {
 
   getDepth(): number {
     return this.derivations.length;
+  }
+
+  getPurpose(): number {
+    throw new Error('Must override getPurpose()');
+  }
+
+  getCoinType(): number {
+    throw new Error('Must override getCoinType()');
+  }
+
+  getAccount(): number {
+    throw new Error('Must override getAccount()');
+  }
+
+  getChange(...args: any[]): string {
+    throw new Error('Must override getChange()');
+  }
+
+  getRole(...args: any[]): string {
+    throw new Error('Must override getRole()');
+  }
+
+  getAddress(): number {
+    throw new Error('Must override getAddress()');
+  }
+
+  getMinor(): number {
+    throw new Error('Must override getMinor()');
+  }
+
+  getMajor(): number {
+    throw new Error('Must override getMajor()');
   }
 }
