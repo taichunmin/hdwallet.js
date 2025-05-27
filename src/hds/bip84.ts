@@ -33,7 +33,7 @@ export class BIP84HD extends BIP44HD {
   }
 
   fromDerivation(derivation: BIP84Derivation): this {
-    this.cleanDerivation();
+    super.cleanDerivation();
     this.derivation = ensureTypeMatch(
       derivation, BIP84Derivation, { errorClass: DerivationError }
     );
@@ -45,28 +45,6 @@ export class BIP84HD extends BIP44HD {
 
   updateDerivation(derivation: BIP84Derivation): this {
     this.fromDerivation(derivation);
-    return this;
-  }
-
-  cleanDerivation(): this {
-    if (this.rootPrivateKey) {
-      this.privateKey = this.rootPrivateKey;
-      this.chainCode = this.rootChainCode;
-      this.parentFingerprint = integerToBytes(0, 4);
-      this.publicKey = this.privateKey.getPublicKey();
-      this.derivation = new BIP84Derivation({
-        coinType: this.coinType, account: 0, change: CHANGES.EXTERNAL_CHANGE, address: 0
-      });
-      this.depth = 5;
-    } else if (this.rootPublicKey) {
-      this.publicKey = this.rootPublicKey;
-      this.chainCode = this.rootChainCode;
-      this.parentFingerprint = integerToBytes(0, 4);
-      this.derivation = new BIP84Derivation({
-        coinType: this.coinType, account: 0, change: CHANGES.EXTERNAL_CHANGE, address: 0
-      });
-      this.depth = 5;
-    }
     return this;
   }
 
