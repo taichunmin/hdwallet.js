@@ -387,14 +387,24 @@ export function getHmac(eccName: string): Buffer {
  * Recursively exclude keys (after replacing '-'→'_') from a nested object.
  */
 export function excludeKeys(
-  nested: Record<string, any>, keys: Set<string>
+  nested: Record<string, any>, keys: string[]
 ): Record<string, any> {
   const out: Record<string, any> = {};
+  const keySet = new Set(keys); // optional optimization
+
   for (const [k, v] of Object.entries(nested)) {
     const normKey = k.replace(/-/g, '_');
-    if (v && typeof v === 'object' && !Buffer.isBuffer(v)) {
+    if (keySet.has(normKey)) continue;
+
+    if (
+      v &&
+      typeof v === 'object' &&
+      !Array.isArray(v) &&
+      !(v instanceof Uint8Array) &&
+      !(v instanceof Buffer)
+    ) {
       out[k] = excludeKeys(v, keys);
-    } else if (!keys.has(normKey)) {
+    } else {
       out[k] = v;
     }
   }
