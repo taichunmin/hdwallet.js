@@ -90,7 +90,7 @@ export class MoneroMnemonic extends Mnemonic {
 
   static fromWords(
     count: number, language: string, options: MnemonicOptionsInterface = { }
-  ): MoneroMnemonic {
+  ): string {
 
     if (!this.wordsList.includes(count)) {
       throw new MnemonicError(
@@ -102,13 +102,12 @@ export class MoneroMnemonic extends Mnemonic {
     }
     const strength = this.wordsToStrength[count];
     const entropyBytes = MoneroEntropy.generate(strength);
-    const phrase = this.encode(entropyBytes, language, options);
-    return new MoneroMnemonic(phrase, options);
+    return this.encode(entropyBytes, language, options);
   }
 
   static fromEntropy(
     entropy: string | Uint8Array | Entropy, language: string, options: MnemonicOptionsInterface = { }
-  ): MoneroMnemonic {
+  ): string {
     let raw: Uint8Array;
     if (typeof entropy === 'string') {
       raw = hexToBytes(entropy);
@@ -117,8 +116,7 @@ export class MoneroMnemonic extends Mnemonic {
     } else {
       raw = hexToBytes(entropy.getEntropy());
     }
-    const phrase = this.encode(raw, language, options);
-    return new MoneroMnemonic(phrase, options);
+    return this.encode(raw, language, options);
   }
 
   static encode(

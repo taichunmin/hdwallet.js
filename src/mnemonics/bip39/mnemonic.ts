@@ -81,7 +81,7 @@ export class BIP39Mnemonic extends Mnemonic {
 
   static fromWords(
     words: number, language: string, options: MnemonicOptionsInterface = { }
-  ): BIP39Mnemonic {
+  ): string {
 
     if (!this.wordsList.includes(words)) {
       throw new MnemonicError(
@@ -90,13 +90,12 @@ export class BIP39Mnemonic extends Mnemonic {
     }
     const strength = this.wordsToEntropyStrength[words];
     const entropyHex = BIP39Entropy.generate(strength);
-    const phrase = this.encode(entropyHex, language, options);
-    return new BIP39Mnemonic(phrase, options);
+    return this.encode(entropyHex, language, options);
   }
 
   static fromEntropy(
     entropy: string | Uint8Array | Entropy, language: string, options: MnemonicOptionsInterface = { }
-  ): BIP39Mnemonic {
+  ): string {
 
     let hex: string;
     if (typeof entropy === 'string') {
@@ -106,8 +105,7 @@ export class BIP39Mnemonic extends Mnemonic {
     } else {
       hex = entropy.getEntropy();
     }
-    const phrase = this.encode(hex, language, options);
-    return new BIP39Mnemonic(phrase, options);
+    return this.encode(hex, language, options);
   }
 
   static encode(

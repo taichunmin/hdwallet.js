@@ -22,29 +22,25 @@ console.log(
   isAllEqual(
     algorandMnemonicClass.getMnemonic(),
     algorandMnemonic.getMnemonic(),
-    AlgorandMnemonicClass.fromEntropy(data.entropy, data.language).getMnemonic(),
-    AlgorandMnemonic.fromEntropy(data.entropy, data.language).getMnemonic(),
+    AlgorandMnemonicClass.fromEntropy(data.entropy, data.language),
+    AlgorandMnemonic.fromEntropy(data.entropy, data.language),
     data.mnemonic
   ),
   isAllEqual(
     algorandMnemonicClass.getLanguage(),
     algorandMnemonic.getLanguage(),
-    AlgorandMnemonicClass.fromEntropy(data.entropy, data.language).getLanguage(),
-    AlgorandMnemonic.fromEntropy(data.entropy, data.language).getLanguage(),
     data.language),
   isAllEqual(
     algorandMnemonicClass.getWords(),
     algorandMnemonic.getWords(),
-    AlgorandMnemonicClass.fromEntropy(data.entropy, data.language).getWords(),
-    AlgorandMnemonic.fromEntropy(data.entropy, data.language).getWords(),
     data.words
   ),
   isAllEqual(AlgorandMnemonicClass.isValid(data.mnemonic), AlgorandMnemonic.isValid(data.mnemonic)),
   isAllEqual(AlgorandMnemonicClass.isValidLanguage(data.language), AlgorandMnemonic.isValidLanguage(data.language)),
   isAllEqual(AlgorandMnemonicClass.isValidWords(data.words), AlgorandMnemonic.isValidWords(data.words)),
   isAllEqual(
-    AlgorandMnemonicClass.fromWords(data.words, data.language).getMnemonic().split(' ').length,
-    AlgorandMnemonic.fromWords(data.words, data.language).getMnemonic().split(' ').length
+    AlgorandMnemonicClass.fromWords(data.words, data.language).split(' ').length,
+    AlgorandMnemonic.fromWords(data.words, data.language).split(' ').length
   ), '\n'
 );
 

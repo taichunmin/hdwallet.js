@@ -44,7 +44,7 @@ export class AlgorandMnemonic extends Mnemonic {
 
   static fromWords(
     words: number, language: string, options: MnemonicOptionsInterface = { }
-  ): AlgorandMnemonic {
+  ): string {
 
     if (!this.wordsList.includes(words)) {
       throw new MnemonicError(
@@ -53,20 +53,17 @@ export class AlgorandMnemonic extends Mnemonic {
     }
     const strength = this.wordsToEntropyStrength[words];
     const entropyHex = AlgorandEntropy.generate(strength);
-    const phrase = this.encode(entropyHex, language, options);
-    return new AlgorandMnemonic(phrase, options);
+    return this.encode(entropyHex, language, options);
   }
 
   static fromEntropy(
     entropy: string | Uint8Array | Entropy, language: string, options: MnemonicOptionsInterface = { }
-  ): AlgorandMnemonic {
+  ): string {
 
     const entropyBytes = typeof entropy === 'string'
       ? getBytes(entropy) : entropy instanceof Uint8Array
         ? entropy : getBytes((entropy as Entropy).getEntropy());
-
-    const phrase = this.encode(entropyBytes, language, options);
-    return new AlgorandMnemonic(phrase, options);
+    return this.encode(entropyBytes, language, options);
   }
 
   static encode(

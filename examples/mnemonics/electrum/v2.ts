@@ -41,28 +41,22 @@ for (const mnemonic of data.mnemonics) {
     isAllEqual(
       electrumV2MnemonicClass.getMnemonic(),
       electrumV2Mnemonic.getMnemonic(),
-      ElectrumV2MnemonicClass.fromEntropy(data.entropy, data.language, { mnemonicType: mnemonic.mnemonicType }).getMnemonic(),
-      ElectrumV2Mnemonic.fromEntropy(data.entropy, data.language, { mnemonicType: mnemonic.mnemonicType }).getMnemonic(),
+      ElectrumV2MnemonicClass.fromEntropy(data.entropy, data.language, { mnemonicType: mnemonic.mnemonicType }),
+      ElectrumV2Mnemonic.fromEntropy(data.entropy, data.language, { mnemonicType: mnemonic.mnemonicType }),
       mnemonic.mnemonic
     ),
     isAllEqual(
       electrumV2MnemonicClass.getLanguage(),
       electrumV2Mnemonic.getLanguage(),
-      ElectrumV2MnemonicClass.fromEntropy(data.entropy, data.language, { mnemonicType: mnemonic.mnemonicType }).getLanguage(),
-      ElectrumV2Mnemonic.fromEntropy(data.entropy, data.language, { mnemonicType: mnemonic.mnemonicType }).getLanguage(),
       data.language),
     isAllEqual(
       electrumV2MnemonicClass.getWords(),
       electrumV2Mnemonic.getWords(),
-      ElectrumV2MnemonicClass.fromEntropy(data.entropy, data.language, { mnemonicType: mnemonic.mnemonicType }).getWords(),
-      ElectrumV2Mnemonic.fromEntropy(data.entropy, data.language, { mnemonicType: mnemonic.mnemonicType }).getWords(),
       data.words
     ),
     isAllEqual(
       electrumV2MnemonicClass.getMnemonicType(),
       electrumV2Mnemonic.getMnemonicType(),
-      ElectrumV2MnemonicClass.fromEntropy(data.entropy, data.language, { mnemonicType: mnemonic.mnemonicType }).getMnemonicType(),
-      ElectrumV2Mnemonic.fromEntropy(data.entropy, data.language, { mnemonicType: mnemonic.mnemonicType }).getMnemonicType(),
       mnemonic.mnemonicType
     ),
     isAllEqual(
@@ -72,8 +66,8 @@ for (const mnemonic of data.mnemonics) {
     isAllEqual(ElectrumV2MnemonicClass.isValidLanguage(data.language), ElectrumV2Mnemonic.isValidLanguage(data.language)),
     isAllEqual(ElectrumV2MnemonicClass.isValidWords(data.words), ElectrumV2Mnemonic.isValidWords(data.words)),
     isAllEqual(
-      ElectrumV2MnemonicClass.fromWords(data.words, data.language).getMnemonic().split(' ').length,
-      ElectrumV2Mnemonic.fromWords(data.words, data.language).getMnemonic().split(' ').length
+      ElectrumV2MnemonicClass.fromWords(data.words, data.language).split(' ').length,
+      ElectrumV2Mnemonic.fromWords(data.words, data.language).split(' ').length
     ), '\n'
   );
 

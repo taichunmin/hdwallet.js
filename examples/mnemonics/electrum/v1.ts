@@ -22,29 +22,25 @@ console.log(
   isAllEqual(
     electrumV1MnemonicClass.getMnemonic(),
     electrumV1Mnemonic.getMnemonic(),
-    ElectrumV1MnemonicClass.fromEntropy(data.entropy, data.language).getMnemonic(),
-    ElectrumV1Mnemonic.fromEntropy(data.entropy, data.language).getMnemonic(),
+    ElectrumV1MnemonicClass.fromEntropy(data.entropy, data.language),
+    ElectrumV1Mnemonic.fromEntropy(data.entropy, data.language),
     data.mnemonic
   ),
   isAllEqual(
     electrumV1MnemonicClass.getLanguage(),
     electrumV1Mnemonic.getLanguage(),
-    ElectrumV1MnemonicClass.fromEntropy(data.entropy, data.language).getLanguage(),
-    ElectrumV1Mnemonic.fromEntropy(data.entropy, data.language).getLanguage(),
     data.language),
   isAllEqual(
     electrumV1MnemonicClass.getWords(),
     electrumV1Mnemonic.getWords(),
-    ElectrumV1MnemonicClass.fromEntropy(data.entropy, data.language).getWords(),
-    ElectrumV1Mnemonic.fromEntropy(data.entropy, data.language).getWords(),
     data.words
   ),
   isAllEqual(ElectrumV1MnemonicClass.isValid(data.mnemonic), ElectrumV1Mnemonic.isValid(data.mnemonic)),
   isAllEqual(ElectrumV1MnemonicClass.isValidLanguage(data.language), ElectrumV1Mnemonic.isValidLanguage(data.language)),
   isAllEqual(ElectrumV1MnemonicClass.isValidWords(data.words), ElectrumV1Mnemonic.isValidWords(data.words)),
   isAllEqual(
-    ElectrumV1MnemonicClass.fromWords(data.words, data.language).getMnemonic().split(' ').length,
-    ElectrumV1Mnemonic.fromWords(data.words, data.language).getMnemonic().split(' ').length
+    ElectrumV1MnemonicClass.fromWords(data.words, data.language).split(' ').length,
+    ElectrumV1Mnemonic.fromWords(data.words, data.language).split(' ').length
   ), '\n'
 );
 

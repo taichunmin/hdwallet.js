@@ -22,29 +22,25 @@ console.log(
   isAllEqual(
     bip39MnemonicClass.getMnemonic(),
     bip39Mnemonic.getMnemonic(),
-    BIP39MnemonicClass.fromEntropy(data.entropy, data.language).getMnemonic(),
-    BIP39Mnemonic.fromEntropy(data.entropy, data.language).getMnemonic(),
+    BIP39MnemonicClass.fromEntropy(data.entropy, data.language),
+    BIP39Mnemonic.fromEntropy(data.entropy, data.language),
     data.mnemonic
   ),
   isAllEqual(
     bip39MnemonicClass.getLanguage(),
     bip39Mnemonic.getLanguage(),
-    BIP39MnemonicClass.fromEntropy(data.entropy, data.language).getLanguage(),
-    BIP39Mnemonic.fromEntropy(data.entropy, data.language).getLanguage(),
     data.language),
   isAllEqual(
     bip39MnemonicClass.getWords(),
     bip39Mnemonic.getWords(),
-    BIP39MnemonicClass.fromEntropy(data.entropy, data.language).getWords(),
-    BIP39Mnemonic.fromEntropy(data.entropy, data.language).getWords(),
     data.words
   ),
   isAllEqual(BIP39MnemonicClass.isValid(data.mnemonic), BIP39Mnemonic.isValid(data.mnemonic)),
   isAllEqual(BIP39MnemonicClass.isValidLanguage(data.language), BIP39Mnemonic.isValidLanguage(data.language)),
   isAllEqual(BIP39MnemonicClass.isValidWords(data.words), BIP39Mnemonic.isValidWords(data.words)),
   isAllEqual(
-    BIP39MnemonicClass.fromWords(data.words, data.language).getMnemonic().split(' ').length,
-    BIP39Mnemonic.fromWords(data.words, data.language).getMnemonic().split(' ').length
+    BIP39MnemonicClass.fromWords(data.words, data.language).split(' ').length,
+    BIP39Mnemonic.fromWords(data.words, data.language).split(' ').length
   ), '\n'
 );
 

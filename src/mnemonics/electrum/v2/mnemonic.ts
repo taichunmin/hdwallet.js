@@ -76,7 +76,7 @@ export class ElectrumV2Mnemonic extends Mnemonic {
       mnemonicType: ELECTRUM_V2_MNEMONIC_TYPES.STANDARD,
       maxAttempts: BigInt('1' + '0'.repeat(60))
     }
-  ): ElectrumV2Mnemonic {
+  ): string {
     if (!this.wordsList.includes(count)) {
       throw new MnemonicError('Invalid mnemonic words number', {
         expected: this.wordsList,
@@ -96,7 +96,7 @@ export class ElectrumV2Mnemonic extends Mnemonic {
       mnemonicType: ELECTRUM_V2_MNEMONIC_TYPES.STANDARD,
       maxAttempts: BigInt('1' + '0'.repeat(60))
     }
-  ): ElectrumV2Mnemonic {
+  ): string {
 
     if (!option.mnemonicType) {
       throw new MnemonicError('mnemonicType is required');
@@ -149,17 +149,14 @@ export class ElectrumV2Mnemonic extends Mnemonic {
     for (let offset = BigInt(0); offset < option.maxAttempts; offset++) {
       const candidate = integerToBytes(baseEnt + offset, raw.length, 'big');
       try {
-        const phrase = this.encode(
-          candidate, language, {
-            mnemonicType: option.mnemonicType,
-            wordsList: wordsList,
-            bip39List: bip39List,
-            bip39Index: bip39Index,
-            ev1List: ev1List,
-            ev1Index: ev1Index
-          }
-        );
-        return new ElectrumV2Mnemonic(phrase, { mnemonicType: option.mnemonicType });
+        return this.encode(candidate, language, {
+          mnemonicType: option.mnemonicType,
+          wordsList: wordsList,
+          bip39List: bip39List,
+          bip39Index: bip39Index,
+          ev1List: ev1List,
+          ev1Index: ev1Index
+        });
       } catch (err) {
         if (err instanceof EntropyError) {
           continue;

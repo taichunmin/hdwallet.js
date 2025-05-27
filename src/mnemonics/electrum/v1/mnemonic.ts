@@ -46,7 +46,7 @@ export class ElectrumV1Mnemonic extends Mnemonic {
 
   static fromWords(
     count: number, language: string, options: MnemonicOptionsInterface = { }
-  ): ElectrumV1Mnemonic {
+  ): string {
 
     if (!this.wordsList.includes(count)) {
       throw new MnemonicError('Invalid mnemonic words number', { expected: this.wordsList, got: count });
@@ -54,13 +54,12 @@ export class ElectrumV1Mnemonic extends Mnemonic {
     const entropy = ElectrumV1Entropy.generate(
       this.wordsToStrength[count]
     );
-    const phrase = this.encode(entropy, language, options);
-    return new ElectrumV1Mnemonic(phrase, options);
+    return this.encode(entropy, language, options);
   }
 
   static fromEntropy(
     entropy: string | Uint8Array | Entropy, language: string, options: MnemonicOptionsInterface = { }
-  ): ElectrumV1Mnemonic {
+  ): string {
 
     let raw: Uint8Array;
     if (typeof entropy === 'string') {
@@ -70,8 +69,7 @@ export class ElectrumV1Mnemonic extends Mnemonic {
     } else {
       raw = hexToBytes(entropy.getEntropy());
     }
-    const phrase = this.encode(raw, language, options);
-    return new ElectrumV1Mnemonic(phrase, options);
+    return this.encode(raw, language, options);
   }
 
   static encode(

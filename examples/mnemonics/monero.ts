@@ -34,21 +34,17 @@ for (const mnemonic of data.mnemonics) {
     isAllEqual(
       moneroMnemonicClass.getMnemonic(),
       moneroMnemonic.getMnemonic(),
-      MoneroMnemonicClass.fromEntropy(data.entropy, data.language, { checksum: mnemonic.checksum }).getMnemonic(),
-      MoneroMnemonic.fromEntropy(data.entropy, data.language, { checksum: mnemonic.checksum }).getMnemonic(),
+      MoneroMnemonicClass.fromEntropy(data.entropy, data.language, { checksum: mnemonic.checksum }),
+      MoneroMnemonic.fromEntropy(data.entropy, data.language, { checksum: mnemonic.checksum }),
       mnemonic.mnemonic
     ),
     isAllEqual(
       moneroMnemonicClass.getLanguage(),
       moneroMnemonic.getLanguage(),
-      MoneroMnemonicClass.fromEntropy(data.entropy, data.language, { checksum: mnemonic.checksum }).getLanguage(),
-      MoneroMnemonic.fromEntropy(data.entropy, data.language, { checksum: mnemonic.checksum }).getLanguage(),
       data.language),
     isAllEqual(
       moneroMnemonicClass.getWords(),
       moneroMnemonic.getWords(),
-      MoneroMnemonicClass.fromEntropy(data.entropy, data.language, { checksum: mnemonic.checksum }).getWords(),
-      MoneroMnemonic.fromEntropy(data.entropy, data.language, { checksum: mnemonic.checksum }).getWords(),
       mnemonic.words
     ),
     isAllEqual(
@@ -58,8 +54,8 @@ for (const mnemonic of data.mnemonics) {
     isAllEqual(MoneroMnemonicClass.isValidLanguage(data.language), MoneroMnemonic.isValidLanguage(data.language)),
     isAllEqual(MoneroMnemonicClass.isValidWords(mnemonic.words), MoneroMnemonic.isValidWords(mnemonic.words)),
     isAllEqual(
-      MoneroMnemonicClass.fromWords(mnemonic.words, data.language, { checksum: mnemonic.checksum }).getMnemonic().split(' ').length,
-      MoneroMnemonic.fromWords(mnemonic.words, data.language, { checksum: mnemonic.checksum }).getMnemonic().split(' ').length
+      MoneroMnemonicClass.fromWords(mnemonic.words, data.language, { checksum: mnemonic.checksum }).split(' ').length,
+      MoneroMnemonic.fromWords(mnemonic.words, data.language, { checksum: mnemonic.checksum }).split(' ').length
     ), '\n'
   );
 

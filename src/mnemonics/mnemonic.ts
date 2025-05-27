@@ -59,13 +59,13 @@ export class Mnemonic {
 
   static fromWords(
     words: number, language: string, options: MnemonicOptionsInterface = { }
-  ): Mnemonic {
+  ): string {
     throw new Error('Must override fromWords()');
   }
 
   static fromEntropy(
     entropy: string | Uint8Array | Entropy, language: string, options: MnemonicOptionsInterface = { }
-  ): Mnemonic {
+  ): string {
     throw new Error('Must override fromEntropy()');
   }
 
