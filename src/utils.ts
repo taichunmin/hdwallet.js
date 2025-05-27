@@ -693,6 +693,10 @@ export function wordsToBytesChunk(
   return Buffer.from(u8);
 }
 
+export function toCamelCase(input: string): string {
+  return input.toLowerCase().replace(/-([a-z])/g, (_, char) => char.toUpperCase());
+}
+
 export function ensureTypeMatch(
   instanceOrClass: any, expectedType: any, options: EnsureTypeMatchOptionsInterface = { }
 ): any {
