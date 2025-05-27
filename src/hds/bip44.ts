@@ -6,7 +6,7 @@ import { P2PKHAddress } from '../addresses';
 import { BIP32HD } from './bip32';
 import { PUBLIC_KEY_TYPES } from '../const';
 import { HDAddressOptionsInterface, HDOptionsInterface } from '../interfaces';
-import { ensureTypeMatch, integerToBytes } from '../utils';
+import { ensureTypeMatch } from '../utils';
 import { DerivationError } from '../exceptions';
 
 export class BIP44HD extends BIP32HD {

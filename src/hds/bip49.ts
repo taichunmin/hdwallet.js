@@ -3,6 +3,7 @@
 import { BIP49Derivation, CHANGES } from '../derivations';
 import { Bitcoin } from '../cryptocurrencies';
 import { P2WPKHInP2SHAddress } from '../addresses';
+import { BIP32HD } from './bip32';
 import { BIP44HD } from './bip44';
 import { PUBLIC_KEY_TYPES } from '../const';
 import { serialize } from '../keys';
@@ -13,6 +14,7 @@ import { DerivationError } from '../exceptions';
 export class BIP49HD extends BIP44HD {
 
   protected coinType: number;
+  protected derivation: BIP49Derivation;
 
   constructor(options: HDOptionsInterface = {
     publicKeyType: PUBLIC_KEY_TYPES.COMPRESSED
@@ -33,7 +35,7 @@ export class BIP49HD extends BIP44HD {
   }
 
   fromDerivation(derivation: BIP49Derivation): this {
-    super.cleanDerivation();
+    (Object.getPrototypeOf(BIP44HD.prototype) as BIP32HD).cleanDerivation.call(this);
     this.derivation = ensureTypeMatch(
       derivation, BIP49Derivation, { errorClass: DerivationError }
     );
@@ -45,6 +47,14 @@ export class BIP49HD extends BIP44HD {
 
   updateDerivation(derivation: BIP49Derivation): this {
     this.fromDerivation(derivation);
+    return this;
+  }
+
+  cleanDerivation(): this {
+    (Object.getPrototypeOf(BIP44HD.prototype) as BIP32HD).cleanDerivation.call(this);
+    for (const index of this.derivation.getIndexes()) {
+      this.drive(index);
+    }
     return this;
   }
 
