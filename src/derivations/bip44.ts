@@ -8,8 +8,8 @@ import { IndexType, DerivationType, DerivationsType } from '../types';
 import { DerivationError } from '../exceptions';
 
 export const CHANGES = {
-  EXTERNAL_CHANGE: 'external-chain',
-  INTERNAL_CHANGE: 'internal-chain'
+  EXTERNAL_CHAIN: 'external-chain',
+  INTERNAL_CHAIN: 'internal-chain'
 } as const;
 
 export class BIP44Derivation extends Derivation {
@@ -22,13 +22,13 @@ export class BIP44Derivation extends Derivation {
   protected address: DerivationsType;
 
   constructor(options: DerivationOptionsInterface = {
-    coinType: Bitcoin.COIN_TYPE, account: 0, change: CHANGES.EXTERNAL_CHANGE, address: 0
+    coinType: Bitcoin.COIN_TYPE, account: 0, change: CHANGES.EXTERNAL_CHAIN, address: 0
   }) {
     super(options);
     this.coinType = normalizeIndex(options.coinType ?? Bitcoin.COIN_TYPE, true);
     this.account = normalizeIndex(options.account ?? 0, true);
     this.change = normalizeIndex(this.getChangeValue(
-      options.change ?? CHANGES.EXTERNAL_CHANGE
+      options.change ?? CHANGES.EXTERNAL_CHAIN
     ), false);
     this.address = normalizeIndex(options.address ?? 0, false);
     this.updateDerivation();
@@ -46,8 +46,8 @@ export class BIP44Derivation extends Derivation {
         expected: 'number | string', got: typeof change
       });
     }
-    const externalChange = [ CHANGES.EXTERNAL_CHANGE, 0, '0' ];
-    const internalChange = [ CHANGES.INTERNAL_CHANGE, 1, '1' ];
+    const externalChange = [ CHANGES.EXTERNAL_CHAIN, 0, '0' ];
+    const internalChange = [ CHANGES.INTERNAL_CHAIN, 1, '1' ];
     const exceptedChange = [ 
       ...externalChange, ...internalChange 
     ];
@@ -58,8 +58,8 @@ export class BIP44Derivation extends Derivation {
         }
       );
     }
-    if (externalChange.includes(change)) return nameOnly ? CHANGES.EXTERNAL_CHANGE : 0;
-    if (internalChange.includes(change)) return nameOnly ? CHANGES.INTERNAL_CHANGE : 1;
+    if (externalChange.includes(change)) return nameOnly ? CHANGES.EXTERNAL_CHAIN : 0;
+    if (internalChange.includes(change)) return nameOnly ? CHANGES.INTERNAL_CHAIN : 1;
   }
 
   protected updateDerivation(): void {
@@ -103,7 +103,7 @@ export class BIP44Derivation extends Derivation {
     this.coinType = normalizeIndex(Bitcoin.COIN_TYPE, true);
     this.account = normalizeIndex(0, true);
     this.change = normalizeIndex(
-      this.getChangeValue(CHANGES.EXTERNAL_CHANGE), false
+      this.getChangeValue(CHANGES.EXTERNAL_CHAIN), false
     );
     this.address = normalizeIndex(0, false);
     this.updateDerivation();

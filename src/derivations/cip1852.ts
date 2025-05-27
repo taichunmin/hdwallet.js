@@ -8,8 +8,8 @@ import { IndexType, DerivationType, DerivationsType } from '../types';
 import { DerivationError } from '../exceptions';
 
 export const ROLES = {
-  EXTERNAL_CHANGE: 'external-chain',
-  INTERNAL_CHANGE: 'internal-chain',
+  EXTERNAL_CHAIN: 'external-chain',
+  INTERNAL_CHAIN: 'internal-chain',
   STAKING_KEY: 'staking-key'
 } as const;
 
@@ -23,13 +23,13 @@ export class CIP1852Derivation extends Derivation {
   private address: DerivationsType;
   
   constructor(options: DerivationOptionsInterface = {
-    coinType: Cardano.COIN_TYPE, account: 0, role: ROLES.EXTERNAL_CHANGE, address: 0
+    coinType: Cardano.COIN_TYPE, account: 0, role: ROLES.EXTERNAL_CHAIN, address: 0
   }) {
     super(options);
     this.coinType = normalizeIndex(options.coinType ?? Cardano.COIN_TYPE, true);
     this.account = normalizeIndex(options.account ?? 0, true);
     this.role = normalizeIndex(this.getRoleValue(
-      options.role ?? ROLES.EXTERNAL_CHANGE
+      options.role ?? ROLES.EXTERNAL_CHAIN
     ), false);
     this.address = normalizeIndex(options.address ?? 0, false);
     this.updateDerivation();
@@ -47,8 +47,8 @@ export class CIP1852Derivation extends Derivation {
         expected: 'number | string', got: typeof role
       });
     }
-    const externalChange = [ ROLES.EXTERNAL_CHANGE, 0, '0' ];
-    const internalChange = [ ROLES.INTERNAL_CHANGE, 1, '1' ];
+    const externalChange = [ ROLES.EXTERNAL_CHAIN, 0, '0' ];
+    const internalChange = [ ROLES.INTERNAL_CHAIN, 1, '1' ];
     const stakingKey = [ ROLES.STAKING_KEY, 2, '2' ];
     const exceptedRole = [
       ...externalChange, ...internalChange, ...stakingKey
@@ -60,8 +60,8 @@ export class CIP1852Derivation extends Derivation {
         }
       );
     }
-    if (externalChange.includes(role)) return nameOnly ? ROLES.EXTERNAL_CHANGE : 0;
-    if (internalChange.includes(role)) return nameOnly ? ROLES.INTERNAL_CHANGE : 1;
+    if (externalChange.includes(role)) return nameOnly ? ROLES.EXTERNAL_CHAIN : 0;
+    if (internalChange.includes(role)) return nameOnly ? ROLES.INTERNAL_CHAIN : 1;
     if (stakingKey.includes(role)) return nameOnly ? ROLES.STAKING_KEY : 2;
   }
 
@@ -106,7 +106,7 @@ export class CIP1852Derivation extends Derivation {
     this.coinType = normalizeIndex(Cardano.COIN_TYPE, true);
     this.account = normalizeIndex(0, true);
     this.role = normalizeIndex(
-      this.getRoleValue(ROLES.EXTERNAL_CHANGE), false
+      this.getRoleValue(ROLES.EXTERNAL_CHAIN), false
     );
     this.address = normalizeIndex(0, false);
     this.updateDerivation();

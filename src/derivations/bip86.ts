@@ -10,7 +10,7 @@ export class BIP86Derivation extends BIP44Derivation {
   protected purpose: DerivationType = [ 86, true ];
 
   constructor(options: DerivationOptionsInterface = {
-    coinType: Bitcoin.COIN_TYPE, account: 0, change: CHANGES.EXTERNAL_CHANGE, address: 0
+    coinType: Bitcoin.COIN_TYPE, account: 0, change: CHANGES.EXTERNAL_CHAIN, address: 0
   }) {
     super(options);
     this.updateDerivation();

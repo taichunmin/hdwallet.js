@@ -53,7 +53,7 @@ console.log('Staking Address:', cardanoHD.getAddress({
   addressType: Cardano.ADDRESS_TYPES.STAKING
 }));
 
-cip1852Derivation.fromRole(ROLES.EXTERNAL_CHANGE);
+cip1852Derivation.fromRole(ROLES.EXTERNAL_CHAIN);
 
 cardanoHD.updateDerivation(cip1852Derivation);
 

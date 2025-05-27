@@ -23,7 +23,7 @@ export class BIP44HD extends BIP32HD {
     this.derivation = new BIP44Derivation({
       coinType: this.coinType,
       account: options.account ?? 0,
-      change: options.change ?? CHANGES.EXTERNAL_CHANGE,
+      change: options.change ?? CHANGES.EXTERNAL_CHAIN,
       address: options.account ?? 0
     });
   }

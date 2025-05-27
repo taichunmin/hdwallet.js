@@ -18,7 +18,7 @@ cardanoHD.fromSeed(seed, passphrase);
 // cardanoHD.fromXPublicKey(xPublicKey);
 
 const bip44Derivation: BIP44Derivation = new BIP44Derivation({
-  coinType: Cardano.COIN_TYPE, account: 0, change: CHANGES.EXTERNAL_CHANGE, address: 0
+  coinType: Cardano.COIN_TYPE, account: 0, change: CHANGES.EXTERNAL_CHAIN, address: 0
 });
 
 cardanoHD.fromDerivation(bip44Derivation);

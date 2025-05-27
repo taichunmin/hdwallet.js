@@ -16,7 +16,7 @@ const data = {
   depth: 5,
   derivations: [
     {
-      coinType: Qtum.COIN_TYPE, account: 0, change: CHANGES.INTERNAL_CHANGE, address: 0
+      coinType: Qtum.COIN_TYPE, account: 0, change: CHANGES.INTERNAL_CHAIN, address: 0
     },
     {
       coinType: '2301', account: '0', change: 'internal-chain', address: '0'

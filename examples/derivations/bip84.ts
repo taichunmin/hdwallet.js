@@ -16,7 +16,7 @@ const data = {
   depth: 5,
   derivations: [
     {
-      coinType: Bitcoin.COIN_TYPE, account: 0, change: CHANGES.EXTERNAL_CHANGE, address: 0
+      coinType: Bitcoin.COIN_TYPE, account: 0, change: CHANGES.EXTERNAL_CHAIN, address: 0
     },
     {
       coinType: '0', account: '0', change: 'external-chain', address: '0'

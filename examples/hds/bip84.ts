@@ -32,14 +32,14 @@ console.log('Root Chain Code:', bip84HD.getRootChainCode());
 console.log('Root Public Key:', bip84HD.getRootPublicKey());
 
 // const bip84Derivation: BIP84Derivation = new BIP84Derivation({
-//   coinType: Cryptocurrency.COIN_TYPE, account: 0, change: CHANGES.EXTERNAL_CHANGE, address: 0
+//   coinType: Cryptocurrency.COIN_TYPE, account: 0, change: CHANGES.EXTERNAL_CHAIN, address: 0
 // });
 //
 // bip84HD.fromDerivation(bip84Derivation);
 
 bip84HD.fromCoinType(Cryptocurrency.COIN_TYPE);
 bip84HD.fromAccount(0);
-bip84HD.fromChange(CHANGES.EXTERNAL_CHANGE);
+bip84HD.fromChange(CHANGES.EXTERNAL_CHAIN);
 bip84HD.fromAddress(0);
 
 // bip84HD.fromPrivateKey(privateKey);
