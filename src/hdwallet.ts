@@ -28,7 +28,7 @@ export class HDWallet {
 
   private entropy?: Entropy;
   private language: string;
-  private passphrase?: string;
+  private passphrase: string | null;
   private mnemonic?: Mnemonic;
   private seed?: Seed;
   private derivation?: Derivation;
@@ -44,18 +44,14 @@ export class HDWallet {
   private paymentID?: string;
 
   constructor(
-    cryptocurrency: typeof Cryptocurrency,
-    hd?: string | typeof HD,
-    network?: string | typeof Network,
-    address?: string | typeof Address,
-    options: HDWalletOptionsInterface = { }
+    cryptocurrency: typeof Cryptocurrency, options: HDWalletOptionsInterface = { }
   ) {
     
     this.cryptocurrency = ensureTypeMatch(
       cryptocurrency, Cryptocurrency, { errorClass: CryptocurrencyError }
     );
 
-    const _hd = hd ?? this.cryptocurrency.DEFAULT_HD;
+    const _hd = options.hd ?? this.cryptocurrency.DEFAULT_HD;
     const resolvedHD = ensureTypeMatch(_hd, HD, { otherTypes: ['string'] });
     const hdName = resolvedHD.isValid ? resolvedHD.value.getName() : _hd;
     if (!this.cryptocurrency.HDS.isHD(hdName)) {
@@ -65,7 +61,7 @@ export class HDWallet {
     }
     const hdClass = HDS.getHDClass(hdName);
 
-    const _network = network ?? this.cryptocurrency.DEFAULT_NETWORK.getName();
+    const _network = options.network ?? this.cryptocurrency.DEFAULT_NETWORK.getName();
     const resolvedNetwork = ensureTypeMatch(_network, Network, { otherTypes: ['string'] });
     const networkName = resolvedNetwork.isValid ? resolvedNetwork.value.getName() : _network;
     if (!this.cryptocurrency.NETWORKS.isNetwork(networkName)) {
@@ -75,7 +71,7 @@ export class HDWallet {
     }
     this.network = this.cryptocurrency.NETWORKS.getNetwork(networkName);
 
-    const _address = address ?? this.cryptocurrency.DEFAULT_ADDRESS;
+    const _address = options.address ?? this.cryptocurrency.DEFAULT_ADDRESS;
     const resolvedAddress = ensureTypeMatch(_address, Address, { otherTypes: ['string'] });
     const addressName = resolvedAddress.isValid ? resolvedAddress.value.getName() : _address;
     if (!this.cryptocurrency.ADDRESSES.isAddress(addressName)) {
@@ -87,7 +83,7 @@ export class HDWallet {
 
 
     this.language = options.language ?? 'english';
-    this.passphrase = options.passphrase ?? '';
+    this.passphrase = options.passphrase ?? null;
     this.useDefaultPath = options.useDefaultPath ?? false;
     this.stakingPublicKey = options.stakingPublicKey ?? undefined;
     this.paymentID = options.paymentID ?? undefined;
@@ -143,7 +139,7 @@ export class HDWallet {
     }
     this.entropy = entropy;
 
-    let mnemonic: Mnemonic;
+    let mnemonic: string;
     if (this.entropy.getName() === 'Electrum-V2') {
       mnemonic = ElectrumV2Mnemonic.fromEntropy(
         this.entropy.getEntropy(), this.language, { mnemonicType: this.mnemonicType }
@@ -161,8 +157,8 @@ export class HDWallet {
     const mnemonicClass = MNEMONICS.getMnemonicClass(this.entropy.getName());
     return this.fromMnemonic(
       this.entropy.getName() === 'Electrum-V2' ?
-        new mnemonicClass(mnemonic.getMnemonic(), this.mnemonicType) :
-        new mnemonicClass(mnemonic.getMnemonic())
+        new mnemonicClass(mnemonic, this.mnemonicType) :
+        new mnemonicClass(mnemonic)
     );
   }
 
@@ -387,7 +383,7 @@ export class HDWallet {
     return this.mnemonic?.getWords();
   }
 
-  getPassphrase(): string | undefined {
+  getPassphrase(): string | null {
     return this.passphrase;
   }
 

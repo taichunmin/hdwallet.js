@@ -205,6 +205,9 @@ export interface EnsureTypeMatchOptionsInterface {
 }
 
 export interface HDWalletOptionsInterface {
+  hd?: any,
+  network?: any,
+  address?: any,
   publicKeyType?: string,
   cardanoType?: string;
   mode?: string;
@@ -213,7 +216,7 @@ export interface HDWalletOptionsInterface {
   addressType?: string;
   addressPrefix?: string;
   language?: string;
-  passphrase?: string;
+  passphrase?: string | null;
   useDefaultPath?: boolean;
   stakingPublicKey?: string;
   paymentID?: string;
