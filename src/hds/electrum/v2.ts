@@ -55,7 +55,7 @@ export class ElectrumV2HD extends HD {
     });
   }
 
-  getName(): string {
+  static getName(): string {
     return 'Electrum-V2';
   }
 

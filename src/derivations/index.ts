@@ -15,15 +15,15 @@ import { DerivationError } from '../exceptions';
 export class DERIVATIONS {
 
   static dictionary: Record<string, typeof Derivation> = {
-    'Custom': CustomDerivation,
-    'BIP44': BIP44Derivation,
-    'BIP49': BIP49Derivation,
-    'BIP84': BIP84Derivation,
-    'BIP86': BIP86Derivation,
-    'CIP1852': CIP1852Derivation,
-    'Electrum': ElectrumDerivation,
-    'Monero': MoneroDerivation,
-    'HDW': HDWDerivation
+    [CustomDerivation.getName()]: CustomDerivation,
+    [BIP44Derivation.getName()]: BIP44Derivation,
+    [BIP49Derivation.getName()]: BIP49Derivation,
+    [BIP84Derivation.getName()]: BIP84Derivation,
+    [BIP86Derivation.getName()]: BIP86Derivation,
+    [CIP1852Derivation.getName()]: CIP1852Derivation,
+    [ElectrumDerivation.getName()]: ElectrumDerivation,
+    [MoneroDerivation.getName()]: MoneroDerivation,
+    [HDWDerivation.getName()]: HDWDerivation
   };
 
   static getNames(): string[] {

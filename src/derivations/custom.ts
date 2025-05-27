@@ -6,7 +6,7 @@ import { DerivationError } from '../exceptions';
 
 export class CustomDerivation extends Derivation {
 
-  getName(): string {
+  static getName(): string {
     return 'Custom';
   }
 

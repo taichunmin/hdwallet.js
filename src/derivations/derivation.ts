@@ -23,8 +23,12 @@ export class Derivation {
     this.path = path;
   }
 
-  getName(): string {
+  static getName(): string {
     throw new Error('Must override getName()');
+  }
+
+  getName(): string {
+    return (this.constructor as typeof Derivation).getName();
   }
 
   clean(): this {
@@ -59,7 +63,7 @@ export class Derivation {
     throw new Error('Must override getAccount()');
   }
 
-  getChange(...args: any[]): string {
+  getChange(...args: any[]): string | number {
     throw new Error('Must override getChange()');
   }
 

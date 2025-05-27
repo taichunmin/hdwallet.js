@@ -35,7 +35,7 @@ export class CIP1852Derivation extends Derivation {
     this.updateDerivation();
   }
 
-  getName(): string {
+  static getName(): string {
     return 'CIP1852';
   }
 

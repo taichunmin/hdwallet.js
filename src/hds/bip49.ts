@@ -28,7 +28,7 @@ export class BIP49HD extends BIP44HD {
     });
   }
 
-  getName(): string {
+  static getName(): string {
     return 'BIP49';
   }
 

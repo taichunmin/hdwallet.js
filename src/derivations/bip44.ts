@@ -34,7 +34,7 @@ export class BIP44Derivation extends Derivation {
     this.updateDerivation();
   }
 
-  getName(): string {
+  static getName(): string {
     return 'BIP44';
   }
   

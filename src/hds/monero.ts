@@ -52,7 +52,7 @@ export class MoneroHD extends HD {
     });
   }
 
-  getName(): string {
+  static getName(): string {
     return 'Monero';
   }
 

@@ -79,7 +79,7 @@ export class BIP32HD extends HD {
     });
   }
 
-  getName(): string {
+  static getName(): string {
     return 'BIP32';
   }
 

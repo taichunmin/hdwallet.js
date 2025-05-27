@@ -19,7 +19,7 @@ export class ElectrumDerivation extends Derivation {
     this.updateDerivation();
   }
 
-  getName(): string {
+  static getName(): string {
     return 'Electrum';
   }
 

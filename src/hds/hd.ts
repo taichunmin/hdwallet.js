@@ -9,8 +9,12 @@ export class HD {
 
   constructor(options: HDOptionsInterface = { }) { }
 
+  static getName(): string {
+    throw new Error('Must override getName()');
+  }
+
   getName(): string {
-    throw new Error('Not implemented');
+    return (this.constructor as typeof HD).getName();
   }
 
   fromSeed(...args: any[]): this {

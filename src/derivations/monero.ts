@@ -19,7 +19,7 @@ export class MoneroDerivation extends Derivation {
     this.updateDerivation();
   }
 
-  getName(): string {
+  static getName(): string {
     return 'Monero';
   }
 

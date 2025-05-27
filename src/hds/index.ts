@@ -16,16 +16,16 @@ import { MoneroHD } from './monero';
 export class HDS {
 
   private static dictionary: Record<string, typeof HD> = {
-    'BIP32': BIP32HD,
-    'BIP44': BIP44HD,
-    'BIP49': BIP49HD,
-    'BIP84': BIP84HD,
-    'BIP86': BIP86HD,
-    'BIP141': BIP141HD,
-    'Cardano': CardanoHD,
-    'Electrum-V1': ElectrumV1HD,
-    'Electrum-V2': ElectrumV2HD,
-    'Monero': MoneroHD
+    [BIP32HD.getName()]: BIP32HD,
+    [BIP44HD.getName()]: BIP44HD,
+    [BIP49HD.getName()]: BIP49HD,
+    [BIP84HD.getName()]: BIP84HD,
+    [BIP86HD.getName()]: BIP86HD,
+    [BIP141HD.getName()]: BIP141HD,
+    [CardanoHD.getName()]: CardanoHD,
+    [ElectrumV1HD.getName()]: ElectrumV1HD,
+    [ElectrumV2HD.getName()]: ElectrumV2HD,
+    [MoneroHD.getName()]: MoneroHD
   }
 
   static getNames(): string[] {

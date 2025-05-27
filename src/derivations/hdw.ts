@@ -36,7 +36,7 @@ export class HDWDerivation extends Derivation {
     this.updateDerivation();
   }
 
-  getName(): string {
+  static getName(): string {
     return 'HDW';
   }
 

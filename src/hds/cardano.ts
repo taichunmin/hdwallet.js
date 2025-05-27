@@ -36,7 +36,7 @@ export class CardanoHD extends BIP32HD {
     this.cardanoType = options.cardanoType;
   }
 
-  getName(): string {
+  static getName(): string {
     return 'Cardano';
   }
 
