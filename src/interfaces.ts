@@ -160,6 +160,11 @@ export interface HDAddressOptionsInterface {
   paymentID?: string;
 }
 
+export interface HDWalletAddressOptionsInterface extends HDAddressOptionsInterface {
+  versionType?: string;
+  addressPrefix?: string;
+}
+
 export interface BIP141HDSemanticOptionsInterface {
   p2wpkhXPrivateKeyVersion?: number;
   p2wpkhXPublicKeyVersion?: number;
