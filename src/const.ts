@@ -121,12 +121,18 @@ export class Addresses extends NestedNamespace {
 }
 
 export class AddressTypes extends NestedNamespace {
+  isAddressType(addressType: string): boolean {
+    return this.getAddressTypes().includes(addressType);
+  }
   getAddressTypes(): string[] {
     return Object.values(this as any) as string[];
   }
 }
 
 export class AddressPrefixes extends NestedNamespace {
+  isAddressPrefix(addressPrefix: string): boolean {
+    return this.getAddressPrefixes().includes(addressPrefix);
+  }
   getAddressPrefixes(): string[] {
     return Object.values(this as any) as string[];
   }
