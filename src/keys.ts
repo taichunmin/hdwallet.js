@@ -12,7 +12,7 @@ export function serialize(
   chainCode: string | Uint8Array,
   key: string | Uint8Array,
   encoded = false
-): string | undefined {
+): string | null {
   try {
     const versionBytes =
       typeof version === 'number' ? integerToBytes(version, 4) : getBytes(version);
@@ -28,7 +28,7 @@ export function serialize(
 
     return encoded ? checkEncode(raw) : bytesToString(raw);
   } catch (err) {
-    return undefined;
+    return null;
   }
 }
 

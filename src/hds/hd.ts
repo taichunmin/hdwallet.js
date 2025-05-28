@@ -65,79 +65,79 @@ export class HD {
     return this.derivation;
   }
 
-  getSeed(): string | undefined {
+  getSeed(): string | null {
     throw new Error('Not implemented');
   }
 
-  getSemantic(): string | undefined {
-    return undefined;
+  getSemantic(): string | null {
+    return null;
   }
 
-  getRootXPrivateKey(...args: any[]): string | undefined {
+  getRootXPrivateKey(...args: any[]): string | null {
     throw new Error('Not implemented');
   }
 
-  getRootXPublicKey(...args: any[]): string | undefined {
+  getRootXPublicKey(...args: any[]): string | null {
     throw new Error('Not implemented');
   }
 
-  getMasterXPrivateKey(...args: any[]): string | undefined {
+  getMasterXPrivateKey(...args: any[]): string | null {
     return this.getRootXPrivateKey(...args);
   }
 
-  getMasterXPublicKey(...args: any[]): string | undefined {
+  getMasterXPublicKey(...args: any[]): string | null {
     return this.getRootXPublicKey(...args);
   }
 
-  getRootPrivateKey(...args: any[]): string | undefined {
+  getRootPrivateKey(...args: any[]): string | null {
     throw new Error('Not implemented');
   }
 
-  getRootWIF(...args: any[]): string | undefined {
+  getRootWIF(...args: any[]): string | null {
     throw new Error('Not implemented');
   }
 
-  getRootChainCode(): string | undefined {
+  getRootChainCode(): string | null {
     throw new Error('Not implemented');
   }
 
-  getRootPublicKey(...args: any[]): string | undefined {
+  getRootPublicKey(...args: any[]): string | null {
     throw new Error('Not implemented');
   }
 
-  getMasterPrivateKey(...args: any[]): string | undefined {
+  getMasterPrivateKey(...args: any[]): string | null {
     throw new Error('Not implemented');
   }
 
-  getMasterWIF(...args: any[]): string | undefined {
+  getMasterWIF(...args: any[]): string | null {
     throw new Error('Not implemented');
   }
 
-  getMasterChainCode(...args: any[]): string | undefined {
+  getMasterChainCode(...args: any[]): string | null {
     return this.getRootChainCode();
   }
 
-  getMasterPublicKey(...args: any[]): string | undefined {
+  getMasterPublicKey(...args: any[]): string | null {
     throw new Error('Not implemented');
   }
 
-  getXPrivateKey(...args: any[]): string | undefined {
+  getXPrivateKey(...args: any[]): string | null {
     throw new Error('Not implemented');
   }
 
-  getXPublicKey(...args: any[]): string | undefined {
+  getXPublicKey(...args: any[]): string | null {
     throw new Error('Not implemented');
   }
 
-  getPrivateKey(...args: any[]): string | undefined {
+  getPrivateKey(...args: any[]): string | null {
     throw new Error('Not implemented');
   }
 
-  getStrict(): boolean | undefined {
+  getStrict(): boolean | null {
     throw new Error('Not implemented');
   }
 
-  getSpendPrivateKey(): string | undefined {
+  getSpendPrivateKey(): string | null {
     throw new Error('Not implemented');
   }
 
@@ -145,7 +145,7 @@ export class HD {
     throw new Error('Not implemented');
   }
 
-  getWIF(..._args: any[]): string | undefined {
+  getWIF(..._args: any[]): string | null {
     throw new Error('Not implemented');
   }
 
@@ -205,8 +205,8 @@ export class HD {
     throw new Error('Not implemented');
   }
 
-  getPathKey(): string | undefined {
-    return undefined;
+  getPathKey(): string | null {
+    return null;
   }
 
   getIndex(): number {

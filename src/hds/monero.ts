@@ -27,7 +27,7 @@ export class MoneroHD extends HD {
   protected privateKeyRaw?: Uint8Array;
   protected paymentID?: string;
 
-  protected spendPrivateKey?: PrivateKey;
+  protected spendPrivateKey?: PrivateKey | null;
   protected viewPrivateKey!: PrivateKey;
   protected spendPublicKey!: PublicKey;
   protected viewPublicKey!: PublicKey;
@@ -130,7 +130,7 @@ export class MoneroHD extends HD {
       throw new PublicKeyError('Invalid spend public key data');
     }
 
-    this.spendPrivateKey = undefined;
+    this.spendPrivateKey = null;
     this.viewPrivateKey = viewKey;
     this.spendPublicKey = spendKey;
     this.viewPublicKey = viewKey.getPublicKey();
@@ -177,16 +177,16 @@ export class MoneroHD extends HD {
     ];
   }
 
-  getSeed(): string | undefined {
-    return this.seed ? bytesToString(this.seed) : undefined;
+  getSeed(): string | null {
+    return this.seed ? bytesToString(this.seed) : null;
   }
 
-  getPrivateKey(): string | undefined {
-    return this.privateKeyRaw ? bytesToString(this.privateKeyRaw) : undefined;
+  getPrivateKey(): string | null {
+    return this.privateKeyRaw ? bytesToString(this.privateKeyRaw) : null;
   }
 
-  getSpendPrivateKey(): string | undefined {
-    return this.spendPrivateKey ? bytesToString(this.spendPrivateKey.getRaw()) : undefined;
+  getSpendPrivateKey(): string | null {
+    return this.spendPrivateKey ? bytesToString(this.spendPrivateKey.getRaw()) : null;
   }
 
   getViewPrivateKey(): string {
@@ -228,10 +228,10 @@ export class MoneroHD extends HD {
   }
 
   getSubAddress(minor?: number, major?: number): string {
-    if (minor === undefined && major === undefined) {
+    if (!minor && !major) {
       minor = this.derivation.getMinor();
       major = this.derivation.getMajor();
-    } else if (minor === undefined || major === undefined) {
+    } else if (!minor || !major) {
       throw new DerivationError('Both minor and major indexes are required');
     }
 

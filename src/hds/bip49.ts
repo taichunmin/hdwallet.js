@@ -60,8 +60,8 @@ export class BIP49HD extends BIP44HD {
 
   getRootXPrivateKey(
     version: Uint8Array | number = Bitcoin.NETWORKS.MAINNET.XPRIVATE_KEY_VERSIONS.P2WPKH_IN_P2SH, encoded = true
-  ): string | undefined {
-    if (!this.getRootPrivateKey() || !this.getRootChainCode()) return undefined;
+  ): string | null {
+    if (!this.getRootPrivateKey() || !this.getRootChainCode()) return null;
 
     return serialize(
       typeof version === 'number' ? integerToBytes(version) : version,
@@ -76,8 +76,8 @@ export class BIP49HD extends BIP44HD {
 
   getRootXPublicKey(
     version: Uint8Array | number = Bitcoin.NETWORKS.MAINNET.XPUBLIC_KEY_VERSIONS.P2WPKH_IN_P2SH, encoded = true
-  ): string | undefined {
-    if (!this.getRootChainCode()) return undefined;
+  ): string | null {
+    if (!this.getRootChainCode()) return null;
 
     return serialize(
       typeof version === 'number' ? integerToBytes(version) : version,
@@ -92,8 +92,8 @@ export class BIP49HD extends BIP44HD {
 
   getXPrivateKey(
     version: Uint8Array | number = Bitcoin.NETWORKS.MAINNET.XPRIVATE_KEY_VERSIONS.P2WPKH_IN_P2SH, encoded = true
-  ): string | undefined {
-    if (!this.getPrivateKey() || !this.getChainCode()) return undefined;
+  ): string | null {
+    if (!this.getPrivateKey() || !this.getChainCode()) return null;
 
     return serialize(
       typeof version === 'number' ? integerToBytes(version) : version,
@@ -108,8 +108,8 @@ export class BIP49HD extends BIP44HD {
 
   getXPublicKey(
     version: Uint8Array | number = Bitcoin.NETWORKS.MAINNET.XPUBLIC_KEY_VERSIONS.P2WPKH_IN_P2SH, encoded = true
-  ): string | undefined {
-    if (!this.getChainCode()) return undefined;
+  ): string | null {
+    if (!this.getChainCode()) return null;
 
     return serialize(
       typeof version === 'number' ? integerToBytes(version) : version,

@@ -87,8 +87,8 @@ export class HDWallet {
     this.language = options.language ?? 'english';
     this.passphrase = options.passphrase ?? null;
     this.useDefaultPath = options.useDefaultPath ?? false;
-    this.stakingPublicKey = options.stakingPublicKey ?? undefined;
-    this.paymentID = options.paymentID ?? undefined;
+    this.stakingPublicKey = options.stakingPublicKey;
+    this.paymentID = options.paymentID;
 
     if (['BIP32', 'BIP44', 'BIP49', 'BIP84', 'BIP86', 'BIP141', 'Electrum-V1'].includes(hdName)) {
       this.publicKeyType = options.publicKeyType ?? (
@@ -313,7 +313,7 @@ export class HDWallet {
       throw new WIFError(`WIF is not supported by ${this.hd.getName()} HD type`);
     }
 
-    if (this.network.WIF_PREFIX === undefined || this.network.WIF_PREFIX === null) {
+    if (this.network.WIF_PREFIX === null || this.network.WIF_PREFIX === null) {
       throw new WIFError(`WIF is not supported by ${this.cryptocurrency.NAME} cryptocurrency`);
     }
     this.hd.fromWIF(wif);
@@ -363,35 +363,35 @@ export class HDWallet {
     return this.network.getName();
   }
 
-  getEntropy(): string | undefined {
-    return this.entropy?.getEntropy();
+  getEntropy(): string | null {
+    return this.entropy?.getEntropy() ?? null;
   }
 
-  getStrength(): number | undefined {
-    return this.entropy?.getStrength();
+  getStrength(): number | null {
+    return this.entropy?.getStrength() ?? null;
   }
 
-  getMnemonic(): string | undefined {
-    return this.mnemonic?.getMnemonic();
+  getMnemonic(): string | null {
+    return this.mnemonic?.getMnemonic() ?? null;
   }
 
-  getMnemonicType(): string | undefined {
-    return this.mnemonicType;
+  getMnemonicType(): string | null {
+    return this.mnemonicType ?? null;
   }
 
-  getLanguage(): string | undefined {
-    return this.mnemonic?.getLanguage();
+  getLanguage(): string | null {
+    return this.mnemonic?.getLanguage() ?? null;
   }
 
-  getWords(): number | undefined {
-    return this.mnemonic?.getWords();
+  getWords(): number | null {
+    return this.mnemonic?.getWords() ?? null;
   }
 
   getPassphrase(): string | null {
     return this.passphrase;
   }
 
-  getSeed(): string | undefined {
+  getSeed(): string | null {
     return this.hd.getSeed();
   }
 
@@ -403,12 +403,12 @@ export class HDWallet {
     return this.hd.getName();
   }
 
-  getSemantic(): string | undefined {
-    return this.semantic;
+  getSemantic(): string | null {
+    return this.semantic ?? null;
   }
 
-  getCardanoType(): string | undefined {
-    return this.hd.getName() === 'Cardano' ? this.cardanoType : undefined;
+  getCardanoType(): string | null {
+    return this.hd.getName() === 'Cardano' ? (this.cardanoType ?? null) : null;
   }
 
   getMode(): string {
@@ -418,14 +418,14 @@ export class HDWallet {
     return this.hd.getMode();
   }
 
-  getPathKey(): string | undefined {
+  getPathKey(): string | null {
     return this.hd.getPathKey();
   }
 
-  getRootXPrivateKey(semantic?: string, encoded: boolean = true): string | undefined {
+  getRootXPrivateKey(semantic?: string, encoded: boolean = true): string | null {
     const currentSemantic = semantic ?? this.semantic;
     if (['Electrum-V1', 'Monero'].includes(this.hd.getName()) || !currentSemantic) {
-      return undefined;
+      return null;
     }
 
     return this.hd.getRootXPrivateKey(
@@ -433,10 +433,10 @@ export class HDWallet {
     );
   }
 
-  getRootXPublicKey(semantic?: string, encoded: boolean = true): string | undefined {
+  getRootXPublicKey(semantic?: string, encoded: boolean = true): string | null {
     const currentSemantic = semantic ?? this.semantic;
     if (['Electrum-V1', 'Monero'].includes(this.hd.getName()) || !currentSemantic) {
-      return undefined;
+      return null;
     }
 
     return this.hd.getRootXPublicKey(
@@ -444,24 +444,24 @@ export class HDWallet {
     );
   }
 
-  getMasterXPrivateKey(semantic?: string, encoded: boolean = true): string | undefined {
+  getMasterXPrivateKey(semantic?: string, encoded: boolean = true): string | null {
     return this.getRootXPrivateKey(semantic, encoded);
   }
 
-  getMasterXPublicKey(semantic?: string, encoded: boolean = true): string | undefined {
+  getMasterXPublicKey(semantic?: string, encoded: boolean = true): string | null {
     return this.getRootXPublicKey(semantic, encoded);
   }
 
-  getRootPrivateKey(): string | undefined {
+  getRootPrivateKey(): string | null {
     if (['Electrum-V1', 'Electrum-V2'].includes(this.hd.getName())) {
       return this.hd.getMasterPrivateKey();
     }
     return this.hd.getRootPrivateKey();
   }
 
-  getRootWIF(wifType?: string): string | undefined {
+  getRootWIF(wifType?: string): string | null {
     if (['Cardano', 'Monero'].includes(this.hd.getName())) {
-      return undefined;
+      return null;
     }
     if (['Electrum-V1', 'Electrum-V2'].includes(this.hd.getName())) {
       return this.hd.getMasterWIF(wifType);
@@ -469,27 +469,27 @@ export class HDWallet {
     return this.hd.getRootWIF(wifType);
   }
 
-  getRootChainCode(): string | undefined {
+  getRootChainCode(): string | null {
     return this.hd.getRootChainCode();
   }
 
-  getRootPublicKey(publicKeyType?: string): string | undefined {
+  getRootPublicKey(publicKeyType?: string): string | null {
     if (['Electrum-V1', 'Electrum-V2'].includes(this.hd.getName())) {
       return this.hd.getMasterPublicKey(publicKeyType);
     }
     return this.hd.getRootPublicKey(publicKeyType);
   }
 
-  getMasterPrivateKey(): string | undefined {
+  getMasterPrivateKey(): string | null {
     if (['Electrum-V1', 'Electrum-V2'].includes(this.hd.getName())) {
       return this.hd.getMasterPrivateKey();
     }
     return this.hd.getRootPrivateKey();
   }
 
-  getMasterWIF(wifType?: string): string | undefined {
+  getMasterWIF(wifType?: string): string | null {
     if (['Cardano', 'Monero'].includes(this.hd.getName())) {
-      return undefined;
+      return null;
     }
     if (['Electrum-V1', 'Electrum-V2'].includes(this.hd.getName())) {
       return this.hd.getMasterWIF(wifType);
@@ -497,21 +497,21 @@ export class HDWallet {
     return this.hd.getRootWIF(wifType);
   }
 
-  getMasterChainCode(): string | undefined {
+  getMasterChainCode(): string | null {
     return this.hd.getRootChainCode();
   }
 
-  getMasterPublicKey(publicKeyType?: string): string | undefined {
+  getMasterPublicKey(publicKeyType?: string): string | null {
     if (['Electrum-V1', 'Electrum-V2'].includes(this.hd.getName())) {
       return this.hd.getMasterPublicKey(publicKeyType);
     }
     return this.hd.getRootPublicKey(publicKeyType);
   }
 
-  getXPrivateKey(semantic?: string, encoded: boolean = true): string | undefined {
+  getXPrivateKey(semantic?: string, encoded: boolean = true): string | null {
     const currentSemantic = semantic ?? this.semantic;
     if (['Electrum-V1', 'Monero'].includes(this.hd.getName()) || !currentSemantic) {
-      return undefined;
+      return null;
     }
 
     return this.hd.getXPrivateKey(
@@ -519,10 +519,10 @@ export class HDWallet {
     );
   }
 
-  getXPublicKey(semantic?: string, encoded: boolean = true): string | undefined {
+  getXPublicKey(semantic?: string, encoded: boolean = true): string | null {
     const currentSemantic = semantic ?? this.semantic;
     if (['Electrum-V1', 'Monero'].includes(this.hd.getName()) || !currentSemantic) {
-      return undefined;
+      return null;
     }
 
     return this.hd.getXPublicKey(
@@ -530,11 +530,11 @@ export class HDWallet {
     );
   }
 
-  getPrivateKey(): string | undefined {
+  getPrivateKey(): string | null {
     return this.hd.getPrivateKey();
   }
 
-  getSpendPrivateKey(): string | undefined {
+  getSpendPrivateKey(): string | null {
     if (this.hd.getName() !== 'Monero') {
       throw new Error('Get Spend-Private-Key is only supported by Monero HD type');
     }
@@ -548,18 +548,18 @@ export class HDWallet {
     return this.hd.getViewPrivateKey();
   }
 
-  getWIF(wifType?: string): string | undefined {
+  getWIF(wifType?: string): string | null {
     if (['Cardano', 'Monero'].includes(this.hd.getName())) {
-      return undefined;
+      return null;
     }
     return this.hd.getWIF(wifType);
   }
 
-  getWIFType(): string | undefined {
-    return this.getWIF() ? this.hd.getWIFType() : undefined;
+  getWIFType(): string | null {
+    return this.getWIF() ? this.hd.getWIFType() : null;
   }
 
-  getChainCode(): string | undefined {
+  getChainCode(): string | null {
     return this.hd.getChainCode();
   }
 
@@ -621,20 +621,20 @@ export class HDWallet {
     return this.hd.getIndexes();
   }
 
-  getStrict(): boolean | undefined {
-    return ['Electrum-V1', 'Monero'].includes(this.hd.getName()) ? undefined : this.hd.getStrict();
+  getStrict(): boolean | null {
+    return ['Electrum-V1', 'Monero'].includes(this.hd.getName()) ? null : this.hd.getStrict();
   }
 
-  getPrimaryAddress(): string | undefined {
-    return this.hd.getName() === 'Monero' ? this.hd.getPrimaryAddress() : undefined;
+  getPrimaryAddress(): string | null {
+    return this.hd.getName() === 'Monero' ? this.hd.getPrimaryAddress() : null;
   }
 
   getIntegratedAddress(paymentID?: string): string | null {
     return this.hd.getName() === 'Monero' ? this.hd.getIntegratedAddress(paymentID) : null;
   }
 
-  getSubAddress(minor?: number, major?: number): string | undefined {
-    return this.hd.getName() === 'Monero' ? this.hd.getSubAddress(minor, major) : undefined;
+  getSubAddress(minor?: number, major?: number): string | null {
+    return this.hd.getName() === 'Monero' ? this.hd.getSubAddress(minor, major) : null;
   }
 
   getAddress(options: HDWalletAddressOptionsInterface = { }): string | null {
@@ -980,8 +980,8 @@ export class HDWallet {
     return excludeKeys(root, exclude);
   }
 
-  getDumps(exclude: string[] = []): Record<string, any> | Record<string, any>[] | undefined {
-    if (!this.derivation) return undefined;
+  getDumps(exclude: string[] = []): Record<string, any> | Record<string, any>[] | null {
+    if (!this.derivation) return null;
 
     const derivationsList: Record<string, any>[] = [];
 

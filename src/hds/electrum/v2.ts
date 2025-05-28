@@ -98,16 +98,16 @@ export class ElectrumV2HD extends HD {
     return this.mode;
   }
 
-  getSeed(): string | undefined {
+  getSeed(): string | null {
     return this.bip32HD.getSeed();
   }
 
-  getMasterPrivateKey(): string | undefined {
+  getMasterPrivateKey(): string | null {
     return this.bip32HD.getRootPrivateKey();
   }
 
-  getMasterWIF(wifType?: string): string | undefined {
-    if (this.wifPrefix == null) return undefined;
+  getMasterWIF(wifType?: string): string | null {
+    if (this.wifPrefix == null) return null;
     const type = wifType ?? this.wifType;
     return privateKeyToWIF(this.getMasterPrivateKey()!, type, this.wifPrefix);
   }
@@ -116,12 +116,12 @@ export class ElectrumV2HD extends HD {
     return this.bip32HD.getRootPublicKey(publicKeyType ?? this.publicKeyType)!;
   }
 
-  getPrivateKey(): string | undefined {
+  getPrivateKey(): string | null {
     return this.bip32HD.getPrivateKey();
   }
 
-  getWIF(wifType?: string): string | undefined {
-    if (this.wifPrefix == null) return undefined;
+  getWIF(wifType?: string): string | null {
+    if (this.wifPrefix == null) return null;
     const type = wifType ?? this.wifType;
     return privateKeyToWIF(this.getPrivateKey()!, type, this.wifPrefix);
   }

@@ -47,7 +47,7 @@ export class BIP32HD extends HD {
   protected wifPrefix?: number;
   protected fingerprint?: Uint8Array;
   protected parentFingerprint?: Uint8Array;
-  protected strict?: boolean;
+  protected strict?: boolean | null;
   protected rootDepth: number = 0;
   protected rootIndex: number = 0;
   protected depth: number = 0;
@@ -224,7 +224,7 @@ export class BIP32HD extends HD {
   }
 
   fromWIF(wif: string): this {
-    if (this.wifPrefix === undefined || this.wifPrefix === null) {
+    if (this.wifPrefix === null || this.wifPrefix === null) {
       throw new WIFError('WIF prefix is required');
     }
 
@@ -239,7 +239,7 @@ export class BIP32HD extends HD {
 
     const privKey = wifToPrivateKey(wif, this.wifPrefix);
     this.fromPrivateKey(privKey);
-    this.strict = undefined;
+    this.strict = null;
     return this;
   }
 
@@ -248,7 +248,7 @@ export class BIP32HD extends HD {
       const bytes = getBytes(privateKey);
       this.privateKey = (this.ecc as typeof EllipticCurveCryptography).PRIVATE_KEY.fromBytes(bytes);
       this.publicKey = this.privateKey.getPublicKey();
-      this.strict = undefined;
+      this.strict = null;
       return this;
     } catch {
       throw new PrivateKeyError('Invalid private key data');
@@ -259,7 +259,7 @@ export class BIP32HD extends HD {
     try {
       const bytes = getBytes(publicKey);
       this.publicKey = (this.ecc as typeof EllipticCurveCryptography).PUBLIC_KEY.fromBytes(bytes);
-      this.strict = undefined;
+      this.strict = null;
       return this;
     } catch {
       throw new PublicKeyError('Invalid public key data');
@@ -443,14 +443,14 @@ export class BIP32HD extends HD {
 
       const hmacLInt = bytesToInteger(hmacL);
       if (hmacLInt > (this.ecc as typeof EllipticCurveCryptography).ORDER) {
-        return undefined;
+        return null;
       }
 
       if (this.privateKey) {
         const privInt = bytesToInteger(this.privateKey.getRaw());
         const keyInt = (hmacLInt + privInt) % (this.ecc as typeof EllipticCurveCryptography).ORDER;
         if (keyInt === BigInt(0)) {
-          return undefined;
+          return null;
         }
 
         const newPriv = (this.ecc as typeof EllipticCurveCryptography).PRIVATE_KEY.fromBytes(
@@ -480,14 +480,14 @@ export class BIP32HD extends HD {
     }
   }
 
-  getSeed(): string | undefined {
-    return this.seed ? bytesToString(this.seed) : undefined;
+  getSeed(): string | null {
+    return this.seed ? bytesToString(this.seed) : null;
   }
 
   getRootXPrivateKey(
     version: Uint8Array | number = Bitcoin.NETWORKS.MAINNET.XPRIVATE_KEY_VERSIONS.P2PKH, encoded = true
-  ): string | undefined {
-    if (!this.getRootPrivateKey() || !this.getRootChainCode()) return undefined;
+  ): string | null {
+    if (!this.getRootPrivateKey() || !this.getRootChainCode()) return null;
 
     return serialize(
       typeof version === 'number' ? integerToBytes(version) : version,
@@ -502,8 +502,8 @@ export class BIP32HD extends HD {
 
   getRootXPublicKey(
     version: Uint8Array | number = Bitcoin.NETWORKS.MAINNET.XPUBLIC_KEY_VERSIONS.P2PKH, encoded = true
-  ): string | undefined {
-    if (!this.getRootChainCode()) return undefined;
+  ): string | null {
+    if (!this.getRootChainCode()) return null;
 
     return serialize(
       typeof version === 'number' ? integerToBytes(version) : version,
@@ -516,12 +516,12 @@ export class BIP32HD extends HD {
     );
   }
 
-  getRootPrivateKey(): string | undefined {
-    return this.rootPrivateKey ? bytesToString(this.rootPrivateKey.getRaw()) : undefined;
+  getRootPrivateKey(): string | null {
+    return this.rootPrivateKey ? bytesToString(this.rootPrivateKey.getRaw()) : null;
   }
 
-  getRootWIF(wifType?: string): string | undefined {
-    if (this.wifPrefix == null || !this.getRootPrivateKey()) return undefined;
+  getRootWIF(wifType?: string): string | null {
+    if (this.wifPrefix == null || !this.getRootPrivateKey()) return null;
 
     const type = wifType ?? this.wifType;
     if (!Object.values(WIF_TYPES).includes(type)) {
@@ -534,12 +534,12 @@ export class BIP32HD extends HD {
     return privateKeyToWIF(this.getRootPrivateKey()!, type, this.wifPrefix);
   }
 
-  getRootChainCode(): string | undefined {
-    return this.rootChainCode ? bytesToString(this.rootChainCode) : undefined;
+  getRootChainCode(): string | null {
+    return this.rootChainCode ? bytesToString(this.rootChainCode) : null;
   }
 
-  getRootPublicKey(publicKeyType: string = this.publicKeyType): string | undefined {
-    if (!this.rootPublicKey) return undefined;
+  getRootPublicKey(publicKeyType: string = this.publicKeyType): string | null {
+    if (!this.rootPublicKey) return null;
 
     if (publicKeyType === PUBLIC_KEY_TYPES.UNCOMPRESSED) {
       return bytesToString(this.rootPublicKey.getRawUncompressed());
@@ -555,8 +555,8 @@ export class BIP32HD extends HD {
 
   getXPrivateKey(
     version: Uint8Array | number = Bitcoin.NETWORKS.MAINNET.XPRIVATE_KEY_VERSIONS.P2PKH, encoded = true
-  ): string | undefined {
-    if (!this.getPrivateKey() || !this.getChainCode()) return undefined;
+  ): string | null {
+    if (!this.getPrivateKey() || !this.getChainCode()) return null;
 
     return serialize(
       typeof version === 'number' ? integerToBytes(version) : version,
@@ -571,8 +571,8 @@ export class BIP32HD extends HD {
 
   getXPublicKey(
     version: Uint8Array | number = Bitcoin.NETWORKS.MAINNET.XPUBLIC_KEY_VERSIONS.P2PKH, encoded = true
-  ): string | undefined {
-    if (!this.getChainCode()) return undefined;
+  ): string | null {
+    if (!this.getChainCode()) return null;
 
     return serialize(
       typeof version === 'number' ? integerToBytes(version) : version,
@@ -585,12 +585,12 @@ export class BIP32HD extends HD {
     );
   }
 
-  getPrivateKey(): string | undefined {
-    return this.privateKey ? bytesToString(this.privateKey.getRaw()) : undefined;
+  getPrivateKey(): string | null {
+    return this.privateKey ? bytesToString(this.privateKey.getRaw()) : null;
   }
 
-  getWIF(wifType?: string): string | undefined {
-    if (this.wifPrefix == null) return undefined;
+  getWIF(wifType?: string): string | null {
+    if (this.wifPrefix == null) return null;
 
     const type = wifType ?? this.wifType;
     if (!Object.values(WIF_TYPES).includes(type)) {
@@ -601,15 +601,15 @@ export class BIP32HD extends HD {
 
     return this.getPrivateKey()
       ? privateKeyToWIF(this.getPrivateKey()!, type, this.wifPrefix)
-      : undefined;
+      : null;
   }
 
-  getWIFType(): string | undefined {
-    return this.getWIF() ? this.wifType : undefined;
+  getWIFType(): string | null {
+    return this.getWIF() ? this.wifType : null;
   }
 
-  getChainCode(): string | undefined {
-    return this.chainCode ? bytesToString(this.chainCode) : undefined;
+  getChainCode(): string | null {
+    return this.chainCode ? bytesToString(this.chainCode) : null;
   }
 
   getPublicKey(publicKeyType: string = this.publicKeyType): string {
@@ -645,8 +645,8 @@ export class BIP32HD extends HD {
     return this.getHash().slice(0, 8);
   }
 
-  getParentFingerprint(): string | undefined {
-    return this.parentFingerprint ? bytesToString(this.parentFingerprint) : undefined;
+  getParentFingerprint(): string | null {
+    return this.parentFingerprint ? bytesToString(this.parentFingerprint) : null;
   }
 
   getDepth(): number {
@@ -665,8 +665,8 @@ export class BIP32HD extends HD {
     return this.derivation.getIndexes();
   }
 
-  getStrict(): boolean | undefined {
-    return this.strict;
+  getStrict(): boolean | null {
+    return this.strict ?? null;
   }
 
   getAddress(options: HDAddressOptionsInterface = {

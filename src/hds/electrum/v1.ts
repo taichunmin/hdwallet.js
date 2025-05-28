@@ -132,16 +132,16 @@ export class ElectrumV1HD extends HD {
     return this;
   }
 
-  getSeed(): string | undefined {
-    return this.seed ? bytesToString(this.seed) : undefined;
+  getSeed(): string | null {
+    return this.seed ? bytesToString(this.seed) : null;
   }
 
-  getMasterPrivateKey(): string | undefined {
-    return this.masterPrivateKey ? bytesToString(this.masterPrivateKey.getRaw()) : undefined;
+  getMasterPrivateKey(): string | null {
+    return this.masterPrivateKey ? bytesToString(this.masterPrivateKey.getRaw()) : null;
   }
 
-  getMasterWIF(wifType?: string): string | undefined {
-    if (!this.masterPrivateKey || this.wifPrefix == null) return undefined;
+  getMasterWIF(wifType?: string): string | null {
+    if (!this.masterPrivateKey || this.wifPrefix == null) return null;
 
     const type = wifType ?? this.wifType;
     return privateKeyToWIF(this.getMasterPrivateKey()!, type, this.wifPrefix);
@@ -158,12 +158,12 @@ export class ElectrumV1HD extends HD {
     });
   }
 
-  getPrivateKey(): string | undefined {
-    return this.privateKey ? bytesToString(this.privateKey.getRaw()) : undefined;
+  getPrivateKey(): string | null {
+    return this.privateKey ? bytesToString(this.privateKey.getRaw()) : null;
   }
 
-  getWIF(wifType?: string): string | undefined {
-    if (!this.privateKey || this.wifPrefix == null) return undefined;
+  getWIF(wifType?: string): string | null {
+    if (!this.privateKey || this.wifPrefix == null) return null;
 
     const type = wifType ?? this.wifType;
     return privateKeyToWIF(this.getPrivateKey()!, type, this.wifPrefix);

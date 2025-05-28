@@ -19,7 +19,7 @@ export class BIP141HD extends BIP32HD {
   }) {
     super(options);
 
-    if (options.semantic === undefined) {
+    if (!options.semantic) {
       throw new SemanticError('Semantic is required');
     }
     this.fromSemantic(options.semantic, options);
@@ -64,19 +64,19 @@ export class BIP141HD extends BIP32HD {
     return this;
   }
 
-  getRootXPrivateKey(version?: number | Uint8Array, encoded = true): string | undefined {
+  getRootXPrivateKey(version?: number | Uint8Array, encoded = true): string | null {
     return super.getRootXPrivateKey(version ?? this.xprivateKeyVersion, encoded);
   }
 
-  getRootXPublicKey(version?: number | Uint8Array, encoded = true): string | undefined {
+  getRootXPublicKey(version?: number | Uint8Array, encoded = true): string | null {
     return super.getRootXPublicKey(version ?? this.xpublicKeyVersion, encoded);
   }
 
-  getXPrivateKey(version?: number | Uint8Array, encoded = true): string | undefined {
+  getXPrivateKey(version?: number | Uint8Array, encoded = true): string | null {
     return super.getXPrivateKey(version ?? this.xprivateKeyVersion, encoded);
   }
 
-  getXPublicKey(version?: number | Uint8Array, encoded = true): string | undefined {
+  getXPublicKey(version?: number | Uint8Array, encoded = true): string | null {
     return super.getXPublicKey(version ?? this.xpublicKeyVersion, encoded);
   }
 

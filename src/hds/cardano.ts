@@ -136,7 +136,7 @@ export class CardanoHD extends BIP32HD {
     try {
       this.privateKey = (this.ecc as typeof EllipticCurveCryptography).PRIVATE_KEY.fromBytes(getBytes(privateKey));
       this.publicKey = this.privateKey.getPublicKey();
-      this.strict = undefined;
+      this.strict = null;
       return this;
     } catch {
       throw new PrivateKeyError('Invalid private key data');
@@ -149,7 +149,7 @@ export class CardanoHD extends BIP32HD {
     }
     try {
       this.publicKey = (this.ecc as typeof EllipticCurveCryptography).PUBLIC_KEY.fromBytes(getBytes(publicKey));
-      this.strict = undefined;
+      this.strict = null;
       return this;
     } catch {
       throw new PublicKeyError('Invalid public key data');
@@ -239,25 +239,25 @@ export class CardanoHD extends BIP32HD {
   getRootXPrivateKey(
     version: Uint8Array | number = Cardano.NETWORKS.MAINNET.XPRIVATE_KEY_VERSIONS.P2PKH,
     encoded: boolean = true
-  ): string | undefined {
+  ): string | null {
     return super.getRootXPrivateKey(version, encoded);
   }
 
   getXPrivateKey(
     version: Uint8Array | number = Cardano.NETWORKS.MAINNET.XPRIVATE_KEY_VERSIONS.P2PKH,
     encoded: boolean = true
-  ): string | undefined {
+  ): string | null {
     return super.getXPrivateKey(version, encoded);
   }
 
-  getPathKey(): string | undefined {
+  getPathKey(): string | null {
     if (this.cardanoType === Cardano.TYPES.BYRON_LEGACY) {
       return bytesToString(pbkdf2HmacSha512(concatBytes(
         this.rootPublicKey!.getRawCompressed().slice(1), this.rootChainCode!
         ), 'address-hashing', 500, 32
       ));
     }
-    return undefined;
+    return null;
   }
 
   getAddress(options: HDAddressOptionsInterface = {
