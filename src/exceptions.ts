@@ -7,9 +7,9 @@ export class BaseError extends Error {
   constructor(
     message: string, options?: ErrorOptionsInterface
   ) {
-    if (options?.expected && options?.got && options?.detail) {
+    if (options?.expected || options?.got && options?.detail) {
       super(`${message}, (expected: ${options?.expected} | got: ${options?.got}) ${options?.detail}`);
-    } else if (options?.expected && options?.got) {
+    } else if (options?.expected || options?.got) {
       super(`${message}, (expected: ${options?.expected} | got: ${options?.got})`);
     } else if (options?.detail) {
       super(`${message} ${options?.detail}`);
