@@ -1,5 +1,5 @@
 {
-  "name": "@hdwallet/hdwallet",
+  "name": "@hdwallet/core",
   "version": "1.0.0-alpha.0",
   "description": "Javascript-based library for the implementation of a Hierarchical Deterministic (HD) Wallet generator supporting more than 200 cryptocurrencies",
   "main": "dist/index.js",
@@ -8,6 +8,9 @@
     "build": "tsc",
     "docs": "typedoc",
     "test": "jest"
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "files": [
     "dist"
