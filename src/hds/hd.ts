@@ -217,7 +217,7 @@ export class HD {
     throw new Error('Not implemented');
   }
 
-  getIntegratedAddress(...args: any[]): string {
+  getIntegratedAddress(...args: any[]): string | null {
     throw new Error('Not implemented');
   }
 
@@ -229,7 +229,7 @@ export class HD {
     throw new Error('Not implemented');
   }
 
-  getAddress(...args: any[]): string {
+  getAddress(...args: any[]): string | null {
     throw new Error('Not implemented');
   }
 }

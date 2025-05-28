@@ -25,6 +25,7 @@ export class MoneroHD extends HD {
   protected network: Network;
   protected seed?: Uint8Array;
   protected privateKeyRaw?: Uint8Array;
+  protected paymentID?: string;
 
   protected spendPrivateKey?: PrivateKey;
   protected viewPrivateKey!: PrivateKey;
@@ -45,6 +46,7 @@ export class MoneroHD extends HD {
         expected: Monero.NETWORKS.getNetworks(), got: options.network
       });
     }
+    this.paymentID = options.paymentID;
     this.network = Monero.NETWORKS.getNetwork(networkType);
     this.derivation = new MoneroDerivation({
       minor: options.minor ?? 1,
@@ -211,7 +213,8 @@ export class MoneroHD extends HD {
     );
   }
 
-  getIntegratedAddress(paymentID?: string): string {
+  getIntegratedAddress(paymentID?: string): string | null {
+    if (!paymentID && !this.paymentID) return null;
     return MoneroAddress.encode(
       {
         spendPublicKey: this.spendPublicKey,
@@ -219,7 +222,7 @@ export class MoneroHD extends HD {
       }, {
         network: (this.network as typeof Network).name.toLowerCase(),
         addressType: Monero.ADDRESS_TYPES.INTEGRATED,
-        paymentID: paymentID
+        paymentID: paymentID ?? this.paymentID
       }
     );
   }
@@ -251,7 +254,7 @@ export class MoneroHD extends HD {
 
   getAddress(options: HDAddressOptionsInterface = {
     addressType: Monero.ADDRESS_TYPES.STANDARD
-  }): string {
+  }): string | null {
 
     if (options.addressType === Monero.ADDRESS_TYPES.STANDARD) {
       return this.getPrimaryAddress();

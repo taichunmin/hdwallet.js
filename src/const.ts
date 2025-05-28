@@ -157,7 +157,7 @@ export class Params extends NestedNamespace { }
 
 export class ExtendedKeyVersions extends NestedNamespace {
   isVersion(version: Buffer): boolean {
-    return Object.values(this as any).includes(bytesToInteger(version));
+    return Object.values(this as any).includes(Number(bytesToInteger(version)));
   }
   getVersions(): string[] {
     return Object.keys(this as any).map(k => k.toLowerCase().replace(/_/g, '-'));

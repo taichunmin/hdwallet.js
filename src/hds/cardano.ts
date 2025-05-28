@@ -261,11 +261,10 @@ export class CardanoHD extends BIP32HD {
   }
 
   getAddress(options: HDAddressOptionsInterface = {
-    addressType: Cardano.ADDRESS_TYPES.PUBLIC_KEY, network: 'mainnet'
+    network: 'mainnet'
   }): string {
-    const type = this.cardanoType;
 
-    if (type === Cardano.TYPES.BYRON_LEGACY) {
+    if (this.cardanoType === Cardano.TYPES.BYRON_LEGACY) {
       return CardanoAddress.encodeByronLegacy(
         this.publicKey!,
         this.getPath(),
@@ -273,36 +272,37 @@ export class CardanoHD extends BIP32HD {
         this.chainCode!,
         options.addressType ?? Cardano.ADDRESS_TYPES.PUBLIC_KEY
       );
-    } else if ([Cardano.TYPES.BYRON_ICARUS, Cardano.TYPES.BYRON_LEDGER].includes(type)) {
+    } else if ([Cardano.TYPES.BYRON_ICARUS, Cardano.TYPES.BYRON_LEDGER].includes(this.cardanoType)) {
       return CardanoAddress.encodeByronIcarus(
         this.publicKey!, this.chainCode!, options.addressType ?? Cardano.ADDRESS_TYPES.PUBLIC_KEY
       );
-    } else if ([Cardano.TYPES.SHELLEY_ICARUS, Cardano.TYPES.SHELLEY_LEDGER].includes(type)) {
-      if (options.addressType === Cardano.ADDRESS_TYPES.PAYMENT) {
+    } else if ([Cardano.TYPES.SHELLEY_ICARUS, Cardano.TYPES.SHELLEY_LEDGER].includes(this.cardanoType)) {
+      const addressType = options.addressType ?? Cardano.ADDRESS_TYPES.PAYMENT;
+      if (addressType === Cardano.ADDRESS_TYPES.PAYMENT) {
         if (!options.stakingPublicKey) {
-          throw new BaseError('stakingPublicKey param is required for payment address type');
+          throw new BaseError('stakingPublicKey is required for Payment address type');
         }
         return CardanoAddress.encodeShelley(
           this.publicKey!, options.stakingPublicKey, options.network ?? 'mainnet'
         );
       } else if (
-        [Cardano.ADDRESS_TYPES.STAKING, Cardano.ADDRESS_TYPES.REWARD].includes(options.addressType)
+        [Cardano.ADDRESS_TYPES.STAKING, Cardano.ADDRESS_TYPES.REWARD].includes(addressType)
       ) {
         return CardanoAddress.encodeShelleyStaking(
           this.publicKey!, options.network ?? 'mainnet'
         );
       }
-      throw new AddressError(`Invalid ${type} address type`, {
+      throw new AddressError(`Invalid ${this.cardanoType} address type`, {
         expected: [
           Cardano.ADDRESS_TYPES.PAYMENT,
           Cardano.ADDRESS_TYPES.STAKING,
           Cardano.ADDRESS_TYPES.REWARD
         ],
-        got: options.addressType
+        got: addressType
       });
     }
     throw new AddressError(`Invalid Cardano type`, {
-      expected: Cardano.TYPES.getCardanoTypes(), got: type
+      expected: Cardano.TYPES.getCardanoTypes(), got: this.cardanoType
     });
   }
 }
