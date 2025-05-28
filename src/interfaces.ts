@@ -141,6 +141,7 @@ export interface HDOptionsInterface {
   p2wshXPublicKeyVersion?: number;
   p2wshInP2SHXPrivateKeyVersion?: number;
   p2wshInP2SHXPublicKeyVersion?: number;
+  paymentID?: string;
   mode?: string;
   minor?: number;
   major?: number;

@@ -8,13 +8,15 @@ import { PUBLIC_KEY_TYPES, SEMANTICS, MODES } from './const';
 import { Cryptocurrency, Network } from './cryptocurrencies/cryptocurrency';
 import { deserialize, isValidKey } from './keys';
 import { HDWalletAddressOptionsInterface, HDWalletOptionsInterface } from './interfaces';
-import { getBytes, excludeKeys, ensureTypeMatch, toCamelCase } from './utils';
+import { excludeKeys, ensureTypeMatch, toCamelCase } from './utils';
 import {
   NetworkError, AddressError, CryptocurrencyError, HDError, XPrivateKeyError, XPublicKeyError,
   PrivateKeyError, PublicKeyError, EntropyError, WIFError
 } from './exceptions';
 import { Derivation, DERIVATIONS } from './derivations';
 import { Address, ADDRESSES } from './addresses';
+import { checkDecode } from './libs/base58';
+import { Cardano } from './cryptocurrencies';
 
 export class HDWallet {
 
@@ -123,7 +125,9 @@ export class HDWallet {
       semantic: this.semantic,
       coinType: this.cryptocurrency.COIN_TYPE,
       wifPrefix: this.network.WIF_PREFIX,
-      cardanoType: this.cardanoType,mode: this.mode,
+      cardanoType: this.cardanoType,
+      mode: this.mode,
+      paymentID: this.paymentID,
       network: this.network
     });
   }
@@ -157,7 +161,7 @@ export class HDWallet {
     const mnemonicClass = MNEMONICS.getMnemonicClass(this.entropy.getName());
     return this.fromMnemonic(
       this.entropy.getName() === 'Electrum-V2' ?
-        new mnemonicClass(mnemonic, this.mnemonicType) :
+        new mnemonicClass(mnemonic, { mnemonicType: this.mnemonicType }) :
         new mnemonicClass(mnemonic)
     );
   }
@@ -204,9 +208,9 @@ export class HDWallet {
         mnemonicType: this.mnemonicType!
       });
     } else {
-      seed = SEEDS.getSeedClass(this.mnemonic.getName()).fromMnemonic({
-        mnemonic: this.mnemonic.getMnemonic()
-      });
+      seed = SEEDS.getSeedClass(this.mnemonic.getName()).fromMnemonic(
+        this.mnemonic.getMnemonic()
+      );
     }
 
     const seedClass = SEEDS.getSeedClass(
@@ -247,7 +251,7 @@ export class HDWallet {
       throw new XPrivateKeyError('Invalid XPrivate-Key data');
     }
     const [version, , , , , ] = deserialize(xprivateKey, encoded);
-    const decodedLen = encoded ? getBytes(xprivateKey).length : xprivateKey.length;
+    const decodedLen = encoded ? checkDecode(xprivateKey).length : xprivateKey.length;
     if (!this.network.XPRIVATE_KEY_VERSIONS.isVersion(version) || ![78, 110].includes(decodedLen)) {
       throw new XPrivateKeyError(`Invalid XPrivate-Key for ${this.cryptocurrency.NAME}`);
     }
@@ -272,7 +276,7 @@ export class HDWallet {
       throw new XPublicKeyError("Invalid XPublic-Key data");
     }
     const [version, , , , , ] = deserialize(xpublicKey, encoded);
-    const decodedLen = encoded ? getBytes(xpublicKey).length : xpublicKey.length;
+    const decodedLen = encoded ? checkDecode(xpublicKey).length : xpublicKey.length;
     if (!this.network.XPUBLIC_KEY_VERSIONS.isVersion(version) || ![78, 110].includes(decodedLen)) {
       throw new XPublicKeyError(`Invalid XPublic-Key for ${this.cryptocurrency.NAME}`);
     }
@@ -625,19 +629,17 @@ export class HDWallet {
     return this.hd.getName() === 'Monero' ? this.hd.getPrimaryAddress() : undefined;
   }
 
-  getIntegratedAddress(paymentID?: string): string | undefined {
-    return this.hd.getName() === 'Monero' ? this.hd.getIntegratedAddress(paymentID) : undefined;
+  getIntegratedAddress(paymentID?: string): string | null {
+    return this.hd.getName() === 'Monero' ? this.hd.getIntegratedAddress(paymentID) : null;
   }
 
   getSubAddress(minor?: number, major?: number): string | undefined {
     return this.hd.getName() === 'Monero' ? this.hd.getSubAddress(minor, major) : undefined;
   }
 
-  getAddress(
-    address?: string | typeof Address, options: HDWalletAddressOptionsInterface = { }
-  ): string {
+  getAddress(options: HDWalletAddressOptionsInterface = { }): string | null {
 
-    const _address = address ?? this.address;
+    const _address = options.address ?? this.address;
     const resolvedAddress = ensureTypeMatch(_address, Address, { otherTypes: ['string'] });
     const addressName = resolvedAddress.isValid ? resolvedAddress.value.getName() : _address;
     if (!this.cryptocurrency.ADDRESSES.isAddress(addressName)) {
@@ -652,7 +654,9 @@ export class HDWallet {
 
     const hdName = this.hd.getName();
     if (hdName === 'Cardano') {
-      options.network = this.network.getName();
+      options.network = options.network ?? this.network.getName();
+      options.addressType = options.addressType ?? this.addressType;
+      options.stakingPublicKey = options.stakingPublicKey ?? this.stakingPublicKey;
       return this.hd.getAddress(options);
     } else if (hdName === 'Electrum-V1') {
       return this.hd.getAddress({
@@ -795,19 +799,19 @@ export class HDWallet {
 
       if (this.cryptocurrency.ADDRESSES.length() > 1 || this.cryptocurrency.NAME === 'Tezos') {
 
-        const addresses: Record<string, string> = { };
+        const addresses: Record<string, string | null> = { };
 
         if (this.cryptocurrency.NAME === 'Avalanche' && this.cryptocurrency.ADDRESS_TYPES) {
-          addresses[toCamelCase(this.cryptocurrency.ADDRESS_TYPES.C_CHAIN)] = this.getAddress('Ethereum');
-          addresses[toCamelCase(this.cryptocurrency.ADDRESS_TYPES.P_CHAIN)] = this.getAddress('Avalanche', {
-            addressType: this.cryptocurrency.ADDRESS_TYPES.P_CHAIN,
+          addresses[toCamelCase(this.cryptocurrency.ADDRESS_TYPES.C_CHAIN)] = this.getAddress({ address: 'Ethereum' });
+          addresses[toCamelCase(this.cryptocurrency.ADDRESS_TYPES.P_CHAIN)] = this.getAddress({
+            address: 'Avalanche', addressType: this.cryptocurrency.ADDRESS_TYPES.P_CHAIN
           });
-          addresses[toCamelCase(this.cryptocurrency.ADDRESS_TYPES.X_CHAIN)] = this.getAddress('Avalanche', {
-            addressType: this.cryptocurrency.ADDRESS_TYPES.X_CHAIN,
+          addresses[toCamelCase(this.cryptocurrency.ADDRESS_TYPES.X_CHAIN)] = this.getAddress({
+            address: 'Avalanche', addressType: this.cryptocurrency.ADDRESS_TYPES.X_CHAIN
           });
         } else if (this.cryptocurrency.NAME === 'Binance' && this.cryptocurrency.ADDRESS_TYPES) {
-          addresses[toCamelCase(this.cryptocurrency.ADDRESS_TYPES.CHAIN)] = this.getAddress('Cosmos');
-          addresses[toCamelCase(this.cryptocurrency.ADDRESS_TYPES.SMART_CHAIN)] = this.getAddress('Ethereum');
+          addresses[toCamelCase(this.cryptocurrency.ADDRESS_TYPES.CHAIN)] = this.getAddress({ address: 'Cosmos' });
+          addresses[toCamelCase(this.cryptocurrency.ADDRESS_TYPES.SMART_CHAIN)] = this.getAddress({ address: 'Ethereum' });
         } else if (
           (this.cryptocurrency.NAME === 'Bitcoin-Cash' ||
           this.cryptocurrency.NAME === 'Bitcoin-Cash-SLP' ||
@@ -826,44 +830,47 @@ export class HDWallet {
             }
           }
         } else if (this.cryptocurrency.NAME === 'Tezos' && this.cryptocurrency.ADDRESS_PREFIXES) {
-          addresses[this.cryptocurrency.ADDRESS_PREFIXES.TZ1] = this.getAddress(undefined, {
+          addresses[this.cryptocurrency.ADDRESS_PREFIXES.TZ1] = this.getAddress({
             addressPrefix: this.cryptocurrency.ADDRESS_PREFIXES.TZ1
           });
-          addresses[this.cryptocurrency.ADDRESS_PREFIXES.TZ2] = this.getAddress(undefined, {
+          addresses[this.cryptocurrency.ADDRESS_PREFIXES.TZ2] = this.getAddress({
             addressPrefix: this.cryptocurrency.ADDRESS_PREFIXES.TZ2
           });
-          addresses[this.cryptocurrency.ADDRESS_PREFIXES.TZ3] = this.getAddress(undefined, {
+          addresses[this.cryptocurrency.ADDRESS_PREFIXES.TZ3] = this.getAddress({
             addressPrefix: this.cryptocurrency.ADDRESS_PREFIXES.TZ3
           });
         } else if (this.hd.getName() === 'BIP44') {
-          derivationDump.address = this.getAddress('P2PKH');
+          derivationDump.address = this.getAddress({ address: 'P2PKH' });
         } else if (this.hd.getName() === 'BIP49') {
-          derivationDump.address = this.getAddress('P2WPKH-In-P2SH');
+          derivationDump.address = this.getAddress({ address: 'P2WPKH-In-P2SH' });
         } else if (this.hd.getName() === 'BIP84') {
-          derivationDump.address = this.getAddress('P2WPKH');
+          derivationDump.address = this.getAddress({ address: 'P2WPKH' });
         } else if (this.hd.getName() === 'BIP86') {
-          derivationDump.address = this.getAddress('P2TR');
+          derivationDump.address = this.getAddress({ address: 'P2TR' });
         } else if (this.hd.getName() === 'BIP141') {
           if (this.semantic === SEMANTICS.P2WPKH) {
-            derivationDump.address = this.getAddress('P2WPKH');
+            derivationDump.address = this.getAddress({ address: 'P2WPKH' });
           } else if (this.semantic === SEMANTICS.P2WPKH_IN_P2SH) {
-            derivationDump.address = this.getAddress('P2WPKH-In-P2SH');
+            derivationDump.address = this.getAddress({ address: 'P2WPKH-In-P2SH' });
           } else if (this.semantic === SEMANTICS.P2WSH) {
-            derivationDump.address = this.getAddress('P2WSH');
+            derivationDump.address = this.getAddress({ address: 'P2WSH' });
           } else if (this.semantic === SEMANTICS.P2WSH_IN_P2SH) {
-            derivationDump.address = this.getAddress('P2WSH-In-P2SH');
+            derivationDump.address = this.getAddress({ address: 'P2WSH-In-P2SH' });
           }
         } else {
           for (const address of this.cryptocurrency.ADDRESSES.getAddresses()) {
-            addresses[address.toLowerCase().replace(/-/g, '_')] = this.getAddress(address);
+            addresses[address.toLowerCase().replace(/-/g, '_')] = this.getAddress({ address: address });
           }
         }
         if (Object.keys(addresses).length !== 0) {
           derivationDump.addresses = addresses;
         }
       } else {
-        if (this.cryptocurrency.NAME === 'Cardano' && ['shelley-icarus', 'shelley-ledger'].includes(this.cardanoType!)) {
-          derivationDump.address = this.getAddress(undefined, {
+        if (this.cryptocurrency.NAME === 'Cardano' && [
+          Cardano.TYPES.SHELLEY_ICARUS, Cardano.TYPES.SHELLEY_LEDGER
+        ].includes(this.cardanoType!)) {
+          derivationDump.address = this.getAddress({
+            network: this.network.getName(),
             addressType: this.addressType,
             stakingPublicKey: this.stakingPublicKey
           });
@@ -907,6 +914,10 @@ export class HDWallet {
       hd: this.getHD()
     };
 
+    if (['Electrum-V1', 'Electrum-V2', 'Monero'].includes(hdName)) {
+      delete root.passphrase;
+    }
+
     if (['BIP32', 'BIP44', 'BIP49', 'BIP84', 'BIP86', 'BIP141', 'Cardano'].includes(hdName)) {
       if (hdName === 'Cardano') {
         root.cardano_type = this.getCardanoType();
@@ -920,6 +931,7 @@ export class HDWallet {
         root_wif: this.getRootWIF(),
         root_chain_code: this.getRootChainCode(),
         root_public_key: this.getRootPublicKey(),
+        path_key: this.getPathKey(),
         strict: this.getStrict(),
         public_key_type: this.getPublicKeyType(),
         wif_type: this.getWIFType()
@@ -928,7 +940,7 @@ export class HDWallet {
       if (hdName === 'Cardano') {
         delete root.root_wif;
         delete root.wif_type;
-        if (this.cardanoType !== 'byron-legacy') {
+        if (this.cardanoType !== Cardano.TYPES.BYRON_LEGACY) {
           delete root.path_key;
         }
       } else {
