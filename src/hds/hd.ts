@@ -206,7 +206,7 @@ export class HD {
   }
 
   getPathKey(): string | undefined {
-    throw new Error('Not implemented');
+    return undefined;
   }
 
   getIndex(): number {
