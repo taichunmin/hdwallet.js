@@ -1,22 +1,27 @@
 // SPDX-License-Identifier: MIT
 
 import { HDWallet } from '../../../src/hdwallet';
-import { Binance as Cryptocurrency } from '../../../src/cryptocurrencies';
-import { CustomDerivation } from '../../../src/derivations';
-import { PUBLIC_KEY_TYPES, SEMANTICS } from '../../../src/const';
-import { BIP32HD } from '../../../src/hds';
+import { BIP39Entropy, BIP39_ENTROPY_STRENGTHS } from '../../../src/entropies';
+import { BIP39_MNEMONIC_LANGUAGES } from '../../../src/mnemonics';
+import { Cardano as Cryptocurrency } from '../../../src/cryptocurrencies';
+import { BIP44Derivation, CHANGES } from '../../../src/derivations';
+import { CardanoHD } from '../../../src/hds';
 
 const hdwallet: HDWallet = new HDWallet(
   Cryptocurrency, {
-    hd: BIP32HD,
-    network: Cryptocurrency.NETWORKS.MAINNET,
-    publicKeyType: PUBLIC_KEY_TYPES.COMPRESSED,
-    semantic: SEMANTICS.P2WSH
+    hd: CardanoHD,
+    language: BIP39_MNEMONIC_LANGUAGES.CZECH,
+    cardanoType: Cryptocurrency.TYPES.BYRON_ICARUS
   }
-).fromXPublicKey(
-  'xpub661MyMwAqRbcFkPHucMnrGNzDwb6teAX1RbKQmqtEF8kK3Z7LZ59qafCjB9eCRLiTVG3uxBxgKvRgbubRhqSKXnGGb1aoaqLrpMBDrVxga8', true
-).fromDerivation(new CustomDerivation({
-  path: 'm/0/0-2' // Note: Hardened (') is not allowed for XPublic Key
+).fromEntropy(new BIP39Entropy(
+  BIP39Entropy.generate(
+    BIP39_ENTROPY_STRENGTHS.TWO_HUNDRED_TWENTY_FOUR
+  )
+)).fromDerivation(new BIP44Derivation({
+  coinType: Cryptocurrency.COIN_TYPE,
+  account: [0, 2],
+  change: CHANGES.EXTERNAL_CHAIN,
+  address: 452
 }));
 
 // console.dir(hdwallet.getDump(['indexes']), { depth: null, colors: true });
@@ -26,10 +31,19 @@ console.dir(hdwallet.getDumps(['indexes']), { depth: null, colors: true });
 // console.log('Symbol:', hdwallet.getSymbol());
 // console.log('Network:', hdwallet.getNetwork());
 // console.log('Coin Type:', hdwallet.getCoinType());
+// console.log('Entropy:', hdwallet.getEntropy());
+// console.log('Strength:', hdwallet.getStrength());
+// console.log('Mnemonic:', hdwallet.getMnemonic());
+// console.log('Passphrase:', hdwallet.getPassphrase());
+// console.log('Language:', hdwallet.getLanguage());
+// console.log('Seed:', hdwallet.getSeed());
 // console.log('ECC:', hdwallet.getECC());
 // console.log('HD:', hdwallet.getHD());
+// console.log('Cardano Type:', hdwallet.getCardanoType());
 // console.log('Semantic:', hdwallet.getSemantic());
+// console.log('Root XPrivate Key:', hdwallet.getRootXPrivateKey());
 // console.log('Root XPublic Key:', hdwallet.getRootXPublicKey());
+// console.log('Root Private Key:', hdwallet.getRootPrivateKey());
 // console.log('Root Chain Code:', hdwallet.getRootChainCode());
 // console.log('Root Public Key:', hdwallet.getRootPublicKey());
 // console.log('Strict:', hdwallet.getStrict());
@@ -38,7 +52,9 @@ console.dir(hdwallet.getDumps(['indexes']), { depth: null, colors: true });
 // console.log('Depth:', hdwallet.getDepth());
 // console.log('Indexes:', hdwallet.getIndexes());
 // console.log('Index:', hdwallet.getIndex());
+// console.log('XPrivate Key:', hdwallet.getXPrivateKey());
 // console.log('XPublic Key:', hdwallet.getXPublicKey());
+// console.log('Private Key:', hdwallet.getPrivateKey());
 // console.log('Chain Code:', hdwallet.getChainCode());
 // console.log('Public Key:', hdwallet.getPublicKey());
 // console.log('Uncompressed:', hdwallet.getUncompressed());

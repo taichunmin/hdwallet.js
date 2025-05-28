@@ -1,20 +1,17 @@
 // SPDX-License-Identifier: MIT
 
 import { HDWallet } from '../../../src/hdwallet';
-import { Binance as Cryptocurrency } from '../../../src/cryptocurrencies';
+import { Cardano as Cryptocurrency } from '../../../src/cryptocurrencies';
 import { CustomDerivation } from '../../../src/derivations';
-import { PUBLIC_KEY_TYPES, SEMANTICS } from '../../../src/const';
-import { BIP32HD } from '../../../src/hds';
+import { CardanoHD } from '../../../src/hds';
 
 const hdwallet: HDWallet = new HDWallet(
   Cryptocurrency, {
-    hd: BIP32HD,
-    network: Cryptocurrency.NETWORKS.MAINNET,
-    publicKeyType: PUBLIC_KEY_TYPES.COMPRESSED,
-    semantic: SEMANTICS.P2WSH
+    hd: CardanoHD,
+    cardanoType: Cryptocurrency.TYPES.BYRON_LEDGER  // Note: XPublic Key is not supported for BYRON_LEGACY
   }
 ).fromXPublicKey(
-  'xpub661MyMwAqRbcFkPHucMnrGNzDwb6teAX1RbKQmqtEF8kK3Z7LZ59qafCjB9eCRLiTVG3uxBxgKvRgbubRhqSKXnGGb1aoaqLrpMBDrVxga8', true
+  'xpub661MyMwAqRbcEiUJew81QNEAr6jYLVSksDzdQUtWbSWLRdA8ouX1bqK1WxS4qdF4gu8VwSxDVX7n216daK1735md81Z1L7uFUAAT4eSN1xr', true
 ).fromDerivation(new CustomDerivation({
   path: 'm/0/0-2' // Note: Hardened (') is not allowed for XPublic Key
 }));
@@ -28,6 +25,7 @@ console.dir(hdwallet.getDumps(['indexes']), { depth: null, colors: true });
 // console.log('Coin Type:', hdwallet.getCoinType());
 // console.log('ECC:', hdwallet.getECC());
 // console.log('HD:', hdwallet.getHD());
+// console.log('Cardano Type:', hdwallet.getCardanoType());
 // console.log('Semantic:', hdwallet.getSemantic());
 // console.log('Root XPublic Key:', hdwallet.getRootXPublicKey());
 // console.log('Root Chain Code:', hdwallet.getRootChainCode());
