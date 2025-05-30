@@ -2,7 +2,9 @@
 
 import { Buffer } from 'buffer';
 
-import { Mnemonic, BIP39Mnemonic, ElectrumV1Mnemonic } from '../../index';
+import { Mnemonic } from '../../mnemonic';
+import { BIP39Mnemonic } from '../../bip39/mnemonic';
+import { ElectrumV1Mnemonic } from '../v1/mnemonic';
 import { Entropy, ElectrumV2Entropy, ELECTRUM_V2_ENTROPY_STRENGTHS } from '../../../entropies';
 import {
   MnemonicOptionsInterface,
@@ -15,6 +17,12 @@ import {
   getBytes, integerToBytes, bytesToInteger, bytesToString
 } from '../../../utils';
 import { EntropyError, MnemonicError } from '../../../exceptions';
+import {
+  ELECTRUM_V2_CHINESE_SIMPLIFIED_WORDLIST,
+  ELECTRUM_V2_ENGLISH_WORDLIST,
+  ELECTRUM_V2_PORTUGUESE_WORDLIST,
+  ELECTRUM_V2_SPANISH_WORDLIST
+} from './wordlists';
 
 export const ELECTRUM_V2_MNEMONIC_WORDS: ElectrumV2MnemonicWordsInterface = {
   TWELVE: 12,
@@ -53,11 +61,11 @@ export class ElectrumV2Mnemonic extends Mnemonic {
     ELECTRUM_V2_MNEMONIC_LANGUAGES
   );
 
-  static wordlistPath: Record<string, string> = {
-    [ELECTRUM_V2_MNEMONIC_LANGUAGES.CHINESE_SIMPLIFIED]: 'electrum/v2/wordlist/chinese_simplified.txt',
-    [ELECTRUM_V2_MNEMONIC_LANGUAGES.ENGLISH]: 'electrum/v2/wordlist/english.txt',
-    [ELECTRUM_V2_MNEMONIC_LANGUAGES.PORTUGUESE]: 'electrum/v2/wordlist/portuguese.txt',
-    [ELECTRUM_V2_MNEMONIC_LANGUAGES.SPANISH]: 'electrum/v2/wordlist/spanish.txt'
+  static wordLists: Record<string, string[]> = {
+    [ELECTRUM_V2_MNEMONIC_LANGUAGES.CHINESE_SIMPLIFIED]: ELECTRUM_V2_CHINESE_SIMPLIFIED_WORDLIST,
+    [ELECTRUM_V2_MNEMONIC_LANGUAGES.ENGLISH]: ELECTRUM_V2_ENGLISH_WORDLIST,
+    [ELECTRUM_V2_MNEMONIC_LANGUAGES.PORTUGUESE]: ELECTRUM_V2_PORTUGUESE_WORDLIST,
+    [ELECTRUM_V2_MNEMONIC_LANGUAGES.SPANISH]: ELECTRUM_V2_SPANISH_WORDLIST
   };
 
   static mnemonicTypes: Record<string, string> = {
@@ -121,10 +129,10 @@ export class ElectrumV2Mnemonic extends Mnemonic {
     }
 
     const wordsList = this.normalize(
-      this.getWordsListByLanguage(language, this.wordlistPath)
+      this.getWordsListByLanguage(language, this.wordLists)
     );
     const bip39List = this.normalize(
-      this.getWordsListByLanguage(language, BIP39Mnemonic.wordlistPath)
+      this.getWordsListByLanguage(language, BIP39Mnemonic.wordLists)
     );
     const bip39Index = Object.fromEntries(
       bip39List.map((w, i) => [w, i] as [string, number])
@@ -135,7 +143,7 @@ export class ElectrumV2Mnemonic extends Mnemonic {
     try {
       ev1List = this.normalize(
         this.getWordsListByLanguage(
-          language, ElectrumV1Mnemonic.wordlistPath
+          language, ElectrumV1Mnemonic.wordLists
         )
       );
       ev1Index = Object.fromEntries(
@@ -185,7 +193,7 @@ export class ElectrumV2Mnemonic extends Mnemonic {
     }
 
     const wl = option.wordsList ?? this.normalize(
-      this.getWordsListByLanguage(language, this.wordlistPath)
+      this.getWordsListByLanguage(language, this.wordLists)
     );
     const mnemonic: string[] = [];
     // repeatedly mod/divide
@@ -229,7 +237,7 @@ export class ElectrumV2Mnemonic extends Mnemonic {
       throw new MnemonicError(`Invalid ${option.mnemonicType} mnemonic words`);
     }
 
-    const [ wordsList ] = this.findLanguage(words);
+    const [ wordsList ] = this.findLanguage(words, this.wordLists);
     const idxMap = Object.fromEntries(
       wordsList.map((w, i) => [w, i] as [string, number])
     );

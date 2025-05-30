@@ -1,8 +1,5 @@
 // SPDX-License-Identifier: MIT
 
-import * as fs from 'fs';
-import * as path from 'path';
-
 import { Entropy } from '../entropies';
 import { MnemonicOptionsInterface } from '../interfaces';
 import { MnemonicError } from '../exceptions';
@@ -17,7 +14,7 @@ export class Mnemonic {
   static wordsList: number[] = [];
   static languages: string[] = [];
 
-  static wordlistPath: Record<string, string> = { };
+  static wordLists: Record<string, string[]> = { };
 
   constructor(
     mnemonic: string | string[], options: MnemonicOptionsInterface = { }
@@ -29,7 +26,7 @@ export class Mnemonic {
       throw new MnemonicError('Invalid mnemonic words');
     }
     const [_, language] = constructor.findLanguage(
-      words, options.wordlistPath
+      words, options.wordLists
     );
     this.mnemonic = words;
     this.words = words.length;
@@ -82,28 +79,22 @@ export class Mnemonic {
   }
 
   static getWordsListByLanguage(
-    language: string, wordlistPath?: Record<string, string>
+    language: string, wordLists?: Record<string, string[]>
   ): string[] {
-    const paths = wordlistPath ?? this.wordlistPath;
-    const rel = paths[language];
-    if (!rel) {
+    const wordList = (wordLists ?? this.wordLists)[language];
+    if (!wordList) {
       throw new MnemonicError(`No wordlist for language '${language}'`);
     }
-    const full = path.join(__dirname, rel);
-    const txt = fs.readFileSync(full, 'utf8');
-    return txt
-      .split(/\r?\n/)
-      .map((w) => w.trim())
-      .filter((w) => w !== '' && !w.startsWith('#'));
+    return wordList;
   }
 
   static findLanguage(
-    mnemonic: string[], wordlistPath?: Record<string, string>
+    mnemonic: string[], wordLists?: Record<string, string[]>
   ): [string[], string] {
     for (const language of this.languages) {
       try {
         const list = this.normalize(
-          this.getWordsListByLanguage(language, wordlistPath)
+          this.getWordsListByLanguage(language, wordLists)
         );
         const map = new Set(list);
         for (const w of mnemonic) {

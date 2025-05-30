@@ -10,6 +10,18 @@ import {
   hexToBytes, bytesToHex, bytesToInteger, bytesChunkToWords, wordsToBytesChunk, toBuffer
 } from '../../utils';
 import { MnemonicError, EntropyError, ChecksumError } from '../../exceptions';
+import {
+  MONERO_CHINESE_SIMPLIFIED_WORDLIST,
+  MONERO_DUTCH_WORDLIST,
+  MONERO_ENGLISH_WORDLIST,
+  MONERO_FRENCH_WORDLIST,
+  MONERO_GERMAN_WORDLIST,
+  MONERO_ITALIAN_WORDLIST,
+  MONERO_JAPANESE_WORDLIST,
+  MONERO_PORTUGUESE_WORDLIST,
+  MONERO_RUSSIAN_WORDLIST,
+  MONERO_SPANISH_WORDLIST
+} from './wordlists';
 
 export const MONERO_MNEMONIC_WORDS: MoneroMnemonicWordsInterface = {
   TWELVE: 12,
@@ -55,7 +67,7 @@ export class MoneroMnemonic extends Mnemonic {
   ];
 
   static languages: string[] = Object.values(
-      MONERO_MNEMONIC_LANGUAGES
+    MONERO_MNEMONIC_LANGUAGES
   );
 
   static languageUniquePrefixLengths: Record<string, number> = {
@@ -71,17 +83,17 @@ export class MoneroMnemonic extends Mnemonic {
     [MONERO_MNEMONIC_LANGUAGES.SPANISH]: 4,
   };
 
-  static wordlistPath: Record<string, string> = {
-    [MONERO_MNEMONIC_LANGUAGES.CHINESE_SIMPLIFIED]: 'monero/wordlist/chinese_simplified.txt',
-    [MONERO_MNEMONIC_LANGUAGES.DUTCH]: 'monero/wordlist/dutch.txt',
-    [MONERO_MNEMONIC_LANGUAGES.ENGLISH]: 'monero/wordlist/english.txt',
-    [MONERO_MNEMONIC_LANGUAGES.FRENCH]: 'monero/wordlist/french.txt',
-    [MONERO_MNEMONIC_LANGUAGES.GERMAN]: 'monero/wordlist/german.txt',
-    [MONERO_MNEMONIC_LANGUAGES.ITALIAN]: 'monero/wordlist/italian.txt',
-    [MONERO_MNEMONIC_LANGUAGES.JAPANESE]: 'monero/wordlist/japanese.txt',
-    [MONERO_MNEMONIC_LANGUAGES.PORTUGUESE]: 'monero/wordlist/portuguese.txt',
-    [MONERO_MNEMONIC_LANGUAGES.RUSSIAN]: 'monero/wordlist/russian.txt',
-    [MONERO_MNEMONIC_LANGUAGES.SPANISH]: 'monero/wordlist/spanish.txt'
+  static wordLists: Record<string, string[]> = {
+    [MONERO_MNEMONIC_LANGUAGES.CHINESE_SIMPLIFIED]: MONERO_CHINESE_SIMPLIFIED_WORDLIST,
+    [MONERO_MNEMONIC_LANGUAGES.DUTCH]: MONERO_DUTCH_WORDLIST,
+    [MONERO_MNEMONIC_LANGUAGES.ENGLISH]: MONERO_ENGLISH_WORDLIST,
+    [MONERO_MNEMONIC_LANGUAGES.FRENCH]: MONERO_FRENCH_WORDLIST,
+    [MONERO_MNEMONIC_LANGUAGES.GERMAN]: MONERO_GERMAN_WORDLIST,
+    [MONERO_MNEMONIC_LANGUAGES.ITALIAN]: MONERO_ITALIAN_WORDLIST,
+    [MONERO_MNEMONIC_LANGUAGES.JAPANESE]: MONERO_JAPANESE_WORDLIST,
+    [MONERO_MNEMONIC_LANGUAGES.PORTUGUESE]: MONERO_PORTUGUESE_WORDLIST,
+    [MONERO_MNEMONIC_LANGUAGES.RUSSIAN]: MONERO_RUSSIAN_WORDLIST,
+    [MONERO_MNEMONIC_LANGUAGES.SPANISH]: MONERO_SPANISH_WORDLIST
   };
 
   static getName(): string {
@@ -130,7 +142,7 @@ export class MoneroMnemonic extends Mnemonic {
       );
     }
 
-    const rawList = this.getWordsListByLanguage(language, this.wordlistPath);
+    const rawList = this.getWordsListByLanguage(language, this.wordLists);
     const wordList = this.normalize(rawList);
     if (wordList.length !== 1626) {
       throw new Error(
@@ -168,7 +180,7 @@ export class MoneroMnemonic extends Mnemonic {
       );
     }
 
-    const [wordsList, language] = this.findLanguage(words);
+    const [wordsList, language] = this.findLanguage(words, this.wordLists);
     if (wordsList.length !== 1626) {
       throw new Error(
         `Expected 1626 words in list for '${language}', got ${wordsList.length}`

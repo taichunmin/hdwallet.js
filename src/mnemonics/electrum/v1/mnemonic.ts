@@ -9,15 +9,15 @@ import {
   hexToBytes, integerToBytes, bytesToInteger, bytesToHex, getBytes
 } from '../../../utils';
 import { MnemonicError, EntropyError } from '../../../exceptions';
+import { ELECTRUM_V1_ENGLISH_WORDLIST } from './wordlists';
 
 export const ELECTRUM_V1_MNEMONIC_WORDS: ElectrumV1MnemonicWordsInterface = {
   TWELVE: 12,
 } as const;
 
-export const ELECTRUM_V1_MNEMONIC_LANGUAGES: ElectrumV1MnemonicLanguagesInterface =
-  {
-    ENGLISH: 'english',
-  } as const;
+export const ELECTRUM_V1_MNEMONIC_LANGUAGES: ElectrumV1MnemonicLanguagesInterface = {
+  ENGLISH: 'english'
+} as const;
 
 export class ElectrumV1Mnemonic extends Mnemonic {
 
@@ -36,8 +36,8 @@ export class ElectrumV1Mnemonic extends Mnemonic {
     ELECTRUM_V1_MNEMONIC_LANGUAGES
   );
 
-  static wordlistPath: Record<string, string> = {
-    [ELECTRUM_V1_MNEMONIC_LANGUAGES.ENGLISH]: 'electrum/v1/wordlist/english.txt',
+  static wordLists: Record<string, string[]> = {
+    [ELECTRUM_V1_MNEMONIC_LANGUAGES.ENGLISH]: ELECTRUM_V1_ENGLISH_WORDLIST
   };
 
   static getName(): string {
@@ -83,7 +83,7 @@ export class ElectrumV1Mnemonic extends Mnemonic {
       );
     }
 
-    const rawList = this.getWordsListByLanguage(language, this.wordlistPath);
+    const rawList = this.getWordsListByLanguage(language, this.wordLists);
     const wordList = this.normalize(rawList);
     const wl = wordList.length;
     const mnemonic: string[] = [];
@@ -119,7 +119,7 @@ export class ElectrumV1Mnemonic extends Mnemonic {
       wordsList = options.wordsList;
       idxMap = options.wordsListWithIndex;
     } else {
-      [wordsList] = this.findLanguage(words);
+      [wordsList] = this.findLanguage(words, this.wordLists);
       wordsList.forEach((w, i) => (idxMap[w] = i));
     }
 

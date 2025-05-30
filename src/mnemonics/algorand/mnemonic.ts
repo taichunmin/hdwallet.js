@@ -8,6 +8,7 @@ import {
 import { sha512_256 } from '../../crypto';
 import { getBytes, bytesToString, convertBits, toBuffer } from '../../utils';
 import { MnemonicError, EntropyError, ChecksumError } from '../../exceptions';
+import { ALGORAND_ENGLISH_WORDLIST } from './wordlists';
 
 export const ALGORAND_MNEMONIC_WORDS: AlgorandMnemonicWordsInterface = {
   TWENTY_FIVE: 25
@@ -34,8 +35,8 @@ export class AlgorandMnemonic extends Mnemonic {
     ALGORAND_MNEMONIC_LANGUAGES
   );
 
-  static wordlistPath: Record<string,string> = {
-    [ALGORAND_MNEMONIC_LANGUAGES.ENGLISH]: 'algorand/wordlist/english.txt'
+  static wordlists: Record<string,string[]> = {
+    [ALGORAND_MNEMONIC_LANGUAGES.ENGLISH]: ALGORAND_ENGLISH_WORDLIST
   };
 
   static getName(): string {
@@ -85,7 +86,7 @@ export class AlgorandMnemonic extends Mnemonic {
     const dataWords = convertBits(entropyBytes, 8, this.wordBitLength);
     if (!dataWords) throw new Error('Entropy conversion failed');
 
-    const wordList = this.getWordsListByLanguage(language, this.wordlistPath);
+    const wordList = this.getWordsListByLanguage(language, this.wordlists);
     const indexes = [...dataWords, checksumWords[0]];
     return indexes.map(i => wordList[i]).join(' ');
   }
@@ -102,7 +103,7 @@ export class AlgorandMnemonic extends Mnemonic {
       );
     }
 
-    const [wordList] = this.findLanguage(words, this.wordlistPath);
+    const [wordList] = this.findLanguage(words, this.wordlists);
     const idxMap = Object.fromEntries(wordList.map((w, i) => [w, i]));
 
     const indexes = words.map(w => {

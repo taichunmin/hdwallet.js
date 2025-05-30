@@ -14,7 +14,7 @@ export interface MnemonicOptionsInterface {
   checksum?: boolean;
   mnemonicType?: string;
   maxAttempts?: bigint;
-  wordlistPath?: Record<string, string>;
+  wordLists?: Record<string, string[]>;
   wordsList?: string[];
   wordsListWithIndex?: Record<string, number>;
   bip39List?: string[];

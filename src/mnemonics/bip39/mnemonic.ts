@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-import { createHash } from 'crypto';
+import crypto from 'crypto';
 
 import { Mnemonic } from '../mnemonic';
 import { Entropy, BIP39Entropy, BIP39_ENTROPY_STRENGTHS } from '../../entropies';
@@ -11,6 +11,20 @@ import {
   hexToBytes, bytesToBinaryString, integerToBinaryString, binaryStringToBytes, bytesToHex
 } from '../../utils';
 import { MnemonicError, EntropyError, ChecksumError } from '../../exceptions';
+import {
+  BIP39_CHINESE_SIMPLIFIED_WORDLIST,
+  BIP39_CHINESE_TRADITIONAL_WORDLIST,
+  BIP39_CZECH_WORDLIST,
+  BIP39_ENGLISH_WORDLIST,
+  BIP39_FRENCH_WORDLIST,
+  BIP39_ITALIAN_WORDLIST,
+  BIP39_JAPANESE_WORDLIST,
+  BIP39_KOREAN_WORDLIST,
+  BIP39_PORTUGUESE_WORDLIST,
+  BIP39_RUSSIAN_WORDLIST,
+  BIP39_SPANISH_WORDLIST,
+  BIP39_TURKISH_WORDLIST
+} from './wordlists';
 
 export const BIP39_MNEMONIC_WORDS: BIP39MnemonicWordsInterface = {
   TWELVE: 12,
@@ -41,11 +55,11 @@ export class BIP39Mnemonic extends Mnemonic {
   static wordsListNumber: number = 2048;
 
   static wordsList: number[] = [
-      BIP39_MNEMONIC_WORDS.TWELVE, 
-      BIP39_MNEMONIC_WORDS.FIFTEEN, 
-      BIP39_MNEMONIC_WORDS.EIGHTEEN,
-      BIP39_MNEMONIC_WORDS.TWENTY_ONE, 
-      BIP39_MNEMONIC_WORDS.TWENTY_FOUR
+    BIP39_MNEMONIC_WORDS.TWELVE,
+    BIP39_MNEMONIC_WORDS.FIFTEEN,
+    BIP39_MNEMONIC_WORDS.EIGHTEEN,
+    BIP39_MNEMONIC_WORDS.TWENTY_ONE,
+    BIP39_MNEMONIC_WORDS.TWENTY_FOUR
   ];
 
   static wordsToEntropyStrength: Record<number, number> = {
@@ -60,19 +74,19 @@ export class BIP39Mnemonic extends Mnemonic {
     BIP39_MNEMONIC_LANGUAGES
   );
 
-  static wordlistPath: Record<string, string> = {
-    [BIP39_MNEMONIC_LANGUAGES.CHINESE_SIMPLIFIED]: 'bip39/wordlist/chinese_simplified.txt',
-    [BIP39_MNEMONIC_LANGUAGES.CHINESE_TRADITIONAL]: 'bip39/wordlist/chinese_traditional.txt',
-    [BIP39_MNEMONIC_LANGUAGES.CZECH]: 'bip39/wordlist/czech.txt',
-    [BIP39_MNEMONIC_LANGUAGES.ENGLISH]: 'bip39/wordlist/english.txt',
-    [BIP39_MNEMONIC_LANGUAGES.FRENCH]: 'bip39/wordlist/french.txt',
-    [BIP39_MNEMONIC_LANGUAGES.ITALIAN]: 'bip39/wordlist/italian.txt',
-    [BIP39_MNEMONIC_LANGUAGES.JAPANESE]: 'bip39/wordlist/japanese.txt',
-    [BIP39_MNEMONIC_LANGUAGES.KOREAN]: 'bip39/wordlist/korean.txt',
-    [BIP39_MNEMONIC_LANGUAGES.PORTUGUESE]: 'bip39/wordlist/portuguese.txt',
-    [BIP39_MNEMONIC_LANGUAGES.RUSSIAN]: 'bip39/wordlist/russian.txt',
-    [BIP39_MNEMONIC_LANGUAGES.SPANISH]: 'bip39/wordlist/spanish.txt',
-    [BIP39_MNEMONIC_LANGUAGES.TURKISH]: 'bip39/wordlist/turkish.txt'
+  static wordLists: Record<string, string[]> = {
+    [BIP39_MNEMONIC_LANGUAGES.CHINESE_SIMPLIFIED]: BIP39_CHINESE_SIMPLIFIED_WORDLIST,
+    [BIP39_MNEMONIC_LANGUAGES.CHINESE_TRADITIONAL]: BIP39_CHINESE_TRADITIONAL_WORDLIST,
+    [BIP39_MNEMONIC_LANGUAGES.CZECH]: BIP39_CZECH_WORDLIST,
+    [BIP39_MNEMONIC_LANGUAGES.ENGLISH]: BIP39_ENGLISH_WORDLIST,
+    [BIP39_MNEMONIC_LANGUAGES.FRENCH]: BIP39_FRENCH_WORDLIST,
+    [BIP39_MNEMONIC_LANGUAGES.ITALIAN]: BIP39_ITALIAN_WORDLIST,
+    [BIP39_MNEMONIC_LANGUAGES.JAPANESE]: BIP39_JAPANESE_WORDLIST,
+    [BIP39_MNEMONIC_LANGUAGES.KOREAN]: BIP39_KOREAN_WORDLIST,
+    [BIP39_MNEMONIC_LANGUAGES.PORTUGUESE]: BIP39_PORTUGUESE_WORDLIST,
+    [BIP39_MNEMONIC_LANGUAGES.RUSSIAN]: BIP39_RUSSIAN_WORDLIST,
+    [BIP39_MNEMONIC_LANGUAGES.SPANISH]: BIP39_SPANISH_WORDLIST,
+    [BIP39_MNEMONIC_LANGUAGES.TURKISH]: BIP39_TURKISH_WORDLIST
   };
 
   static getName(): string {
@@ -120,13 +134,13 @@ export class BIP39Mnemonic extends Mnemonic {
         `Unsupported entropy length ${bitLen}`
       );
     }
-    const hash = createHash('sha256').update(entropyBytes).digest();
+    const hash = crypto.createHash('sha256').update(entropyBytes).digest();
     const csLen = bitLen / 32;
     const entBits = bytesToBinaryString(entropyBytes, bitLen);
     const hashBits = bytesToBinaryString(hash, 256).slice(0, csLen);
     const bits = entBits + hashBits;
 
-    const wordList = this.getWordsListByLanguage(language, this.wordlistPath);
+    const wordList = this.getWordsListByLanguage(language, this.wordLists);
     if (wordList.length !== this.wordsListNumber) {
       throw new Error(
         `Loaded wordlist length ${wordList.length} !== ${this.wordsListNumber}`
@@ -161,7 +175,7 @@ export class BIP39Mnemonic extends Mnemonic {
     if (options.wordsList && options.wordsListWithIndex) {
       idxMap = options.wordsListWithIndex;
     } else {
-      [ wordList ] = this.findLanguage(words);
+      [ wordList ] = this.findLanguage(words, this.wordLists);
       wordList.forEach((w, i) => idxMap[w] = i);
     }
 
@@ -180,7 +194,7 @@ export class BIP39Mnemonic extends Mnemonic {
     const givenChecksum = bits.slice(-checksumLen);
 
     const entropyBytes = binaryStringToBytes(entropyBits);
-    const hash = createHash('sha256').update(entropyBytes).digest();
+    const hash = crypto.createHash('sha256').update(entropyBytes).digest();
     const hashBits = bytesToBinaryString(hash, 256).slice(0, checksumLen);
 
     if (givenChecksum !== hashBits) {
