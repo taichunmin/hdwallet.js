@@ -5,10 +5,11 @@ import { ensureString, encode, decode } from '../libs/base58';
 import { PublicKey, SLIP10Secp256k1PublicKey, validateAndGetPublicKey } from '../ecc';
 import { Ergo } from '../cryptocurrencies';
 import { blake2b256 } from '../crypto';
-import { bytesToString, integerToBytes, toBuffer } from '../utils';
+import { bytesToString, ensureTypeMatch, integerToBytes, toBuffer } from '../utils';
 import { Address } from './address';
 import { AddressOptionsInterface } from '../interfaces';
 import { AddressError, NetworkError } from '../exceptions';
+import { Network } from '../cryptocurrencies/cryptocurrency';
 
 export class ErgoAddress extends Address {
 
@@ -18,7 +19,7 @@ export class ErgoAddress extends Address {
     'p2pkh': Ergo.PARAMS.ADDRESS_TYPES.P2PKH,
     'p2sh': Ergo.PARAMS.ADDRESS_TYPES.P2SH
   };
-  static networkType: string = Ergo.DEFAULT_NETWORK.getName();
+  static networkType: string = Ergo.DEFAULT_NETWORK;
   static networkTypes: Record<string, number> = {
     'mainnet': Ergo.NETWORKS.MAINNET.TYPE,
     'testnet': Ergo.NETWORKS.TESTNET.TYPE
@@ -39,10 +40,13 @@ export class ErgoAddress extends Address {
     }
   ): string {
 
-    const networkType = this.networkTypes[options.networkType ?? this.networkType];
+    const network = options.networkType ?? this.networkType;
+    const resolvedNetwork = ensureTypeMatch(network, Network, { otherTypes: ['string'] });
+    const networkName = resolvedNetwork.isValid ? resolvedNetwork.value.getName() : network;
+    const networkType = this.networkTypes[networkName];
     if (networkType === undefined) {
       throw new NetworkError('Invalid Ergo network type', {
-        expected: Object.keys(this.networkTypes), got: options.networkType
+        expected: Object.keys(this.networkTypes), got: network
       });
     }
     const addressType = this.addressTypes[options.addressType ?? this.addressType];
@@ -66,7 +70,10 @@ export class ErgoAddress extends Address {
     }
   ): string {
 
-    const networkType = this.networkTypes[options.networkType ?? this.networkType];
+    const network = options.networkType ?? this.networkType;
+    const resolvedNetwork = ensureTypeMatch(network, Network, { otherTypes: ['string'] });
+    const networkName = resolvedNetwork.isValid ? resolvedNetwork.value.getName() : network;
+    const networkType = this.networkTypes[networkName];
     if (networkType === undefined) {
       throw new NetworkError('Invalid Ergo network type', {
         expected: Object.keys(this.networkTypes), got: options.networkType
