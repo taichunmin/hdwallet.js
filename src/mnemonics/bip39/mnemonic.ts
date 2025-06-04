@@ -1,9 +1,8 @@
 // SPDX-License-Identifier: MIT
 
-import crypto from 'crypto';
-
 import { Mnemonic } from '../mnemonic';
 import { Entropy, BIP39Entropy, BIP39_ENTROPY_STRENGTHS } from '../../entropies';
+import { sha256 } from '../../crypto';
 import {
   MnemonicOptionsInterface, BIP39MnemonicLanguagesInterface, BIP39MnemonicWordsInterface
 } from '../../interfaces';
@@ -134,7 +133,7 @@ export class BIP39Mnemonic extends Mnemonic {
         `Unsupported entropy length ${bitLen}`
       );
     }
-    const hash = crypto.createHash('sha256').update(entropyBytes).digest();
+    const hash = sha256(entropyBytes);
     const csLen = bitLen / 32;
     const entBits = bytesToBinaryString(entropyBytes, bitLen);
     const hashBits = bytesToBinaryString(hash, 256).slice(0, csLen);
@@ -194,7 +193,7 @@ export class BIP39Mnemonic extends Mnemonic {
     const givenChecksum = bits.slice(-checksumLen);
 
     const entropyBytes = binaryStringToBytes(entropyBits);
-    const hash = crypto.createHash('sha256').update(entropyBytes).digest();
+    const hash = sha256(entropyBytes);
     const hashBits = bytesToBinaryString(hash, 256).slice(0, checksumLen);
 
     if (givenChecksum !== hashBits) {
