@@ -2,7 +2,7 @@
 
 import { Bitcoin } from './cryptocurrencies';
 import { encode as base58Encode, decode as base58Decode } from './libs/base58';
-import { getBytes, integerToBytes, bytesToString } from './utils';
+import { getBytes, integerToBytes, bytesToString, concatBytes } from './utils';
 import { SLIP10_SECP256K1_CONST, WIF_TYPES } from './const';
 import { getChecksum } from './crypto';
 import { WIFError, ECCError } from './exceptions';
@@ -21,12 +21,12 @@ export function encodeWIF(
     SLIP10_SECP256K1_CONST.PRIVATE_KEY_COMPRESSED_PREFIX, 1
   );
 
-  const uncompressedPayload = Buffer.concat([prefix, keyBytes]);
-  const compressedPayload = Buffer.concat([prefix, keyBytes, compressedSuffix]);
+  const uncompressedPayload = concatBytes(prefix, keyBytes);
+  const compressedPayload = concatBytes(prefix, keyBytes, compressedSuffix);
 
   return [
-    base58Encode(Buffer.concat([uncompressedPayload, getChecksum(uncompressedPayload)])),
-    base58Encode(Buffer.concat([compressedPayload, getChecksum(compressedPayload)]))
+    base58Encode(concatBytes(uncompressedPayload, getChecksum(uncompressedPayload))),
+    base58Encode(concatBytes(compressedPayload, getChecksum(compressedPayload)))
   ];
 }
 

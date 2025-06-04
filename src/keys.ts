@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 
 import { checkEncode, checkDecode } from './libs/base58';
-import { getBytes, bytesToString, integerToBytes, toBuffer } from './utils';
+import { getBytes, bytesToString, integerToBytes, toBuffer, concatBytes } from './utils';
 import { ExtendedKeyError } from './exceptions';
 
 export function serialize(
@@ -17,14 +17,14 @@ export function serialize(
     const versionBytes =
       typeof version === 'number' ? integerToBytes(version, 4) : getBytes(version);
 
-    const raw = Buffer.concat([
+    const raw = concatBytes(
       versionBytes,
       Buffer.from([depth & 0xff]),
       getBytes(parentFingerprint),
       Buffer.from([(index >>> 24) & 0xff, (index >>> 16) & 0xff, (index >>> 8) & 0xff, index & 0xff]),
       getBytes(chainCode),
       getBytes(key)
-    ]);
+    );
 
     return encoded ? checkEncode(raw) : bytesToString(raw);
   } catch (err) {
