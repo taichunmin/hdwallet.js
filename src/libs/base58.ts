@@ -1,5 +1,7 @@
-import { createHash } from "crypto";
-import { keccak256 } from "js-sha3";
+// SPDX-License-Identifier: MIT
+
+import { sha256, keccak256 } from '../crypto';
+import { bytesToString } from '../utils';
 
 const DEFAULT_ALPHABET = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz";
 
@@ -12,7 +14,7 @@ export function checksumEncode(
 ): string {
   const prefix = crypto === "eth" ? "0x" : "xdc";
   let addr = address.toLowerCase().replace(/^0x|^xdc/, "");
-  const hash = keccak256(addr);
+  const hash = bytesToString(keccak256(addr));
   let out = "";
   for (let i = 0; i < addr.length; i++) {
     const c = addr[i];
@@ -95,8 +97,8 @@ export function checkEncode(
   const buf = typeof raw === "string"
     ? Buffer.from(raw, "utf8")
     : raw;
-  const hash1 = createHash("sha256").update(buf).digest();
-  const hash2 = createHash("sha256").update(hash1).digest();
+  const hash1 = sha256(buf);
+  const hash2 = sha256(hash1);
   const chk   = hash2.slice(0, 4);
   return encode(Buffer.concat([buf, chk]), alphabet);
 }
@@ -154,8 +156,8 @@ export function checkDecode(
   const raw = full.slice(0, -4);
   const chk = full.slice(-4);
 
-  const hash1 = createHash("sha256").update(raw).digest();
-  const hash2 = createHash("sha256").update(hash1).digest();
+  const hash1 = sha256(raw);
+  const hash2 = sha256(hash1);
 
   const expected = hash2.slice(0, 4);
   if (!chk.equals(expected)) {
