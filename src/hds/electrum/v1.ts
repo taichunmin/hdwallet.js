@@ -28,7 +28,6 @@ export class ElectrumV1HD extends HD {
   protected publicKeyType: string;
   protected wifType: string;
   protected wifPrefix?: number;
-  protected derivation: ElectrumDerivation;
 
   constructor(options: HDOptionsInterface = {
     publicKeyType: PUBLIC_KEY_TYPES.UNCOMPRESSED

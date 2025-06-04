@@ -12,7 +12,6 @@ import { DerivationError } from '../exceptions';
 export class BIP44HD extends BIP32HD {
 
   protected coinType: number;
-  protected derivation: BIP44Derivation;
 
   constructor(options: HDOptionsInterface = {
     publicKeyType: PUBLIC_KEY_TYPES.COMPRESSED

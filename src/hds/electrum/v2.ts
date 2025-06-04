@@ -18,7 +18,6 @@ export class ElectrumV2HD extends HD {
   protected wifType: string;
   protected publicKeyType: string;
   protected wifPrefix?: number;
-  protected derivation: ElectrumDerivation;
   protected bip32HD: BIP32HD;
 
   constructor(options: HDOptionsInterface = {

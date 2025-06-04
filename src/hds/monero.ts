@@ -12,7 +12,7 @@ import {
   PrivateKey,
   PublicKey
 } from '../ecc';
-import { getBytes, bytesToString, integerToBytes, bytesToInteger, ensureTypeMatch } from '../utils';
+import { getBytes, bytesToString, integerToBytes, bytesToInteger, ensureTypeMatch, concatBytes } from '../utils';
 import { MoneroDerivation } from '../derivations';
 import { DerivationError, AddressError, NetworkError, PrivateKeyError, PublicKeyError, SeedError } from '../exceptions';
 import { HDAddressOptionsInterface, HDOptionsInterface } from '../interfaces';
@@ -31,8 +31,6 @@ export class MoneroHD extends HD {
   protected viewPrivateKey!: PrivateKey;
   protected spendPublicKey!: PublicKey;
   protected viewPublicKey!: PublicKey;
-
-  protected derivation: MoneroDerivation;
 
   constructor(options: HDOptionsInterface = {
     minor: 1, major: 0
@@ -156,12 +154,12 @@ export class MoneroHD extends HD {
       return [this.spendPublicKey, this.viewPublicKey];
     }
 
-    const m = intDecode(scalarReduce(keccak256(Buffer.concat([
+    const m = intDecode(scalarReduce(keccak256(concatBytes(
       Buffer.from('SubAddr\x00', 'utf-8'),
       this.viewPrivateKey.getRaw(),
       integerToBytes(majorIndex, 4, 'little'),
       integerToBytes(minorIndex, 4, 'little')
-    ]))));
+    ))));
 
     const subAddressSpendPoint = this.spendPublicKey.getPoint().add(
       SLIP10Ed25519MoneroECC.GENERATOR.multiply(m)
