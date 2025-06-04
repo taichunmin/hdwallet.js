@@ -1,7 +1,5 @@
 // SPDX-License-Identifier: MIT
 
-import { Buffer } from 'buffer';
-
 import { ensureString } from '../libs/base58';
 import { segwitEncode } from '../libs/segwit-bech32';
 import { PUBLIC_KEY_TYPES } from '../const';

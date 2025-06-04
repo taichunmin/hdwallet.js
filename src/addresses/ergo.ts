@@ -1,11 +1,10 @@
 // SPDX-License-Identifier: MIT
 
-import { Buffer } from 'buffer';
 import { ensureString, encode, decode } from '../libs/base58';
 import { PublicKey, SLIP10Secp256k1PublicKey, validateAndGetPublicKey } from '../ecc';
 import { Ergo } from '../cryptocurrencies';
 import { blake2b256 } from '../crypto';
-import { bytesToString, ensureTypeMatch, integerToBytes, toBuffer } from '../utils';
+import { bytesToString, ensureTypeMatch, integerToBytes, toBuffer, concatBytes } from '../utils';
 import { Address } from './address';
 import { AddressOptionsInterface } from '../interfaces';
 import { AddressError, NetworkError } from '../exceptions';
@@ -58,9 +57,9 @@ export class ErgoAddress extends Address {
 
     const pk = validateAndGetPublicKey(publicKey, SLIP10Secp256k1PublicKey);
     const prefix = integerToBytes(addressType + networkType);
-    const addressPayload = Buffer.concat([prefix, pk.getRawCompressed()]);
+    const addressPayload = concatBytes(prefix, pk.getRawCompressed());
     const checksum = this.computeChecksum(addressPayload);
-    return ensureString(encode(Buffer.concat([addressPayload, checksum])));
+    return ensureString(encode(concatBytes(addressPayload, checksum)));
   }
 
   static decode(

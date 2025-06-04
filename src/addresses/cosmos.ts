@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: MIT
 
-import { Buffer } from 'buffer';
 import { bech32Encode, bech32Decode } from '../libs/bech32';
 import { PublicKey, SLIP10Secp256k1PublicKey, validateAndGetPublicKey } from '../ecc';
 import { Cosmos } from '../cryptocurrencies';

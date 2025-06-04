@@ -1,11 +1,10 @@
 // SPDX-License-Identifier: MIT
 
-import { Buffer } from 'buffer';
 import { ensureString, encode, decode } from '../libs/base58';
 import { PublicKey, SLIP10Secp256k1PublicKey, validateAndGetPublicKey } from '../ecc';
 import { EOS } from '../cryptocurrencies';
 import { ripemd160 } from '../crypto';
-import { bytesToString, toBuffer } from '../utils';
+import { bytesToString, toBuffer, concatBytes } from '../utils';
 import { AddressOptionsInterface } from '../interfaces';
 import { Address } from './address';
 import { AddressError } from '../exceptions';
@@ -32,7 +31,7 @@ export class EOSAddress extends Address {
     const raw = toBuffer(pk.getRawCompressed());
     const checksum = this.computeChecksum(raw);
     const prefix = options.addressPrefix ?? this.addressPrefix;
-    return prefix + ensureString(encode(Buffer.concat([raw, checksum])));
+    return prefix + ensureString(encode(concatBytes(raw, checksum)));
   }
 
   static decode(

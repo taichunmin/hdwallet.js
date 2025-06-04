@@ -1,12 +1,10 @@
 // SPDX-License-Identifier: MIT
 
-import { Buffer } from 'buffer';
-
 import { ensureString, checkEncode } from '../libs/base58';
 import { PUBLIC_KEY_TYPES } from '../const';
 import { PublicKey, SLIP10Secp256k1PublicKey, validateAndGetPublicKey } from '../ecc';
 import { hash160 } from '../crypto';
-import { getBytes, integerToBytes, bytesToString } from '../utils';
+import { getBytes, integerToBytes, bytesToString, concatBytes } from '../utils';
 import { AddressOptionsInterface } from '../interfaces';
 import { Address } from './address';
 import { P2SHAddress } from './p2sh';
@@ -42,7 +40,7 @@ export class P2WPKHInP2SHAddress extends P2SHAddress implements Address {
 
     const alphabet = options.alphabet ?? this.alphabet;
     return ensureString(checkEncode(
-      Buffer.concat([prefixBytes, scriptHash]), alphabet
+      concatBytes(prefixBytes, scriptHash), alphabet
     ));
   }
 }

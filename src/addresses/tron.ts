@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: MIT
 
-import { Buffer } from 'buffer';
 import { ensureString, checkEncode, checkDecode } from '../libs/base58';
 import {
   PublicKey,
@@ -9,7 +8,7 @@ import {
 } from '../ecc';
 import { Tron } from '../cryptocurrencies';
 import { keccak256 } from '../crypto';
-import { integerToBytes, bytesToString, toBuffer } from '../utils';
+import { integerToBytes, bytesToString, toBuffer, concatBytes } from '../utils';
 import { Address } from './address';
 import { AddressError } from '../exceptions';
 import { AddressOptionsInterface } from '../interfaces';
@@ -36,7 +35,7 @@ export class TronAddress extends Address {
         options.publicKeyAddressPrefix ?? this.publicKeyAddressPrefix
     );
     const alphabet = options.alphabet ?? this.alphabet;
-    const payload = Buffer.concat([prefixBytes, Buffer.from(addressHash, 'hex')]);
+    const payload = concatBytes(prefixBytes, Buffer.from(addressHash, 'hex'));
     return ensureString(checkEncode(
       payload, alphabet
     ));

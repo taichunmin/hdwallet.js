@@ -1,11 +1,10 @@
 // SPDX-License-Identifier: MIT
 
-import { Buffer } from 'buffer';
 import { encodeNoPadding, decode } from '../libs/base32';
 import { PublicKey, SLIP10Secp256k1PublicKey, validateAndGetPublicKey } from '../ecc';
 import { Filecoin } from '../cryptocurrencies';
 import { blake2b160, blake2b32 } from '../crypto';
-import { integerToBytes, bytesToString, toBuffer } from '../utils';
+import { integerToBytes, bytesToString, toBuffer, concatBytes } from '../utils';
 import { AddressOptionsInterface } from '../interfaces';
 import { Address } from './address';
 import { AddressError } from '../exceptions';
@@ -25,7 +24,7 @@ export class FilecoinAddress extends Address {
   }
 
   static computeChecksum(pubKeyHash: Buffer, addressType: number): Buffer {
-    return blake2b32(Buffer.concat([integerToBytes(addressType), pubKeyHash]));
+    return blake2b32(concatBytes(integerToBytes(addressType), pubKeyHash));
   }
 
   static encode(
@@ -48,7 +47,7 @@ export class FilecoinAddress extends Address {
 
     const checksum = FilecoinAddress.computeChecksum(pubKeyHash, addressType);
     const base32Encoded = encodeNoPadding(
-      Buffer.concat([pubKeyHash, checksum]).toString('hex'),
+      bytesToString(concatBytes(pubKeyHash, checksum)),
       FilecoinAddress.alphabet
     );
     return FilecoinAddress.addressPrefix + String.fromCharCode(addressType + '0'.charCodeAt(0)) + base32Encoded;
@@ -91,8 +90,7 @@ export class FilecoinAddress extends Address {
     ));
     if (payloadBytes.length !== 24) {
       throw new AddressError('Invalid length', {
-        expected: 24,
-        got: payloadBytes.length
+        expected: 24, got: payloadBytes.length
       });
     }
 

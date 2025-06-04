@@ -1,14 +1,12 @@
 // SPDX-License-Identifier: MIT
 
-import { Buffer } from 'buffer';
-
 import { checkDecode, checkEncode, ensureString } from '../libs/base58';
 import { PUBLIC_KEY_TYPES } from '../const';
 import { PublicKey, SLIP10Secp256k1PublicKey, validateAndGetPublicKey } from '../ecc';
 import { Bitcoin } from '../cryptocurrencies';
 import { hash160 } from '../crypto';
 import { AddressError } from '../exceptions';
-import { bytesToString, integerToBytes, toBuffer } from '../utils';
+import { bytesToString, concatBytes, integerToBytes, toBuffer } from '../utils';
 import { AddressOptionsInterface } from '../interfaces';
 import { Address } from './address';
 
@@ -39,7 +37,7 @@ export class P2PKHAddress extends Address {
         ? pk.getRawUncompressed() : pk.getRawCompressed();
 
     const pubKeyHash = hash160(toBuffer(rawPubBytes));
-    const payload = Buffer.concat([prefixBytes, pubKeyHash]);
+    const payload = concatBytes(prefixBytes, pubKeyHash);
     const alphabet = options.alphabet ?? this.alphabet;
     return ensureString(checkEncode(payload, alphabet));
   }
