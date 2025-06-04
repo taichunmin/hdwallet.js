@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: MIT
 
 import { Seed } from '../seed';
-import { Mnemonic, ElectrumV1Mnemonic } from '../../mnemonics';
 import { sha256 } from '../../crypto';
-import { bytesToString } from '../../utils';
+import { Mnemonic, ElectrumV1Mnemonic } from '../../mnemonics';
+import { bytesToString, concatBytes } from '../../utils';
 import { MnemonicError } from '../../exceptions';
 
 export class ElectrumV1Seed extends Seed {
@@ -26,7 +26,7 @@ export class ElectrumV1Seed extends Seed {
     let entropyHash = entropyBuffer;
 
     for (let i = 0; i < this.hashIterationNumber; i++) {
-      entropyHash = sha256(Buffer.concat([entropyHash, entropyBuffer]));
+      entropyHash = sha256(concatBytes(entropyHash, entropyBuffer));
     }
     return bytesToString(entropyHash);
   }

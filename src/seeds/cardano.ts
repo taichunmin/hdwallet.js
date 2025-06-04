@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-import { encode as cborEncode } from 'cbor'
+import cbor from 'cbor';
 
 import { Seed } from './seed';
 import { BIP39Seed } from './bip39';
@@ -84,7 +84,7 @@ export class CardanoSeed extends Seed {
     }
     const decoded = BIP39Mnemonic.decode(phrase);
     const rawBytes = Buffer.from(decoded, 'hex');
-    const cborBytes = cborEncode(rawBytes);
+    const cborBytes = cbor.encode(rawBytes);
     const hash = blake2b256(cborBytes);
     return bytesToString(hash);
   }
