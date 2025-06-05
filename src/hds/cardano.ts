@@ -204,6 +204,7 @@ export class CardanoHD extends BIP32HD {
 
       const newPrivateKey = (this.ecc as typeof EllipticCurveCryptography).PRIVATE_KEY.fromBytes(concatBytes(left, right));
       this.privateKey = newPrivateKey;
+      this.parentFingerprint = getBytes(this.getFingerprint());
       this.chainCode = _hmacr;
       this.publicKey = newPrivateKey.getPublicKey();
     } else {
@@ -225,11 +226,11 @@ export class CardanoHD extends BIP32HD {
         throw new BaseError('Computed public child key is not valid, very unlucky index');
       }
 
+      this.parentFingerprint = getBytes(this.getFingerprint());
       this.publicKey = (this.ecc as typeof EllipticCurveCryptography).PUBLIC_KEY.fromPoint(newPoint);
       this.chainCode = hmac.slice(digestHalf);
     }
 
-    this.parentFingerprint = getBytes(this.getFingerprint());
     this.depth += 1;
     this.index = index;
     this.fingerprint = getBytes(this.getFingerprint());
