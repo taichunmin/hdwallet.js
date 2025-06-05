@@ -114,9 +114,9 @@ export class CardanoHD extends BIP32HD {
       let kl = tweakMasterKeyBits(hmac.slice(0, hmacHalfLength));
       const kr = hmac.slice(hmacHalfLength);
 
-      const chainCode = hmacSha256(getHmac((this.ecc as typeof EllipticCurveCryptography).NAME), Buffer.concat([Buffer.from([0x01]), this.seed]));
+      const chainCode = hmacSha256(getHmac((this.ecc as typeof EllipticCurveCryptography).NAME), concatBytes(Buffer.from([0x01]), this.seed));
 
-      this.rootPrivateKey = (this.ecc as typeof EllipticCurveCryptography).PRIVATE_KEY.fromBytes(Buffer.concat([kl, kr]));
+      this.rootPrivateKey = (this.ecc as typeof EllipticCurveCryptography).PRIVATE_KEY.fromBytes(concatBytes(kl, kr));
       this.rootChainCode = chainCode;
     }
 
@@ -165,12 +165,12 @@ export class CardanoHD extends BIP32HD {
     if (this.privateKey) {
       let zHmac: Uint8Array, hmac: Uint8Array;
       if (index & 0x80000000) {
-        zHmac = hmacSha512(this.chainCode!, Buffer.concat([Buffer.from([0x00]), this.privateKey.getRaw(), indexBytes]));
-        hmac = hmacSha512(this.chainCode!, Buffer.concat([Buffer.from([0x01]), this.privateKey.getRaw(), indexBytes]));
+        zHmac = hmacSha512(this.chainCode!, concatBytes(Buffer.from([0x00]), this.privateKey.getRaw(), indexBytes));
+        hmac = hmacSha512(this.chainCode!, concatBytes(Buffer.from([0x01]), this.privateKey.getRaw(), indexBytes));
       } else {
         const pubRaw = this.publicKey!.getRawCompressed().slice(1);
-        zHmac = hmacSha512(this.chainCode!, Buffer.concat([Buffer.from([0x02]), pubRaw, indexBytes]));
-        hmac = hmacSha512(this.chainCode!, Buffer.concat([Buffer.from([0x03]), pubRaw, indexBytes]));
+        zHmac = hmacSha512(this.chainCode!, concatBytes(Buffer.from([0x02]), pubRaw, indexBytes));
+        hmac = hmacSha512(this.chainCode!, concatBytes(Buffer.from([0x03]), pubRaw, indexBytes));
       }
 
       const zl = zHmac.slice(0, digestHalf);
@@ -202,7 +202,7 @@ export class CardanoHD extends BIP32HD {
             return integerToBytes(sum, KholawEd25519PrivateKey.getLength() / 2, 'little');
           })();
 
-      const newPrivateKey = (this.ecc as typeof EllipticCurveCryptography).PRIVATE_KEY.fromBytes(Buffer.concat([left, right]));
+      const newPrivateKey = (this.ecc as typeof EllipticCurveCryptography).PRIVATE_KEY.fromBytes(concatBytes(left, right));
       this.privateKey = newPrivateKey;
       this.chainCode = _hmacr;
       this.publicKey = newPrivateKey.getPublicKey();
@@ -212,8 +212,8 @@ export class CardanoHD extends BIP32HD {
       }
 
       const pubRaw = this.publicKey!.getRawCompressed().slice(1);
-      const zHmac = hmacSha512(this.chainCode!, Buffer.concat([Buffer.from([0x02]), pubRaw, indexBytes]));
-      const hmac = hmacSha512(this.chainCode!, Buffer.concat([Buffer.from([0x03]), pubRaw, indexBytes]));
+      const zHmac = hmacSha512(this.chainCode!, concatBytes(Buffer.from([0x02]), pubRaw, indexBytes));
+      const hmac = hmacSha512(this.chainCode!, concatBytes(Buffer.from([0x03]), pubRaw, indexBytes));
 
       const zl = zHmac.slice(0, digestHalf);
       const tweak = isLegacy
