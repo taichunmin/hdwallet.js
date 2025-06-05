@@ -1,11 +1,23 @@
 // SPDX-License-Identifier: MIT
 
-import crypto from 'crypto';
 import { Buffer } from 'buffer';
 
 import { TypeError, DerivationError } from './exceptions';
 import { DerivationsType, IndexType } from './types';
 import { EnsureTypeMatchOptionsInterface } from './interfaces';
+
+import { randomBytes as nobleRandomBytes } from '@noble/hashes/utils';
+
+/**
+ * Return a Uint8Array of cryptographically secure random bytes,
+ * using @noble/hashes/utils under the hood. No built-in `crypto` calls.
+ */
+export function randomBytes(len: number): Uint8Array {
+  if (!Number.isInteger(len) || len <= 0) {
+    throw new Error('randomBytes: length must be a positive integer');
+  }
+  return nobleRandomBytes(len);
+}
 
 /**
  * Normalize any Buffer / Uint8Array / string into a Node.js Buffer.
@@ -198,7 +210,7 @@ export function integerToBytes(
   return endianness === 'little' ? result.reverse() : result;
 }
 
-export function concatBytes(...chunks: Uint8Array[]): Uint8Array {
+export function concatBytes(...chunks: Uint8Array[]): Buffer {
   const totalLength = chunks.reduce((sum, arr) => sum + arr.length, 0);
   const result = new Uint8Array(totalLength);
   let offset = 0;
@@ -206,7 +218,7 @@ export function concatBytes(...chunks: Uint8Array[]): Uint8Array {
     result.set(chunk, offset);
     offset += chunk.length;
   }
-  return result;
+  return toBuffer(result);
 }
 
 /**
@@ -359,7 +371,7 @@ export function isAllEqual(
  */
 export function generatePassphrase(length = 32): string {
   const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-  const bytes = crypto.randomBytes(length);
+  const bytes = randomBytes(length);
   let result = '';
   for (let i = 0; i < length; i++) {
     result += chars[bytes[i] % chars.length];
