@@ -1,19 +1,23 @@
 // SPDX-License-Identifier: MIT
 
-import { DERIVATIONS, HDWDerivation, ECCS } from '../../src/derivations';
+import { DERIVATIONS, HDWDerivation } from '../../src/derivations';
 import { isAllEqual } from '../../src/utils';
+import { KholawEd25519ECC, SLIP10Secp256k1ECC } from '../../src';
 
 const data = {
   name: 'HDW',
   account: 0,
-  ecc: ECCS.KHOLAW_ED25519,
+  ecc: KholawEd25519ECC.NAME,
   address: 123,
   path: "m/0'/3/123",
   indexes: [ 2147483648, 3, 123 ],
   depth: 3,
   derivations: [
     {
-      account: 0, ecc: ECCS.KHOLAW_ED25519, address: 123
+      account: 0, ecc: 'Kholaw-Ed25519', address: [2, 123]
+    },
+    {
+      account: 0, ecc: KholawEd25519ECC, address: 123
     },
     {
       account: '0', ecc: '3', address: '123'
@@ -24,7 +28,7 @@ const data = {
   ],
   default: {
     account: 0,
-    ecc: ECCS.SLIP10_SECP256K1,
+    ecc: SLIP10Secp256k1ECC.NAME,
     address: 0,
     path: "m/0'/0/0",
     indexes: [ 2147483648, 0, 0 ],

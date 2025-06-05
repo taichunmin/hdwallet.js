@@ -9,7 +9,7 @@ import { BIP86Derivation } from './bip86';
 import { CIP1852Derivation, ROLES } from './cip1852';
 import { ElectrumDerivation } from './electrum';
 import { MoneroDerivation } from './monero';
-import { HDWDerivation, ECCS } from './hdw';
+import { HDWDerivation } from './hdw';
 import { DerivationError } from '../exceptions';
 
 export class DERIVATIONS {
@@ -58,5 +58,5 @@ export {
   CIP1852Derivation, ROLES,
   ElectrumDerivation,
   MoneroDerivation,
-  HDWDerivation, ECCS
+  HDWDerivation
 };

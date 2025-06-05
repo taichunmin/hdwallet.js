@@ -117,7 +117,7 @@ export interface DerivationOptionsInterface {
   role?: IndexType;
   minor?: IndexType;
   major?: IndexType;
-  ecc?: string | number;
+  ecc?: any;
 }
 
 export interface HDOptionsInterface {
