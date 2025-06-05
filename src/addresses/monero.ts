@@ -4,7 +4,10 @@ import { Monero } from '../cryptocurrencies';
 import { decodeMonero, encodeMonero } from '../libs/base58';
 import { keccak256 } from '../crypto';
 import { SLIP10Ed25519MoneroPublicKey, PublicKey, validateAndGetPublicKey } from '../ecc';
-import { bytesToString, concatBytes, getBytes, integerToBytes, toBuffer } from '../utils';
+import {
+  bytesToString, concatBytes, ensureTypeMatch, getBytes, integerToBytes, toBuffer
+} from '../utils';
+import { Network } from '../cryptocurrencies/cryptocurrency';
 import { AddressOptionsInterface } from '../interfaces';
 import { AddressError, BaseError } from '../exceptions';
 import { Address } from './address';
@@ -14,7 +17,7 @@ export class MoneroAddress extends Address {
   static checksumLength: number = Monero.PARAMS.CHECKSUM_LENGTH;
   static paymentIDLength: number = Monero.PARAMS.PAYMENT_ID_LENGTH;
 
-  static network: string = Monero.DEFAULT_NETWORK.getName();
+  static network: string = Monero.DEFAULT_NETWORK;
   static addressType: string = Monero.DEFAULT_ADDRESS_TYPE;
   static networks: Record<string, { addressTypes: Record<string, number> }> = {
     mainnet: {
@@ -68,9 +71,11 @@ export class MoneroAddress extends Address {
         expected: this.paymentIDLength, got: paymentID.length
       });
     }
-
+    const network = options.network ?? this.network;
+    const resolvedNetwork = ensureTypeMatch(network, Network, { otherTypes: ['string'] });
+    const networkName = resolvedNetwork.isValid ? resolvedNetwork.value.getName() : network;
     const version = integerToBytes(
-      this.networks[options.network ?? this.network].addressTypes[addressType]
+      this.networks[networkName].addressTypes[addressType]
     );
     const payload = concatBytes(
       version, spend.getRawCompressed(), view.getRawCompressed(), toBuffer(paymentID ?? Buffer.alloc(0))
@@ -98,8 +103,11 @@ export class MoneroAddress extends Address {
       });
     }
 
+    const network = options.network ?? this.network;
+    const resolvedNetwork = ensureTypeMatch(network, Network, { otherTypes: ['string'] });
+    const networkName = resolvedNetwork.isValid ? resolvedNetwork.value.getName() : network;
     const version = integerToBytes(
-      this.networks[options.network ?? this.network].addressTypes[addressType]
+      this.networks[networkName].addressTypes[addressType]
     );
     const versionGot = payloadWithPrefix.subarray(0, version.length);
     if (!versionGot.equals(version)) {
