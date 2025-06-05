@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 
 import {
-  randomBytes, integerToBytes, bytesToHex, hexToBytes, bytesToInteger
+  randomBytes, integerToBytes, bytesToHex, hexToBytes, bytesToInteger, bytesToString
 } from '../../utils';
 import { Entropy } from '../entropy';
 
@@ -30,7 +30,7 @@ export class ElectrumV2Entropy extends Entropy {
     const byteLen = Math.ceil(strength / 8);
     const mask = (BigInt(1) << BigInt(strength)) - BigInt(1);
     const rndBuf = randomBytes(byteLen);
-    let rnd = BigInt('0x' + rndBuf.toString()) & mask;
+    let rnd = BigInt('0x' + bytesToString(rndBuf)) & mask;
     const msbMask = BigInt(1) << BigInt(strength - 1);
     const combined = msbMask | rnd;
     const outBytes = integerToBytes(combined, byteLen);
