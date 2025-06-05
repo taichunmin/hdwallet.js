@@ -1,7 +1,5 @@
 // SPDX-License-Identifier: MIT
 
-import { Buffer } from 'buffer';
-
 import { Mnemonic } from '../../mnemonic';
 import { BIP39Mnemonic } from '../../bip39/mnemonic';
 import { ElectrumV1Mnemonic } from '../v1/mnemonic';
@@ -273,15 +271,12 @@ export class ElectrumV2Mnemonic extends Mnemonic {
   }
 
   static isType(
-    input: string | string[], mnemonicType: string | undefined
+    input: string | string[], mnemonicType: string
   ): boolean {
 
-    const phrase = (Array.isArray(input) ? input : input.split(/\s+/))
-      .map((w) => w.normalize('NFKD').toLowerCase()).join(' ');
     const tag = bytesToString(
-      hmacSha512(Buffer.from('Seed version'), phrase)
+      hmacSha512(Buffer.from('Seed version'), this.normalize(input).join(' '))
     );
-    if (!mnemonicType) return false;
     return tag.startsWith(this.mnemonicTypes[mnemonicType]);
   }
 
@@ -294,6 +289,6 @@ export class ElectrumV2Mnemonic extends Mnemonic {
 
   static normalize(input: string | string[]): string[] {
     const arr = typeof input === 'string' ? input.trim().split(/\s+/) : input;
-    return arr.map((w) => w.normalize('NFKD').toLowerCase());
+    return arr.map(w => w.normalize('NFKD').toLowerCase());
   }
 }

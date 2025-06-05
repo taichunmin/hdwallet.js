@@ -14,13 +14,13 @@ export class Mnemonic {
   static wordsList: number[] = [];
   static languages: string[] = [];
 
-  static wordLists: Record<string, string[]> = { };
+  static wordLists?: Record<string, string[]>;
 
   constructor(
     mnemonic: string | string[], options: MnemonicOptionsInterface = { }
   ) {
-    const words = Mnemonic.normalize(mnemonic);
     const constructor = this.constructor as typeof Mnemonic;
+    const words = constructor.normalize(mnemonic);
 
     if (!constructor.isValid(words, options)) {
       throw new MnemonicError('Invalid mnemonic words');

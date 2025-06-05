@@ -211,4 +211,9 @@ export class BIP39Mnemonic extends Mnemonic {
     }
     return bytesToHex(entropyBytes);
   }
+
+  static normalize(input: string | string[]): string[] {
+    const arr = typeof input === 'string' ? input.trim().split(/\s+/) : input;
+    return arr.map(w => w.normalize('NFKD').toLowerCase());
+  }
 }

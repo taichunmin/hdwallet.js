@@ -35,7 +35,7 @@ export class AlgorandMnemonic extends Mnemonic {
     ALGORAND_MNEMONIC_LANGUAGES
   );
 
-  static wordlists: Record<string,string[]> = {
+  static wordLists: Record<string,string[]> = {
     [ALGORAND_MNEMONIC_LANGUAGES.ENGLISH]: ALGORAND_ENGLISH_WORDLIST
   };
 
@@ -86,7 +86,7 @@ export class AlgorandMnemonic extends Mnemonic {
     const dataWords = convertBits(entropyBytes, 8, this.wordBitLength);
     if (!dataWords) throw new Error('Entropy conversion failed');
 
-    const wordList = this.getWordsListByLanguage(language, this.wordlists);
+    const wordList = this.getWordsListByLanguage(language, this.wordLists);
     const indexes = [...dataWords, checksumWords[0]];
     return indexes.map(i => wordList[i]).join(' ');
   }
@@ -103,7 +103,7 @@ export class AlgorandMnemonic extends Mnemonic {
       );
     }
 
-    const [wordList] = this.findLanguage(words, this.wordlists);
+    const [wordList] = this.findLanguage(words, this.wordLists);
     const idxMap = Object.fromEntries(wordList.map((w, i) => [w, i]));
 
     const indexes = words.map(w => {
@@ -134,5 +134,10 @@ export class AlgorandMnemonic extends Mnemonic {
       );
     }
     return bytesToString(entropyBytes);
+  }
+
+  static normalize(input: string | string[]): string[] {
+    const arr = typeof input === 'string' ? input.trim().split(/\s+/) : input;
+    return arr.map(w => w.normalize('NFKD').toLowerCase());
   }
 }
