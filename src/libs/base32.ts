@@ -1,57 +1,47 @@
 // SPDX-License-Identifier: MIT
 
-import * as base32 from "hi-base32";
+import { Encoder, Decoder } from 'base32.js';
 
-const DEFAULT_ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";
+const DEFAULT_ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567';
 
-/**
- * Translate characters between custom and default alphabets.
- */
-function translateAlphabet(data: string, fromAlphabet: string, toAlphabet: string): string {
-  return data
-    .split("")
-    .map(char => {
-      const idx = fromAlphabet.indexOf(char);
-      return idx !== -1 ? toAlphabet[idx] : char;
+/*───────────────────────── helpers ─────────────────────────*/
+
+/** translate characters between two alphabets (used for custom alphabets) */
+const translate = (s: string, from: string, to: string) =>
+  s.split('')
+    .map(c => {
+      const i = from.indexOf(c);
+      return i === -1 ? c : to[i];
     })
-    .join("");
-}
+    .join('');
 
-/**
- * Add padding to make Base32 string length a multiple of 8.
- */
-function addPadding(data: string): string {
-  const rem = data.length % 8;
-  return rem === 0 ? data : data + "=".repeat(8 - rem);
-}
+/** add “=” padding so the Base-32 length is a multiple of 8 */
+const pad = (s: string) => (s.length % 8 ? s + '='.repeat(8 - (s.length % 8)) : s);
 
-/**
- * Encode hex string to Base32 (with optional custom alphabet).
- */
+/*───────────────────────── encode ─────────────────────────*/
+
 export function encode(hex: string, customAlphabet?: string): string {
-  const b32 = base32.encode(Buffer.from(hex, "hex")).toUpperCase();
-  return customAlphabet ? translateAlphabet(b32, DEFAULT_ALPHABET, customAlphabet) : b32;
+  const bytes   = Buffer.from(hex, 'hex');
+  const encoder = new Encoder({ type: 'rfc4648', alphabet: DEFAULT_ALPHABET });
+  const b32     = encoder.write(bytes).finalize().toUpperCase(); // base32.js returns lower
+  return customAlphabet ? translate(b32, DEFAULT_ALPHABET, customAlphabet) : b32;
 }
 
-/**
- * Encode hex string to Base32 without padding.
- */
-export function encodeNoPadding(hex: string, customAlphabet?: string): string {
-  return encode(hex, customAlphabet).replace(/=+$/, "");
-}
+export const encodeNoPadding = (hex: string, alpha?: string) =>
+  encode(hex, alpha).replace(/=+$/, '');
 
-/**
- * Decode Base32 string to hex (with optional custom alphabet).
- */
+/*───────────────────────── decode ─────────────────────────*/
+
 export function decode(data: string, customAlphabet?: string): string {
   try {
-    let input = addPadding(data);
+    let inp = pad(data);
     if (customAlphabet) {
-      input = translateAlphabet(input, customAlphabet, DEFAULT_ALPHABET);
+      inp = translate(inp, customAlphabet, DEFAULT_ALPHABET);
     }
-    const buffer = base32.decode.asBytes(input);
-    return Buffer.from(buffer).toString("hex");
+    const dec   = new Decoder({ type: 'rfc4648', alphabet: DEFAULT_ALPHABET });
+    const bytes = dec.write(inp).finalize();        // Uint8Array
+    return Buffer.from(bytes).toString('hex');
   } catch {
-    throw new Error("Invalid Base32 string");
+    throw new Error('Invalid Base32 string');
   }
 }

@@ -1,133 +1,90 @@
+// lib.esm/libs/ed25519-utils.ts
 // SPDX-License-Identifier: MIT
+// Ed25519 helpers implemented with the pure-JS “elliptic” package
+// (no native sodium bindings).
 
-import * as sodium from 'sodium-native';
+import { eddsa as EDDSA } from 'elliptic';
+import BN from 'bn.js';
 import { bytesToInteger, integerToBytes } from '../utils';
 
-// constants replaced with BigInt(...) calls
-const ZERO = BigInt(0);
-const MASK8 = BigInt(0xff);   // 255
-const SHIFT8 = BigInt(8);     // 8 bits
-const COORD_BYTE_LEN = 32;
+const ed: any = new EDDSA('ed25519');        // Twisted-Edwards Ed25519 curve
+const L  = new BN(ed.curve.n);          // group order (≈ 2^252 + …)
 
-/**
- * Decodes a little-endian Uint8Array into a bigint.
- * @param input Uint8Array representing the integer in little-endian format.
- * @returns bigint
- */
-export function intDecode(input: Uint8Array): bigint {
-  return bytesToInteger(input, true); // true = little-endian
+const COORD_LEN = 32;                   // 32-byte compressed keys
+
+/* ------------------------------------------------------------------ */
+/*  basic bigint / Uint8 helpers (little-endian)                      */
+/* ------------------------------------------------------------------ */
+
+export function intDecode(le: Uint8Array): bigint {
+  return bytesToInteger(le, true); // little-endian
 }
 
-/**
- * Encodes a bigint into a little-endian Uint8Array of length 32.
- * @param value bigint to encode.
- * @returns Uint8Array
- */
-export function intEncode(value: bigint): Uint8Array {
-  return integerToBytes(value, COORD_BYTE_LEN, 'little');
+export function intEncode(x: bigint): Uint8Array {
+  return integerToBytes(x, COORD_LEN, 'little');
 }
 
-/** normalize a number|bigint|Uint8Array into a 32-byte LE Uint8Array */
-function normalizeScalar32(input: Uint8Array | number | bigint): Uint8Array {
+function toBN(input: Uint8Array | number | bigint): BN {
+  if (typeof input === 'number')  input = BigInt(input);
+  if (typeof input === 'bigint')  return new BN(input.toString());
+  // Uint8Array → BN (little-endian)
+  return new BN([...input].reverse());  // BN ctor assumes big-endian
+}
+
+function scalar32(input: Uint8Array | number | bigint): Uint8Array {
   if (input instanceof Uint8Array) {
-    if (input.length !== 32) {
-      throw new Error(`Invalid scalar length: expected 32 bytes, got ${input.length}`);
-    }
+    if (input.length !== COORD_LEN) throw new Error('scalar must be 32 bytes');
     return input;
   }
-
-  // number → bigint
-  const big: bigint = typeof input === 'number'
-    ? BigInt(input)
-    : input;
-
-  if (big < ZERO) {
-    throw new Error('Scalar must be non-negative');
-  }
-
-  const buf = new Uint8Array(32);
-  let tmp = big;
-  for (let i = 0; i < 32; i++) {
-    buf[i] = Number(tmp & MASK8);
-    tmp = tmp >> SHIFT8;
-    if (tmp === ZERO) break;
-  }
-  return buf;
+  return intEncode(BigInt(input));
 }
 
-/** normalize a number|bigint|Uint8Array into a 64-byte LE Buffer */
-function normalizeScalar64(input: Uint8Array | number | bigint): Buffer {
-  if (input instanceof Uint8Array) {
-    if (input.length > 64) {
-      throw new Error(`Invalid scalar length: expected ≤64 bytes, got ${input.length}`);
-    }
-    const b = Buffer.alloc(64, 0);
-    b.set(input);
-    return b;
-  }
+/* ------------------------------------------------------------------ */
+/*  Point helpers                                                     */
+/* ------------------------------------------------------------------ */
 
-  const big: bigint = typeof input === 'number'
-    ? BigInt(input)
-    : input;
-
-  if (big < ZERO) {
-    throw new Error('Scalar must be non-negative');
-  }
-
-  const buf = Buffer.alloc(64, 0);
-  let tmp = big;
-  for (let i = 0; i < 64; i++) {
-    buf[i] = Number(tmp & MASK8);
-    tmp = tmp >> SHIFT8;
-    if (tmp === ZERO) break;
-  }
-  return buf;
+function decodePoint(p: Uint8Array) {
+  if (p.length !== COORD_LEN) throw new Error('point must be 32 bytes');
+  return ed.decodePoint(p);
+}
+function encodePoint(P: any): Uint8Array {
+  return Uint8Array.from(ed.encodePoint(P));
 }
 
 /**
- * Add two Ed25519 points.
+ * Add two Ed25519 public keys (compressed 32-byte form).
  */
 export function pointAdd(p1: Uint8Array, p2: Uint8Array): Uint8Array {
-  if (p1.length !== 32 || p2.length !== 32) {
-    throw new Error(`Invalid point length: expected 32 bytes each, got ${p1.length} and ${p2.length}`);
-  }
-  const out = Buffer.alloc(32);
-  sodium.crypto_core_ed25519_add(out, Buffer.from(p1), Buffer.from(p2));
-  return out;
+  const P1 = decodePoint(p1);
+  const P2 = decodePoint(p2);
+  return encodePoint(P1.add(P2));
 }
 
 /**
- * Scalar-multiply an arbitrary point without clamping.
+ * Scalar-multiply an arbitrary point (no clamping).
  */
 export function pointScalarMul(
-  scalar: Uint8Array | number | bigint,
+  k: Uint8Array | number | bigint,
   point: Uint8Array
 ): Uint8Array {
-  if (point.length !== 32) {
-    throw new Error(`Invalid point length: expected 32 bytes, got ${point.length}`);
-  }
-  const scalarBytes = normalizeScalar32(scalar);
-  const out = Buffer.alloc(32);
-  sodium.crypto_scalarmult_ed25519_noclamp(out, Buffer.from(scalarBytes), Buffer.from(point));
-  return out;
+  const K = toBN(scalar32(k));
+  const P = decodePoint(point);
+  return encodePoint(P.mul(K));
 }
 
 /**
- * Scalar-multiply the Ed25519 base point without clamping.
+ * Scalar-multiply the Ed25519 base point (no clamping).
  */
-export function pointScalarMulBase(scalar: Uint8Array | number | bigint): Uint8Array {
-  const scalarBytes = normalizeScalar32(scalar);
-  const out = Buffer.alloc(32);
-  sodium.crypto_scalarmult_ed25519_base_noclamp(out, Buffer.from(scalarBytes));
-  return out;
+export function pointScalarMulBase(k: Uint8Array | number | bigint): Uint8Array {
+  const K = toBN(scalar32(k));
+  return encodePoint(ed.g.mul(K));
 }
 
 /**
- * Reduce a (up to) 64-byte scalar mod the Ed25519 group order.
+ * Reduce up-to-64-byte scalar mod group order L.
  */
-export function scalarReduce(scalar: Uint8Array | number | bigint): Uint8Array {
-  const buf64 = normalizeScalar64(scalar);
-  const out = Buffer.alloc(32);
-  sodium.crypto_core_ed25519_scalar_reduce(out, buf64);
-  return out;
+export function scalarReduce(s: Uint8Array | number | bigint): Uint8Array {
+  const bn = toBN(s instanceof Uint8Array ? s : intEncode(BigInt(s)));
+  const r  = bn.umod(L);                 // r = s mod L
+  return intEncode(BigInt(r.toString()));
 }
