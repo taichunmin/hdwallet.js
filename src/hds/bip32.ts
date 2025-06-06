@@ -4,7 +4,7 @@ import { HD } from './hd';
 import { Bitcoin } from '../cryptocurrencies';
 import { Derivation, CustomDerivation } from '../derivations';
 import {
-  EllipticCurveCryptography, PublicKey, PrivateKey, KholawEd25519PrivateKey, ECCS
+  EllipticCurveCryptography, PublicKey, PrivateKey, KholawEd25519PrivateKey
 } from '../ecc';
 import { Seed } from '../seeds';
 import {
@@ -15,19 +15,12 @@ import { hmacSha256, hmacSha512, ripemd160, sha256 } from '../crypto';
 import { privateKeyToWIF, wifToPrivateKey, getWIFType } from '../wif';
 import { serialize, deserialize, isValidKey, isRootKey } from '../keys';
 import {
-  getBytes, getHmac, bytesToInteger, integerToBytes, bytesToString, resetBits, setBits, concatBytes, ensureTypeMatch
+  getBytes, getHmac, bytesToInteger, integerToBytes, bytesToString, resetBits, setBits,
+  concatBytes, ensureTypeMatch, hexToBytes
 } from '../utils';
 import {
-  AddressError,
-  DerivationError,
-  BaseError,
-  PrivateKeyError,
-  PublicKeyError,
-  SeedError,
-  WIFError,
-  XPrivateKeyError,
-  XPublicKeyError,
-  ECCError
+  AddressError, DerivationError, BaseError, PrivateKeyError, PublicKeyError, SeedError,
+  WIFError, XPrivateKeyError, XPublicKeyError, ECCError
 } from '../exceptions';
 import { checkDecode } from '../libs/base58';
 import { HDAddressOptionsInterface, HDOptionsInterface } from '../interfaces';
@@ -162,7 +155,7 @@ export class BIP32HD extends HD {
       throw new XPrivateKeyError('Invalid extended(x) private key');
     }
 
-    const raw = encoded ? checkDecode(xprv) : Buffer.from(xprv, 'hex');
+    const raw = encoded ? checkDecode(xprv) : hexToBytes(xprv);
     if (![78, 110].includes(raw.length)) {
       throw new XPrivateKeyError('Invalid extended(x) private key');
     }
@@ -196,7 +189,7 @@ export class BIP32HD extends HD {
       throw new XPublicKeyError('Invalid extended(x) public key');
     }
 
-    const raw = encoded ? checkDecode(xpub) : Buffer.from(xpub, 'hex');
+    const raw = encoded ? checkDecode(xpub) : hexToBytes(xpub);
     if (raw.length !== 78) {
       throw new XPublicKeyError('Invalid extended(x) public key');
     }

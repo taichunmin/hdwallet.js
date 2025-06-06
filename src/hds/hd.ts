@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-import { BIP44Derivation, Derivation } from '../derivations';
+import { Derivation } from '../derivations';
 import { HDOptionsInterface } from '../interfaces';
 
 export class HD {

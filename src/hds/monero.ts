@@ -155,7 +155,7 @@ export class MoneroHD extends HD {
     }
 
     const m = intDecode(scalarReduce(keccak256(concatBytes(
-      Buffer.from('SubAddr\x00', 'utf-8'),
+      new TextEncoder().encode('SubAddr\x00'),
       this.viewPrivateKey.getRaw(),
       integerToBytes(majorIndex, 4, 'little'),
       integerToBytes(minorIndex, 4, 'little')
@@ -225,13 +225,9 @@ export class MoneroHD extends HD {
     );
   }
 
-  getSubAddress(minor?: number, major?: number): string {
-    if (!minor && !major) {
-      minor = this.derivation.getMinor();
-      major = this.derivation.getMajor();
-    } else if (!minor || !major) {
-      throw new DerivationError('Both minor and major indexes are required');
-    }
+  getSubAddress(
+    minor: number = this.derivation.getMinor(), major: number = this.derivation.getMajor()
+  ): string {
 
     if (minor === 0 && major === 0) {
       return this.getPrimaryAddress();

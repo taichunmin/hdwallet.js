@@ -16,7 +16,6 @@ import { P2PKHAddress } from '../../addresses';
 import { SeedError, DerivationError, PrivateKeyError, PublicKeyError, WIFError, BaseError } from '../../exceptions';
 import { Seed } from '../../seeds';
 import { HDAddressOptionsInterface, HDOptionsInterface } from '../../interfaces';
-import { Buffer } from 'buffer';
 
 export class ElectrumV1HD extends HD {
 
@@ -110,7 +109,7 @@ export class ElectrumV1HD extends HD {
 
   drive(changeIndex: number, addressIndex: number): this {
     const sequence = doubleSha256(concatBytes(
-      Buffer.from(`${addressIndex}:${changeIndex}:`, 'utf-8'),
+      new TextEncoder().encode(`${addressIndex}:${changeIndex}:`),
       this.masterPublicKey.getRawUncompressed().slice(1)
     ));
 
