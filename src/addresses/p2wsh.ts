@@ -1,12 +1,11 @@
 // SPDX-License-Identifier: MIT
 
-import { ensureString } from '../libs/base58';
 import { segwitEncode } from '../libs/segwit-bech32';
 import { PUBLIC_KEY_TYPES } from '../const';
 import { PublicKey, SLIP10Secp256k1PublicKey, validateAndGetPublicKey } from '../ecc';
 import { Bitcoin } from '../cryptocurrencies';
 import { sha256 } from '../crypto';
-import { bytesToString, getBytes } from '../utils';
+import { bytesToString, getBytes, ensureString } from '../utils';
 import { AddressOptionsInterface } from '../interfaces';
 import { Address } from './address';
 import { P2WPKHAddress } from './p2wpkh';
@@ -20,7 +19,7 @@ export class P2WSHAddress extends P2WPKHAddress implements Address {
   }
 
   static encode(
-    publicKey: Buffer | string | PublicKey, options: AddressOptionsInterface = {
+    publicKey: Uint8Array | string | PublicKey, options: AddressOptionsInterface = {
       hrp: this.hrp,
       publicKeyType: PUBLIC_KEY_TYPES.COMPRESSED,
       witnessVersion: this.witnessVersion

@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: MIT
 
-import { Buffer } from 'buffer';
 import { PublicKey, SLIP10Secp256k1PublicKey, validateAndGetPublicKey } from '../ecc';
 import { Ethereum } from '../cryptocurrencies';
 import { keccak256 } from '../crypto';
@@ -21,7 +20,7 @@ export class EthereumAddress extends Address {
 
     let output = '';
     const addressHash = bytesToString(keccak256(
-        Buffer.from(address.toLowerCase(), 'utf8')
+      new TextEncoder().encode(address.toLowerCase())
     ));
 
     for (let i = 0; i < address.length; i++) {
@@ -33,7 +32,7 @@ export class EthereumAddress extends Address {
   }
 
   static encode(
-    publicKey: Buffer | string | PublicKey, options: AddressOptionsInterface = {
+    publicKey: Uint8Array | string | PublicKey, options: AddressOptionsInterface = {
       skipChecksumEncode: false
     }
   ): string {

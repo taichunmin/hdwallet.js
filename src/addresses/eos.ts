@@ -1,10 +1,12 @@
 // SPDX-License-Identifier: MIT
 
-import { ensureString, encode, decode } from '../libs/base58';
+import { encode, decode } from '../libs/base58';
 import { PublicKey, SLIP10Secp256k1PublicKey, validateAndGetPublicKey } from '../ecc';
 import { EOS } from '../cryptocurrencies';
 import { ripemd160 } from '../crypto';
-import { bytesToString, toBuffer, concatBytes } from '../utils';
+import {
+  bytesToString, getBytes, concatBytes, ensureString, equalBytes, bytesToHex
+} from '../utils';
 import { AddressOptionsInterface } from '../interfaces';
 import { Address } from './address';
 import { AddressError } from '../exceptions';
@@ -18,17 +20,17 @@ export class EOSAddress extends Address {
     return 'EOS';
   }
 
-  static computeChecksum(pubKeyBytes: Buffer): Buffer {
+  static computeChecksum(pubKeyBytes: Uint8Array): Uint8Array {
     return ripemd160(pubKeyBytes).slice(0, this.checksumLength);
   }
 
   static encode(
-    publicKey: Buffer | string | PublicKey, options: AddressOptionsInterface = {
+    publicKey: Uint8Array | string | PublicKey, options: AddressOptionsInterface = {
       addressPrefix: this.addressPrefix
     }
   ): string {
     const pk = validateAndGetPublicKey(publicKey, SLIP10Secp256k1PublicKey);
-    const raw = toBuffer(pk.getRawCompressed());
+    const raw = getBytes(pk.getRawCompressed());
     const checksum = this.computeChecksum(raw);
     const prefix = options.addressPrefix ?? this.addressPrefix;
     return prefix + ensureString(encode(concatBytes(raw, checksum)));
@@ -60,15 +62,15 @@ export class EOSAddress extends Address {
     const checksum = decoded.slice(-this.checksumLength);
     const computedChecksum = this.computeChecksum(publicKeyBytes);
 
-    if (!checksum.equals(computedChecksum)) {
+    if (!equalBytes(checksum, computedChecksum)) {
       throw new AddressError('Invalid checksum', {
-        expected: computedChecksum.toString('hex'), got: checksum.toString('hex')
+        expected: bytesToHex(computedChecksum), got: bytesToHex(checksum)
       });
     }
 
     if (!SLIP10Secp256k1PublicKey.isValidBytes(publicKeyBytes)) {
       throw new AddressError('Invalid public key bytes', {
-        got: publicKeyBytes.toString('hex')
+        got: bytesToHex(publicKeyBytes)
       });
     }
     return bytesToString(publicKeyBytes);

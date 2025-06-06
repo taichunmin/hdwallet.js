@@ -3,7 +3,7 @@
 import { Aptos } from '../cryptocurrencies';
 import { sha3_256 } from '../crypto';
 import { SLIP10Ed25519PublicKey, PublicKey, validateAndGetPublicKey } from '../ecc';
-import { bytesToString, integerToBytes, toBuffer } from '../utils';
+import { bytesToString, integerToBytes } from '../utils';
 import { AddressError } from '../exceptions';
 import { Address } from './address';
 
@@ -16,11 +16,11 @@ export class AptosAddress extends Address {
     return 'Aptos';
   }
 
-  static encode(publicKey: Buffer | string | PublicKey): string {
+  static encode(publicKey: Uint8Array | string | PublicKey): string {
 
     const pk = validateAndGetPublicKey(publicKey, SLIP10Ed25519PublicKey);
     const raw = pk.getRawCompressed().subarray(1);
-    const payload = toBuffer(new Uint8Array([...raw, ...this.suffix]));
+    const payload = new Uint8Array([...raw, ...this.suffix]);
     const hash = sha3_256(payload);
     return this.addressPrefix + bytesToString(hash).replace(/^0+/, '');
   }

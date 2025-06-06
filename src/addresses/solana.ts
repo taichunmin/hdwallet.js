@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: MIT
 
 import { Solana } from '../cryptocurrencies';
-import { encode as base58Encode, decode as base58Decode, ensureString } from '../libs/base58';
+import { encode as base58Encode, decode as base58Decode } from '../libs/base58';
 import { SLIP10Ed25519PublicKey, PublicKey, validateAndGetPublicKey } from '../ecc';
-import { bytesToString, toBuffer } from '../utils';
+import { bytesToString, getBytes, ensureString } from '../utils';
 import { AddressError } from '../exceptions';
 import { Address } from './address';
 
@@ -15,9 +15,9 @@ export class SolanaAddress extends Address {
     return 'Solana';
   }
 
-  static encode(publicKey: Buffer | string | PublicKey): string {
+  static encode(publicKey: Uint8Array | string | PublicKey): string {
     const pk = validateAndGetPublicKey(publicKey, SLIP10Ed25519PublicKey);
-    return ensureString(base58Encode(toBuffer(pk.getRawCompressed().subarray(1))));
+    return ensureString(base58Encode(getBytes(pk.getRawCompressed().subarray(1))));
   }
 
   static decode(address: string): string {

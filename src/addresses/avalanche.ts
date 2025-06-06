@@ -21,9 +21,8 @@ export class AvalancheAddress extends Address {
   }
 
   static encode(
-    publicKey: Buffer | string | PublicKey, options: AddressOptionsInterface = {
-      hrp: this.hrp,
-      addressType: this.addressType
+    publicKey: Uint8Array | string | PublicKey, options: AddressOptionsInterface = {
+      hrp: this.hrp, addressType: this.addressType
     }
   ): string {
     const typeKey = options.addressType ?? this.addressType;

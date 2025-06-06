@@ -1,12 +1,14 @@
 // SPDX-License-Identifier: MIT
 
-import { checkDecode, checkEncode, ensureString } from '../libs/base58';
+import { checkDecode, checkEncode } from '../libs/base58';
 import { PUBLIC_KEY_TYPES } from '../const';
 import { PublicKey, SLIP10Secp256k1PublicKey, validateAndGetPublicKey } from '../ecc';
 import { Bitcoin } from '../cryptocurrencies';
 import { hash160 } from '../crypto';
 import { AddressError } from '../exceptions';
-import { bytesToString, getBytes, integerToBytes, toBuffer, concatBytes } from '../utils';
+import {
+  bytesToString, getBytes, integerToBytes, ensureString, concatBytes, equalBytes, bytesToHex
+} from '../utils';
 import { AddressOptionsInterface } from '../interfaces';
 import { Address } from './address';
 
@@ -20,7 +22,7 @@ export class P2SHAddress extends Address {
   }
 
   static encode(
-    publicKey: Buffer | string | PublicKey, options: AddressOptionsInterface = {
+    publicKey: Uint8Array | string | PublicKey, options: AddressOptionsInterface = {
       scriptAddressPrefix: this.scriptAddressPrefix,
       publicKeyType: PUBLIC_KEY_TYPES.COMPRESSED,
       alphabet: this.alphabet
@@ -54,7 +56,7 @@ export class P2SHAddress extends Address {
   ): string {
 
     const prefixValue = options.scriptAddressPrefix ?? this.scriptAddressPrefix;
-    const prefixBytes = toBuffer(integerToBytes(prefixValue));
+    const prefixBytes = getBytes(integerToBytes(prefixValue));
 
     const alphabet = options.alphabet ?? this.alphabet;
     const decoded = checkDecode(address, alphabet);
@@ -67,9 +69,9 @@ export class P2SHAddress extends Address {
     }
 
     const gotPrefix = decoded.slice(0, prefixBytes.length);
-    if (!prefixBytes.equals(gotPrefix)) {
+    if (!equalBytes(prefixBytes, gotPrefix)) {
       throw new AddressError(
-        'Invalid prefix', { expected: prefixBytes.toString('hex'), got: gotPrefix.toString('hex') }
+        'Invalid prefix', { expected: bytesToHex(prefixBytes), got: bytesToHex(gotPrefix) }
       );
     }
 

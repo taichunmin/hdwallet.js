@@ -1,10 +1,12 @@
 // SPDX-License-Identifier: MIT
 
-import { ensureString, encode, decode } from '../libs/base58';
+import { encode, decode } from '../libs/base58';
 import { PublicKey, SLIP10Secp256k1PublicKey, validateAndGetPublicKey } from '../ecc';
 import { Ergo } from '../cryptocurrencies';
 import { blake2b256 } from '../crypto';
-import { bytesToString, ensureTypeMatch, integerToBytes, toBuffer, concatBytes } from '../utils';
+import {
+  bytesToString, ensureTypeMatch, integerToBytes, getBytes, concatBytes, ensureString, equalBytes, bytesToHex
+} from '../utils';
 import { Address } from './address';
 import { AddressOptionsInterface } from '../interfaces';
 import { AddressError, NetworkError } from '../exceptions';
@@ -28,12 +30,12 @@ export class ErgoAddress extends Address {
     return 'Ergo';
   }
 
-  static computeChecksum(data: Buffer): Buffer {
+  static computeChecksum(data: Uint8Array): Uint8Array {
     return blake2b256(data).slice(0, this.checksumLength);
   }
 
   static encode(
-    publicKey: Buffer | string | PublicKey, options: AddressOptionsInterface = {
+    publicKey: Uint8Array | string | PublicKey, options: AddressOptionsInterface = {
       addressType: this.addressType,
       networkType: this.networkType
     }
@@ -85,7 +87,7 @@ export class ErgoAddress extends Address {
       });
     }
 
-    const prefix = toBuffer(integerToBytes(addressType + networkType));
+    const prefix = getBytes(integerToBytes(addressType + networkType));
     const decoded = decode(address);
 
     const expectedLength =
@@ -100,23 +102,23 @@ export class ErgoAddress extends Address {
     const payload = decoded.slice(0, -this.checksumLength);
     const checksumExpected = this.computeChecksum(payload);
 
-    if (!checksum.equals(checksumExpected)) {
+    if (!equalBytes(checksum, checksumExpected)) {
       throw new AddressError('Invalid checksum', {
-        expected: checksumExpected.toString('hex'), got: checksum.toString('hex')
+        expected: bytesToHex(checksumExpected), got: bytesToHex(checksum)
       });
     }
 
     const prefixGot = payload.slice(0, prefix.length);
-    if (!prefix.equals(prefixGot)) {
+    if (!equalBytes(prefix, prefixGot)) {
       throw new AddressError('Invalid prefix', {
-        expected: prefix.toString('hex'), got: prefixGot.toString('hex')
+        expected: bytesToHex(prefix), got: bytesToHex(prefixGot)
       });
     }
 
     const pubKey = payload.slice(prefix.length);
     if (!SLIP10Secp256k1PublicKey.isValidBytes(pubKey)) {
       throw new AddressError('Invalid public key', {
-        got: pubKey.toString('hex')
+        got: bytesToHex(pubKey)
       });
     }
     return bytesToString(pubKey);

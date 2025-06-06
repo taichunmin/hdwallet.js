@@ -5,7 +5,7 @@ import { AddressError } from '../exceptions';
 import { decode as base32Decode, encodeNoPadding } from '../libs/base32';
 import { blake2b40 } from '../crypto';
 import { SLIP10Ed25519Blake2bPublicKey, PublicKey, validateAndGetPublicKey } from '../ecc';
-import { bytesToString, bytesReverse, toBuffer, concatBytes, getBytes } from '../utils';
+import { bytesToString, bytesReverse, getBytes, concatBytes, equalBytes } from '../utils';
 import { Address } from './address';
 
 export class NanoAddress extends Address {
@@ -19,14 +19,14 @@ export class NanoAddress extends Address {
     return 'Nano';
   }
 
-  static computeChecksum(publicKey: Buffer): Buffer {
+  static computeChecksum(publicKey: Uint8Array): Uint8Array {
     return bytesReverse(blake2b40(publicKey));
   }
 
-  static encode(publicKey: Buffer | string | PublicKey): string {
+  static encode(publicKey: Uint8Array | string | PublicKey): string {
     const pk = validateAndGetPublicKey(publicKey, SLIP10Ed25519Blake2bPublicKey);
     const raw = pk.getRawCompressed().subarray(1);
-    const checksum = this.computeChecksum(toBuffer(raw));
+    const checksum = this.computeChecksum(getBytes(raw));
     const payload = concatBytes(this.payloadPaddingDecoded, raw, checksum);
 
     const b32 = encodeNoPadding(bytesToString(payload), this.alphabet);
@@ -41,7 +41,7 @@ export class NanoAddress extends Address {
 
     const body = address.slice(this.addressPrefix.length);
     const fullEncoded = this.payloadPaddingEncoded + body;
-    const decoded = toBuffer(base32Decode(fullEncoded, this.alphabet));
+    const decoded = getBytes(base32Decode(fullEncoded, this.alphabet));
 
     const expectedLen = this.payloadPaddingDecoded.length + SLIP10Ed25519Blake2bPublicKey.getCompressedLength() - 1 + 5;
     if (decoded.length !== expectedLen) {
@@ -53,7 +53,7 @@ export class NanoAddress extends Address {
     const checksum = data.subarray(-5);
     const gotChecksum = this.computeChecksum(pubkey);
 
-    if (!checksum.equals(gotChecksum)) {
+    if (!equalBytes(checksum, gotChecksum)) {
       throw new AddressError('Invalid checksum', {
         expected: bytesToString(checksum), got: bytesToString(gotChecksum)
       });

@@ -3,7 +3,7 @@
 import { Sui } from '../cryptocurrencies';
 import { blake2b256 } from '../crypto';
 import { SLIP10Ed25519PublicKey, PublicKey, validateAndGetPublicKey } from '../ecc';
-import { bytesToString, integerToBytes, toBuffer } from '../utils';
+import { bytesToString, integerToBytes, getBytes } from '../utils';
 import { AddressError } from '../exceptions';
 import { Address } from './address';
 
@@ -16,10 +16,10 @@ export class SuiAddress extends Address {
     return 'Sui';
   }
 
-  static encode(publicKey: Buffer | string | PublicKey): string {
+  static encode(publicKey: Uint8Array | string | PublicKey): string {
     const pk = validateAndGetPublicKey(publicKey, SLIP10Ed25519PublicKey);
     const raw = pk.getRawCompressed().subarray(1);
-    const hash = blake2b256(toBuffer(new Uint8Array([...this.keyType, ...raw])));
+    const hash = blake2b256(getBytes(new Uint8Array([...this.keyType, ...raw])));
     return this.addressPrefix + bytesToString(hash);
   }
 

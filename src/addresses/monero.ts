@@ -5,7 +5,7 @@ import { decodeMonero, encodeMonero } from '../libs/base58';
 import { keccak256 } from '../crypto';
 import { SLIP10Ed25519MoneroPublicKey, PublicKey, validateAndGetPublicKey } from '../ecc';
 import {
-  bytesToString, concatBytes, ensureTypeMatch, getBytes, integerToBytes, toBuffer
+  bytesToString, concatBytes, ensureTypeMatch, getBytes, integerToBytes, equalBytes
 } from '../utils';
 import { Network } from '../cryptocurrencies/cryptocurrency';
 import { AddressOptionsInterface } from '../interfaces';
@@ -47,12 +47,13 @@ export class MoneroAddress extends Address {
     return 'Monero';
   }
 
-  static computeChecksum(data: Buffer): Buffer {
+  static computeChecksum(data: Uint8Array): Uint8Array {
     return keccak256(data).subarray(0, this.checksumLength);
   }
 
-  static encode(publicKeys: {
-      spendPublicKey: Buffer | string | PublicKey, viewPublicKey: Buffer | string | PublicKey
+  static encode(
+    publicKeys: {
+      spendPublicKey: Uint8Array | string | PublicKey, viewPublicKey: Uint8Array | string | PublicKey
     },
     options: AddressOptionsInterface = {
       network: this.network, addressType: this.addressType
@@ -78,26 +79,28 @@ export class MoneroAddress extends Address {
       this.networks[networkName].addressTypes[addressType]
     );
     const payload = concatBytes(
-      version, spend.getRawCompressed(), view.getRawCompressed(), toBuffer(paymentID ?? Buffer.alloc(0))
+      version, spend.getRawCompressed(), view.getRawCompressed(), getBytes(paymentID ?? new Uint8Array(0))
     );
 
-    const checksum = this.computeChecksum(toBuffer(payload));
-    return encodeMonero(toBuffer(concatBytes(payload, checksum)));
+    const checksum = this.computeChecksum(getBytes(payload));
+    return encodeMonero(getBytes(concatBytes(payload, checksum)));
   }
 
-  static decode(address: string, options: AddressOptionsInterface = {
-    network: this.network, addressType: this.addressType
-  }): [string, string] {
+  static decode(
+    address: string, options: AddressOptionsInterface = {
+      network: this.network, addressType: this.addressType
+    }
+  ): [string, string] {
 
     const addressType = options.addressType ?? this.addressType;
-    const paymentID = toBuffer(options.paymentID ?? Buffer.alloc(0));
+    const paymentID = getBytes(options.paymentID ?? new Uint8Array(0));
 
     const decoded = decodeMonero(address);
     const checksum = decoded.subarray(-this.checksumLength);
     const payloadWithPrefix = decoded.subarray(0, -this.checksumLength);
 
     const computedChecksum = this.computeChecksum(payloadWithPrefix);
-    if (!checksum.equals(computedChecksum)) {
+    if (!equalBytes(checksum, computedChecksum)) {
       throw new AddressError('Invalid checksum', {
         expected: bytesToString(checksum), got: bytesToString(computedChecksum)
       });
@@ -110,15 +113,15 @@ export class MoneroAddress extends Address {
       this.networks[networkName].addressTypes[addressType]
     );
     const versionGot = payloadWithPrefix.subarray(0, version.length);
-    if (!versionGot.equals(version)) {
+    if (!equalBytes(versionGot, version)) {
       throw new AddressError('Invalid version', { expected: version, got: versionGot });
     }
 
     const payload = payloadWithPrefix.subarray(version.length);
     const pubkeyLen = SLIP10Ed25519MoneroPublicKey.getCompressedLength();
 
-    let spend: Buffer;
-    let view: Buffer;
+    let spend: Uint8Array;
+    let view: Uint8Array;
 
     if (payload.length === 2 * pubkeyLen) {
       spend = payload.subarray(0, pubkeyLen);
@@ -129,7 +132,7 @@ export class MoneroAddress extends Address {
       }
 
       const paymentIDGot = payload.subarray(-this.paymentIDLength);
-      if (!paymentID.equals(paymentIDGot)) {
+      if (!equalBytes(paymentID, paymentIDGot)) {
         throw new BaseError('Payment ID mismatch', {
           expected: bytesToString(paymentIDGot), got: bytesToString(paymentID)
         });

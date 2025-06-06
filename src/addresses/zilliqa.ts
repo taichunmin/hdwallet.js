@@ -18,8 +18,9 @@ export class ZilliqaAddress extends Address {
   }
 
   static encode(
-    publicKey: Buffer | string | PublicKey,
-    options: AddressOptionsInterface = { hrp: this.hrp }
+    publicKey: Uint8Array | string | PublicKey, options: AddressOptionsInterface = {
+      hrp: this.hrp
+    }
   ): string {
 
     const pk = validateAndGetPublicKey(publicKey, SLIP10Secp256k1PublicKey);

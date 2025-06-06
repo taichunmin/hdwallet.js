@@ -4,7 +4,7 @@ import { EthereumAddress } from './ethereum';
 import { bech32Encode, bech32Decode } from '../libs/bech32';
 import { PublicKey } from '../ecc';
 import { OKTChain } from '../cryptocurrencies';
-import { bytesToString, toBuffer } from '../utils';
+import { bytesToString, getBytes } from '../utils';
 import { AddressOptionsInterface } from '../interfaces';
 import { Address } from './address';
 import { AddressError } from '../exceptions';
@@ -18,7 +18,7 @@ export class OKTChainAddress extends Address {
   }
 
   static encode(
-    publicKey: Buffer | string | PublicKey, options: AddressOptionsInterface = {
+    publicKey: Uint8Array | string | PublicKey, options: AddressOptionsInterface = {
       hrp: this.hrp
     }
   ): string {
@@ -27,7 +27,7 @@ export class OKTChainAddress extends Address {
       skipChecksumEncode: true
     });
     const ethHexWithoutPrefix = baseEth.slice(2); // strip "0x"
-    const bytes = toBuffer(ethHexWithoutPrefix);
+    const bytes = getBytes(ethHexWithoutPrefix);
     const hrp = options.hrp ?? this.hrp;
 
     const encoded = bech32Encode(hrp, bytes);

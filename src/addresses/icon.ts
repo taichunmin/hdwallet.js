@@ -5,7 +5,6 @@ import { PublicKey, SLIP10Secp256k1PublicKey, validateAndGetPublicKey } from '..
 import { sha3_256 } from '../crypto';
 import { getBytes, bytesToString } from '../utils';
 import { Address } from './address';
-import { AddressOptionsInterface } from '../interfaces';
 import { AddressError } from '../exceptions';
 
 export class IconAddress extends Address {
@@ -17,9 +16,7 @@ export class IconAddress extends Address {
     return 'Icon';
   }
 
-  static encode(
-    publicKey: Buffer | string | PublicKey, options: AddressOptionsInterface = { }
-  ): string {
+  static encode(publicKey: Uint8Array | string | PublicKey): string {
 
     const pk = validateAndGetPublicKey(publicKey, SLIP10Secp256k1PublicKey);
     const raw = pk.getRawUncompressed().slice(1); // Remove prefix byte (0x04)
@@ -27,9 +24,7 @@ export class IconAddress extends Address {
     return this.addressPrefix + bytesToString(hash);
   }
 
-  static decode(
-    address: string, options: AddressOptionsInterface = { }
-  ): string {
+  static decode(address: string): string {
     const prefix = this.addressPrefix;
     if (!address.startsWith(prefix)) {
       throw new AddressError('Invalid prefix', {

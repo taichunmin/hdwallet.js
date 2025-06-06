@@ -4,7 +4,7 @@ import { EthereumAddress } from './ethereum';
 import { bech32Encode, bech32Decode } from '../libs/bech32';
 import { PublicKey, SLIP10Secp256k1PublicKey, validateAndGetPublicKey } from '../ecc';
 import { Injective } from '../cryptocurrencies';
-import { bytesToString, toBuffer } from '../utils';
+import { bytesToString, getBytes } from '../utils';
 import { Address } from './address';
 import { AddressOptionsInterface } from '../interfaces';
 import { AddressError } from '../exceptions';
@@ -18,7 +18,7 @@ export class InjectiveAddress extends Address {
   }
 
   static encode(
-    publicKey: Buffer | string | PublicKey, options: AddressOptionsInterface = {
+    publicKey: Uint8Array | string | PublicKey, options: AddressOptionsInterface = {
       hrp: this.hrp
     }
   ): string {
@@ -27,7 +27,7 @@ export class InjectiveAddress extends Address {
     const ethEncoded = EthereumAddress.encode(pk, {
       skipChecksumEncode: true
     });
-    const rawBytes = toBuffer(ethEncoded.slice(2)); // remove "0x"
+    const rawBytes = getBytes(ethEncoded.slice(2)); // remove "0x"
 
     const hrp = options.hrp ?? this.hrp;
     const encoded = bech32Encode(hrp, rawBytes);

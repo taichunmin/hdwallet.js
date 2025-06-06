@@ -1,14 +1,16 @@
 // SPDX-License-Identifier: MIT
 
-import { checkDecode, checkEncode, ensureString } from '../libs/base58';
+import { checkDecode, checkEncode } from '../libs/base58';
 import { PUBLIC_KEY_TYPES } from '../const';
 import { PublicKey, SLIP10Secp256k1PublicKey, validateAndGetPublicKey } from '../ecc';
 import { Bitcoin } from '../cryptocurrencies';
+import {
+  bytesToString, concatBytes, integerToBytes, getBytes, ensureString, equalBytes, bytesToHex
+} from '../utils';
 import { hash160 } from '../crypto';
-import { AddressError } from '../exceptions';
-import { bytesToString, concatBytes, integerToBytes, toBuffer } from '../utils';
-import { AddressOptionsInterface } from '../interfaces';
 import { Address } from './address';
+import { AddressOptionsInterface } from '../interfaces';
+import { AddressError } from '../exceptions';
 
 export class P2PKHAddress extends Address {
 
@@ -20,7 +22,7 @@ export class P2PKHAddress extends Address {
   }
 
   static encode(
-    publicKey: Buffer | string | PublicKey, options: AddressOptionsInterface = {
+    publicKey: Uint8Array | string | PublicKey, options: AddressOptionsInterface = {
       publicKeyAddressPrefix: this.publicKeyAddressPrefix,
       publicKeyType: PUBLIC_KEY_TYPES.COMPRESSED,
       alphabet: this.alphabet
@@ -36,7 +38,7 @@ export class P2PKHAddress extends Address {
       options.publicKeyType === PUBLIC_KEY_TYPES.UNCOMPRESSED
         ? pk.getRawUncompressed() : pk.getRawCompressed();
 
-    const pubKeyHash = hash160(toBuffer(rawPubBytes));
+    const pubKeyHash = hash160(getBytes(rawPubBytes));
     const payload = concatBytes(prefixBytes, pubKeyHash);
     const alphabet = options.alphabet ?? this.alphabet;
     return ensureString(checkEncode(payload, alphabet));
@@ -50,7 +52,7 @@ export class P2PKHAddress extends Address {
   ): string {
 
     const prefixValue = options.publicKeyAddressPrefix ?? this.publicKeyAddressPrefix;
-    const prefixBytes = toBuffer(integerToBytes(prefixValue));
+    const prefixBytes = getBytes(integerToBytes(prefixValue));
 
     const alphabet = options.alphabet ?? this.alphabet;
     const decoded = checkDecode(address, alphabet);
@@ -63,9 +65,9 @@ export class P2PKHAddress extends Address {
     }
 
     const gotPrefix = decoded.slice(0, prefixBytes.length);
-    if (!prefixBytes.equals(gotPrefix)) {
+    if (!equalBytes(prefixBytes, gotPrefix)) {
       throw new AddressError(
-        'Invalid prefix', { expected: prefixBytes.toString('hex'), got: gotPrefix.toString('hex') }
+        'Invalid prefix', { expected: bytesToHex(prefixBytes), got: bytesToHex(gotPrefix) }
       );
     }
 

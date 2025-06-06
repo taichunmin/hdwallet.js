@@ -4,7 +4,7 @@ import { Algorand } from '../cryptocurrencies';
 import { encodeNoPadding, decode as base32Decode } from '../libs/base32';
 import { sha512_256 } from '../crypto';
 import { SLIP10Ed25519PublicKey, PublicKey, validateAndGetPublicKey } from '../ecc';
-import { bytesToString, concatBytes, toBuffer } from '../utils';
+import { bytesToString, concatBytes, getBytes, equalBytes } from '../utils';
 import { AddressError } from '../exceptions';
 import { Address } from './address';
 
@@ -16,11 +16,11 @@ export class AlgorandAddress extends Address {
     return 'Algorand';
   }
 
-  static computeChecksum(publicKey: Uint8Array): Buffer {
+  static computeChecksum(publicKey: Uint8Array): Uint8Array {
     return sha512_256(publicKey).subarray(-4);
   }
 
-  static encode(publicKey: Buffer | string | PublicKey): string {
+  static encode(publicKey: Uint8Array | string | PublicKey): string {
 
     const pk = validateAndGetPublicKey(publicKey, SLIP10Ed25519PublicKey);
     const raw = pk.getRawCompressed().subarray(1);
@@ -30,7 +30,7 @@ export class AlgorandAddress extends Address {
 
   static decode(address: string): string {
 
-    const decoded = toBuffer(base32Decode(address));
+    const decoded = getBytes(base32Decode(address));
     const expectedLength = SLIP10Ed25519PublicKey.getCompressedLength() - 1 + this.checksumLength;
 
     if (decoded.length !== expectedLength) {
@@ -43,7 +43,7 @@ export class AlgorandAddress extends Address {
     const checksum = decoded.subarray(-this.checksumLength);
     const gotChecksum = this.computeChecksum(pubkey);
 
-    if (!checksum.equals(gotChecksum)) {
+    if (!equalBytes(checksum, gotChecksum)) {
       throw new AddressError('Invalid checksum', {
         expected: bytesToString(checksum), got: bytesToString(gotChecksum)
       });

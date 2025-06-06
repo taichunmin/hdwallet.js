@@ -11,7 +11,7 @@ export class NearAddress extends Address {
     return 'Near';
   }
 
-  static encode(publicKey: Buffer | string | PublicKey): string {
+  static encode(publicKey: Uint8Array | string | PublicKey): string {
 
     const pk = validateAndGetPublicKey(publicKey, SLIP10Ed25519PublicKey);
     return bytesToString(pk.getRawCompressed()).slice(2);

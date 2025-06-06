@@ -1,14 +1,12 @@
 // SPDX-License-Identifier: MIT
 
-import { ensureString, checkEncode, checkDecode } from '../libs/base58';
-import {
-  PublicKey,
-  SLIP10Secp256k1PublicKey,
-  validateAndGetPublicKey
-} from '../ecc';
+import { checkEncode, checkDecode } from '../libs/base58';
+import { PublicKey, SLIP10Secp256k1PublicKey, validateAndGetPublicKey } from '../ecc';
 import { Tron } from '../cryptocurrencies';
 import { keccak256 } from '../crypto';
-import { integerToBytes, bytesToString, toBuffer, concatBytes } from '../utils';
+import {
+  integerToBytes, bytesToString, ensureString, concatBytes, hexToBytes, getBytes, equalBytes, bytesToHex
+} from '../utils';
 import { Address } from './address';
 import { AddressError } from '../exceptions';
 import { AddressOptionsInterface } from '../interfaces';
@@ -23,7 +21,7 @@ export class TronAddress extends Address {
   }
 
   static encode(
-    publicKey: Buffer | string | PublicKey, options: AddressOptionsInterface = {
+    publicKey: Uint8Array | string | PublicKey, options: AddressOptionsInterface = {
       publicKeyAddressPrefix: this.publicKeyAddressPrefix,
       alphabet: this.alphabet
     }
@@ -35,15 +33,14 @@ export class TronAddress extends Address {
         options.publicKeyAddressPrefix ?? this.publicKeyAddressPrefix
     );
     const alphabet = options.alphabet ?? this.alphabet;
-    const payload = concatBytes(prefixBytes, Buffer.from(addressHash, 'hex'));
+    const payload = concatBytes(prefixBytes, hexToBytes(addressHash));
     return ensureString(checkEncode(
       payload, alphabet
     ));
   }
 
   static decode(
-    address: string,
-    options: AddressOptionsInterface = {
+    address: string, options: AddressOptionsInterface = {
       publicKeyAddressPrefix: this.publicKeyAddressPrefix,
       alphabet: this.alphabet
     }
@@ -54,7 +51,7 @@ export class TronAddress extends Address {
     const prefixValue = integerToBytes(
         options.publicKeyAddressPrefix ?? this.publicKeyAddressPrefix
     );
-    const prefixBytes = toBuffer(prefixValue);
+    const prefixBytes = getBytes(prefixValue);
 
     const expectedLength = 20 + prefixBytes.length;
     if (decoded.length !== expectedLength) {
@@ -64,9 +61,9 @@ export class TronAddress extends Address {
     }
 
     const prefixGot = decoded.slice(0, prefixBytes.length);
-    if (!prefixGot.equals(prefixBytes)) {
+    if (!equalBytes(prefixGot, prefixBytes)) {
       throw new AddressError('Invalid prefix', {
-        expected: prefixBytes.toString('hex'), got: prefixGot.toString('hex')
+        expected: bytesToHex(prefixBytes), got: bytesToHex(prefixGot)
       });
     }
     return bytesToString(decoded.slice(

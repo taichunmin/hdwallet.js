@@ -4,7 +4,9 @@ import { encodeNoPadding, decode } from '../libs/base32';
 import { PublicKey, SLIP10Secp256k1PublicKey, validateAndGetPublicKey } from '../ecc';
 import { Filecoin } from '../cryptocurrencies';
 import { blake2b160, blake2b32 } from '../crypto';
-import { integerToBytes, bytesToString, toBuffer, concatBytes } from '../utils';
+import {
+  integerToBytes, bytesToString, getBytes, concatBytes, equalBytes, bytesToHex
+} from '../utils';
 import { AddressOptionsInterface } from '../interfaces';
 import { Address } from './address';
 import { AddressError } from '../exceptions';
@@ -23,12 +25,12 @@ export class FilecoinAddress extends Address {
     return 'Filecoin';
   }
 
-  static computeChecksum(pubKeyHash: Buffer, addressType: number): Buffer {
+  static computeChecksum(pubKeyHash: Uint8Array, addressType: number): Uint8Array {
     return blake2b32(concatBytes(integerToBytes(addressType), pubKeyHash));
   }
 
   static encode(
-    publicKey: Buffer | string | PublicKey, options: AddressOptionsInterface = {
+    publicKey: Uint8Array | string | PublicKey, options: AddressOptionsInterface = {
       addressPrefix: this.addressPrefix,
       addressType: this.addressType
     }
@@ -85,7 +87,7 @@ export class FilecoinAddress extends Address {
       });
     }
 
-    const payloadBytes = toBuffer(decode(
+    const payloadBytes = getBytes(decode(
       addressBody.slice(1), FilecoinAddress.alphabet
     ));
     if (payloadBytes.length !== 24) {
@@ -98,10 +100,9 @@ export class FilecoinAddress extends Address {
     const checksum = payloadBytes.slice(20);
     const expectedChecksum = FilecoinAddress.computeChecksum(publicKeyHash, expectedType);
 
-    if (!checksum.equals(expectedChecksum)) {
+    if (!equalBytes(checksum, expectedChecksum)) {
       throw new AddressError('Invalid checksum', {
-        expected: expectedChecksum.toString('hex'),
-        got: checksum.toString('hex')
+        expected: bytesToHex(expectedChecksum), got: bytesToHex(checksum)
       });
     }
     return bytesToString(publicKeyHash);

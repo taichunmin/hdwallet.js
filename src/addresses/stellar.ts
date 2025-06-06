@@ -4,7 +4,7 @@ import { Stellar } from '../cryptocurrencies';
 import { encodeNoPadding, decode as base32Decode } from '../libs/base32';
 import { xmodemCrc } from '../crypto';
 import { SLIP10Ed25519PublicKey, PublicKey, validateAndGetPublicKey } from '../ecc';
-import { bytesToString, bytesReverse, integerToBytes, concatBytes, toBuffer } from '../utils';
+import { bytesToString, bytesReverse, integerToBytes, concatBytes, getBytes, equalBytes } from '../utils';
 import { AddressOptionsInterface } from '../interfaces';
 import { AddressError } from '../exceptions';
 import { Address } from './address';
@@ -22,13 +22,15 @@ export class StellarAddress extends Address {
     return 'Stellar';
   }
 
-  static computeChecksum(payload: Uint8Array): Buffer {
+  static computeChecksum(payload: Uint8Array): Uint8Array {
     return bytesReverse(xmodemCrc(payload));
   }
 
-  static encode(publicKey: Buffer | string | PublicKey, options: AddressOptionsInterface = {
-    addressType: this.addressType
-  }): string {
+  static encode(
+    publicKey: Uint8Array | string | PublicKey, options: AddressOptionsInterface = {
+      addressType: this.addressType
+    }
+  ): string {
 
     const addressTypeName = options.addressType ?? this.addressType;
     if (!(addressTypeName in this.addressTypes)) {
@@ -46,9 +48,11 @@ export class StellarAddress extends Address {
     return encodeNoPadding(bytesToString(concatBytes(payload, checksum)));
   }
 
-  static decode(address: string, options: AddressOptionsInterface = {
-    addressType: this.addressType
-  }): string {
+  static decode(
+    address: string, options: AddressOptionsInterface = {
+      addressType: this.addressType
+    }
+  ): string {
 
     const addressTypeName = options.addressType ?? this.addressType;
     if (!(addressTypeName in this.addressTypes)) {
@@ -58,7 +62,7 @@ export class StellarAddress extends Address {
     }
 
     const addressType = this.addressTypes[addressTypeName];
-    const decoded = toBuffer(base32Decode(address));
+    const decoded = getBytes(base32Decode(address));
     const expectedLength = SLIP10Ed25519PublicKey.getCompressedLength() + this.checksumLength;
 
     if (decoded.length !== expectedLength) {
@@ -79,7 +83,7 @@ export class StellarAddress extends Address {
     }
 
     const checksumGot = this.computeChecksum(payload);
-    if (!checksum.equals(checksumGot)) {
+    if (!equalBytes(checksum, checksumGot)) {
       throw new AddressError('Invalid checksum', {
         expected: bytesToString(checksum),
         got: bytesToString(checksumGot)

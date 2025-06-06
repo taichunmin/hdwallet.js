@@ -4,11 +4,11 @@ import { encode, encodeCanonical, Tagged, decode } from 'cbor';
 
 import { Cardano } from '../cryptocurrencies';
 import { bech32Encode, bech32Decode } from '../libs/bech32';
-import { encode as base58Encode, decode as base58Decode, ensureString } from '../libs/base58';
+import { encode as base58Encode, decode as base58Decode } from '../libs/base58';
 import { KholawEd25519PublicKey, PublicKey, validateAndGetPublicKey } from '../ecc';
 import { crc32, blake2b224, sha3_256, chacha20Poly1305Encrypt } from '../crypto';
 import {
-  getBytes, bytesToInteger, bytesToString, integerToBytes, pathToIndexes, concatBytes, toBuffer
+  getBytes, bytesToInteger, bytesToString, integerToBytes, pathToIndexes, concatBytes, ensureString, equalBytes
 } from '../utils';
 import { AddressError, BaseError } from '../exceptions';
 import { AddressOptionsInterface } from '../interfaces';
@@ -44,9 +44,11 @@ export class CardanoAddress extends Address {
     return 'Cardano';
   }
 
-  static encode(publicKey: Buffer | string | PublicKey, options: AddressOptionsInterface = {
-    encodeType: Cardano.ADDRESS_TYPES.PAYMENT
-  }): string {
+  static encode(
+    publicKey: Uint8Array | string | PublicKey, options: AddressOptionsInterface = {
+      encodeType: Cardano.ADDRESS_TYPES.PAYMENT
+    }
+  ): string {
 
     const encodeType = options.encodeType ?? Cardano.ADDRESS_TYPES.PAYMENT;
     if (encodeType === Cardano.TYPES.BYRON_LEGACY) {
@@ -81,9 +83,11 @@ export class CardanoAddress extends Address {
     throw new AddressError('Invalid encode type');
   }
 
-  static decode(address: string, options: AddressOptionsInterface = {
-    decodeType: Cardano.ADDRESS_TYPES.PAYMENT
-  }): string {
+  static decode(
+    address: string, options: AddressOptionsInterface = {
+      decodeType: Cardano.ADDRESS_TYPES.PAYMENT
+    }
+  ): string {
     const decodeType = options.decodeType ?? Cardano.ADDRESS_TYPES.PAYMENT;
 
     if (
@@ -114,7 +118,7 @@ export class CardanoAddress extends Address {
 
     const serialized = encode([
       this.addressTypes[addressType],
-      [this.addressTypes[addressType], toBuffer(concatBytes(publicKey.getRawCompressed().slice(1), getBytes(chainCode)))],
+      [this.addressTypes[addressType], concatBytes(publicKey.getRawCompressed().slice(1), getBytes(chainCode))],
       addressAttributes
     ]);
 
@@ -133,7 +137,7 @@ export class CardanoAddress extends Address {
   }
 
   static encodeByronIcarus(
-    publicKey: Buffer | string | PublicKey,
+    publicKey: Uint8Array | string | PublicKey,
     chainCode: Uint8Array | string,
     addressType: string = Cardano.ADDRESS_TYPES.PUBLIC_KEY
   ): string {
@@ -142,7 +146,7 @@ export class CardanoAddress extends Address {
   }
 
   static encodeByronLegacy(
-    publicKey: Buffer | string | PublicKey,
+    publicKey: Uint8Array | string | PublicKey,
     path: string,
     pathKey: Uint8Array | string,
     chainCode: Uint8Array | string,
@@ -163,9 +167,9 @@ export class CardanoAddress extends Address {
       pathK, this.chacha20Poly1305Nonce, this.chacha20Poly1305AssociatedData, plain
     );
 
-    const attributes = new Map<number, Buffer>();
-    attributes.set(1, encode(toBuffer(concatBytes(cipherText, tag))));
-    return this.encodeByron(pk, toBuffer(chainCode), attributes, addressType);
+    const attributes = new Map<number, Uint8Array>();
+    attributes.set(1, encode(concatBytes(cipherText, tag)));
+    return this.encodeByron(pk, getBytes(chainCode), attributes, addressType);
   }
 
   static decodeByron(address: string, addressType: string = Cardano.ADDRESS_TYPES.PUBLIC_KEY): string {
@@ -181,7 +185,7 @@ export class CardanoAddress extends Address {
       throw new AddressError('Invalid CBOR tag');
     }
 
-    const payload = tag.value as Buffer;
+    const payload = tag.value as Uint8Array;
     const crcExpected = outer[1];
     const crcActual = bytesToInteger(crc32(payload));
 
@@ -200,11 +204,11 @@ export class CardanoAddress extends Address {
       throw new AddressError('Invalid root hash length', { expected: 28, got: rootHash.length });
     }
 
-    let extra = Buffer.alloc(0);
+    let extra = new Uint8Array(0);
     if (attrs instanceof Map && attrs.has(1)) {
       const attr1 = attrs.get(1);
       const decrypted = decode(attr1);
-      extra = Buffer.isBuffer(decrypted) ? decrypted : Buffer.from(decrypted);
+      extra = typeof decrypted === 'string' ? getBytes(decrypted) : decrypted;
     }
     return bytesToString(concatBytes(rootHash, extra));
   }
@@ -222,8 +226,8 @@ export class CardanoAddress extends Address {
   }
 
   static encodeShelley(
-    publicKey: Buffer | string | PublicKey,
-    stakingPublicKey: Buffer | string | PublicKey,
+    publicKey: Uint8Array | string | PublicKey,
+    stakingPublicKey: Uint8Array | string | PublicKey,
     network: string
   ): string {
     const pk = validateAndGetPublicKey(publicKey, KholawEd25519PublicKey);
@@ -233,7 +237,7 @@ export class CardanoAddress extends Address {
     );
     const hash1 = blake2b224(pk.getRawCompressed().slice(1));
     const hash2 = blake2b224(spk.getRawCompressed().slice(1));
-    return bech32Encode(this.paymentAddressHrp[network], toBuffer(concatBytes(prefix, hash1, hash2)));
+    return bech32Encode(this.paymentAddressHrp[network], concatBytes(prefix, hash1, hash2));
   }
 
   static decodeShelley(address: string, network: string): string {
@@ -244,21 +248,21 @@ export class CardanoAddress extends Address {
     const prefix = integerToBytes(
       (this.prefixTypes['payment'] << 4) + this.networkTypes[network]
     );
-    if (!data.slice(0, 1).equals(prefix)) {
+    if (!equalBytes(data.slice(0, 1), prefix)) {
       throw new AddressError('Invalid prefix');
     }
     return bytesToString(data.slice(1));
   }
 
   static encodeShelleyStaking(
-    publicKey: Buffer | string | PublicKey, network: string
+    publicKey: Uint8Array | string | PublicKey, network: string
   ): string {
     const pk = validateAndGetPublicKey(publicKey, KholawEd25519PublicKey);
     const prefix = integerToBytes(
       (this.prefixTypes['reward'] << 4) + this.networkTypes[network]
     );
     const hash = blake2b224(pk.getRawCompressed().slice(1));
-    return bech32Encode(this.rewardAddressHrp[network], Buffer.concat([prefix, hash]));
+    return bech32Encode(this.rewardAddressHrp[network], concatBytes(prefix, hash));
   }
 
   static decodeShelleyStaking(address: string, network: string): string {
@@ -269,7 +273,7 @@ export class CardanoAddress extends Address {
     const prefix = integerToBytes(
       (this.prefixTypes['reward'] << 4) + this.networkTypes[network]
     );
-    if (!data.slice(0, 1).equals(prefix)) {
+    if (!equalBytes(data.slice(0, 1), prefix)) {
       throw new AddressError('Invalid prefix');
     }
     return bytesToString(data.slice(1));

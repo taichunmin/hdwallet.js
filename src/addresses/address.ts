@@ -10,7 +10,7 @@ export abstract class Address {
   }
 
   static encode(
-    publicKey: Buffer | string | PublicKey | Object, options?: AddressOptionsInterface
+    publicKey: Uint8Array | string | PublicKey | Object, options?: AddressOptionsInterface
   ): string {
     throw new Error('Address.encode() not implemented');
   }
