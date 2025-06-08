@@ -1,13 +1,9 @@
 // SPDX-License-Identifier: MIT
 
-import * as elliptic from 'elliptic';
-
 import { Point } from '../../../point';
 import { SLIP10Ed25519MoneroPoint } from './point';
 import { SLIP10Ed25519PublicKey } from '../../ed25519';
 import { SLIP10_ED25519_CONST } from '../../../../const';
-
-const ec = new elliptic.eddsa('ed25519');
 
 export class SLIP10Ed25519MoneroPublicKey extends SLIP10Ed25519PublicKey {
 
@@ -16,7 +12,7 @@ export class SLIP10Ed25519MoneroPublicKey extends SLIP10Ed25519PublicKey {
   }
 
   getRawCompressed(): Uint8Array {
-    return new Uint8Array(ec.encodePoint(this.publicKey));
+    return this.publicKey.toRawBytes();
   }
 
   static getCompressedLength(): number {

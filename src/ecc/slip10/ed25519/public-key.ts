@@ -1,14 +1,12 @@
 // SPDX-License-Identifier: MIT
 
-import * as elliptic from 'elliptic';
+import { ed25519 } from '@noble/curves/ed25519';
 
 import { PublicKey } from '../../public-key';
 import { Point } from '../../point';
 import { SLIP10_ED25519_CONST } from '../../../const';
 import { SLIP10Ed25519Point } from './point';
-
-const ec = new elliptic.eddsa('ed25519');
-type EdwardsPoint = elliptic.curve.edwards.EdwardsPoint;
+import { concatBytes } from '../../../utils';
 
 export class SLIP10Ed25519PublicKey extends PublicKey {
 
@@ -30,9 +28,7 @@ export class SLIP10Ed25519PublicKey extends PublicKey {
     }
 
     try {
-      const hex = Buffer.from(data).toString('hex');
-      const pt = ec.decodePoint(hex) as EdwardsPoint;
-      if (!ec.curve.validate(pt)) throw new Error();
+      const pt = ed25519.Point.fromHex(data);
       return new this(pt);
     } catch {
       throw new Error('Invalid key bytes');
@@ -57,10 +53,10 @@ export class SLIP10Ed25519PublicKey extends PublicKey {
   }
 
   getRawCompressed(): Uint8Array {
-    return new Uint8Array([
-      ...SLIP10_ED25519_CONST.PUBLIC_KEY_PREFIX,
-      ...ec.encodePoint(this.publicKey)
-    ]);
+    return concatBytes(
+      SLIP10_ED25519_CONST.PUBLIC_KEY_PREFIX,
+      this.publicKey.toRawBytes()
+    );
   }
 
   getRawUncompressed(): Uint8Array {

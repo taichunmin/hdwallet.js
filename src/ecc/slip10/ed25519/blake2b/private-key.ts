@@ -1,12 +1,12 @@
 // SPDX-License-Identifier: MIT
 
-import * as nacl from "tweetnacl-blake2b";
-import { SignKeyPair } from 'tweetnacl-blake2b';
+import * as nacl from 'tweetnacl-blake2b';
 
 import { PrivateKey } from '../../../private-key';
 import { PublicKey } from '../../../public-key';
 import { SLIP10Ed25519Blake2bPublicKey } from './public-key';
 import { SLIP10_ED25519_CONST } from '../../../../const';
+import { getBytes } from '../../../../utils';
 
 export class SLIP10Ed25519Blake2bPrivateKey extends PrivateKey {
 
@@ -20,8 +20,8 @@ export class SLIP10Ed25519Blake2bPrivateKey extends PrivateKey {
       throw new Error('Invalid private key bytes length');
     }
     try {
-      const kp: SignKeyPair = nacl.sign.keyPair.fromSeed(
-          Buffer.from(privateKey)
+      const kp: nacl.SignKeyPair = nacl.sign.keyPair.fromSeed(
+        getBytes(privateKey)
       );
       return new this(kp);
     } catch {

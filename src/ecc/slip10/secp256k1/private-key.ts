@@ -1,13 +1,13 @@
 // SPDX-License-Identifier: MIT
 
-import * as elliptic from 'elliptic';
+import { secp256k1 } from '@noble/curves/secp256k1';
+import { bytesToNumberBE, numberToBytesBE } from '@noble/curves/abstract/utils';
 
 import { PrivateKey } from '../../private-key';
 import { PublicKey } from '../../public-key';
 import { SLIP10Secp256k1PublicKey } from './public-key';
 import { SLIP10_SECP256K1_CONST } from '../../../const';
-
-const ec = new elliptic.ec('secp256k1');
+import { getBytes } from '../../../utils';
 
 export class SLIP10Secp256k1PrivateKey extends PrivateKey {
 
@@ -21,9 +21,10 @@ export class SLIP10Secp256k1PrivateKey extends PrivateKey {
     }
 
     try {
-      const kp = ec.keyFromPrivate(Buffer.from(privateKey));
-      return new SLIP10Secp256k1PrivateKey(kp);
-    } catch (err) {
+      const priv = bytesToNumberBE(getBytes(privateKey));
+      const point = secp256k1.Point.BASE.multiply(priv);
+      return new SLIP10Secp256k1PrivateKey({ priv, point });
+    } catch {
       throw new Error('Invalid private key bytes');
     }
   }
@@ -33,10 +34,9 @@ export class SLIP10Secp256k1PrivateKey extends PrivateKey {
   }
 
   getRaw(): Uint8Array {
-    const privHex = this.privateKey.getPrivate().toString(16).padStart(
-        SLIP10_SECP256K1_CONST.PRIVATE_KEY_BYTE_LENGTH * 2, '0'
+    return numberToBytesBE(
+      this.privateKey.priv, SLIP10_SECP256K1_CONST.PRIVATE_KEY_BYTE_LENGTH
     );
-    return Uint8Array.from(Buffer.from(privHex, 'hex'));
   }
 
   getUnderlyingObject(): any {
@@ -44,7 +44,6 @@ export class SLIP10Secp256k1PrivateKey extends PrivateKey {
   }
 
   getPublicKey(): PublicKey {
-    const pubPoint = this.privateKey.getPublic();
-    return new SLIP10Secp256k1PublicKey(pubPoint);
+    return new SLIP10Secp256k1PublicKey(this.privateKey.point);
   }
 }

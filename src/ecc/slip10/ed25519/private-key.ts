@@ -1,13 +1,11 @@
 // SPDX-License-Identifier: MIT
 
-import * as elliptic from 'elliptic';
+import { ed25519 } from '@noble/curves/ed25519';
 
 import { PrivateKey } from '../../private-key';
 import { PublicKey } from '../../public-key';
 import { SLIP10Ed25519PublicKey } from './public-key';
 import { SLIP10_ED25519_CONST } from '../../../const';
-
-const ec = new elliptic.eddsa('ed25519');
 
 export class SLIP10Ed25519PrivateKey extends PrivateKey {
 
@@ -20,8 +18,7 @@ export class SLIP10Ed25519PrivateKey extends PrivateKey {
       throw new Error('Invalid private key bytes length');
     }
     try {
-      const kp = ec.keyFromSecret(Buffer.from(privateKey));
-      return new this(kp);
+      return new this(privateKey);
     } catch {
       throw new Error('Invalid private key bytes');
     }
@@ -32,8 +29,7 @@ export class SLIP10Ed25519PrivateKey extends PrivateKey {
   }
 
   getRaw(): Uint8Array {
-    const secret = this.privateKey.secret();
-    return new Uint8Array(secret);
+    return this.privateKey as Uint8Array;
   }
 
   getUnderlyingObject(): any {
@@ -41,7 +37,7 @@ export class SLIP10Ed25519PrivateKey extends PrivateKey {
   }
 
   getPublicKey(): PublicKey {
-    const pubBytes = this.privateKey.pubBytes();
-    return SLIP10Ed25519PublicKey.fromBytes(new Uint8Array(pubBytes));
+    const pub = ed25519.getPublicKey(this.getRaw());
+    return SLIP10Ed25519PublicKey.fromBytes(pub);
   }
 }

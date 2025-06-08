@@ -1,14 +1,12 @@
 // SPDX-License-Identifier: MIT
 
-import * as elliptic from 'elliptic';
+import { p256 } from '@noble/curves/p256';
 
 import { PublicKey } from '../../public-key';
 import { Point } from '../../point';
 import { SLIP10Nist256p1Point } from './point';
 import { SLIP10_SECP256K1_CONST } from '../../../const';
-
-const ec = new elliptic.ec('p256');
-type BasePoint = elliptic.curve.base.BasePoint;
+import { getBytes } from '../../../utils';
 
 export class SLIP10Nist256p1PublicKey extends PublicKey {
 
@@ -18,16 +16,15 @@ export class SLIP10Nist256p1PublicKey extends PublicKey {
 
   static fromBytes(publicKey: Uint8Array): PublicKey {
     try {
-      const keyPair = ec.keyFromPublic(Buffer.from(publicKey));
-      const base = keyPair.getPublic();
-      return new SLIP10Nist256p1PublicKey(base);
+      const point = p256.Point.fromHex(getBytes(publicKey));
+      return new SLIP10Nist256p1PublicKey(point);
     } catch {
       throw new Error('Invalid key bytes');
     }
   }
 
   static fromPoint(point: Point): PublicKey {
-    const base = (point as SLIP10Nist256p1Point).getUnderlyingObject() as BasePoint;
+    const base = (point as SLIP10Nist256p1Point).getUnderlyingObject();
     return new SLIP10Nist256p1PublicKey(base);
   }
 
@@ -44,13 +41,11 @@ export class SLIP10Nist256p1PublicKey extends PublicKey {
   }
 
   getRawCompressed(): Uint8Array {
-    const arr = this.publicKey.encode('array', true) as number[];
-    return new Uint8Array(arr);
+    return this.publicKey.toRawBytes(true);
   }
 
   getRawUncompressed(): Uint8Array {
-    const arr = this.publicKey.encode('array', false) as number[];
-    return new Uint8Array(arr);
+    return this.publicKey.toRawBytes(false);
   }
 
   getRaw(): Uint8Array {

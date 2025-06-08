@@ -1,23 +1,17 @@
 // SPDX-License-Identifier: MIT
 
-import * as elliptic from 'elliptic';
-
+import { PrivateKey } from '../../private-key';
 import { KHOLAW_ED25519_CONST } from '../../../const';
 import { SLIP10Ed25519PrivateKey } from '../../slip10';
 import { KholawEd25519PublicKey } from './public-key';
-import { PrivateKey } from '../../private-key';
-import { PublicKey } from '../../public-key';
-import { OptionsPrivateKey } from '../../../interfaces';
 import { pointScalarMulBase } from '../../../libs/ed25519-utils';
-import { bytesToString } from '../../../utils';
-
-const ec = new elliptic.eddsa('ed25519');
-type EdDSAKeyPair = elliptic.eddsa.KeyPair;
+import { OptionsPrivateKey } from '../../../interfaces';
+import { PublicKey } from '../../public-key';
 
 export class KholawEd25519PrivateKey extends SLIP10Ed25519PrivateKey {
 
   constructor(
-      privateKey: EdDSAKeyPair, options: OptionsPrivateKey
+    privateKey: Uint8Array, options: OptionsPrivateKey
   ) {
     if (!options.extendedKey) {
       throw new Error('Extended key is required');
@@ -33,14 +27,12 @@ export class KholawEd25519PrivateKey extends SLIP10Ed25519PrivateKey {
   }
 
   static fromBytes(privateKey: Uint8Array): PrivateKey {
-
     if (privateKey.length !== KHOLAW_ED25519_CONST.PRIVATE_KEY_BYTE_LENGTH) {
       throw new Error('Invalid private key bytes length');
     }
     const privateKeyBytes = privateKey.slice(0, SLIP10Ed25519PrivateKey.getLength());
     const extendedKeyBytes = privateKey.slice(SLIP10Ed25519PrivateKey.getLength());
-    const kp = ec.keyFromSecret(Buffer.from(privateKeyBytes));
-    return new KholawEd25519PrivateKey(kp, { extendedKey: extendedKeyBytes });
+    return new KholawEd25519PrivateKey(privateKeyBytes, { extendedKey: extendedKeyBytes });
   }
 
   static getLength(): number {
@@ -48,20 +40,15 @@ export class KholawEd25519PrivateKey extends SLIP10Ed25519PrivateKey {
   }
 
   getRaw(): Uint8Array {
-    const secret = this.privateKey.secret();
     const combined = new Uint8Array(KholawEd25519PrivateKey.getLength());
-    combined.set(new Uint8Array(secret));
+    combined.set(this.privateKey);
     if (!this.options.extendedKey) throw new Error('Extended key is required');
     combined.set(this.options.extendedKey, SLIP10Ed25519PrivateKey.getLength());
     return combined;
   }
 
   getPublicKey(): PublicKey {
-    const verifyKey = ec.keyFromPublic(
-        bytesToString(pointScalarMulBase(this.privateKey.secret()))
-    );
-    return KholawEd25519PublicKey.fromBytes(
-        verifyKey.getPublic()
-    );
+    const point = pointScalarMulBase(this.privateKey);
+    return KholawEd25519PublicKey.fromBytes(point);
   }
 }

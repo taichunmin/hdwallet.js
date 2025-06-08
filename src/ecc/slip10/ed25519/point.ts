@@ -1,13 +1,9 @@
 // SPDX-License-Identifier: MIT
 
-import * as elliptic from 'elliptic';
-import BN from 'bn.js';
+import { ed25519 } from '@noble/curves/ed25519';
 
 import { Point } from '../../point';
 import { SLIP10_ED25519_CONST } from '../../../const';
-
-const ec = new elliptic.eddsa('ed25519');
-type EdwardsPoint = elliptic.curve.edwards.EdwardsPoint;
 
 export class SLIP10Ed25519Point extends Point {
 
@@ -20,9 +16,7 @@ export class SLIP10Ed25519Point extends Point {
       throw new Error('Invalid point bytes length');
     }
     try {
-      const hex = Buffer.from(point).toString('hex');
-      const pt = ec.decodePoint(hex) as EdwardsPoint;
-      if (!ec.curve.validate(pt)) throw new Error();
+      const pt = ed25519.Point.fromHex(point);
       return new this(pt);
     } catch {
       throw new Error('Invalid point bytes');
@@ -30,10 +24,12 @@ export class SLIP10Ed25519Point extends Point {
   }
 
   static fromCoordinates(x: bigint, y: bigint): Point {
-    const bnX = new BN(x.toString(), 10);
-    const bnY = new BN(y.toString(), 10);
-    const pt = ec.curve.point(bnX, bnY) as EdwardsPoint;
-    return new this(pt);
+    try {
+      const pt = ed25519.Point.fromAffine({ x, y });
+      return new this(pt);
+    } catch {
+      throw new Error('Invalid coordinates for ed25519');
+    }
   }
 
   getUnderlyingObject(): any {
@@ -41,32 +37,31 @@ export class SLIP10Ed25519Point extends Point {
   }
 
   getX(): bigint {
-    return BigInt(this.point.getX().toString(10));
+    return this.point.x;
   }
 
   getY(): bigint {
-    return BigInt(this.point.getY().toString(10));
+    return this.point.y;
   }
 
   getRawEncoded(): Uint8Array {
-    return new Uint8Array(ec.encodePoint(this.point));
+    return this.point.toRawBytes();
   }
 
   getRawDecoded(): Uint8Array {
-    const xBytes = this.point.getX().toArray('be', 32);
-    const yBytes = this.point.getY().toArray('be', 32);
-    return new Uint8Array([...xBytes, ...yBytes]);
+    const xBytes = this.point.x.toString(16).padStart(64, '0');
+    const yBytes = this.point.y.toString(16).padStart(64, '0');
+    return Uint8Array.from(Buffer.from(xBytes + yBytes, 'hex'));
   }
 
   add(point: Point): Point {
-    const other = (point as this).getUnderlyingObject() as EdwardsPoint;
-    const sum = this.point.add(other) as EdwardsPoint;
+    const other = (point as this).getUnderlyingObject();
+    const sum = this.point.add(other);
     return new SLIP10Ed25519Point(sum);
   }
 
   multiply(scalar: bigint): Point {
-    const bn = new BN(scalar.toString(), 10);
-    const prod = this.point.mul(bn) as EdwardsPoint;
+    const prod = this.point.multiply(scalar);
     return new SLIP10Ed25519Point(prod);
   }
 }
