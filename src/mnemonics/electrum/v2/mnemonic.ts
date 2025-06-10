@@ -12,7 +12,7 @@ import {
 } from '../../../interfaces';
 import { hmacSha512 } from '../../../crypto';
 import {
-  getBytes, integerToBytes, bytesToInteger, bytesToString
+  getBytes, integerToBytes, bytesToInteger, bytesToString, toBuffer
 } from '../../../utils';
 import { EntropyError, MnemonicError } from '../../../exceptions';
 import {
@@ -267,7 +267,9 @@ export class ElectrumV2Mnemonic extends Mnemonic {
     ) {
       return false;
     }
-    return this.isType(input, option.mnemonicType);
+    return this.isType(
+      input, option.mnemonicType ?? ELECTRUM_V2_MNEMONIC_TYPES.STANDARD
+    );
   }
 
   static isType(
@@ -275,7 +277,7 @@ export class ElectrumV2Mnemonic extends Mnemonic {
   ): boolean {
 
     const tag = bytesToString(
-      hmacSha512(Buffer.from('Seed version'), this.normalize(input).join(' '))
+      hmacSha512(toBuffer('Seed version'), this.normalize(input).join(' '))
     );
     return tag.startsWith(this.mnemonicTypes[mnemonicType]);
   }

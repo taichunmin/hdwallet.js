@@ -6,7 +6,7 @@ import {
   MnemonicOptionsInterface, AlgorandMnemonicLanguagesInterface, AlgorandMnemonicWordsInterface
 } from '../../interfaces';
 import { sha512_256 } from '../../crypto';
-import { getBytes, bytesToString, convertBits, toBuffer } from '../../utils';
+import { getBytes, bytesToString, convertBits } from '../../utils';
 import { MnemonicError, EntropyError, ChecksumError } from '../../exceptions';
 import { ALGORAND_ENGLISH_WORDLIST } from './wordlists';
 
@@ -71,7 +71,7 @@ export class AlgorandMnemonic extends Mnemonic {
     entropyInput: string | Uint8Array, language: string, options: MnemonicOptionsInterface = { }
   ): string {
 
-    const entropyBytes = toBuffer(entropyInput);
+    const entropyBytes = getBytes(entropyInput);
     if (!AlgorandEntropy.isValidBytesStrength(entropyBytes.length)) {
       throw new EntropyError(
         'Wrong entropy strength', { expected: AlgorandEntropy.strengths, got: entropyBytes.length * 8 }
@@ -117,10 +117,10 @@ export class AlgorandMnemonic extends Mnemonic {
     const allBytes = convertBits(indexes.slice(0, -1), this.wordBitLength, 8);
     if (!allBytes) throw new Error('Bit conversion failed');
     const entropyBytesArr = allBytes.slice(0, -1);
-    const entropyBytes = Uint8Array.from(entropyBytesArr);
+    const entropyBytes = getBytes(entropyBytesArr);
 
     const expectedIdx = (convertBits(
-      sha512_256(toBuffer(entropyBytes)).slice(0, this.checksumLength), 8, this.wordBitLength
+      sha512_256(entropyBytes).slice(0, this.checksumLength), 8, this.wordBitLength
     ) || [])[0];
     const actualIdx = indexes[indexes.length - 1];
 

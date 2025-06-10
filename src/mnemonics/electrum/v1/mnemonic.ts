@@ -6,7 +6,7 @@ import {
   MnemonicOptionsInterface, ElectrumV1MnemonicLanguagesInterface, ElectrumV1MnemonicWordsInterface
 } from '../../../interfaces';
 import {
-  hexToBytes, integerToBytes, bytesToInteger, bytesToHex, getBytes
+  hexToBytes, integerToBytes, bytesToInteger, bytesToHex, getBytes, concatBytes
 } from '../../../utils';
 import { MnemonicError, EntropyError } from '../../../exceptions';
 import { ELECTRUM_V1_ENGLISH_WORDLIST } from './wordlists';
@@ -124,7 +124,7 @@ export class ElectrumV1Mnemonic extends Mnemonic {
     }
 
     const wl = wordsList.length;
-    const bufs: Buffer[] = [];
+    const bufs: Uint8Array[] = [];
 
     for (let i = 0; i < words.length; i += 3) {
       const [w1, w2, w3] = words.slice(i, i + 3);
@@ -138,9 +138,9 @@ export class ElectrumV1Mnemonic extends Mnemonic {
         wl * wl * ((i3 - i2 + wl) % wl);
 
       const chunkBytes = integerToBytes(chunkVal, 4, 'big');
-      bufs.push(Buffer.from(chunkBytes));
+      bufs.push(getBytes(chunkBytes));
     }
-    return bytesToHex(Buffer.concat(bufs), false);
+    return bytesToHex(concatBytes(...bufs), false);
   }
 
   static isValid(

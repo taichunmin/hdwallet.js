@@ -114,7 +114,7 @@ export class BIP39Mnemonic extends Mnemonic {
     if (typeof entropy === 'string') {
       hex = entropy;
     } else if (entropy instanceof Uint8Array) {
-      hex = Buffer.from(entropy).toString('hex');
+      hex = bytesToHex(entropy);
     } else {
       hex = entropy.getEntropy();
     }

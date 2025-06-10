@@ -7,7 +7,7 @@ import {
 } from '../../interfaces';
 import { crc32 } from '../../crypto';
 import {
-  hexToBytes, bytesToHex, bytesToInteger, bytesChunkToWords, wordsToBytesChunk, toBuffer
+  hexToBytes, bytesToHex, bytesToInteger, bytesChunkToWords, wordsToBytesChunk, getBytes, concatBytes
 } from '../../utils';
 import { MnemonicError, EntropyError, ChecksumError } from '../../exceptions';
 import {
@@ -135,7 +135,7 @@ export class MoneroMnemonic extends Mnemonic {
     entropy: string | Uint8Array, language: string, options: MnemonicOptionsInterface = { }
   ): string {
 
-    const entropyBytes = toBuffer(entropy)
+    const entropyBytes = getBytes(entropy);
     if (!MoneroEntropy.isValidBytesStrength(entropyBytes.length)) {
       throw new EntropyError(
         'Wrong entropy strength', { expected: MoneroEntropy.strengths, got: entropyBytes.length * 8 }
@@ -175,8 +175,7 @@ export class MoneroMnemonic extends Mnemonic {
     const count = words.length;
     if (!this.wordsList.includes(count)) {
       throw new MnemonicError(
-        'Invalid word count',
-        { expected: this.wordsList, got: count }
+        'Invalid word count', { expected: this.wordsList, got: count }
       );
     }
 
@@ -202,13 +201,13 @@ export class MoneroMnemonic extends Mnemonic {
       }
     }
 
-    const buffers: Buffer[] = [];
+    const buffers: Uint8Array[] = [];
     for (let i = 0; i < phraseWords.length; i += 3) {
       const [w1, w2, w3] = phraseWords.slice(i, i + 3);
       const chunk = wordsToBytesChunk(w1, w2, w3, wordsList, 'little');
-      buffers.push(Buffer.from(chunk));
+      buffers.push(getBytes(chunk));
     }
-    return bytesToHex(Buffer.concat(buffers), false);
+    return bytesToHex(concatBytes(...buffers), false);
   }
 
   static normalize(input: string | string[]): string[] {
