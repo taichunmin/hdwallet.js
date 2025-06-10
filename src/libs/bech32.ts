@@ -100,7 +100,7 @@ function convertBits(data: number[] | Uint8Array, fromBits: number, toBits: numb
 }
 
 // Final export: exposed API for encoding/decoding Bech32
-export function bech32Encode(hrp: string, witprog: Buffer): string {
+export function bech32Encode(hrp: string, witprog: Uint8Array): string {
   const data = convertBits([...witprog], 8, 5);
   if (!data) {
     throw new Error('bech32Encode: Failed to convert bits from 8 to 5');
@@ -120,7 +120,7 @@ export function bech32Encode(hrp: string, witprog: Buffer): string {
   return ret;
 }
 
-export function bech32Decode(expectedHrp: string, addr: string): [string, Buffer] {
+export function bech32Decode(expectedHrp: string, addr: string): [string, Uint8Array] {
   const [hrp, data] = baseBech32Decode(addr);
   if (hrp !== expectedHrp || !data || data.length === 0) {
     throw new Error('bech32Decode: Invalid HRP or data format');
@@ -130,5 +130,5 @@ export function bech32Decode(expectedHrp: string, addr: string): [string, Buffer
   if (!decoded) {
     throw new Error('bech32Decode: Failed to convert bits from 5 to 8');
   }
-  return [hrp, Buffer.from(decoded)];
+  return [hrp, new Uint8Array(decoded)];
 }

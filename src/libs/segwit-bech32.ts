@@ -1,9 +1,5 @@
 // SPDX-License-Identifier: MIT
 
-/**
- * TypeScript port of Pieter Wuille's reference Bech32 + SegWit implementation
- */
-
 const CHARSET = 'qpzry9x8gf2tvdw0s3jn54khce6mua7l';
 const CHARSET_REV: Record<string, number> = CHARSET
   .split('')
