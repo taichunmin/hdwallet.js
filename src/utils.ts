@@ -1,66 +1,89 @@
 // SPDX-License-Identifier: MIT
 
-import { Buffer } from 'buffer';
+import { randomBytes as nobleRandomBytes } from '@noble/hashes/utils';
 
 import { TypeError, DerivationError } from './exceptions';
 import { DerivationsType, IndexType } from './types';
 import { EnsureTypeMatchOptionsInterface } from './interfaces';
 
-import { randomBytes as nobleRandomBytes } from '@noble/hashes/utils';
-
-/**
- * Return a Uint8Array of cryptographically secure random bytes,
- * using @noble/hashes/utils under the hood. No built-in `crypto` calls.
- */
-export function randomBytes(len: number): Uint8Array {
-  if (!Number.isInteger(len) || len <= 0) {
-    throw new Error('randomBytes: length must be a positive integer');
+export function getBytes(
+  data: Uint8Array | Array<number> | string | null | undefined, encoding: 'hex' | 'utf8' | 'base64' = 'hex'
+): Uint8Array {
+  if (data == null) {
+    return new Uint8Array();
   }
-  return nobleRandomBytes(len);
-}
 
-/**
- * Normalize any Buffer / Uint8Array / string into a Node.js Buffer.
- * - If input is already a Buffer, returns it.
- * - If input is a Uint8Array, turns it into a Buffer.
- * - If input is a hex string (even-length, 0-9 A-F, optional 0x prefix), decodes as hex.
- * - Otherwise encodes the string as UTF-8.
- */
-export function toBuffer(data: Buffer | Uint8Array | string): Buffer {
-  if (Buffer.isBuffer(data)) {
+  // Already a Uint8Array?
+  if (data instanceof Uint8Array) {
     return data;
   }
 
-  if (data instanceof Uint8Array) {
-    // Buffer.from(Uint8Array) works, but ensure slicing views correctly:
-    return Buffer.from(data.buffer, data.byteOffset, data.byteLength);
+  // Array of numbers?
+  if (Array.isArray(data)) {
+    return new Uint8Array(data);
   }
 
-  if (typeof data === 'string') {
-    // strip 0x/0X prefix if present
-    const str = data.startsWith('0x') || data.startsWith('0X')
-      ? data.slice(2)
-      : data;
-
-    // hex-only check (even length, hex digits)
-    if (/^[0-9a-fA-F]+$/.test(str) && str.length % 2 === 0) {
-      return Buffer.from(str, 'hex');
+  // From here on: data is a string
+  const str = data as string;
+  switch (encoding) {
+    case 'hex': {
+      // Strip optional 0x/0X
+      let s = str.startsWith('0x') || str.startsWith('0X') ? str.slice(2) : str;
+      // Pad odd length
+      if (s.length % 2 === 1) s = '0' + s;
+      // Split into byte-pairs and parse
+      return Uint8Array.from(
+        s.match(/.{1,2}/g)!.map(b => parseInt(b, 16))
+      );
     }
+    case 'utf8':
+      return new TextEncoder().encode(str);
 
-    // fallback to UTF-8
-    return Buffer.from(data, 'utf8');
+    case 'base64':
+      // atob → binary-string → map char codes
+      return Uint8Array.from(atob(str), c => c.charCodeAt(0));
+
+    default:
+      throw new Error(`Unsupported encoding: ${encoding}`);
   }
-
-  throw new TypeError(
-    `toBuffer: unsupported data type (${typeof data}), expected Buffer, Uint8Array or string`
-  );
 }
 
-/**
- * Convert a hex string to a Uint8Array of bytes.
- * @param hex - Hex string (may include 0x prefix)
- * @returns Uint8Array
- */
+export function toBuffer(
+  input: string | ArrayLike<number> | ArrayBuffer, encoding: 'utf8' | 'hex' | 'base64' = 'utf8'
+): Uint8Array {
+  if (typeof input === 'string') {
+    switch (encoding) {
+      case 'utf8':
+        // UTF-8 encode a string
+        return new TextEncoder().encode(input);
+
+      case 'base64':
+        // atob gives a binary‐string; map char→byte
+        return Uint8Array.from(atob(input), c => c.charCodeAt(0));
+
+      case 'hex':
+        // split every two hex digits → parse → byte
+        return Uint8Array.from(
+          input.match(/.{1,2}/g)!.map(byte => parseInt(byte, 16))
+        );
+
+      default:
+        throw new Error(`Unsupported encoding: ${encoding}`);
+    }
+  }
+
+  // If it's already an ArrayBuffer or TypedArray
+  if (input instanceof ArrayBuffer) {
+    return new Uint8Array(input);
+  }
+  if (ArrayBuffer.isView(input)) {
+    return new Uint8Array(input.buffer, input.byteOffset, input.byteLength);
+  }
+
+  // Fallback: try Array-like (e.g. number[])
+  return Uint8Array.from(input as any);
+}
+
 export function hexToBytes(hex: string): Uint8Array {
   const normalized = hex.startsWith('0x') ? hex.slice(2) : hex;
   if (normalized.length % 2 !== 0) {
@@ -73,12 +96,6 @@ export function hexToBytes(hex: string): Uint8Array {
   return bytes;
 }
 
-/**
- * Convert a Uint8Array of bytes to a hex string.
- * @param bytes - The byte array
- * @param prefix - Include '0x' prefix (default: false)
- * @returns Hex string
- */
 export function bytesToHex(bytes: Uint8Array, prefix = false): string {
   const hex = Array.from(bytes)
     .map(b => b.toString(16).padStart(2, '0'))
@@ -86,12 +103,6 @@ export function bytesToHex(bytes: Uint8Array, prefix = false): string {
   return prefix ? `0x${hex}` : hex;
 }
 
-/**
- * Convert a Uint8Array or string to a hex string.
- * - If input is a non-empty string of even length containing only hex digits, returns it (lowercased).
- * - Otherwise treats the string as UTF-8 and returns its hex encoding.
- * - Empty or null/undefined inputs yield ''.
- */
 export function bytesToString(
   data: Uint8Array | string | null | undefined
 ): string {
@@ -104,53 +115,27 @@ export function bytesToString(
   }
 
   if (typeof data === 'string') {
-    // pure hex? even length & only 0–9, A–F
+    // If it’s a valid even-length hex string (0–9, A–F, a–f), return it lowercased:
     if (data.length % 2 === 0 && /^[0-9A-Fa-f]+$/.test(data)) {
       return data.toLowerCase();
     }
-    // otherwise treat as UTF-8
-    return Buffer.from(data, 'utf-8').toString('hex');
+    // Otherwise treat `data` as UTF-8 text: encode to Uint8Array then to hex
+    const encoder = new TextEncoder();
+    const bytes = encoder.encode(data);
+    return bytesToHex(bytes);
   }
 
-  // Uint8Array case
+  // Uint8Array case: just convert those bytes to hex
   return bytesToHex(data);
 }
 
-/**
- * Normalize input into a Uint8Array.
- * - If data is a hex string (with or without '0x'), it’s decoded.
- * - If data is a raw string and unhexlify=true, we hex-decode;
- *   otherwise we UTF-8 encode.
- */
-export function getBytes(
-  data: Uint8Array | string, unhexlify: boolean = true
-): Uint8Array {
-  if (!data) {
-    return new Uint8Array();
+export function randomBytes(len: number): Uint8Array {
+  if (!Number.isInteger(len) || len <= 0) {
+    throw new Error('randomBytes: length must be a positive integer');
   }
-  if (data instanceof Uint8Array) {
-    return data;
-  }
-  // string case
-  let str = data;
-  if (unhexlify) {
-    if (str.startsWith('0x') || str.startsWith('0X')) {
-      str = str.slice(2);
-    }
-    if (str.length % 2 === 1) {
-      str = '0' + str;
-    }
-    return new Uint8Array(Buffer.from(str, 'hex'));
-  } else {
-    return new TextEncoder().encode(str);
-  }
+  return nobleRandomBytes(len);
 }
 
-/**
- * Convert a Uint8Array to a bigint, interpreting as big-endian by default.
- * @param bytes - The byte array.
- * @param littleEndian - If true, treat input as little-endian; otherwise big-endian.
- */
 export function bytesToInteger(
   bytes: Uint8Array, littleEndian = false
 ): bigint {
@@ -164,12 +149,39 @@ export function bytesToInteger(
   );
 }
 
-/**
- * Convert a bigint or number to a Uint8Array.
- * @param value      The integer value to encode
- * @param length     Desired byte length (optional; pads)
- * @param endianness 'big' (default) or 'little'
- */
+export function ensureString(data: Uint8Array | string): string {
+  if (data instanceof Uint8Array) {
+    return new TextDecoder().decode(data);
+  }
+  if (typeof data === 'string') {
+    return data;
+  }
+  throw new TypeError('Invalid value for string');
+}
+
+export function stringToInteger(data: Uint8Array | string): bigint {
+  let buf: Uint8Array;
+  if (typeof data === 'string') {
+    // treat string as hex (even-length hex string)
+    buf = hexToBytes(data);
+  } else {
+    buf = data;
+  }
+  let val = BigInt(0);
+  for (let i = 0; i < buf.length; i++) {
+    val = (val << BigInt(8)) + BigInt(buf[i]);
+  }
+  return val;
+}
+
+export function equalBytes(a: Uint8Array, b: Uint8Array): boolean {
+  if (a.length !== b.length) return false;
+  for (let i = 0; i < a.length; i++) {
+    if (a[i] !== b[i]) return false;
+  }
+  return true;
+}
+
 export function integerToBytes(
   value: bigint | number, length?: number, endianness: 'big' | 'little' = 'big'
 ): Uint8Array {
@@ -210,7 +222,7 @@ export function integerToBytes(
   return endianness === 'little' ? result.reverse() : result;
 }
 
-export function concatBytes(...chunks: Uint8Array[]): Buffer {
+export function concatBytes(...chunks: Uint8Array[]): Uint8Array {
   const totalLength = chunks.reduce((sum, arr) => sum + arr.length, 0);
   const result = new Uint8Array(totalLength);
   let offset = 0;
@@ -218,12 +230,9 @@ export function concatBytes(...chunks: Uint8Array[]): Buffer {
     result.set(chunk, offset);
     offset += chunk.length;
   }
-  return toBuffer(result);
+  return result;
 }
 
-/**
- * Convert a byte array to its binary string, optionally zero-padding.
- */
 export function bytesToBinaryString(
   data: Uint8Array, zeroPadBits: number = 0
 ): string {
@@ -233,9 +242,6 @@ export function bytesToBinaryString(
   return bits.length < zeroPadBits ? bits.padStart(zeroPadBits, '0') : bits;
 }
 
-/**
- * Convert a binary string (or byte array) into a bigint.
- */
 export function binaryStringToInteger(
   data: Uint8Array | string
 ): bigint {
@@ -247,9 +253,6 @@ export function binaryStringToInteger(
   return BigInt('0b' + clean);
 }
 
-/**
- * Convert a (possibly large) integer into its binary string, optionally zero-padded.
- */
 export function integerToBinaryString(
   data: number | bigint, zeroPadBits: number = 0
 ): string {
@@ -260,12 +263,8 @@ export function integerToBinaryString(
     : bits;
 }
 
-/**
- * Convert a binary string (or byte array) back into a Uint8Array.
- */
 export function binaryStringToBytes(
-  data: Uint8Array | string,
-  zeroPadByteLen: number = 0
+  data: Uint8Array | string, zeroPadByteLen: number = 0
 ): Uint8Array {
   const bits =
     typeof data === 'string'
@@ -285,19 +284,12 @@ export function binaryStringToBytes(
   if (hex.length < expectedHexLen) {
     hex = hex.padStart(expectedHexLen, '0');
   }
-  return new Uint8Array(Buffer.from(hex, 'hex'));
+  return hexToBytes(hex);
 }
 
-/**
- * Returns true if every input (all of the same type) is equal:
- * - strings, numbers or booleans compared with `===`
- * - Array of primitives (e.g., number[], string[], boolean[]) by length + deep comparison
- * - Buffer/Uint8Array/ArrayBuffer/TypedArray/DataView by byte-by-byte comparison
- * If any two inputs differ in type, returns false.
- */
 export function isAllEqual(
   ...inputs: (
-    Uint8Array | Buffer | ArrayBuffer | ArrayBufferView |
+    Uint8Array | ArrayBuffer | ArrayBufferView |
     string | number | boolean |
     string[] | number[] | boolean[]
   )[]
@@ -315,7 +307,6 @@ export function isAllEqual(
       return 'array:unknown';
     }
     if (v instanceof Uint8Array) return 'uint8array';
-    if (Buffer.isBuffer(v))      return 'buffer';
     if (v instanceof ArrayBuffer) return 'arraybuffer';
     if (ArrayBuffer.isView(v))   return 'view';
     return 'unknown';
@@ -348,7 +339,6 @@ export function isAllEqual(
 
   const normalize = (v: any): Uint8Array => {
     if (v instanceof Uint8Array) return v;
-    if (Buffer.isBuffer(v))      return Uint8Array.from(v);
     if (v instanceof ArrayBuffer) return new Uint8Array(v);
     return new Uint8Array(v.buffer, v.byteOffset, v.byteLength);
   };
@@ -366,9 +356,6 @@ export function isAllEqual(
   });
 }
 
-/**
- * Generate a random passphrase of ASCII letters and digits.
- */
 export function generatePassphrase(length = 32): string {
   const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
   const bytes = randomBytes(length);
@@ -379,25 +366,20 @@ export function generatePassphrase(length = 32): string {
   return result;
 }
 
-/**
- * Return the HMAC seed for the specified elliptic curve algorithm.
- */
-export function getHmac(eccName: string): Buffer {
+export function getHmac(eccName: string): Uint8Array {
+  const encoder = new TextEncoder();
   if ([
     'Kholaw-Ed25519', 'SLIP10-Ed25519', 'SLIP10-Ed25519-Blake2b', 'SLIP10-Ed25519-Monero',
   ].includes(eccName)) {
-    return Buffer.from('ed25519 seed', 'utf-8');
+    return encoder.encode('ed25519 seed');
   } else if (eccName === 'SLIP10-Nist256p1') {
-    return Buffer.from('Nist256p1 seed', 'utf-8');
+    return encoder.encode('Nist256p1 seed');
   } else if (eccName === 'SLIP10-Secp256k1') {
-    return Buffer.from('Bitcoin seed', 'utf-8');
+    return encoder.encode('Bitcoin seed');
   }
   throw new DerivationError('Unknown ECC name');
 }
 
-/**
- * Recursively exclude keys (after replacing '-'→'_') from a nested object.
- */
 export function excludeKeys(
   nested: Record<string, any>, keys: string[]
 ): Record<string, any> {
@@ -413,7 +395,7 @@ export function excludeKeys(
       typeof v === 'object' &&
       !Array.isArray(v) &&
       !(v instanceof Uint8Array) &&
-      !(v instanceof Buffer)
+      !(v instanceof Uint8Array)
     ) {
       out[k] = excludeKeys(v, keys);
     } else {
@@ -423,9 +405,6 @@ export function excludeKeys(
   return out;
 }
 
-/**
- * Convert a BIP-32 path string to an array of indexes.
- */
 export function pathToIndexes(path: string): number[] {
   if (path === 'm' || path === 'm/') return [];
   if (!path.startsWith('m/')) {
@@ -443,9 +422,6 @@ export function pathToIndexes(path: string): number[] {
     );
 }
 
-/**
- * Convert an array of indexes to a BIP-32 path string.
- */
 export function indexesToPath(indexes: number[]): string {
   return (
     'm' +
@@ -459,9 +435,6 @@ export function indexesToPath(indexes: number[]): string {
   );
 }
 
-/**
- * Normalize an index input.
- */
 export function normalizeIndex(
   index: IndexType, hardened = false
 ): DerivationsType {
@@ -504,9 +477,6 @@ export function normalizeIndex(
   );
 }
 
-/**
- * Normalize either a path or an index array.
- */
 export function normalizeDerivation(
   path?: string, indexes?: number[]
 ): [string, number[], DerivationsType[]] {
@@ -552,9 +522,6 @@ export function normalizeDerivation(
   return [_path, _indexes, _deriv];
 }
 
-/**
- * Convert an IndexTuple back to a single integer.
- */
 export function indexTupleToInteger(idx: DerivationsType): number {
   if (idx.length === 2) {
     const [i, h] = idx;
@@ -565,9 +532,6 @@ export function indexTupleToInteger(idx: DerivationsType): number {
   }
 }
 
-/**
- * Convert an IndexTuple to its string form.
- */
 export function indexTupleToString(idx: DerivationsType): string {
   if (idx.length === 2) {
     const [i, h] = idx;
@@ -578,45 +542,30 @@ export function indexTupleToString(idx: DerivationsType): string {
   }
 }
 
-/**
- * Parse a single 'n' or 'n'' string to [number, hardened].
- */
 export function indexStringToTuple(i: string): [number, boolean] {
   const hardened = i.endsWith("'");
   const num = parseInt(hardened ? i.slice(0, -1) : i, 10);
   return [num, hardened];
 }
 
-/**
- * Byte-wise XOR of two buffers.
- */
-export function xor(a: Buffer, b: Buffer): Buffer {
+export function xor(a: Uint8Array, b: Uint8Array): Uint8Array {
   if (a.length !== b.length)
-    throw new DerivationError('Buffers must match length for XOR');
-  return Buffer.from(a.map((x, i) => x ^ b[i]));
+    throw new DerivationError('Uint8Arrays must match length for XOR');
+  return getBytes(a.map((x, i) => x ^ b[i]));
 }
 
-/**
- * Byte-wise addition without carry.
- */
-export function addNoCarry(a: Buffer, b: Buffer): Buffer {
+export function addNoCarry(a: Uint8Array, b: Uint8Array): Uint8Array {
   if (a.length !== b.length)
-    throw new DerivationError('Buffers must match length for addNoCarry');
-  return Buffer.from(a.map((x, i) => (x + b[i]) & 0xff));
+    throw new DerivationError('Uint8Arrays must match length for addNoCarry');
+  return getBytes(a.map((x, i) => (x + b[i]) & 0xff));
 }
 
-/**
- * Multiply each byte by scalar without carry.
- */
 export function multiplyScalarNoCarry(
-  data: Buffer, scalar: number
-): Buffer {
-  return Buffer.from(data.map(x => (x * scalar) & 0xff));
+  data: Uint8Array, scalar: number
+): Uint8Array {
+  return getBytes(data.map(x => (x * scalar) & 0xff));
 }
 
-/**
- * Check/set/reset bits.
- */
 export function isBitsSet(value: number, bitNum: number): boolean {
   return (value & (1 << bitNum)) !== 0;
 }
@@ -636,18 +585,12 @@ export function resetBits(value: number, mask: number): number {
   return value & ~mask;
 }
 
-/**
- * Reverse a Buffer’s bytes.
- */
-export function bytesReverse(data: Buffer): Buffer {
-  return Buffer.from(data).reverse();
+export function bytesReverse(data: Uint8Array): Uint8Array {
+  return getBytes(data).reverse();
 }
 
-/**
- * Convert data between bit-widths.
- */
 export function convertBits(
-  data: number[] | Buffer, fromBits: number, toBits: number
+  data: number[] | Uint8Array, fromBits: number, toBits: number
 ): number[] | null {
   const input = Array.isArray(data) ? data : Array.from(data);
   const maxVal = (1 << toBits) - 1;
@@ -675,11 +618,8 @@ export function convertBits(
   return out;
 }
 
-/**
- * Map a 4-byte chunk into three words.
- */
 export function bytesChunkToWords(
-  bytesChunk: Buffer, wordsList: string[], endianness: 'little' | 'big'
+  bytesChunk: Uint8Array, wordsList: string[], endianness: 'little' | 'big'
 ): [string, string, string] {
   const len = BigInt(wordsList.length);
   let chunkNum = bytesToInteger(new Uint8Array(bytesChunk), endianness !== 'big');
@@ -689,12 +629,9 @@ export function bytesChunkToWords(
   return [wordsList[i1], wordsList[i2], wordsList[i3]];
 }
 
-/**
- * Inverse: three words → 4-byte Buffer.
- */
 export function wordsToBytesChunk(
   w1: string, w2: string, w3: string, wordsList: string[], endianness: 'little' | 'big'
-): Buffer {
+): Uint8Array {
   const len = BigInt(wordsList.length);
   const idxMap = new Map(wordsList.map((w, i) => [w, BigInt(i)]));
   const i1 = idxMap.get(w1)!;
@@ -702,7 +639,7 @@ export function wordsToBytesChunk(
   const i3 = idxMap.get(w3)!;
   const chunk = i1 + len * ((i2 - i1 + len) % len) + len * len * ((i3 - i2 + len) % len);
   const u8 = integerToBytes(chunk, 4, endianness);
-  return Buffer.from(u8);
+  return getBytes(u8);
 }
 
 export function toCamelCase(input: string): string {
