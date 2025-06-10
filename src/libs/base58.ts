@@ -1,84 +1,53 @@
 // SPDX-License-Identifier: MIT
 
 import { sha256, keccak256 } from '../crypto';
-import { bytesToString } from '../utils';
+import {
+  bytesToString, stringToInteger, concatBytes, hexToBytes, equalBytes
+} from '../utils';
 
-const DEFAULT_ALPHABET = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz";
-
-/**
- * EIP-55 / XDC address checksum encoding.
- */
 export function checksumEncode(
-  address: string,
-  crypto: "eth" | "xdc" = "eth"
+  address: string, crypto: 'eth' | 'xdc' = 'eth'
 ): string {
-  const prefix = crypto === "eth" ? "0x" : "xdc";
-  let addr = address.toLowerCase().replace(/^0x|^xdc/, "");
-  const hash = bytesToString(keccak256(addr));
-  let out = "";
+  const prefix = crypto === 'eth' ? '0x' : 'xdc';
+  // lower-case and strip “0x” or “xdc” prefix
+  let addr = address.toLowerCase().replace(/^0x|^xdc/, '');
+  // keccak256 expects a Uint8Array of ASCII bytes, so convert hex chars to their char codes
+  const asciiBytes = new Uint8Array(addr.length);
+  for (let i = 0; i < addr.length; i++) {
+    asciiBytes[i] = addr.charCodeAt(i);
+  }
+  const hashHex = bytesToString(keccak256(asciiBytes)); // 64-char hex of the 32-byte keccak
+  let out = '';
   for (let i = 0; i < addr.length; i++) {
     const c = addr[i];
-    out += parseInt(hash[i], 16) >= 8
-      ? c.toUpperCase()
-      : c;
+    // hashHex[i] is a hex character; parse its value 0–15
+    out += parseInt(hashHex[i], 16) >= 8 ? c.toUpperCase() : c;
   }
   return prefix + out;
 }
 
-/**
- * Convert a Buffer or string into a BigInt.
- */
-function stringToInt(data: Buffer | string): bigint {
-  const buf = typeof data === "string"
-    ? Buffer.from(data, "utf8")
-    : data;
-  let val = BigInt(0);
-  for (let i = 0; i < buf.length; i++) {
-    // shift left by 8 bits each iteration
-    val = (val << BigInt(8)) + BigInt(buf[i]);
-  }
-  return val;
-}
-
-/**
- * Ensure the input is a UTF-8 string.
- */
-export function ensureString(data: Buffer | string): string {
-  if (Buffer.isBuffer(data)) {
-    return data.toString("utf8");
-  }
-  if (typeof data === "string") {
-    return data;
-  }
-  throw new TypeError("Invalid value for string");
-}
-
-/**
- * Base58 encode (no checksum).
- */
 export function encode(
-  data: Buffer | string,
-  alphabet = DEFAULT_ALPHABET
+  data: Uint8Array | string,
+  alphabet = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz'
 ): string {
-  const buf = typeof data === "string"
-    ? Buffer.from(data, "utf8")
-    : data;
+  const buf: Uint8Array =
+    typeof data === 'string' ? hexToBytes(data) : data;
 
-  let val = stringToInt(buf);
+  let val = stringToInteger(buf);
   const base = BigInt(alphabet.length);
-  let enc = "";
+  let enc = '';
 
+  // convert to Base58 digits
   while (val >= base) {
     const mod = Number(val % base);
     enc = alphabet[mod] + enc;
     val = val / base;
   }
-
   if (val > BigInt(0)) {
     enc = alphabet[Number(val)] + enc;
   }
 
-  // preserve leading zeros
+  // preserve leading zero bytes
   let leading = 0;
   for (const b of buf) {
     if (b === 0) leading++;
@@ -87,108 +56,86 @@ export function encode(
   return alphabet[0].repeat(leading) + enc;
 }
 
-/**
- * Base58Check encode.
- */
 export function checkEncode(
-  raw: Buffer | string,
-  alphabet = DEFAULT_ALPHABET
+  raw: Uint8Array | string, alphabet = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz'
 ): string {
-  const buf = typeof raw === "string"
-    ? Buffer.from(raw, "utf8")
-    : raw;
+  const buf: Uint8Array =
+    typeof raw === 'string' ? hexToBytes(raw) : raw;
   const hash1 = sha256(buf);
   const hash2 = sha256(hash1);
-  const chk   = hash2.slice(0, 4);
-  return encode(Buffer.concat([buf, chk]), alphabet);
+  const chk = hash2.slice(0, 4); // first 4 bytes
+  const payload = concatBytes(buf, chk);
+  return encode(payload, alphabet);
 }
 
-/**
- * Decode a Base58 (no-checksum) string into a Buffer.
- */
 export function decode(
-  input: string,
-  alphabet = DEFAULT_ALPHABET
-): Buffer {
-  const bytes = Buffer.from(input, "ascii");
+  input: string, alphabet = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz'
+): Uint8Array {
   let val = BigInt(0);
   let prefixZeros = 0;
 
-  for (const b of bytes) {
-    const char = String.fromCharCode(b);
+  // for each Base58 character, accumulate into a big integer
+  for (const char of input) {
     const idx = alphabet.indexOf(char);
     if (idx < 0) {
       throw new Error(`Invalid Base58 character '${char}'`);
     }
     val = val * BigInt(alphabet.length) + BigInt(idx);
-    // count leading zeros: when val stays zero
     if (val === BigInt(0)) {
       prefixZeros++;
     }
   }
 
+  // convert big integer into bytes (big-endian)
   const outBytes: number[] = [];
   while (val > BigInt(0)) {
     const mod = Number(val % BigInt(256));
     outBytes.push(mod);
     val = val / BigInt(256);
   }
-
+  // restore leading zero bytes
   for (let i = 0; i < prefixZeros; i++) {
     outBytes.push(0);
   }
 
-  return Buffer.from(outBytes.reverse());
+  return new Uint8Array(outBytes.reverse());
 }
 
-/**
- * Decode a Base58Check string, verify its 4-byte checksum, and return the raw payload.
- */
 export function checkDecode(
-  enc: string,
-  alphabet = DEFAULT_ALPHABET
-): Buffer {
+  enc: string, alphabet = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz'
+): Uint8Array {
   const full = decode(enc, alphabet);
   if (full.length < 5) {
-    throw new Error("Input too short for Base58Check");
+    throw new Error('Input too short for Base58Check');
   }
-
-  const raw = full.slice(0, -4);
-  const chk = full.slice(-4);
+  const raw = full.slice(0, full.length - 4);
+  const chk = full.slice(full.length - 4);
 
   const hash1 = sha256(raw);
   const hash2 = sha256(hash1);
-
   const expected = hash2.slice(0, 4);
-  if (!chk.equals(expected)) {
-    throw new Error("Base58Check checksum failed");
-  }
 
+  if (!equalBytes(chk, expected)) {
+    throw new Error('Base58Check checksum failed');
+  }
   return raw;
 }
 
-/**
- * Left-pad a Base58 string to a given length.
- */
 export function pad(
-  enc: string,
-  padLen: number,
-  alphabet = DEFAULT_ALPHABET
+  enc: string, padLen: number, alphabet = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz'
 ): string {
   return enc.padStart(padLen, alphabet[0]);
 }
 
-/**
- * Monero-style Base58 encoding.
- */
-export function encodeMonero(data: Buffer): string {
+export function encodeMonero(data: Uint8Array): string {
   const blockEncLen = 11;
   const blockDecLen = 8;
+  // sizes[k] = encoded length for a k-byte block
   const sizes = [0, 2, 3, 5, 6, 7, 9, 10, 11];
   const buf = data;
   const fullBlocks = Math.floor(buf.length / blockDecLen);
   const lastLen = buf.length % blockDecLen;
-  let out = "";
+  let out = '';
 
   for (let i = 0; i < fullBlocks; i++) {
     const block = buf.slice(i * blockDecLen, (i + 1) * blockDecLen);
@@ -201,17 +148,11 @@ export function encodeMonero(data: Buffer): string {
   return out;
 }
 
-/**
- * Remove left padding from a decoded Monero block.
- */
-function unpad(dec: Buffer, unpadLen: number): Buffer {
+function unpad(dec: Uint8Array, unpadLen: number): Uint8Array {
   return dec.slice(dec.length - unpadLen);
 }
 
-/**
- * Monero-style Base58 decoding.
- */
-export function decodeMonero(data: string): Buffer {
+export function decodeMonero(data: string): Uint8Array {
   const blockEncLen = 11;
   const blockDecLen = 8;
   const sizes = [0, 2, 3, 5, 6, 7, 9, 10, 11];
@@ -224,13 +165,13 @@ export function decodeMonero(data: string): Buffer {
 
   for (let i = 0; i < fullBlocks; i++) {
     const chunk = data.slice(i * blockEncLen, (i + 1) * blockEncLen);
-    const dec   = decode(chunk);
+    const dec = decode(chunk);
     out.push(...unpad(dec, blockDecLen));
   }
   if (lastEncLen > 0) {
     const chunk = data.slice(fullBlocks * blockEncLen);
-    const dec   = decode(chunk);
+    const dec = decode(chunk);
     out.push(...unpad(dec, lastDecLen));
   }
-  return Buffer.from(out);
+  return new Uint8Array(out);
 }
