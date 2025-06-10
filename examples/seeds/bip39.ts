@@ -5,14 +5,14 @@ import { isAllEqual } from '../../src/utils';
 
 const data = {
   name: 'BIP39',
-  mnemonic: 'abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about',
+  mnemonic: '跡 靈 訟 勾 慌 吞 前 願 詩 奇 希 綱',
   seeds: [
     {
-      seed: '5eb00bbddcf069084889a8ab9155568165f5c453ccb85e70811aaed6f6da5fc19a5ac40b389cd370d086206dec8aa6c43daea6690f20ad3d8d48b2d2ce9e38e4',
+      seed: '95ec2455c470704c2a8081324dfecfea53fe4dabac114ad7958b1f4942cd83e10f5f8f1c43ad026a07f3142eeb29dcc72a3b08c6a964904852e6dd3d6945d3b5',
       passphrase: null
     },
     {
-      seed: 'bc8279bcc79d3cd026cc662d94e88519a0a5e783cccfdb65b0717bc28164dc360777ef6b5eed44440ee892558f19d1b38f508a9851fac42b02d34e240cc61597',
+      seed: '55af5d879d868bdff000e9f9828ac5d5fa95af1552cd0366727acef1e195c870603a336ea3fd502ceb0013617a8fbb3ce99b5a8c0179ec70ce7cbe019245520e',
       passphrase: 'talonlab'
     }
   ]
@@ -37,6 +37,6 @@ for (const seed of data.seeds) {
 
   console.log('Name:', data.name);
   console.log('Mnemonic:', data.mnemonic);
-  console.log('Seed:', seed.seed);
+  console.log('Seed:', BIP39Seed.fromMnemonic(data.mnemonic, { passphrase: seed.passphrase }));
   console.log('Passphrase:', seed.passphrase, '\n');
 }

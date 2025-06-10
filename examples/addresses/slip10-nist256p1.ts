@@ -2,7 +2,7 @@
 
 import {
   PrivateKey, PublicKey, SLIP10Nist256p1PrivateKey
-} from '../../src/ecc';
+} from '../../src/eccs';
 
 import { NeoAddress } from '../../src/addresses';
 import { bytesToString, getBytes } from '../../src/utils';

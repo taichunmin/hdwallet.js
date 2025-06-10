@@ -4,7 +4,7 @@ import { BIP44Derivation, CHANGES } from '../derivations';
 import { Bitcoin } from '../cryptocurrencies';
 import { P2PKHAddress } from '../addresses';
 import { BIP32HD } from './bip32';
-import { PUBLIC_KEY_TYPES } from '../const';
+import { PUBLIC_KEY_TYPES } from '../consts';
 import { HDAddressOptionsInterface, HDOptionsInterface } from '../interfaces';
 import { ensureTypeMatch } from '../utils';
 import { DerivationError } from '../exceptions';

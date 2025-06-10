@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 
 import { bech32Encode, bech32Decode } from '../libs/bech32';
-import { PublicKey, SLIP10Secp256k1PublicKey, validateAndGetPublicKey } from '../ecc';
+import { PublicKey, SLIP10Secp256k1PublicKey, validateAndGetPublicKey } from '../eccs';
 import { Zilliqa } from '../cryptocurrencies';
 import { sha256 } from '../crypto';
 import { bytesToString } from '../utils';

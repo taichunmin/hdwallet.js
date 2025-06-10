@@ -2,7 +2,7 @@
 
 import { Solana } from '../cryptocurrencies';
 import { encode as base58Encode, decode as base58Decode } from '../libs/base58';
-import { SLIP10Ed25519PublicKey, PublicKey, validateAndGetPublicKey } from '../ecc';
+import { SLIP10Ed25519PublicKey, PublicKey, validateAndGetPublicKey } from '../eccs';
 import { bytesToString, getBytes, ensureString } from '../utils';
 import { AddressError } from '../exceptions';
 import { Address } from './address';

@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: MIT
 
 import { checkEncode } from '../libs/base58';
-import { PUBLIC_KEY_TYPES } from '../const';
-import { PublicKey, SLIP10Secp256k1PublicKey, validateAndGetPublicKey } from '../ecc';
+import { PUBLIC_KEY_TYPES } from '../consts';
+import { PublicKey, SLIP10Secp256k1PublicKey, validateAndGetPublicKey } from '../eccs';
 import { hash160, sha256 } from '../crypto';
 import { getBytes, integerToBytes, bytesToString, concatBytes, ensureString } from '../utils';
 import { AddressOptionsInterface } from '../interfaces';

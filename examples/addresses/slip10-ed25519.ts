@@ -2,7 +2,7 @@
 
 import {
   PrivateKey, PublicKey, SLIP10Ed25519PrivateKey
-} from '../../src/ecc';
+} from '../../src/eccs';
 import {
   AlgorandAddress,
   MultiversXAddress,

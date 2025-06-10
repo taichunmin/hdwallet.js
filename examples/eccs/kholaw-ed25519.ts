@@ -10,7 +10,7 @@ import {
   KholawEd25519Point,
   KholawEd25519PublicKey,
   KholawEd25519PrivateKey,
-} from '../../src/ecc';
+} from '../../src/eccs';
 import { hexToBytes, bytesToString, isAllEqual } from '../../src/utils';
 
 const ecc: typeof EllipticCurveCryptography = ECCS.getECCClass(KholawEd25519ECC.NAME);

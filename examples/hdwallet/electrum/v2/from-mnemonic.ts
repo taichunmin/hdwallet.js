@@ -6,7 +6,7 @@ import {
 } from '../../../../src/mnemonics';
 import { ElectrumDerivation } from '../../../../src/derivations';
 import { Bitcoin as Cryptocurrency } from '../../../../src/cryptocurrencies';
-import { MODES, PUBLIC_KEY_TYPES } from '../../../../src/const';
+import { MODES, PUBLIC_KEY_TYPES } from '../../../../src/consts';
 import { ElectrumV2HD } from '../../../../src/hds';
 
 const hdwallet: HDWallet = new HDWallet(

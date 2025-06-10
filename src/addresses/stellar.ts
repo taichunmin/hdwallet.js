@@ -3,7 +3,7 @@
 import { Stellar } from '../cryptocurrencies';
 import { encodeNoPadding, decode as base32Decode } from '../libs/base32';
 import { xmodemCrc } from '../crypto';
-import { SLIP10Ed25519PublicKey, PublicKey, validateAndGetPublicKey } from '../ecc';
+import { SLIP10Ed25519PublicKey, PublicKey, validateAndGetPublicKey } from '../eccs';
 import { bytesToString, bytesReverse, integerToBytes, concatBytes, getBytes, equalBytes } from '../utils';
 import { AddressOptionsInterface } from '../interfaces';
 import { AddressError } from '../exceptions';

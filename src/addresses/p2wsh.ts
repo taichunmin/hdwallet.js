@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: MIT
 
 import { segwitEncode } from '../libs/segwit-bech32';
-import { PUBLIC_KEY_TYPES } from '../const';
-import { PublicKey, SLIP10Secp256k1PublicKey, validateAndGetPublicKey } from '../ecc';
+import { PUBLIC_KEY_TYPES } from '../consts';
+import { PublicKey, SLIP10Secp256k1PublicKey, validateAndGetPublicKey } from '../eccs';
 import { Bitcoin } from '../cryptocurrencies';
 import { sha256 } from '../crypto';
 import { bytesToString, getBytes, ensureString } from '../utils';

@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 
 import { CoinTypes } from '../slip44';
-import { SLIP10Secp256k1ECC } from '../ecc';
+import { SLIP10Secp256k1ECC } from '../eccs';
 import {
   Info,
   WitnessVersions,
@@ -14,7 +14,7 @@ import {
   Params,
   XPrivateKeyVersions,
   XPublicKeyVersions
-} from '../const';
+} from '../consts';
 import { Cryptocurrency, Network } from './cryptocurrency';
 
 export class Mainnet extends Network {

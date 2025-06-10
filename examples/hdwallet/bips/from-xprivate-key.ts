@@ -3,7 +3,7 @@
 import { HDWallet } from '../../../src/hdwallet';
 import { Qtum as Cryptocurrency } from '../../../src/cryptocurrencies';
 import { CustomDerivation } from '../../../src/derivations';
-import { PUBLIC_KEY_TYPES, SEMANTICS } from '../../../src/const';
+import { PUBLIC_KEY_TYPES, SEMANTICS } from '../../../src/consts';
 import { BIP141HD } from '../../../src/hds';
 
 const hdwallet: HDWallet = new HDWallet(

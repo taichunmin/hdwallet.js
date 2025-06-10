@@ -5,7 +5,7 @@ import { Bitcoin } from '../cryptocurrencies';
 import { P2WPKHAddress } from '../addresses';
 import { BIP32HD } from './bip32';
 import { BIP44HD } from './bip44';
-import { PUBLIC_KEY_TYPES } from '../const';
+import { PUBLIC_KEY_TYPES } from '../consts';
 import { serialize } from '../keys';
 import { HDAddressOptionsInterface, HDOptionsInterface } from '../interfaces';
 import { integerToBytes, ensureTypeMatch } from '../utils';

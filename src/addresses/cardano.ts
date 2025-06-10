@@ -1,11 +1,11 @@
 // SPDX-License-Identifier: MIT
 
-import { encode, encodeCanonical, Tagged, decode } from 'cbor';
+import { encode, decode, Tag } from 'cbor2';
 
 import { Cardano } from '../cryptocurrencies';
 import { bech32Encode, bech32Decode } from '../libs/bech32';
 import { encode as base58Encode, decode as base58Decode } from '../libs/base58';
-import { KholawEd25519PublicKey, PublicKey, validateAndGetPublicKey } from '../ecc';
+import { KholawEd25519PublicKey, PublicKey, validateAndGetPublicKey } from '../eccs';
 import { crc32, blake2b224, sha3_256, chacha20Poly1305Encrypt } from '../crypto';
 import {
   getBytes, bytesToInteger, bytesToString, integerToBytes, pathToIndexes, concatBytes, ensureString, equalBytes
@@ -118,7 +118,7 @@ export class CardanoAddress extends Address {
 
     const serialized = encode([
       this.addressTypes[addressType],
-      [this.addressTypes[addressType], concatBytes(publicKey.getRawCompressed().slice(1), getBytes(chainCode))],
+      [this.addressTypes[addressType], concatBytes(publicKey.getRawCompressed().slice(1), chainCode)],
       addressAttributes
     ]);
 
@@ -130,8 +130,8 @@ export class CardanoAddress extends Address {
     ]);
 
 
-    const full = encodeCanonical([
-      new Tagged(this.payloadTag, payload), bytesToInteger(crc32(payload))
+    const full = encode([
+      new Tag(this.payloadTag, payload), bytesToInteger(crc32(payload))
     ]);
     return ensureString(base58Encode(full));
   }
@@ -174,9 +174,9 @@ export class CardanoAddress extends Address {
 
   static decodeByron(address: string, addressType: string = Cardano.ADDRESS_TYPES.PUBLIC_KEY): string {
     const decoded = base58Decode(address);
-    const outer = decode(decoded) as [Tagged, number];
+    const outer = decode(decoded) as [Tag, number];
 
-    if (!Array.isArray(outer) || outer.length !== 2 || !(outer[0] instanceof Tagged)) {
+    if (!Array.isArray(outer) || outer.length !== 2 || !(outer[0] instanceof Tag)) {
       throw new AddressError('Invalid address encoding');
     }
 
@@ -185,7 +185,7 @@ export class CardanoAddress extends Address {
       throw new AddressError('Invalid CBOR tag');
     }
 
-    const payload = tag.value as Uint8Array;
+    const payload = tag.contents as Uint8Array;
     const crcExpected = outer[1];
     const crcActual = bytesToInteger(crc32(payload));
 
@@ -204,7 +204,7 @@ export class CardanoAddress extends Address {
       throw new AddressError('Invalid root hash length', { expected: 28, got: rootHash.length });
     }
 
-    let extra = new Uint8Array(0);
+    let extra: any = new Uint8Array(0);
     if (attrs instanceof Map && attrs.has(1)) {
       const attr1 = attrs.get(1);
       const decrypted = decode(attr1);

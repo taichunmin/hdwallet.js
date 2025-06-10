@@ -5,12 +5,12 @@ import { ElectrumDerivation } from '../../derivations';
 import { Bitcoin } from '../../cryptocurrencies';
 import {
   PublicKey, PrivateKey, SLIP10Secp256k1ECC, SLIP10Secp256k1PrivateKey, SLIP10Secp256k1PublicKey
-} from '../../ecc';
+} from '../../eccs';
 import {
   getBytes, bytesToString, bytesToInteger, integerToBytes, ensureTypeMatch, concatBytes
 } from '../../utils';
 import { doubleSha256 } from '../../crypto';
-import { WIF_TYPES, PUBLIC_KEY_TYPES } from '../../const';
+import { WIF_TYPES, PUBLIC_KEY_TYPES } from '../../consts';
 import { privateKeyToWIF, wifToPrivateKey } from '../../wif';
 import { P2PKHAddress } from '../../addresses';
 import { SeedError, DerivationError, PrivateKeyError, PublicKeyError, WIFError, BaseError } from '../../exceptions';

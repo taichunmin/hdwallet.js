@@ -2,7 +2,7 @@
 
 import {
   PrivateKey, PublicKey, SLIP10Ed25519Blake2bPrivateKey
-} from '../../src/ecc';
+} from '../../src/eccs';
 import { NanoAddress } from '../../src/addresses';
 import { bytesToString, getBytes } from '../../src/utils';
 

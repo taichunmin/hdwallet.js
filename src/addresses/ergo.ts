@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 
 import { encode, decode } from '../libs/base58';
-import { PublicKey, SLIP10Secp256k1PublicKey, validateAndGetPublicKey } from '../ecc';
+import { PublicKey, SLIP10Secp256k1PublicKey, validateAndGetPublicKey } from '../eccs';
 import { Ergo } from '../cryptocurrencies';
 import { blake2b256 } from '../crypto';
 import {

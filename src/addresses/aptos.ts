@@ -2,7 +2,7 @@
 
 import { Aptos } from '../cryptocurrencies';
 import { sha3_256 } from '../crypto';
-import { SLIP10Ed25519PublicKey, PublicKey, validateAndGetPublicKey } from '../ecc';
+import { SLIP10Ed25519PublicKey, PublicKey, validateAndGetPublicKey } from '../eccs';
 import { bytesToString, integerToBytes } from '../utils';
 import { AddressError } from '../exceptions';
 import { Address } from './address';

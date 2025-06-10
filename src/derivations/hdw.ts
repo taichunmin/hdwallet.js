@@ -12,7 +12,7 @@ import {
   KholawEd25519ECC,
   SLIP10Ed25519Blake2bECC,
   SLIP10Ed25519MoneroECC
-} from '../ecc';
+} from '../eccs';
 import { DerivationOptionsInterface } from '../interfaces';
 import { IndexType, DerivationsType } from '../types';
 import { DerivationError } from '../exceptions';

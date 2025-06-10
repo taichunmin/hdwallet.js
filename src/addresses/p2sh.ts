@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: MIT
 
 import { checkDecode, checkEncode } from '../libs/base58';
-import { PUBLIC_KEY_TYPES } from '../const';
-import { PublicKey, SLIP10Secp256k1PublicKey, validateAndGetPublicKey } from '../ecc';
+import { PUBLIC_KEY_TYPES } from '../consts';
+import { PublicKey, SLIP10Secp256k1PublicKey, validateAndGetPublicKey } from '../eccs';
 import { Bitcoin } from '../cryptocurrencies';
 import { hash160 } from '../crypto';
 import { AddressError } from '../exceptions';

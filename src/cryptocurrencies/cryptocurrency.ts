@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-import { EllipticCurveCryptography } from '../ecc';
+import { EllipticCurveCryptography } from '../eccs';
 import {
   Info,
   WitnessVersions,
@@ -15,7 +15,7 @@ import {
   Params,
   XPrivateKeyVersions,
   XPublicKeyVersions,
-} from '../const';
+} from '../consts';
 
 export class Network {
 
@@ -43,7 +43,9 @@ export class Network {
   static REWARD_ADDRESS_HRP?: string;
 
   static getName(): string {
-    return this.prototype.constructor.name.toLowerCase();
+    const name = this.prototype.constructor.name;
+    const base = name.includes('$') ? name.slice(0, name.indexOf('$')) : name;
+    return base.toLowerCase();
   }
 }
 

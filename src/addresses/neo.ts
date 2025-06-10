@@ -3,7 +3,7 @@
 import { Neo } from '../cryptocurrencies';
 import { checkEncode, checkDecode } from '../libs/base58';
 import { hash160 } from '../crypto';
-import { SLIP10Nist256p1PublicKey, PublicKey, validateAndGetPublicKey } from '../ecc';
+import { SLIP10Nist256p1PublicKey, PublicKey, validateAndGetPublicKey } from '../eccs';
 import {
   integerToBytes, bytesToString, concatBytes, getBytes, ensureString, equalBytes
 } from '../utils';

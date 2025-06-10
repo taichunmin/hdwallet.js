@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 
 import { checkEncode, checkDecode } from '../libs/base58';
-import { PublicKey, SLIP10Secp256k1PublicKey, validateAndGetPublicKey } from '../ecc';
+import { PublicKey, SLIP10Secp256k1PublicKey, validateAndGetPublicKey } from '../eccs';
 import { Tron } from '../cryptocurrencies';
 import { keccak256 } from '../crypto';
 import {

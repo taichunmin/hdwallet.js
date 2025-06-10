@@ -1,18 +1,18 @@
 // SPDX-License-Identifier: MIT
 
-import { HDWallet } from '../../../src/hdwallet';
+import { HDWallet } from '../../../src';
 import { BIP39_ENTROPY_STRENGTHS, BIP39Entropy } from '../../../src/entropies';
 import { BIP39_MNEMONIC_LANGUAGES } from '../../../src/mnemonics';
 import { Bitcoin as Cryptocurrency } from '../../../src/cryptocurrencies';
 import { BIP44Derivation, CHANGES } from '../../../src/derivations';
-import { PUBLIC_KEY_TYPES } from '../../../src/const';
+import { PUBLIC_KEY_TYPES } from '../../../src/consts';
 import { BIP32HD } from '../../../src/hds';
 
 const hdwallet: HDWallet = new HDWallet(
   Cryptocurrency, {
     hd: BIP32HD,
     network: Cryptocurrency.NETWORKS.MAINNET,
-    language: BIP39_MNEMONIC_LANGUAGES.CHINESE_SIMPLIFIED,
+    language: BIP39_MNEMONIC_LANGUAGES.ENGLISH,
     publicKeyType: PUBLIC_KEY_TYPES.COMPRESSED,
     passphrase: null
   }

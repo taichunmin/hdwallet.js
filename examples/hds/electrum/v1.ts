@@ -3,7 +3,7 @@
 import { ElectrumV1HD } from '../../../src/hds';
 import { Bitcoin as Cryptocurrency } from '../../../src/cryptocurrencies';
 import { ElectrumDerivation } from '../../../src/derivations';
-import { PUBLIC_KEY_TYPES } from '../../../src/const';
+import { PUBLIC_KEY_TYPES } from '../../../src/consts';
 
 const electrumV1HD: ElectrumV1HD = new ElectrumV1HD({
   publicKeyType: PUBLIC_KEY_TYPES.COMPRESSED,

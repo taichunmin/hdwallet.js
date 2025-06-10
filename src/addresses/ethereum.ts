@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-import { PublicKey, SLIP10Secp256k1PublicKey, validateAndGetPublicKey } from '../ecc';
+import { PublicKey, SLIP10Secp256k1PublicKey, validateAndGetPublicKey } from '../eccs';
 import { Ethereum } from '../cryptocurrencies';
 import { keccak256 } from '../crypto';
 import { bytesToString } from '../utils';

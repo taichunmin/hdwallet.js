@@ -2,7 +2,7 @@
 
 import {
   PrivateKey, PublicKey, KholawEd25519PrivateKey
-} from '../../src/ecc';
+} from '../../src/eccs';
 import { CardanoAddress } from '../../src/addresses';
 import { bytesToString, getBytes } from '../../src/utils';
 import { Cardano } from '../../src/cryptocurrencies';

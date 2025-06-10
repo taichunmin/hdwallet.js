@@ -2,7 +2,7 @@
 
 import { CosmosAddress } from './cosmos';
 import { Avalanche } from '../cryptocurrencies';
-import { PublicKey } from '../ecc';
+import { PublicKey } from '../eccs';
 import { AddressOptionsInterface } from '../interfaces';
 import { Address } from './address';
 import { AddressError } from '../exceptions';

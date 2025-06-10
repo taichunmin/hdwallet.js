@@ -2,7 +2,7 @@
 
 import { ElectrumV2HD } from '../../../../src/hds';
 import { Bitcoin as Cryptocurrency } from '../../../../src/cryptocurrencies';
-import { MODES, PUBLIC_KEY_TYPES } from '../../../../src/const';
+import { MODES, PUBLIC_KEY_TYPES } from '../../../../src/consts';
 import { ElectrumDerivation } from '../../../../src/derivations';
 
 const electrumV2HD: ElectrumV2HD = new ElectrumV2HD({

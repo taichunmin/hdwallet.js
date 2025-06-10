@@ -2,7 +2,7 @@
 
 import { HD } from '../hd';
 import { ElectrumDerivation, CustomDerivation } from '../../derivations';
-import { PUBLIC_KEY_TYPES, MODES, WIF_TYPES } from '../../const';
+import { PUBLIC_KEY_TYPES, MODES, WIF_TYPES } from '../../consts';
 import { P2PKHAddress, P2WPKHAddress } from '../../addresses';
 import { privateKeyToWIF } from '../../wif';
 import { Bitcoin } from '../../cryptocurrencies';

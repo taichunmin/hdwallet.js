@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-import { PublicKey } from '../ecc';
+import { PublicKey } from '../eccs';
 import { AddressOptionsInterface } from '../interfaces';
 
 export abstract class Address {

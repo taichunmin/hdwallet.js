@@ -3,7 +3,7 @@
 import { segwitEncode, segwitDecode } from '../libs/segwit-bech32';
 import {
   PublicKey, SLIP10Secp256k1ECC, SLIP10Secp256k1Point, SLIP10Secp256k1PublicKey, validateAndGetPublicKey
-} from '../ecc';
+} from '../eccs';
 import { Bitcoin } from '../cryptocurrencies';
 import { sha256 } from '../crypto';
 import {

@@ -10,7 +10,7 @@ import {
   SLIP10Secp256k1Point,
   SLIP10Secp256k1PublicKey,
   SLIP10Secp256k1PrivateKey
-} from '../../src/ecc';
+} from '../../src/eccs';
 import { hexToBytes, bytesToString, isAllEqual } from '../../src/utils';
 
 const ecc: typeof EllipticCurveCryptography = ECCS.getECCClass(SLIP10Secp256k1ECC.NAME);

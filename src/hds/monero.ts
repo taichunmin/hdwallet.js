@@ -11,7 +11,7 @@ import {
   SLIP10Ed25519MoneroPublicKey,
   PrivateKey,
   PublicKey
-} from '../ecc';
+} from '../eccs';
 import { getBytes, bytesToString, integerToBytes, bytesToInteger, ensureTypeMatch, concatBytes } from '../utils';
 import { MoneroDerivation } from '../derivations';
 import { DerivationError, AddressError, NetworkError, PrivateKeyError, PublicKeyError, SeedError } from '../exceptions';
@@ -155,7 +155,7 @@ export class MoneroHD extends HD {
     }
 
     const m = intDecode(scalarReduce(keccak256(concatBytes(
-      new TextEncoder().encode('SubAddr\x00'),
+      Buffer.from('SubAddr\x00', 'utf-8'),
       this.viewPrivateKey.getRaw(),
       integerToBytes(majorIndex, 4, 'little'),
       integerToBytes(minorIndex, 4, 'little')
@@ -226,7 +226,8 @@ export class MoneroHD extends HD {
   }
 
   getSubAddress(
-    minor: number = this.derivation.getMinor(), major: number = this.derivation.getMajor()
+    minor: number = this.derivation.getMinor(),
+    major: number = this.derivation.getMajor()
   ): string {
 
     if (minor === 0 && major === 0) {

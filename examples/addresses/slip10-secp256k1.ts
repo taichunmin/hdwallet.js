@@ -2,7 +2,7 @@
 
 import {
   PrivateKey, PublicKey, SLIP10Secp256k1PrivateKey
-} from '../../src/ecc';
+} from '../../src/eccs';
 import {
   P2PKHAddress,
   P2SHAddress,
@@ -26,7 +26,7 @@ import {
   ZilliqaAddress,
   InjectiveAddress
 } from '../../src/addresses';
-import { PUBLIC_KEY_TYPES } from '../../src/const';
+import { PUBLIC_KEY_TYPES } from '../../src/consts';
 import { bytesToString, getBytes } from '../../src/utils';
 import {
   Bitcoin, Cosmos, Filecoin, Avalanche, Ergo, OKTChain, Harmony, Zilliqa, Injective

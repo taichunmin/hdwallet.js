@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 
 import { encodeNoPadding, decode } from '../libs/base32';
-import { PublicKey, SLIP10Secp256k1PublicKey, validateAndGetPublicKey } from '../ecc';
+import { PublicKey, SLIP10Secp256k1PublicKey, validateAndGetPublicKey } from '../eccs';
 import { Filecoin } from '../cryptocurrencies';
 import { blake2b160, blake2b32 } from '../crypto';
 import {

@@ -5,12 +5,12 @@ import { Bitcoin } from '../cryptocurrencies';
 import { Derivation, CustomDerivation } from '../derivations';
 import {
   EllipticCurveCryptography, PublicKey, PrivateKey, KholawEd25519PrivateKey
-} from '../ecc';
+} from '../eccs';
 import { Seed } from '../seeds';
 import {
   P2PKHAddress, P2SHAddress, P2TRAddress, P2WPKHAddress, P2WPKHInP2SHAddress, P2WSHAddress, P2WSHInP2SHAddress
 } from '../addresses';
-import { PUBLIC_KEY_TYPES, WIF_TYPES } from '../const';
+import { PUBLIC_KEY_TYPES, WIF_TYPES } from '../consts';
 import { hmacSha256, hmacSha512, ripemd160, sha256 } from '../crypto';
 import { privateKeyToWIF, wifToPrivateKey, getWIFType } from '../wif';
 import { serialize, deserialize, isValidKey, isRootKey } from '../keys';

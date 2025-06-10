@@ -4,7 +4,7 @@ import { HDWallet } from '../../../src/hdwallet';
 import { Algorand as Cryptocurrency } from '../../../src/cryptocurrencies';
 import { AlgorandSeed } from '../../../src/seeds';
 import { BIP44Derivation, CHANGES } from '../../../src/derivations';
-import { PUBLIC_KEY_TYPES } from '../../../src/const';
+import { PUBLIC_KEY_TYPES } from '../../../src/consts';
 import { BIP32HD } from '../../../src/hds';
 
 const hdwallet: HDWallet = new HDWallet(

@@ -2,7 +2,7 @@
 
 import { MultiversX } from '../cryptocurrencies';
 import { bech32Encode, bech32Decode } from '../libs/bech32';
-import { SLIP10Ed25519PublicKey, PublicKey, validateAndGetPublicKey } from '../ecc';
+import { SLIP10Ed25519PublicKey, PublicKey, validateAndGetPublicKey } from '../eccs';
 import { bytesToString, getBytes } from '../utils';
 import { AddressOptionsInterface } from '../interfaces';
 import { AddressError } from '../exceptions';

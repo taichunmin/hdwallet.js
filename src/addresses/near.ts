@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 
 import { AddressError } from '../exceptions';
-import { SLIP10Ed25519PublicKey, PublicKey, validateAndGetPublicKey } from '../ecc';
+import { SLIP10Ed25519PublicKey, PublicKey, validateAndGetPublicKey } from '../eccs';
 import { bytesToString, getBytes } from '../utils';
 import { Address } from './address';
 

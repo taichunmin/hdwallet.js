@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 
 import { CoinTypes } from '../slip44';
-import { KholawEd25519ECC } from '../ecc';
+import { KholawEd25519ECC } from '../eccs';
 import {
   Info,
   NestedNamespace,
@@ -15,7 +15,7 @@ import {
   Params,
   XPrivateKeyVersions,
   XPublicKeyVersions
-} from '../const';
+} from '../consts';
 import { Cryptocurrency, Network } from './cryptocurrency';
 
 export class Types extends NestedNamespace {

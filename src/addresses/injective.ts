@@ -2,7 +2,7 @@
 
 import { EthereumAddress } from './ethereum';
 import { bech32Encode, bech32Decode } from '../libs/bech32';
-import { PublicKey, SLIP10Secp256k1PublicKey, validateAndGetPublicKey } from '../ecc';
+import { PublicKey, SLIP10Secp256k1PublicKey, validateAndGetPublicKey } from '../eccs';
 import { Injective } from '../cryptocurrencies';
 import { bytesToString, getBytes } from '../utils';
 import { Address } from './address';

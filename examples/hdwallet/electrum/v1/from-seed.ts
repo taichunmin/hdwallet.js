@@ -4,7 +4,7 @@ import { HDWallet } from '../../../../src/hdwallet';
 import { ElectrumV1Seed } from '../../../../src/seeds';
 import { ElectrumDerivation } from '../../../../src/derivations';
 import { Bitcoin as Cryptocurrency } from '../../../../src/cryptocurrencies';
-import { PUBLIC_KEY_TYPES } from '../../../../src/const';
+import { PUBLIC_KEY_TYPES } from '../../../../src/consts';
 import { ElectrumV1HD } from '../../../../src/hds';
 
 const hdwallet: HDWallet = new HDWallet(

@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 
 import { Icon } from '../cryptocurrencies';
-import { PublicKey, SLIP10Secp256k1PublicKey, validateAndGetPublicKey } from '../ecc';
+import { PublicKey, SLIP10Secp256k1PublicKey, validateAndGetPublicKey } from '../eccs';
 import { sha3_256 } from '../crypto';
 import { getBytes, bytesToString } from '../utils';
 import { Address } from './address';

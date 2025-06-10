@@ -10,7 +10,7 @@ import {
   SLIP10Ed25519Blake2bPoint,
   SLIP10Ed25519Blake2bPublicKey,
   SLIP10Ed25519Blake2bPrivateKey,
-} from '../../src/ecc';
+} from '../../src/eccs';
 import { hexToBytes, bytesToString, isAllEqual } from '../../src/utils';
 
 const ecc: typeof EllipticCurveCryptography = ECCS.getECCClass(SLIP10Ed25519Blake2bECC.NAME);

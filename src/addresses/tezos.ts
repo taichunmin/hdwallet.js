@@ -2,7 +2,7 @@
 
 import { Tezos } from '../cryptocurrencies';
 import { checkEncode, checkDecode } from '../libs/base58';
-import { SLIP10Ed25519PublicKey, PublicKey, validateAndGetPublicKey } from '../ecc';
+import { SLIP10Ed25519PublicKey, PublicKey, validateAndGetPublicKey } from '../eccs';
 import { blake2b160 } from '../crypto';
 import { bytesToString, concatBytes, getBytes, ensureString, equalBytes } from '../utils';
 import { AddressOptionsInterface } from '../interfaces';

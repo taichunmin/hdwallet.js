@@ -3,7 +3,7 @@
 import { Monero } from '../cryptocurrencies';
 import { decodeMonero, encodeMonero } from '../libs/base58';
 import { keccak256 } from '../crypto';
-import { SLIP10Ed25519MoneroPublicKey, PublicKey, validateAndGetPublicKey } from '../ecc';
+import { SLIP10Ed25519MoneroPublicKey, PublicKey, validateAndGetPublicKey } from '../eccs';
 import {
   bytesToString, concatBytes, ensureTypeMatch, getBytes, integerToBytes, equalBytes
 } from '../utils';

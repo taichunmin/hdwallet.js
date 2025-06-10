@@ -2,7 +2,7 @@
 
 import { EthereumAddress } from './ethereum';
 import { bech32Encode, bech32Decode } from '../libs/bech32';
-import { PublicKey } from '../ecc';
+import { PublicKey } from '../eccs';
 import { OKTChain } from '../cryptocurrencies';
 import { bytesToString, getBytes } from '../utils';
 import { AddressOptionsInterface } from '../interfaces';

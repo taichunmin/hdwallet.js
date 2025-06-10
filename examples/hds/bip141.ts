@@ -3,7 +3,7 @@
 import { BIP141HD } from '../../src/hds';
 import { Bitcoin as Cryptocurrency } from '../../src/cryptocurrencies';
 import { CustomDerivation } from '../../src/derivations';
-import { PUBLIC_KEY_TYPES, SEMANTICS } from '../../src/const';
+import { PUBLIC_KEY_TYPES, SEMANTICS } from '../../src/consts';
 
 const bip141HD: BIP141HD = new BIP141HD({
   ecc: Cryptocurrency.ECC,

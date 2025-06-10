@@ -2,7 +2,7 @@
 
 import {
   PrivateKey, PublicKey, SLIP10Ed25519MoneroPrivateKey
-} from '../../src/ecc';
+} from '../../src/eccs';
 import { MoneroAddress } from '../../src/addresses';
 import { bytesToString, getBytes } from '../../src/utils';
 import { Monero } from '../../src/cryptocurrencies';

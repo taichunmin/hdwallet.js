@@ -4,7 +4,7 @@ import { Nano } from '../cryptocurrencies';
 import { AddressError } from '../exceptions';
 import { decode as base32Decode, encodeNoPadding } from '../libs/base32';
 import { blake2b40 } from '../crypto';
-import { SLIP10Ed25519Blake2bPublicKey, PublicKey, validateAndGetPublicKey } from '../ecc';
+import { SLIP10Ed25519Blake2bPublicKey, PublicKey, validateAndGetPublicKey } from '../eccs';
 import { bytesToString, bytesReverse, getBytes, concatBytes, equalBytes } from '../utils';
 import { Address } from './address';
 

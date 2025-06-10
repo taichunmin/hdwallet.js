@@ -10,7 +10,7 @@ import {
   SLIP10Ed25519MoneroPoint,
   SLIP10Ed25519MoneroPublicKey,
   SLIP10Ed25519MoneroPrivateKey,
-} from '../../src/ecc';
+} from '../../src/eccs';
 import { hexToBytes, bytesToString, isAllEqual } from '../../src/utils';
 
 const ecc: typeof EllipticCurveCryptography = ECCS.getECCClass(SLIP10Ed25519MoneroECC.NAME);

@@ -3,7 +3,7 @@
 import { BIP32HD } from '../../src/hds';
 import { Bitcoin as Cryptocurrency } from '../../src/cryptocurrencies';
 import { CustomDerivation } from '../../src/derivations';
-import { PUBLIC_KEY_TYPES } from '../../src/const';
+import { PUBLIC_KEY_TYPES } from '../../src/consts';
 
 const bip32HD: BIP32HD = new BIP32HD({
   ecc: Cryptocurrency.ECC,

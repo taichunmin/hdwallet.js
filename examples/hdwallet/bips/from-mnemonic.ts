@@ -4,7 +4,7 @@ import { HDWallet } from '../../../src/hdwallet';
 import { BIP39Mnemonic, BIP39_MNEMONIC_LANGUAGES, BIP39_MNEMONIC_WORDS } from '../../../src/mnemonics';
 import { Bitcoin as Cryptocurrency } from '../../../src/cryptocurrencies';
 import { BIP84Derivation, CHANGES } from '../../../src/derivations';
-import { PUBLIC_KEY_TYPES } from '../../../src/const';
+import { PUBLIC_KEY_TYPES } from '../../../src/consts';
 import { BIP84HD } from '../../../src/hds';
 
 const hdwallet: HDWallet = new HDWallet(

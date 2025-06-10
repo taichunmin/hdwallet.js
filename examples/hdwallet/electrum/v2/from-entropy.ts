@@ -5,7 +5,7 @@ import { ElectrumV2Entropy, ELECTRUM_V2_ENTROPY_STRENGTHS } from '../../../../sr
 import { ELECTRUM_V2_MNEMONIC_LANGUAGES, ELECTRUM_V2_MNEMONIC_TYPES } from '../../../../src/mnemonics';
 import { ElectrumDerivation } from '../../../../src/derivations';
 import { Bitcoin as Cryptocurrency } from '../../../../src/cryptocurrencies';
-import { MODES, PUBLIC_KEY_TYPES } from '../../../../src/const';
+import { MODES, PUBLIC_KEY_TYPES } from '../../../../src/consts';
 import { ElectrumV2HD } from '../../../../src/hds';
 
 const hdwallet: HDWallet = new HDWallet(
