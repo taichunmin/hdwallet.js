@@ -4,7 +4,7 @@ import { Entropy, ENTROPIES } from './entropies';
 import { Mnemonic, ElectrumV2Mnemonic, MoneroMnemonic, ELECTRUM_V2_MNEMONIC_TYPES, MNEMONICS } from './mnemonics';
 import { Seed, BIP39Seed, CardanoSeed, ElectrumV2Seed, SEEDS } from './seeds';
 import { HD, HDS } from './hds';
-import { PUBLIC_KEY_TYPES, SEMANTICS, MODES } from './const';
+import { PUBLIC_KEY_TYPES, SEMANTICS, MODES } from './consts';
 import { Cryptocurrency, Network } from './cryptocurrencies/cryptocurrency';
 import { deserialize, isValidKey } from './keys';
 import { HDWalletAddressOptionsInterface, HDWalletOptionsInterface } from './interfaces';

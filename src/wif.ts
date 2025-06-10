@@ -2,8 +2,8 @@
 
 import { Bitcoin } from './cryptocurrencies';
 import { encode as base58Encode, decode as base58Decode } from './libs/base58';
-import { getBytes, integerToBytes, bytesToString, concatBytes } from './utils';
-import { SLIP10_SECP256K1_CONST, WIF_TYPES } from './const';
+import { getBytes, integerToBytes, bytesToString, concatBytes, equalBytes } from './utils';
+import { SLIP10_SECP256K1_CONST, WIF_TYPES } from './consts';
 import { getChecksum } from './crypto';
 import { WIFError, ECCError } from './exceptions';
 
@@ -32,11 +32,11 @@ export function encodeWIF(
 
 export function decodeWIF(
   wif: string, wifPrefix: number = Bitcoin.NETWORKS.MAINNET.WIF_PREFIX
-): [Buffer, string, Buffer] {
+): [Uint8Array, string, Uint8Array] {
 
   const raw = base58Decode(wif);
   const prefix = integerToBytes(wifPrefix, 1);
-  if (!raw.subarray(0, prefix.length).equals(prefix)) {
+  if (!equalBytes(raw.subarray(0, prefix.length), prefix)) {
     throw new WIFError('Invalid Wallet Import Format (WIF) prefix');
   }
 
@@ -49,7 +49,7 @@ export function decodeWIF(
     const compressedPrefix = integerToBytes(
       SLIP10_SECP256K1_CONST.PRIVATE_KEY_COMPRESSED_PREFIX, 1
     );
-    if (privateKey.subarray(-1).equals(compressedPrefix)) {
+    if (equalBytes(privateKey.subarray(-1), compressedPrefix)) {
       privateKey = privateKey.subarray(0, -1);
       wifType = 'wif-compressed';
     }
