@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-import cbor from 'cbor';
+import { encode } from 'cbor2';
 
 import { Seed } from './seed';
 import { BIP39Seed } from './bip39';
@@ -8,7 +8,7 @@ import { SeedOptionsInterface } from '../interfaces';
 import { Cardano } from '../cryptocurrencies'
 import { Mnemonic, BIP39Mnemonic } from '../mnemonics'
 import { blake2b256 } from '../crypto'
-import { bytesToString } from '../utils'
+import { bytesToString, hexToBytes } from '../utils'
 import { MnemonicError, SeedError } from '../exceptions'
 
 export class CardanoSeed extends Seed {
@@ -83,8 +83,8 @@ export class CardanoSeed extends Seed {
       throw new MnemonicError(`Invalid Cardano mnemonic words`);
     }
     const decoded = BIP39Mnemonic.decode(phrase);
-    const rawBytes = Buffer.from(decoded, 'hex');
-    const cborBytes = cbor.encode(rawBytes);
+    const rawBytes = hexToBytes(decoded);
+    const cborBytes = encode(rawBytes);
     const hash = blake2b256(cborBytes);
     return bytesToString(hash);
   }

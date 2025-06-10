@@ -21,7 +21,7 @@ export class Mnemonic {
   ) {
     const constructor = this.constructor as typeof Mnemonic;
     const words = constructor.normalize(mnemonic);
-      constructor.decode(mnemonic, options);
+
     if (!constructor.isValid(words, options)) {
       throw new MnemonicError('Invalid mnemonic words');
     }

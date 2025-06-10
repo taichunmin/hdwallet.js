@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: MIT
 
 import { Seed } from '../seed';
-import { sha256 } from '../../crypto';
 import { Mnemonic, ElectrumV1Mnemonic } from '../../mnemonics';
-import { bytesToString, concatBytes } from '../../utils';
+import { sha256 } from '../../crypto';
+import { bytesToString, concatBytes, toBuffer } from '../../utils';
 import { MnemonicError } from '../../exceptions';
 
 export class ElectrumV1Seed extends Seed {
@@ -22,7 +22,7 @@ export class ElectrumV1Seed extends Seed {
       throw new MnemonicError(`Invalid ${this.getName()} mnemonic words`);
     }
     const entropy = ElectrumV1Mnemonic.decode(phrase);
-    const entropyBuffer = Buffer.from(entropy, 'utf8');
+    const entropyBuffer = toBuffer(entropy, 'utf8');
     let entropyHash = entropyBuffer;
 
     for (let i = 0; i < this.hashIterationNumber; i++) {
