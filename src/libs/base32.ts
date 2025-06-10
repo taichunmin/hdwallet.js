@@ -1,12 +1,12 @@
 // SPDX-License-Identifier: MIT
 
-import { Encoder, Decoder } from 'base32.js';
+// @ts-ignore: no declaration file for 'base32.js'
+import * as base32 from 'base32.js';
 
-const DEFAULT_ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567';
+import { hexToBytes, bytesToHex } from '../utils';
 
-/*───────────────────────── helpers ─────────────────────────*/
+const ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567';
 
-/** translate characters between two alphabets (used for custom alphabets) */
 const translate = (s: string, from: string, to: string) =>
   s.split('')
     .map(c => {
@@ -15,32 +15,27 @@ const translate = (s: string, from: string, to: string) =>
     })
     .join('');
 
-/** add “=” padding so the Base-32 length is a multiple of 8 */
 const pad = (s: string) => (s.length % 8 ? s + '='.repeat(8 - (s.length % 8)) : s);
 
-/*───────────────────────── encode ─────────────────────────*/
-
 export function encode(hex: string, customAlphabet?: string): string {
-  const bytes   = Buffer.from(hex, 'hex');
-  const encoder = new Encoder({ type: 'rfc4648', alphabet: DEFAULT_ALPHABET });
+  const bytes   = hexToBytes(hex);
+  const encoder = new base32.Encoder({ type: 'rfc4648', alphabet: ALPHABET });
   const b32     = encoder.write(bytes).finalize().toUpperCase(); // base32.js returns lower
-  return customAlphabet ? translate(b32, DEFAULT_ALPHABET, customAlphabet) : b32;
+  return customAlphabet ? translate(b32, ALPHABET, customAlphabet) : b32;
 }
 
 export const encodeNoPadding = (hex: string, alpha?: string) =>
   encode(hex, alpha).replace(/=+$/, '');
 
-/*───────────────────────── decode ─────────────────────────*/
-
 export function decode(data: string, customAlphabet?: string): string {
   try {
     let inp = pad(data);
     if (customAlphabet) {
-      inp = translate(inp, customAlphabet, DEFAULT_ALPHABET);
+      inp = translate(inp, customAlphabet, ALPHABET);
     }
-    const dec   = new Decoder({ type: 'rfc4648', alphabet: DEFAULT_ALPHABET });
-    const bytes = dec.write(inp).finalize();        // Uint8Array
-    return Buffer.from(bytes).toString('hex');
+    const dec   = new base32.Decoder({ type: 'rfc4648', alphabet: ALPHABET });
+    const bytes = dec.write(inp).finalize();
+    return bytesToHex(bytes);
   } catch {
     throw new Error('Invalid Base32 string');
   }
