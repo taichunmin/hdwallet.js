@@ -1,8 +1,7 @@
 // SPDX-License-Identifier: MIT
 
 import { NetworkError } from './exceptions';
-import { bytesToInteger } from './utils';
-
+import { integerToBytes, bytesToInteger } from './utils';
 
 export class NestedNamespace {
 
@@ -37,7 +36,7 @@ export class NestedNamespace {
 
 export const SLIP10_ED25519_CONST: Record<string, any> = {
   PRIVATE_KEY_BYTE_LENGTH: 32,
-  PUBLIC_KEY_PREFIX: Buffer.from([0x00]),
+  PUBLIC_KEY_PREFIX: integerToBytes(0x00),
   PUBLIC_KEY_BYTE_LENGTH: 32
 } as const;
 
@@ -51,7 +50,7 @@ export const SLIP10_SECP256K1_CONST: Record<string, any> = {
   PRIVATE_KEY_BYTE_LENGTH: 32,
   PRIVATE_KEY_UNCOMPRESSED_PREFIX: 0x00,
   PRIVATE_KEY_COMPRESSED_PREFIX: 0x01,
-  PUBLIC_KEY_UNCOMPRESSED_PREFIX: Buffer.from([0x04]),
+  PUBLIC_KEY_UNCOMPRESSED_PREFIX: integerToBytes(0x04),
   PUBLIC_KEY_COMPRESSED_BYTE_LENGTH: 33,
   PUBLIC_KEY_UNCOMPRESSED_BYTE_LENGTH: 65,
   CHECKSUM_BYTE_LENGTH: 4
@@ -156,16 +155,16 @@ export class Networks extends NestedNamespace {
 export class Params extends NestedNamespace { }
 
 export class ExtendedKeyVersions extends NestedNamespace {
-  isVersion(version: Buffer): boolean {
+  isVersion(version: Uint8Array): boolean {
     return Object.values(this as any).includes(Number(bytesToInteger(version)));
   }
   getVersions(): string[] {
     return Object.keys(this as any).map(k => k.toLowerCase().replace(/_/g, '-'));
   }
-  getVersion(name: string): number | string | Buffer {
+  getVersion(name: string): number | string | Uint8Array {
     return (this as any)[name.toUpperCase().replace(/-/g, '_')];
   }
-  getName(version: Buffer): string | undefined {
+  getName(version: Uint8Array): string | undefined {
     const intVer = bytesToInteger(version);
     return Object.entries(this as any).find(([, v]) => v === intVer)?.[0];
   }
