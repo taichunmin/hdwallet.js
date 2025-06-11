@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-import { HDWallet } from '../../../src/hdwallet';
+import { HDWallet } from '../../../src';
 import { Algorand as Cryptocurrency } from '../../../src/cryptocurrencies';
 import { AlgorandSeed } from '../../../src/seeds';
 import { BIP44Derivation, CHANGES } from '../../../src/derivations';
@@ -22,8 +22,8 @@ const hdwallet: HDWallet = new HDWallet(
   address: 0
 }));
 
-// console.dir(hdwallet.getDump(['indexes']), { depth: null, colors: true });
-console.dir(hdwallet.getDumps(['indexes']), { depth: null, colors: true });
+// console.log(JSON.stringify(hdwallet.getDump(['indexes']), null, 4));
+console.log(JSON.stringify(hdwallet.getDumps(['indexes']), null, 4));
 
 // console.log('Cryptocurrency:', hdwallet.getCryptocurrency());
 // console.log('Symbol:', hdwallet.getSymbol());

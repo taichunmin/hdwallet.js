@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-import { HDWallet } from '../../../src/hdwallet';
+import { HDWallet } from '../../../src';
 import { Monero as Cryptocurrency } from '../../../src/cryptocurrencies';
 import { MoneroDerivation } from '../../../src/derivations';
 import { MoneroSeed } from '../../../src/seeds';
@@ -18,8 +18,8 @@ const hdwallet: HDWallet = new HDWallet(
   minor: 1, major: 55
 }));
 
-console.dir(hdwallet.getDump(), { depth: null, colors: true });
-// console.dir(hdwallet.getDumps(), { depth: null, colors: true });
+console.log(JSON.stringify(hdwallet.getDump(), null, 4));
+// console.log(JSON.stringify(hdwallet.getDumps(), null, 4));
 
 // console.log('Cryptocurrency:', hdwallet.getCryptocurrency());
 // console.log('Symbol:', hdwallet.getSymbol());

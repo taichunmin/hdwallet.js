@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-import { HDWallet } from '../../../src/hdwallet';
+import { HDWallet } from '../../../src';
 import { Bitcoin as Cryptocurrency } from '../../../src/cryptocurrencies';
 import { PUBLIC_KEY_TYPES } from '../../../src/consts';
 import { BIP86HD } from '../../../src/hds';
@@ -15,7 +15,7 @@ const hdwallet: HDWallet = new HDWallet(
   'L4p2b9VAf8k5aUahF1JCJUzZkgNEAqLfq8DDdQiyAprQAKSbu8hf'
 );
 
-console.dir(hdwallet.getDump(), { depth: null, colors: true });
+console.log(JSON.stringify(hdwallet.getDump(), null, 4));
 
 // console.log('Cryptocurrency:', hdwallet.getCryptocurrency());
 // console.log('Symbol:', hdwallet.getSymbol());

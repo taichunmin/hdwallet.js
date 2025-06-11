@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-import { HDWallet } from '../../../src/hdwallet';
+import { HDWallet } from '../../../src';
 import { Qtum as Cryptocurrency } from '../../../src/cryptocurrencies';
 import { CustomDerivation } from '../../../src/derivations';
 import { PUBLIC_KEY_TYPES, SEMANTICS } from '../../../src/consts';
@@ -19,8 +19,8 @@ const hdwallet: HDWallet = new HDWallet(
   path: "m/0'/0"
 }));
 
-console.dir(hdwallet.getDump(['indexes']), { depth: null, colors: true });
-// console.dir(hdwallet.getDumps(['indexes']), { depth: null, colors: true });
+console.log(JSON.stringify(hdwallet.getDump(['indexes']), null, 4));
+// console.log(JSON.stringify(hdwallet.getDumps(['indexes']), null, 4));
 
 // console.log('Cryptocurrency:', hdwallet.getCryptocurrency());
 // console.log('Symbol:', hdwallet.getSymbol());

@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-import { HDWallet } from '../../../src/hdwallet';
+import { HDWallet } from '../../../src';
 import { Cardano as Cryptocurrency } from '../../../src/cryptocurrencies';
 import { CardanoHD } from '../../../src/hds';
 
@@ -15,7 +15,7 @@ const hdwallet: HDWallet = new HDWallet(
   'a00f697f4eeafd98efb151ea16bd84451a3071eae3427a47d67a3361608b0656724e9a307aab119a07d3175f2a8f61dfcdcfc7f0e2e3138282dca388ea58f3ff'
 );
 
-console.dir(hdwallet.getDump(), { depth: null, colors: true });
+console.log(JSON.stringify(hdwallet.getDump(), null, 4));
 
 // console.log('Cryptocurrency:', hdwallet.getCryptocurrency());
 // console.log('Symbol:', hdwallet.getSymbol());

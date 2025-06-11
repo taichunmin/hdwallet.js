@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-import { HDWallet } from '../../../../src/hdwallet';
+import { HDWallet } from '../../../../src';
 import { ElectrumV1Entropy, ELECTRUM_V1_ENTROPY_STRENGTHS } from '../../../../src/entropies';
 import { ELECTRUM_V1_MNEMONIC_LANGUAGES } from '../../../../src/mnemonics';
 import { ElectrumDerivation } from '../../../../src/derivations';
@@ -23,8 +23,8 @@ const hdwallet: HDWallet = new HDWallet(
   change: [0, 2], address: [1, 2]
 }));
 
-// console.dir(hdwallet.getDump(), { depth: null, colors: true });
-console.dir(hdwallet.getDumps(), { depth: null, colors: true });
+console.log(JSON.stringify(hdwallet.getDump(), null, 4));
+// console.log(JSON.stringify(hdwallet.getDumps(), null, 4));
 
 // console.log('Cryptocurrency:', hdwallet.getCryptocurrency());
 // console.log('Symbol:', hdwallet.getSymbol());
