@@ -83,9 +83,9 @@ export function deserialize(
   const rawBytes = encoded ? checkDecode(key) : getBytes(key);
 
   // 2. Ensure total length is exactly 78 bytes
-  if (rawBytes.length !== 78) {
+  if (![78, 110].includes(rawBytes.length)) {
     throw new ExtendedKeyError(
-      `Invalid extended key length: ${rawBytes.length} (expected 78)`
+      'Invalid extended key length', { expected: [78, 110], got: rawBytes.length }
     );
   }
 
@@ -104,7 +104,7 @@ export function deserialize(
   const index = indexView.getUint32(0, false);  // false = big-endian
 
   const chainCode = rawBytes.slice(13, 45);     // 32 bytes
-  const keyData = rawBytes.slice(45, 78);       // 33 bytes
+  const keyData = rawBytes.slice(45);
 
   return [version, depth, parentFingerprint, index, chainCode, keyData];
 }
