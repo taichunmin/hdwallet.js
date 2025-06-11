@@ -712,7 +712,7 @@ export class HDWallet {
 
   getDump(exclude: string[] = []): Record<string, any> {
 
-    const derivationDump: Record<string, any> = {};
+    const derivationDump: Record<string, any> = { };
     const hdName = this.hd.getName();
 
     if (this.derivation) {
@@ -724,71 +724,71 @@ export class HDWallet {
         case 'BIP84':
         case 'BIP86':
           at = {
-            path: this.derivation.getPath(),
-            indexes: this.derivation.getIndexes(),
-            depth: this.getDepth(),
-            purpose: this.derivation.getPurpose(),
-            coin_type: this.derivation.getCoinType(),
-            account: this.derivation.getAccount(),
-            change: this.derivation.getChange(),
-            address: this.derivation.getAddress()
+            'path': this.derivation.getPath(),
+            'indexes': this.derivation.getIndexes(),
+            'depth': this.getDepth(),
+            'purpose': this.derivation.getPurpose(),
+            'coin-type': this.derivation.getCoinType(),
+            'account': this.derivation.getAccount(),
+            'change': this.derivation.getChange(),
+            'address': this.derivation.getAddress()
           };
           break;
 
         case 'CIP1852':
           at = {
-            path: this.derivation.getPath(),
-            indexes: this.derivation.getIndexes(),
-            depth: this.getDepth(),
-            purpose: this.derivation.getPurpose(),
-            coin_type: this.derivation.getCoinType(),
-            account: this.derivation.getAccount(),
-            role: this.derivation.getRole(),
-            address: this.derivation.getAddress()
+            'path': this.derivation.getPath(),
+            'indexes': this.derivation.getIndexes(),
+            'depth': this.getDepth(),
+            'purpose': this.derivation.getPurpose(),
+            'coin-type': this.derivation.getCoinType(),
+            'account': this.derivation.getAccount(),
+            'role': this.derivation.getRole(),
+            'address': this.derivation.getAddress()
           };
           break;
 
         case 'Electrum':
           at = {
-            change: this.derivation.getChange(),
-            address: this.derivation.getAddress()
+            'change': this.derivation.getChange(),
+            'address': this.derivation.getAddress()
           };
           break;
 
         case 'Monero':
           at = {
-            minor: this.derivation.getMinor(),
-            major: this.derivation.getMajor()
+            'minor': this.derivation.getMinor(),
+            'major': this.derivation.getMajor()
           };
           break;
 
         default:
           at = {
-            path: this.derivation.getPath(),
-            indexes: this.derivation.getIndexes(),
-            depth: this.getDepth(),
-            index: this.getIndex()
+            'path': this.derivation.getPath(),
+            'indexes': this.derivation.getIndexes(),
+            'depth': this.getDepth(),
+            'index': this.getIndex()
           };
       }
 
-      derivationDump.at = at;
+      derivationDump['at'] = at;
     }
 
     if ([
       'BIP32', 'BIP44', 'BIP49', 'BIP84', 'BIP86', 'BIP141', 'Cardano'
     ].includes(hdName)) {
       Object.assign(derivationDump, {
-        xprivate_key: this.getXPrivateKey(),
-        xpublic_key: this.getXPublicKey(),
-        private_key: this.getPrivateKey(),
-        wif: this.getWIF(),
-        chain_code: this.getChainCode(),
-        public_key: this.getPublicKey(),
-        uncompressed: this.getUncompressed(),
-        compressed: this.getCompressed(),
-        hash: this.getHash(),
-        fingerprint: this.getFingerprint(),
-        parent_fingerprint: this.getParentFingerprint()
+        'xprivate-key': this.getXPrivateKey(),
+        'xpublic-key': this.getXPublicKey(),
+        'private-key': this.getPrivateKey(),
+        'wif': this.getWIF(),
+        'chain-code': this.getChainCode(),
+        'public-key': this.getPublicKey(),
+        'uncompressed': this.getUncompressed(),
+        'compressed': this.getCompressed(),
+        'fingerprint': this.getFingerprint(),
+        'parent-fingerprint': this.getParentFingerprint(),
+        'hash': this.getHash()
       });
 
       if (hdName === 'Cardano') {
@@ -840,59 +840,59 @@ export class HDWallet {
             addressPrefix: this.cryptocurrency.ADDRESS_PREFIXES.TZ3
           });
         } else if (this.hd.getName() === 'BIP44') {
-          derivationDump.address = this.getAddress({ address: 'P2PKH' });
+          derivationDump['address'] = this.getAddress({ address: 'P2PKH' });
         } else if (this.hd.getName() === 'BIP49') {
-          derivationDump.address = this.getAddress({ address: 'P2WPKH-In-P2SH' });
+          derivationDump['address'] = this.getAddress({ address: 'P2WPKH-In-P2SH' });
         } else if (this.hd.getName() === 'BIP84') {
-          derivationDump.address = this.getAddress({ address: 'P2WPKH' });
+          derivationDump['address'] = this.getAddress({ address: 'P2WPKH' });
         } else if (this.hd.getName() === 'BIP86') {
-          derivationDump.address = this.getAddress({ address: 'P2TR' });
+          derivationDump['address'] = this.getAddress({ address: 'P2TR' });
         } else if (this.hd.getName() === 'BIP141') {
           if (this.semantic === SEMANTICS.P2WPKH) {
-            derivationDump.address = this.getAddress({ address: 'P2WPKH' });
+            derivationDump['address'] = this.getAddress({ address: 'P2WPKH' });
           } else if (this.semantic === SEMANTICS.P2WPKH_IN_P2SH) {
-            derivationDump.address = this.getAddress({ address: 'P2WPKH-In-P2SH' });
+            derivationDump['address'] = this.getAddress({ address: 'P2WPKH-In-P2SH' });
           } else if (this.semantic === SEMANTICS.P2WSH) {
-            derivationDump.address = this.getAddress({ address: 'P2WSH' });
+            derivationDump['address'] = this.getAddress({ address: 'P2WSH' });
           } else if (this.semantic === SEMANTICS.P2WSH_IN_P2SH) {
-            derivationDump.address = this.getAddress({ address: 'P2WSH-In-P2SH' });
+            derivationDump['address'] = this.getAddress({ address: 'P2WSH-In-P2SH' });
           }
         } else {
           for (const address of this.cryptocurrency.ADDRESSES.getAddresses()) {
-            addresses[address.toLowerCase().replace(/-/g, '_')] = this.getAddress({ address: address });
+            addresses[address.toLowerCase()] = this.getAddress({ address: address });
           }
         }
         if (Object.keys(addresses).length !== 0) {
-          derivationDump.addresses = addresses;
+          derivationDump['addresses'] = addresses;
         }
       } else {
         if (this.cryptocurrency.NAME === 'Cardano' && [
           Cardano.TYPES.SHELLEY_ICARUS, Cardano.TYPES.SHELLEY_LEDGER
         ].includes(this.cardanoType!)) {
-          derivationDump.address = this.getAddress({
+          derivationDump['address'] = this.getAddress({
             network: this.network.getName(),
             addressType: this.addressType,
             stakingPublicKey: this.stakingPublicKey
           });
         } else {
-          derivationDump.address = this.getAddress();
+          derivationDump['address'] = this.getAddress();
         }
       }
     } else if (['Electrum-V1', 'Electrum-V2'].includes(hdName)) {
       Object.assign(derivationDump, {
-        private_key: this.getPrivateKey(),
-        wif: this.getWIF(),
-        public_key: this.getPublicKey(),
-        uncompressed: this.getUncompressed(),
-        compressed: this.getCompressed(),
-        address: this.getAddress()
+        'private-key': this.getPrivateKey(),
+        'wif': this.getWIF(),
+        'public-key': this.getPublicKey(),
+        'uncompressed': this.getUncompressed(),
+        'compressed': this.getCompressed(),
+        'address': this.getAddress()
       });
     } else if (hdName === 'Monero') {
-      derivationDump.sub_address = this.getSubAddress();
+      derivationDump['sub-address'] = this.getSubAddress();
     }
 
     if (exclude.includes('at')) {
-      delete derivationDump.at;
+      delete derivationDump['at'];
     }
 
     if (exclude.includes('root')) {
@@ -900,82 +900,82 @@ export class HDWallet {
     }
 
     const root: Record<string, any> = {
-      cryptocurrency: this.getCryptocurrency(),
-      symbol: this.getSymbol(),
-      network: this.getNetwork(),
-      coin_type: this.getCoinType(),
-      entropy: this.getEntropy(),
-      strength: this.getStrength(),
-      mnemonic: this.getMnemonic(),
-      passphrase: this.getPassphrase(),
-      language: this.getLanguage(),
-      seed: this.getSeed(),
-      ecc: this.getECC(),
-      hd: this.getHD()
+      'cryptocurrency': this.getCryptocurrency(),
+      'symbol': this.getSymbol(),
+      'network': this.getNetwork(),
+      'coin-type': this.getCoinType(),
+      'entropy': this.getEntropy(),
+      'strength': this.getStrength(),
+      'mnemonic': this.getMnemonic(),
+      'passphrase': this.getPassphrase(),
+      'language': this.getLanguage(),
+      'seed': this.getSeed(),
+      'ecc': this.getECC(),
+      'hd': this.getHD()
     };
 
     if (['Electrum-V1', 'Electrum-V2', 'Monero'].includes(hdName)) {
-      delete root.passphrase;
+      delete root['passphrase'];
     }
 
     if (['BIP32', 'BIP44', 'BIP49', 'BIP84', 'BIP86', 'BIP141', 'Cardano'].includes(hdName)) {
       if (hdName === 'Cardano') {
-        root.cardano_type = this.getCardanoType();
+        root['cardano-type'] = this.getCardanoType();
       }
 
       Object.assign(root, {
-        semantic: this.getSemantic(),
-        root_xprivate_key: this.getRootXPrivateKey(),
-        root_xpublic_key: this.getRootXPublicKey(),
-        root_private_key: this.getRootPrivateKey(),
-        root_wif: this.getRootWIF(),
-        root_chain_code: this.getRootChainCode(),
-        root_public_key: this.getRootPublicKey(),
-        path_key: this.getPathKey(),
-        strict: this.getStrict(),
-        public_key_type: this.getPublicKeyType(),
-        wif_type: this.getWIFType()
+        'semantic': this.getSemantic(),
+        'root-xprivate-key': this.getRootXPrivateKey(),
+        'root-xpublic-key': this.getRootXPublicKey(),
+        'root-private-key': this.getRootPrivateKey(),
+        'root-wif': this.getRootWIF(),
+        'root-chain-code': this.getRootChainCode(),
+        'root-public-key': this.getRootPublicKey(),
+        'path-key': this.getPathKey(),
+        'strict': this.getStrict(),
+        'public-key-type': this.getPublicKeyType(),
+        'wif-type': this.getWIFType()
       });
 
       if (hdName === 'Cardano') {
-        delete root.root_wif;
-        delete root.wif_type;
+        delete root['root-wif'];
+        delete root['root-type'];
         if (this.cardanoType !== Cardano.TYPES.BYRON_LEGACY) {
-          delete root.path_key;
+          delete root['path-key'];
         }
       } else {
-        delete root.path_key;
+        delete root['path-key'];
       }
     } else if (hdName === 'Electrum-V1' || hdName === 'Electrum-V2') {
       if (hdName === 'Electrum-V2') {
-        root.mode = this.getMode();
-        root.mnemonic_type = this.getMnemonicType();
+        root['mode'] = this.getMode();
+        root['mnemonic-type'] = this.getMnemonicType();
       }
 
       Object.assign(root, {
-        master_private_key: this.getMasterPrivateKey(),
-        master_wif: this.getMasterWIF(),
-        master_public_key: this.getMasterPublicKey(),
-        public_key_type: this.getPublicKeyType(),
-        wif_type: this.getWIFType()
+        'master-private-key': this.getMasterPrivateKey(),
+        'master-wif': this.getMasterWIF(),
+        'master-public-key': this.getMasterPublicKey(),
+        'public-key-type': this.getPublicKeyType(),
+        'wif-type': this.getWIFType()
       });
     } else if (hdName === 'Monero') {
       Object.assign(root, {
-        private_key: this.getPrivateKey(),
-        spend_private_key: this.getSpendPrivateKey(),
-        view_private_key: this.getViewPrivateKey(),
-        spend_public_key: this.getSpendPublicKey(),
-        view_public_key: this.getViewPublicKey(),
-        primary_address: this.getPrimaryAddress()
+        'private-key': this.getPrivateKey(),
+        'spend-private-key': this.getSpendPrivateKey(),
+        'view-private-key': this.getViewPrivateKey(),
+        'spend-public-key': this.getSpendPublicKey(),
+        'view-public-key': this.getViewPublicKey(),
+        'primary-address': this.getPrimaryAddress()
       });
 
       if (this.paymentID) {
-        root.integrated_address = this.getIntegratedAddress(this.paymentID);
+        root['integrated-address'] = this.getIntegratedAddress(this.paymentID);
       }
     }
 
     if (!exclude.includes('derivation')) {
-      root.derivation = derivationDump;
+      root['derivation'] = derivationDump;
     }
     return excludeKeys(root, exclude);
   }
