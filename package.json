@@ -76,7 +76,9 @@
     "build:cjs": "tsc --project tsconfig.cjs.json",
     "clean": "rm -rf lib.esm lib.cjs",
     "build:clean": "npm run clean && npm run build:all",
-    "build:dist": "rollup -c && uglifyjs ./dist/hdwallet.js -o ./dist/hdwallet.min.js && uglifyjs ./dist/hdwallet.umd.js -o ./dist/hdwallet.umd.min.js",
+    "dist": "rollup -c && uglifyjs ./dist/hdwallet.js -o ./dist/hdwallet.min.js && uglifyjs ./dist/hdwallet.umd.js -o ./dist/hdwallet.umd.min.js",
+    "dist:stats": "gzip -k9f -S '.gz' ./dist/hdwallet.min.js && gzip -k9f -S '.gz' ./dist/hdwallet.umd.min.js && du -hs ./dist/*.gz && echo '' && du -hs ./dist/*.js",
+    "build:dist": "npm run dist && npm run dist:stats",
     "docs": "typedoc",
     "test": "jest"
   },
@@ -89,10 +91,10 @@
     "lib.cjs/"
   ],
   "keywords": [
-      "ecc", "kholaw", "slip10", "ed25519", "nist256p1", "secp256k1",
-      "hd", "bip32", "bip44", "bip49", "bip84", "bip86", "bip141", "monero", "cardano",
-      "entropy", "mnemonic", "seed", "bip39", "algorand", "electrum",
-      "cryptocurrencies", "bitcoin", "ethereum", "cryptography", "cli", "cip1852"
+    "ecc", "kholaw", "slip10", "ed25519", "nist256p1", "secp256k1",
+    "hd", "bip32", "bip44", "bip49", "bip84", "bip86", "bip141", "monero", "cardano",
+    "entropy", "mnemonic", "seed", "bip39", "algorand", "electrum",
+    "cryptocurrencies", "bitcoin", "ethereum", "cryptography", "cli", "cip1852"
   ],
   "repository": {
     "type": "git",
