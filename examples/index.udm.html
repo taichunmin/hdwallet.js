@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>HDWallet UDM Generator</title>
+    <style>
+      button {
+        position: fixed;
+        top: 12px;
+        right: 12px;
+        background-color: #0056b3;
+        color: #ffffff;
+        border: none;
+        padding: 12px;
+        font-size: 1rem;
+        border-radius: 6px;
+        cursor: pointer;
+        box-shadow: rgba(0, 0, 0, 0.1) 0 2px 8px;
+        transition: background-color 0.2s ease;
+      }
+      button:hover {
+        background-color: #004494;
+      }
+      button:active {
+        background-color: #0056b3;
+      }
+    </style>
+  </head>
+  <body>
+    <pre id="output"></pre>
+    <button id="generate" style="position: fixed; right: 15px;">Generate HDWallet</button>
+    <script src="../dist/hdwallet.umd.min.js"></script>
+    <script>
+      const {
+        HDWallet, entropies, mnemonics, hds, derivations, cryptocurrencies, consts
+      } = window.hdwallet;
+
+      function generateHDWallet() {
+        let wallet = new HDWallet(cryptocurrencies.Qtum, {
+          hd: hds.BIP32HD,
+          network: cryptocurrencies.Qtum.NETWORKS.MAINNET,
+          language: mnemonics.BIP39_MNEMONIC_LANGUAGES.ENGLISH,
+          publicKeyType: consts.PUBLIC_KEY_TYPES.UNCOMPRESSED,
+          passphrase: 'talonlab'
+        }).fromEntropy(
+          new entropies.BIP39Entropy(
+            entropies.BIP39Entropy.generate(
+              entropies.BIP39_ENTROPY_STRENGTHS.ONE_HUNDRED_SIXTY
+            )
+          )
+        ).fromDerivation(
+          new derivations.BIP44Derivation({
+            coinType: cryptocurrencies.Qtum.COIN_TYPE,
+            account: [0,1],
+            change: derivations.CHANGES.EXTERNAL_CHAIN,
+            address: [0, 5]
+          })
+        );
+        return wallet.getDumps();
+      }
+
+      const outputPre = document.getElementById('output');
+      const generateButton = document.getElementById('generate');
+      generateButton.addEventListener('click', () => {
+        outputPre.textContent = JSON.stringify(generateHDWallet(), null, 4);
+      });
+      outputPre.textContent = JSON.stringify(generateHDWallet(), null, 4);
+    </script>
+  </body>
+</html>
+
