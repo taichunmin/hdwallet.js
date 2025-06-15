@@ -87,6 +87,7 @@
     "tag": "latest"
   },
   "files": [
+    "dist",
     "lib.esm/",
     "lib.cjs/"
   ],
