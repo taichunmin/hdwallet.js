@@ -1,0 +1,10 @@
+@if (isVisible) {
+  <div class="custom-modal" [ngClass]="customModalClass" [ngStyle]="customModalStyle">
+    <div class="custom-modal-content" [ngClass]="customContentClass" [ngStyle]="customContentStyle">
+      <button class="custom-button custom-modal-close" (click)="close()" [ngClass]="customCloseClass" [ngStyle]="customCloseStyle">
+        <svg style="width: 15px" id="Layer_2" data-name="Layer 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 98 98"><defs><style>.asdasdasd{fill:#fff;}</style></defs><polygon class="asdasdasd" points="98 19.6 68.6 49 98 78.4 98 98 78.4 98 49 68.6 19.6 98 0 98 0 78.4 29.4 49 0 19.6 0 0 19.6 0 49 29.4 78.4 0 98 0 98 19.6"/></svg>
+      </button>
+      <ng-content></ng-content>
+    </div>
+  </div>
+}
