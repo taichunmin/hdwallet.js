@@ -1,0 +1,29 @@
+<fieldset class="custom-groupbox" [ngStyle]="{ 'border-color': groupBoxService.box.name === 'entropy' ? groupBoxService.box.flag : groupBoxService.box.color }">
+  <legend class="uppercase">Entropy</legend>
+  <div class="description-font mb-2">
+    The raw source of randomness used to securely generate cryptographic keys or mnemonic phrases.
+  </div>
+  <form class="grid grid-cols-[130px_minmax(0,1fr)_auto] max-xl:grid-cols-1 gap-2.5"
+        [formGroup]="entropyFormGroup" (ngSubmit)="generateEntropy(entropyFormGroup.value)">
+    <!-- Entropy - Client -->
+    <fieldset>
+      <label class="uppercase">Client</label>
+      <div class="mt-2">
+        <custom-combobox [customOptions]="clients" formControlName="client"></custom-combobox>
+      </div>
+    </fieldset>
+    <!-- Entropy - Strength -->
+    <fieldset>
+      <label class="uppercase">Strength</label>
+      <div class="mt-2">
+        <custom-combobox [customOptions]="strengths" formControlName="strength"></custom-combobox>
+      </div>
+    </fieldset>
+    <!-- Entropy - Generate -->
+    <fieldset class="max-xl:col-span-full" [disabled]="isLoading">
+      <div class="flex items-end justify-end h-full">
+        <button type="submit" class="custom-button-success">Generate</button>
+      </div>
+    </fieldset>
+  </form>
+</fieldset>
