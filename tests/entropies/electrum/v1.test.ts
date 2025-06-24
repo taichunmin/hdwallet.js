@@ -6,10 +6,12 @@ import {
   ELECTRUM_V1_ENTROPY_STRENGTHS
 } from '../../../src/entropies';
 import { EntropyError } from '../../../src/exceptions';
-import vectors from '../../data/json/entropies.json';
+const rawVectors = require('../../data/json/entropies.json') as {
+  Electrum_V1: Record<string, { name:string; entropy:string; strength:number }>;
+};
 
 describe("Electrum-V1 Entropy", () => {
-  const vector = vectors["Electrum-V1"]["128"];
+  const vector = rawVectors["Electrum-V1"]["128"];
   const strength = vector.strength as number;
   const entropy  = vector.entropy as string;
 

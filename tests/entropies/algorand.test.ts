@@ -6,10 +6,12 @@ import {
   ALGORAND_ENTROPY_STRENGTHS
 } from '../../src/entropies';
 import { EntropyError } from '../../src/exceptions';
-import vectors from '../data/json/entropies.json';
+const rawVectors = require('../data/json/entropies.json') as {
+  Algorand: Record<string, { name:string; entropy:string; strength:number }>;
+};
 
 describe("AlgorandEntropy", () => {
-  const vector = vectors.Algorand["256"];
+  const vector = rawVectors.Algorand["256"];
   const data = {
     name: vector.name,
     entropy: vector.entropy,

@@ -6,10 +6,12 @@ import {
   BIP39_ENTROPY_STRENGTHS
 } from '../../src/entropies';
 import { EntropyError } from '../../src/exceptions';
-import vectors from '../data/json/entropies.json';
+const rawVectors = require('../data/json/entropies.json') as {
+  BIP39: Record<string, { name:string; entropy:string; strength:number }>;
+};
 
 describe("BIP39Entropy", () => {
-  for (const [bits, vector] of Object.entries(vectors.BIP39)) {
+  for (const [bits, vector] of Object.entries(rawVectors.BIP39)) {
     const data = {
       name: vector.name,
       entropy: vector.entropy,
