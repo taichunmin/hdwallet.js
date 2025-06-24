@@ -3,7 +3,7 @@
   <div class="description-font mb-2">
     The raw source of randomness used to securely generate cryptographic keys or mnemonic phrases.
   </div>
-  <form class="grid grid-cols-[130px_minmax(0,1fr)_auto] max-xl:grid-cols-1 gap-2.5"
+  <form class="grid grid-cols-[1fr_1fr_auto] max-xl:grid-cols-[1fr_1fr] gap-2.5"
         [formGroup]="entropyFormGroup" (ngSubmit)="generateEntropy(entropyFormGroup.value)">
     <!-- Entropy - Client -->
     <fieldset>

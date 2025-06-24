@@ -9,7 +9,7 @@ import { take } from 'rxjs/operators';
 import { ENTROPIES } from '@hdwallet/core/entropies';
 
 import {
-  convertToWords, toTitleCase, replaceHyphen2Underscore, replaceUnderscore2Hyphen, toLowerCase
+  toTitleCase, replaceHyphen2Underscore, replaceUnderscore2Hyphen, toLowerCase
 } from '../../../../../../utils';
 import { CustomComboboxComponent } from '../../../../../common/custom-combobox/custom-combobox.component';
 import { ComboboxInterface, DictionaryInterface, EntropyInterface } from '../../../../../../interfaces';
@@ -54,7 +54,7 @@ export class EntropyComponent implements OnInit {
   getStrengths(client: string): ComboboxInterface[] {
     return ENTROPIES.getEntropyClass(client).strengths.map(
       (item: number): ComboboxInterface => ({
-        name: convertToWords(item), value: item
+        name: item.toString(), value: item
     })) || [];
   }
 
