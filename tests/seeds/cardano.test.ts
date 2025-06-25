@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: MIT
 
 import {CardanoSeed} from '../../src/seeds';
-import {CardanoTypes} from '../../src/seeds/cardano';
 import {MnemonicError, SeedError} from '../../src/exceptions';
 import {IMnemonic} from '../../src/mnemonics';
 import seedVectors from '../data/json/seeds.json';
+import {Cardano} from "../../src/cryptocurrencies";
 
 describe("CardanoSeed", () => {
   const byronIcarusVec = seedVectors.Cardano["12"]["byron-icarus"]["english"];
@@ -23,7 +23,7 @@ describe("CardanoSeed", () => {
     const vec = seedVectors.Cardano["12"]["byron-ledger"]["english"];
     const seed = CardanoSeed.fromMnemonic(
       vec.mnemonic,
-      CardanoTypes.BYRON_LEDGER,
+      Cardano.TYPES.BYRON_LEDGER,
       undefined
     );
     expect(seed).toBe(vec["non-passphrase-seed"]);
@@ -33,7 +33,7 @@ describe("CardanoSeed", () => {
      const vec = seedVectors.Cardano["12"]["byron-legacy"]["czech"];
      const seed = CardanoSeed.fromMnemonic(
        vec.mnemonic,
-       CardanoTypes.BYRON_LEGACY
+       Cardano.TYPES.BYRON_LEGACY
      );
      expect(seed).toBe(vec["non-passphrase-seed"]);
    });
@@ -43,7 +43,7 @@ describe("CardanoSeed", () => {
   it("should derive correct SHELLEY_ICARUS seed (alias of BYRON_ICARUS)", () => {
     const seed = CardanoSeed.fromMnemonic(
       englishPhrase,
-      CardanoTypes.SHELLEY_ICARUS,
+      Cardano.TYPES.SHELLEY_ICARUS,
       undefined,
     );
     expect(seed).toBe(expectedByronIcarus);
@@ -53,7 +53,7 @@ describe("CardanoSeed", () => {
     const vec = seedVectors.Cardano["12"]["byron-ledger"]["english"];
     const seed = CardanoSeed.fromMnemonic(
       vec.mnemonic,
-      CardanoTypes.SHELLEY_LEDGER,
+      Cardano.TYPES.SHELLEY_LEDGER,
       undefined
     );
     expect(seed).toBe(vec["non-passphrase-seed"]);
@@ -63,7 +63,7 @@ describe("CardanoSeed", () => {
     expect(() =>
       CardanoSeed.fromMnemonic(
         "this is definitely not a valid BIP39 phrase",
-        CardanoTypes.BYRON_ICARUS,
+        Cardano.TYPES.BYRON_ICARUS,
         undefined
       )
     ).toThrowError(MnemonicError);
@@ -88,17 +88,19 @@ describe("CardanoSeed", () => {
   it("should expose cardanoType() and seed() on the instance", () => {
     const seedStr = CardanoSeed.fromMnemonic(
       englishPhrase,
-      CardanoTypes.BYRON_LEDGER,
+      Cardano.TYPES.BYRON_LEDGER,
       undefined
     );
-    const inst = new CardanoSeed(seedStr, { cardanoType: CardanoTypes.BYRON_LEDGER });
+    const inst = new CardanoSeed(seedStr, { cardanoType: Cardano.TYPES.BYRON_LEDGER });
     expect(inst.seed()).toBe(seedStr);
-    expect(inst.cardanoType()).toBe(CardanoTypes.BYRON_LEDGER);
+    expect(inst.cardanoType()).toBe(Cardano.TYPES.BYRON_LEDGER);
   });
 
   it("should accept an IMnemonic stub", () => {
     const stub = { mnemonic: () => englishPhrase } as unknown as IMnemonic;
     const seed = CardanoSeed.fromMnemonic(stub);
     expect(seed).toBe(expectedByronIcarus);
+    expect(Cardano.TYPES.isCardanoType("byron-legacy")).toBe(true)
+    expect(Cardano.TYPES.isCardanoType("byron-leg")).toBe(false)
   });
 });
