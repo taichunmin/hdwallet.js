@@ -1,0 +1,57 @@
+<fieldset class="custom-groupbox" style="margin-top: 0;" [ngStyle]="{ 'border-color': groupBoxService.box.name === 'mnemonic' ? groupBoxService.box.flag : groupBoxService.box.color }">
+  <legend class="uppercase">Mnemonic</legend>
+  <div class="description-font mb-2">
+    A human-readable set of words that encodes entropy, allowing for easy backup and recovery of cryptographic keys in hierarchical deterministic (HD) wallets.
+  </div>
+  <form class="grid grid-cols-9 max-2xl:grid-cols-6 gap-2.5"
+        [formGroup]="mnemonicFormGroup" (ngSubmit)="generateMnemonic(mnemonicFormGroup.value)">
+    <!-- Mnemonic - Client -->
+    <fieldset class="col-span-3">
+      <label class="uppercase">Client</label>
+      <div class="mt-2">
+        <custom-combobox [customOptions]="clients" formControlName="client"></custom-combobox>
+      </div>
+    </fieldset>
+    <!-- Mnemonic - Language -->
+    <fieldset class="col-span-3" [disabled]="languages.length === 0 ? true : null">
+      <label class="uppercase">Language</label>
+      <div class="mt-2">
+        <custom-combobox [customOptions]="languages" formControlName="language"></custom-combobox>
+      </div>
+    </fieldset>
+    <!-- Mnemonic - Mnemonic Type -->
+    <fieldset class="col-span-3" [disabled]="mnemonicFormGroup.get('client')?.value !== 'Electrum-V2'">
+      <label class="uppercase">Mnemonic Type</label>
+      <div class="mt-2">
+        <custom-combobox [customOptions]="mnemonicTypes" formControlName="mnemonicType"></custom-combobox>
+      </div>
+    </fieldset>
+    <!-- Mnemonic - From -->
+    <fieldset class="col-span-2 max-2xl:col-span-3">
+      <label class="uppercase">From</label>
+      <div class="mt-2">
+        <custom-combobox [customOptions]="froms" formControlName="from"></custom-combobox>
+      </div>
+    </fieldset>
+    <!-- Mnemonic - Words -->
+    <fieldset class="col-span-2" [disabled]="mnemonicFormGroup.get('from')?.value !== 'words'">
+      <label class="uppercase">Words</label>
+      <div class="mt-2">
+        <custom-combobox [customOptions]="words" formControlName="words"></custom-combobox>
+      </div>
+    </fieldset>
+    <div class="grid grid-cols-[1fr_auto] max-2xl:grid-cols-[1fr] col-span-5 max-2xl:col-span-4 gap-2.5">
+      <!-- Mnemonic - Entropy -->
+      <fieldset [disabled]="mnemonicFormGroup.get('from')?.value !== 'entropy'">
+        <label class="uppercase">Entropy</label>
+        <input type="text" class="custom-input" formControlName="entropy">
+      </fieldset>
+      <!-- Mnemonic - Generate -->
+      <fieldset [disabled]="isLoading">
+        <div class="h-full flex items-end justify-end">
+          <button type="submit" class="custom-button-success">Generate</button>
+        </div>
+      </fieldset>
+    </div>
+  </form>
+</fieldset>
