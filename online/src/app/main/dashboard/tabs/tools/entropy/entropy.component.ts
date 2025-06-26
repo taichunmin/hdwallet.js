@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, ParamMap, Params, Router } from '@angular/router';
 import {
@@ -39,6 +39,7 @@ export class EntropyComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
+    private changeDetectorRef: ChangeDetectorRef,
     public terminalService: TerminalService,
     private storageService: StorageService,
     public groupBoxService: GroupBoxService,
@@ -60,9 +61,13 @@ export class EntropyComponent implements OnInit {
 
   updateFormGroup(key: string, value: any, emitEvent: boolean = true, timeout: number = 0): void {
     if (timeout > 0) {
-      setTimeout(() => { this.entropyFormGroup.get(key)?.setValue(value, { emitEvent: emitEvent }); }, timeout);
+      setTimeout(() => {
+        this.entropyFormGroup.get(key)?.setValue(value, { emitEvent: emitEvent });
+        this.changeDetectorRef.markForCheck();
+      }, timeout);
     } else {
       this.entropyFormGroup.get(key)?.setValue(value, { emitEvent: emitEvent });
+      this.changeDetectorRef.markForCheck();
     }
   }
 
@@ -170,12 +175,19 @@ export class EntropyComponent implements OnInit {
       return;
     }
 
-    this.terminalService.update({
-      client: entropy.client,
-      entropy: ENTROPIES.getEntropyClass(entropy.client).generate(entropy.strength),
-      strength: entropy.strength
-    }, 'json');
-    this.groupBoxService.update(null, null);
+    try {
+      const result: any = {
+        'client': entropy.client,
+        'entropy': ENTROPIES.getEntropyClass(entropy.client).generate(entropy.strength),
+        'strength': entropy.strength
+      };
+      this.terminalService.update(result, 'json');
+      this.groupBoxService.update(null, null);
+    } catch (error) {
+      this.terminalService.update((error as Error).message, 'error');
+      this.groupBoxService.update('entropy', 'error');
+    }
     this.isLoading = false;
+
   }
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, ParamMap, Params, Router } from '@angular/router';
 import {
@@ -45,6 +45,7 @@ export class MnemonicComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
+    private changeDetectorRef: ChangeDetectorRef,
     public terminalService: TerminalService,
     private storageService: StorageService,
     public groupBoxService: GroupBoxService,
@@ -63,9 +64,13 @@ export class MnemonicComponent implements OnInit {
 
   updateFormGroup(key: string, value: any, emitEvent: boolean = true, timeout: number = 0): void {
     if (timeout > 0) {
-      setTimeout(() => { this.mnemonicFormGroup.get(key)?.setValue(value, { emitEvent: emitEvent }); }, timeout);
+      setTimeout(() => {
+        this.mnemonicFormGroup.get(key)?.setValue(value, { emitEvent: emitEvent });
+        this.changeDetectorRef.markForCheck();
+      }, timeout);
     } else {
       this.mnemonicFormGroup.get(key)?.setValue(value, { emitEvent: emitEvent });
+      this.changeDetectorRef.markForCheck();
     }
   }
 
@@ -262,7 +267,7 @@ export class MnemonicComponent implements OnInit {
       const result: any = {
         'client': mnemonic.client,
         'language': mnemonic.language,
-        'mnemonic': (mnemonic.entropy && mnemonic.from === 'entropy') ?
+        'mnemonic': (mnemonic.from === 'entropy') ?
           MNEMONICS.getMnemonicClass(mnemonic.client).fromEntropy(
             mnemonic.entropy, mnemonic.language, { mnemonicType: mnemonic.mnemonicType }
           ) :
