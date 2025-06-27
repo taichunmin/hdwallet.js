@@ -1,0 +1,50 @@
+<fieldset class="custom-groupbox" style="margin-top: 0;" [ngStyle]="{ 'border-color': groupBoxService.box.name === 'seed' ? groupBoxService.box.flag : groupBoxService.box.color }">
+  <legend class="uppercase">Seed</legend>
+  <div class="description-font mb-2">
+    A cryptographic key derived from a mnemonic phrase, used as the root input for HD wallets. Ensures consistent and secure generation of cryptocurrency keys.
+  </div>
+  <form class="grid grid-cols-9 max-xl:grid-cols-6 gap-2.5"
+        [formGroup]="seedFormGroup" (ngSubmit)="generateSeed(seedFormGroup.value)">
+    <!-- Seed - Client -->
+    <fieldset class="col-span-3">
+      <label class="uppercase">Client</label>
+      <div class="mt-2">
+        <custom-combobox [customOptions]="clients" formControlName="client"></custom-combobox>
+      </div>
+    </fieldset>
+    <!-- Seed - Mnemonic Type -->
+    <fieldset class="col-span-3" [disabled]="seedFormGroup.get('client')?.value !== 'Electrum-V2'">
+      <label class="uppercase">Mnemonic Type</label>
+      <div class="mt-2">
+        <custom-combobox [customOptions]="mnemonicTypes" formControlName="mnemonicType"></custom-combobox>
+      </div>
+    </fieldset>
+    <!-- Seed - Cardano Type -->
+    <fieldset class="col-span-3" [disabled]="seedFormGroup.get('client')?.value !== 'Cardano'">
+      <label class="uppercase">Cardano Type</label>
+      <div class="mt-2">
+        <custom-combobox [customOptions]="cardanoTypes" formControlName="cardanoType"></custom-combobox>
+      </div>
+    </fieldset>
+    <!-- Seed - Mnemonic -->
+    <fieldset class="col-span-5 max-xl:row-start-2 max-xl:col-span-full">
+      <label class="uppercase">Mnemonic</label>
+      <input type="text" class="custom-input" formControlName="mnemonic">
+    </fieldset>
+    <div class="grid grid-cols-[1fr,auto] max-xl:grid-cols-[1fr] col-span-4 max-xl:col-span-3 gap-2.5">
+      <!-- Seed - Passphrase -->
+      <fieldset [disabled]="
+      (!['BIP39', 'Electrum-V2'].includes(seedFormGroup.get('client')?.value)) &&
+      (!['byron-ledger', 'shelley-ledger'].includes(seedFormGroup.get('cardanoType')?.value))">
+        <label class="uppercase">Passphrase</label>
+        <input type="text" class="custom-input" placeholder="(Optional)" formControlName="passphrase">
+      </fieldset>
+      <!-- Seed - Generate -->
+      <fieldset [disabled]="isLoading">
+        <div class="flex items-end justify-end">
+          <button type="submit" class="custom-button-success uppercase">Generate</button>
+        </div>
+      </fieldset>
+    </div>
+  </form>
+</fieldset>
