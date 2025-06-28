@@ -8,9 +8,7 @@ import { take } from 'rxjs/operators';
 
 import { MNEMONICS, ELECTRUM_V2_MNEMONIC_TYPES } from '@hdwallet/core/mnemonics';
 
-import {
-  replaceHyphen2Underscore, replaceUnderscore2Hyphen, toLowerCase, toTitleCase
-} from '../../../../../../utils';
+import { replaceUnderscore2Hyphen, toLowerCase, toTitleCase } from '../../../../../../utils';
 import { CustomComboboxComponent } from '../../../../../common/custom-combobox/custom-combobox.component';
 import { ComboboxInterface, DictionaryInterface, MnemonicInterface } from '../../../../../../interfaces';
 import { TerminalService } from '../../../../../services/terminal/terminal.service';
@@ -19,7 +17,6 @@ import { StorageService } from '../../../../../services/storage/storage.service'
 
 @Component({
   selector: 'app-mnemonic',
-  standalone: true,
   imports: [
     CommonModule,
     ReactiveFormsModule,
@@ -99,7 +96,7 @@ export class MnemonicComponent implements OnInit {
     this.mnemonicFormGroup.get('from')?.valueChanges.subscribe((from: string) => { this.updateFrom(from, true, 1) });
     if (this.storageService.getStorage('disclaimer') !== 'true') {
       this.activatedRoute.paramMap.pipe(take(1)).subscribe((params: ParamMap) => {
-        if (params.get('generate')?.toString().toLowerCase() === 'mnemonic') {
+        if (params.get('tools')?.toString().toLowerCase() === 'mnemonic') {
           this.storageService.setStorage('action', 'mnemonic');
           this.router.navigateByUrl(this.router.url);
         }
@@ -109,11 +106,11 @@ export class MnemonicComponent implements OnInit {
     }
   }
 
-  initFromURL(generate: string): void {
+  initFromURL(tools: string): void {
     this.activatedRoute.paramMap.pipe(take(1)).subscribe((params: ParamMap) => {
-      if (params.get('generate')?.toString().toLowerCase() === generate) {
+      if (params.get('tools')?.toString().toLowerCase() === tools) {
         this.activatedRoute.queryParams.pipe(take(1)).subscribe((queries: Params) => {
-          let queryParams: DictionaryInterface = replaceHyphen2Underscore(queries);
+          let queryParams: DictionaryInterface = replaceUnderscore2Hyphen(queries);
           for (let key of ['client', 'from', 'language']) {
             queryParams = this.setQueryValues(queryParams, key);
           }
@@ -123,11 +120,11 @@ export class MnemonicComponent implements OnInit {
             queryParams = this.setQueryValues(queryParams, 'entropy');
           }
           if (this.mnemonicFormGroup.get('client')?.value === 'Electrum-V2') {
-            queryParams = this.setQueryValues(queryParams, 'mnemonic_type');
+            queryParams = this.setQueryValues(queryParams, 'mnemonic-type');
           }
           queryParams = this.setQueryValues(queryParams, 'generate');
           this.router.navigate(
-            ['generate', generate], { queryParams: replaceUnderscore2Hyphen(queryParams), replaceUrl: true }
+            ['tools', tools], { queryParams: queryParams, replaceUrl: true }
           );
         });
       }
@@ -153,7 +150,7 @@ export class MnemonicComponent implements OnInit {
   }
 
   setQueryValues(queries: DictionaryInterface, key: string): DictionaryInterface {
-    const queryParams = { ...queries };
+    let queryParams: DictionaryInterface = { ...queries };
     const client: string = queryParams['client'] ? queryParams['client'] : this.mnemonicFormGroup.get('client')?.value
     if (key === 'client' && queryParams[key]) {
       queryParams[key] = toTitleCase(queryParams[key]);
@@ -210,14 +207,14 @@ export class MnemonicComponent implements OnInit {
         );
         this.groupBoxService.update('mnemonic', 'warning');
       }
-    } else if (key === 'mnemonic_type' && queryParams[key]) {
+    } else if (key === 'mnemonic-type' && queryParams[key]) {
       queryParams[key] = toLowerCase(queryParams[key]);
       const mnemonicTypes: string[] = this.mnemonicTypes.map((item: ComboboxInterface) => item.value);
       if (mnemonicTypes.includes(queryParams[key])) {
-        this.updateFormGroup('mnemonic_type', queryParams[key], true);
+        this.updateFormGroup('mnemonicType', queryParams[key], true);
       } else {
         queryParams[key] = mnemonicTypes[0];
-        this.updateFormGroup('mnemonic_type', queryParams[key], true);
+        this.updateFormGroup('mnemonicType', queryParams[key], true);
         this.terminalService.update(
           `Unknown '${queries[key]}' mnemonic type, defaulting to '${queryParams[key]}'`, 'warning'
         );
@@ -282,7 +279,7 @@ export class MnemonicComponent implements OnInit {
       this.terminalService.update(result, 'json');
       this.groupBoxService.update(null, null);
     } catch (error) {
-      this.terminalService.update(`Invalid ${mnemonic.client} entropy data`, 'error');
+      this.terminalService.update(`Invalid ${mnemonic.client} entropy`, 'error');
       this.groupBoxService.update('mnemonic', 'error');
     }
     this.isLoading = false;

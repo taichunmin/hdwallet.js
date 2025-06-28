@@ -8,9 +8,7 @@ import { take } from 'rxjs/operators';
 
 import { ENTROPIES } from '@hdwallet/core/entropies';
 
-import {
-  toTitleCase, replaceHyphen2Underscore, replaceUnderscore2Hyphen, toLowerCase
-} from '../../../../../../utils';
+import { toTitleCase, replaceUnderscore2Hyphen, toLowerCase } from '../../../../../../utils';
 import { CustomComboboxComponent } from '../../../../../common/custom-combobox/custom-combobox.component';
 import { ComboboxInterface, DictionaryInterface, EntropyInterface } from '../../../../../../interfaces';
 import { TerminalService } from '../../../../../services/terminal/terminal.service';
@@ -19,7 +17,6 @@ import { StorageService } from '../../../../../services/storage/storage.service'
 
 @Component({
   selector: 'app-entropy',
-  standalone: true,
   imports: [
     CommonModule,
     ReactiveFormsModule,
@@ -94,12 +91,12 @@ export class EntropyComponent implements OnInit {
     this.activatedRoute.paramMap.pipe(take(1)).subscribe((params: ParamMap) => {
       if (params.get('tools')?.toString().toLowerCase() === tools) {
         this.activatedRoute.queryParams.pipe(take(1)).subscribe((queries: Params) => {
-          let queryParams: DictionaryInterface = replaceHyphen2Underscore(queries);
+          let queryParams: DictionaryInterface = replaceUnderscore2Hyphen(queries);
           for (let key of ['client', 'strength', 'generate']) {
             queryParams = this.setQueryValues(queryParams, key);
           }
           this.router.navigate(
-            ['tools', tools], { queryParams: replaceUnderscore2Hyphen(queryParams), replaceUrl: true }
+            ['tools', tools], { queryParams: queryParams, replaceUrl: true }
           );
         });
       }
@@ -107,7 +104,7 @@ export class EntropyComponent implements OnInit {
   }
 
   setQueryValues(queries: DictionaryInterface, key: string): DictionaryInterface {
-    const queryParams = { ...queries };
+    let queryParams: DictionaryInterface = { ...queries };
     const client: string = queryParams['client'] ? queryParams['client'] : this.entropyFormGroup.get('client')?.value
     if (key === 'client' && queryParams[key]) {
       queryParams[key] = toTitleCase(queryParams[key]);
