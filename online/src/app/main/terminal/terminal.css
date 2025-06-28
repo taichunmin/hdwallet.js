@@ -1,0 +1,22 @@
+pre {
+  font-weight: lighter;
+  font : 11pt 'Tahoma', sans-serif;
+  /*letter-spacing: 1px;*/
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+.terminal-close,
+.terminal-close:focus {
+  cursor: pointer;
+  background: transparent;
+  padding: 8px;
+}
+
+.terminal-close:hover {
+  background: rgba(255, 0, 0, 0.75);
+}
+
+.terminal-close:active {
+  background: rgba(255, 0, 0, 0.50);
+}
