@@ -1,0 +1,33 @@
+<div class="grid grid-cols-[1fr_auto] max-sm:grid-cols-1 gap-4 pt-4"
+  style="border-top: 1px solid rgba(128, 128, 128, 0.25);">
+  <div class="col-span-1 gap-2.5">
+    <input #addressInput type="text" class="custom-input-address text-center" readonly
+           [value]="selectedTruncatedAddress ? selectedTruncatedAddress : getTruncatedAddress(selectedAddress.value, addressInput.offsetWidth)">
+    <div class="w-full mt-2.5">
+      <label class="block mb-3 native-font uppercase" style="font-size: 16px;">Cryptocurrency</label>
+      <div class="flex items-center gap-2.5">
+        <custom-combobox class="w-full"
+          [customOptions]="addresses"
+          [(customSelectedOption)]="selectedAddress"
+          (customSelectedOptionChange)="onAddressChange($event)">
+        </custom-combobox>
+        <button [disabled]="copyDisable" type="button" class="custom-button" (click)="copyAddress(selectedAddress.value)">{{ copyMessage }}</button>
+      </div>
+    </div>
+    <div class="default-font mt-2.5">
+      Your donation empowers our core team to continue our work and grow.
+      Every contribution counts—thank you for your support!
+    </div>
+  </div>
+  <div class="col-span-1 grid grid-flow-row gap-2.5">
+    <div class="qrcode-container">
+      <qrcode
+        [qrdata]="selectedAddress.value"
+        [colorDark]="'#FFFFFF'"
+        [colorLight]="'#191E24FF'"
+        [width]="150"
+        [errorCorrectionLevel]="'M'">
+      </qrcode>
+    </div>
+  </div>
+</div>

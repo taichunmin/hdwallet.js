@@ -1,0 +1,31 @@
+.qrcode-container {
+  display: inline-block;
+  border-radius: 5px;
+  overflow: hidden;
+  width: 150px;
+  height: 150px;
+}
+
+.custom-input-address {
+  -webkit-appearance: none;
+  background-color: transparent;
+  border-radius: 5px;
+  color: rgb(255, 255, 255);
+  padding: 5px 10px;
+  height: 35px;
+  selection-color: #000000;
+  selection-background-color: #83b9ff;
+  border: 1px solid rgba(128, 128, 128, 0.25);
+  outline: none;
+  font : 10pt 'Tahoma', sans-serif;
+  letter-spacing: 1px;
+  width: 100%;
+  margin: 0;
+}
+
+p {
+  text-wrap: wrap;
+  margin: 0 16px;
+  color: #dddddd;
+  font-size: 14px;
+}
