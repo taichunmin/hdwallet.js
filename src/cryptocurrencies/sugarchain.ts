@@ -18,6 +18,7 @@ import { Cryptocurrency, Network } from './cryptocurrency';
 
 export class Mainnet extends Network {
 
+  static NAME = 'mainnet';
   static PUBLIC_KEY_ADDRESS_PREFIX = 0x3f;
   static SCRIPT_ADDRESS_PREFIX = 0x7d;
   static HRP = 'sugar';
@@ -43,6 +44,7 @@ export class Mainnet extends Network {
 
 export class Testnet extends Network {
 
+  static NAME = 'testnet';
   static PUBLIC_KEY_ADDRESS_PREFIX = 0x42;
   static SCRIPT_ADDRESS_PREFIX = 0x80;
   static HRP = 'tugar';

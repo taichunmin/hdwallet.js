@@ -19,6 +19,7 @@ import { Cryptocurrency, Network } from './cryptocurrency';
 
 export class Mainnet extends Network {
 
+  static NAME = 'mainnet';
   static TYPE = 0x00;
   static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
     P2PKH: 0x0488ade4
@@ -31,6 +32,7 @@ export class Mainnet extends Network {
 
 export class Testnet extends Network {
 
+  static NAME = 'testnet';
   static TYPE = 0x10;
   static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
     P2PKH: 0x04358394
