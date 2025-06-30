@@ -17,6 +17,7 @@ import { Cryptocurrency, Network } from './cryptocurrency';
 
 export class Mainnet extends Network {
 
+  static NAME = 'mainnet';
   static PUBLIC_KEY_ADDRESS_PREFIX = 0x2d;
   static SCRIPT_ADDRESS_PREFIX = 0x32;
   static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
