@@ -356,8 +356,9 @@ export function isAllEqual(
   });
 }
 
-export function generatePassphrase(length = 32): string {
-  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+export function generatePassphrase(
+  length = 32, chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+): string {
   const bytes = randomBytes(length);
   let result = '';
   for (let i = 0; i < length; i++) {
