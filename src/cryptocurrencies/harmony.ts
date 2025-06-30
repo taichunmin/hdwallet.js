@@ -66,5 +66,6 @@ export class Harmony extends Cryptocurrency {
     HARMONY: 'Harmony'
   });
   static DEFAULT_ADDRESS = Harmony.ADDRESSES.HARMONY;
+  static SEMANTICS = ['p2pkh'];
   static DEFAULT_SEMANTIC = 'p2pkh';
 }

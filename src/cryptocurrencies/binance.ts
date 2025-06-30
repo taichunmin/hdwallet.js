@@ -67,6 +67,7 @@ export class Binance extends Cryptocurrency {
     ETHEREUM: 'Ethereum'
   });
   static DEFAULT_ADDRESS = Binance.ADDRESSES.COSMOS;
+  static SEMANTICS = ['p2pkh'];
   static DEFAULT_SEMANTIC = 'p2pkh';
   static ADDRESS_TYPES = new AddressTypes({
     CHAIN: 'chain',

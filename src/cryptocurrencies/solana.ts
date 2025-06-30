@@ -64,6 +64,7 @@ export class Solana extends Cryptocurrency {
     SOLANA: 'Solana'
   });
   static DEFAULT_ADDRESS = Solana.ADDRESSES.SOLANA;
+  static SEMANTICS = ['p2pkh'];
   static DEFAULT_SEMANTIC = 'p2pkh';
   static PARAMS = new Params({
     ALPHABET: '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz'

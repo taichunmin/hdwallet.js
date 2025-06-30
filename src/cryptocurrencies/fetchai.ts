@@ -66,5 +66,6 @@ export class FetchAI extends Cryptocurrency {
     COSMOS: 'Cosmos'
   });
   static DEFAULT_ADDRESS = FetchAI.ADDRESSES.COSMOS;
+  static SEMANTICS = ['p2pkh'];
   static DEFAULT_SEMANTIC = 'p2pkh';
 }

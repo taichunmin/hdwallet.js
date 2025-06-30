@@ -81,6 +81,7 @@ export class Ergo extends Cryptocurrency {
     ERGO: 'Ergo'
   });
   static DEFAULT_ADDRESS = Ergo.ADDRESSES.ERGO;
+  static SEMANTICS = ['p2pkh'];
   static DEFAULT_SEMANTIC = 'p2pkh';
   static ADDRESS_TYPES = new AddressTypes({
     P2PKH: 'p2pkh',

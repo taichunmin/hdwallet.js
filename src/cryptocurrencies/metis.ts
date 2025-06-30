@@ -64,5 +64,6 @@ export class Metis extends Cryptocurrency {
     ETHEREUM: 'Ethereum'
   });
   static DEFAULT_ADDRESS = Metis.ADDRESSES.ETHEREUM;
+  static SEMANTICS = ['p2pkh'];
   static DEFAULT_SEMANTIC = 'p2pkh';
 }

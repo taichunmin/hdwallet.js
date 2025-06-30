@@ -65,5 +65,6 @@ export class Injective extends Cryptocurrency {
     INJECTIVE: 'Injective'
   });
   static DEFAULT_ADDRESS = Injective.ADDRESSES.INJECTIVE;
+  static SEMANTICS = ['p2pkh'];
   static DEFAULT_SEMANTIC = 'p2pkh';
 }

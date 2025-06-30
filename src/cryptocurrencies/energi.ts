@@ -71,5 +71,6 @@ export class Energi extends Cryptocurrency {
     'P2SH'
   ]);
   static DEFAULT_ADDRESS = Energi.ADDRESSES.P2PKH;
+  static SEMANTICS = ['p2pkh', 'p2sh'];
   static DEFAULT_SEMANTIC = 'p2pkh';
 }

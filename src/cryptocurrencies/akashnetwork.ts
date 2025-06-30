@@ -64,5 +64,6 @@ export class AkashNetwork extends Cryptocurrency {
     COSMOS: 'Cosmos'
   });
   static DEFAULT_ADDRESS = AkashNetwork.ADDRESSES.COSMOS;
+  static SEMANTICS = ['p2pkh'];
   static DEFAULT_SEMANTIC = 'p2pkh';
 }

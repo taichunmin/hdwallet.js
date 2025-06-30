@@ -68,5 +68,6 @@ export class Jumbucks extends Cryptocurrency {
     'P2SH'
   ]);
   static DEFAULT_ADDRESS = Jumbucks.ADDRESSES.P2PKH;
+  static SEMANTICS = ['p2pkh', 'p2sh'];
   static DEFAULT_SEMANTIC = 'p2pkh';
 }

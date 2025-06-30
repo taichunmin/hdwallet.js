@@ -65,5 +65,6 @@ export class Zilliqa extends Cryptocurrency {
     ZILLIQA: 'Zilliqa'
   });
   static DEFAULT_ADDRESS = Zilliqa.ADDRESSES.ZILLIQA;
+  static SEMANTICS = ['p2pkh'];
   static DEFAULT_SEMANTIC = 'p2pkh';
 }

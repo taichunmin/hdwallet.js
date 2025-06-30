@@ -88,5 +88,6 @@ export class BitcoinGold extends Cryptocurrency {
     { P2WSH_IN_P2SH: 'P2WSH-In-P2SH' }
   ]);
   static DEFAULT_ADDRESS = BitcoinGold.ADDRESSES.P2PKH;
+  static SEMANTICS = ['p2pkh', 'p2sh', 'p2wpkh', 'p2wpkh-in-p2sh', 'p2wsh', 'p2wsh-in-p2sh'];
   static DEFAULT_SEMANTIC = 'p2pkh';
 }
