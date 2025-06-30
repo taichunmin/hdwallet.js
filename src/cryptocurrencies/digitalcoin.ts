@@ -71,5 +71,6 @@ export class Digitalcoin extends Cryptocurrency {
     'P2SH'
   ]);
   static DEFAULT_ADDRESS = Digitalcoin.ADDRESSES.P2PKH;
+  static SEMANTICS = ['p2pkh', 'p2sh'];
   static DEFAULT_SEMANTIC = 'p2pkh';
 }

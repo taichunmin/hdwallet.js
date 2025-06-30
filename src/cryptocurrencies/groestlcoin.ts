@@ -109,5 +109,6 @@ export class GroestlCoin extends Cryptocurrency {
     { P2WPKH_IN_P2SH: 'P2WPKH-In-P2SH' }
   ]);
   static DEFAULT_ADDRESS = GroestlCoin.ADDRESSES.P2PKH;
+  static SEMANTICS = ['p2pkh', 'p2sh', 'p2wpkh', 'p2wpkh-in-p2sh'];
   static DEFAULT_SEMANTIC = 'p2pkh';
 }

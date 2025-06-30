@@ -66,6 +66,7 @@ export class Ethereum extends Cryptocurrency {
     ETHEREUM: 'Ethereum'
   });
   static DEFAULT_ADDRESS = Ethereum.ADDRESSES.ETHEREUM;
+  static SEMANTICS = ['p2pkh'];
   static DEFAULT_SEMANTIC = 'p2pkh';
   static PARAMS = new Params({
     ADDRESS_PREFIX: '0x'

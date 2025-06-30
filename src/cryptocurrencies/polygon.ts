@@ -64,5 +64,6 @@ export class Polygon extends Cryptocurrency {
     ETHEREUM: 'Ethereum'
   });
   static DEFAULT_ADDRESS = Polygon.ADDRESSES.ETHEREUM;
+  static SEMANTICS = ['p2pkh'];
   static DEFAULT_SEMANTIC = 'p2pkh';
 }

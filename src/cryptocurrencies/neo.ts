@@ -64,6 +64,7 @@ export class Neo extends Cryptocurrency {
     NEO: 'Neo'
   });
   static DEFAULT_ADDRESS = Neo.ADDRESSES.NEO;
+  static SEMANTICS = ['p2pkh'];
   static DEFAULT_SEMANTIC = 'p2pkh';
   static PARAMS = new Params({
     ADDRESS_PREFIX: 0x21,

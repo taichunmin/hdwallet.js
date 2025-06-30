@@ -70,5 +70,6 @@ export class LitecoinCash extends Cryptocurrency {
     'P2SH'
   ]);
   static DEFAULT_ADDRESS = LitecoinCash.ADDRESSES.P2PKH;
+  static SEMANTICS = ['p2pkh', 'p2sh'];
   static DEFAULT_SEMANTIC = 'p2pkh';
 }

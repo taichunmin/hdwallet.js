@@ -66,6 +66,7 @@ export class Filecoin extends Cryptocurrency {
     FILECOIN: 'Filecoin'
   });
   static DEFAULT_ADDRESS = Filecoin.ADDRESSES.FILECOIN;
+  static SEMANTICS = ['p2pkh'];
   static DEFAULT_SEMANTIC = 'p2pkh';
   static ADDRESS_TYPES = new AddressTypes({
     SECP256K1: 'secp256k1',

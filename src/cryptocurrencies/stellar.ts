@@ -65,6 +65,7 @@ export class Stellar extends Cryptocurrency {
     STELLAR: 'Stellar'
   });
   static DEFAULT_ADDRESS = Stellar.ADDRESSES.STELLAR;
+  static SEMANTICS = ['p2pkh'];
   static DEFAULT_SEMANTIC = 'p2pkh';
   static ADDRESS_TYPES = new AddressTypes({
     PRIVATE_KEY: 'privateKey',
