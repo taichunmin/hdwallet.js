@@ -7,17 +7,15 @@ import {
 import { take } from 'rxjs/operators';
 
 import { SEEDS } from '@hdwallet/core/seeds';
+import { ELECTRUM_V2_MNEMONIC_TYPES } from '@hdwallet/core/mnemonics';
 import { Cardano } from '@hdwallet/core/cryptocurrencies';
 
-import {
-  replaceHyphen2Underscore, replaceUnderscore2Hyphen, toLowerCase,  toTitleCase
-} from '../../../../../../utils';
-import { TerminalService } from '../../../../../services/terminal/terminal.service';
+import { replaceUnderscore2Hyphen, toLowerCase,  toTitleCase } from '../../../../../../utils';
+import { ComboboxInterface, DictionaryInterface, SeedInterface } from '../../../../../../interfaces';
 import { CustomComboboxComponent } from '../../../../../common/custom-combobox/custom-combobox.component';
+import { TerminalService } from '../../../../../services/terminal/terminal.service';
 import { GroupBoxService } from '../../../../../services/group-box/group-box.service';
 import { StorageService } from '../../../../../services/storage/storage.service';
-import { ComboboxInterface, DictionaryInterface, SeedInterface } from '../../../../../../interfaces';
-import { ELECTRUM_V2_MNEMONIC_TYPES } from '@hdwallet/core/mnemonics';
 
 @Component({
   selector: 'app-seed',
@@ -86,7 +84,7 @@ export class SeedComponent implements OnInit {
     this.seedFormGroup.get('client')?.valueChanges.subscribe((client: string) => { this.updateClient(client, true, 1); });
     if (this.storageService.getStorage('disclaimer') !== 'true') {
       this.activatedRoute.paramMap.pipe(take(1)).subscribe((params: ParamMap) => {
-        if (params.get('generate')?.toString().toLowerCase() === 'seed') {
+        if (params.get('tools')?.toString().toLowerCase() === 'seed') {
           this.storageService.setStorage('action', 'seed');
           this.router.navigateByUrl(this.router.url);
         }
@@ -96,21 +94,27 @@ export class SeedComponent implements OnInit {
     }
   }
 
-  initFromURL(generate: string): void {
+  initFromURL(tools: string): void {
     this.activatedRoute.paramMap.pipe(take(1)).subscribe((params: ParamMap) => {
-      if (params.get('generate')?.toString().toLowerCase() === generate) {
+      if (params.get('tools')?.toString().toLowerCase() === tools) {
         this.activatedRoute.queryParams.pipe(take(1)).subscribe((queries: Params) => {
-          let queryParams: DictionaryInterface = replaceHyphen2Underscore(queries);
+          let queryParams: DictionaryInterface = replaceUnderscore2Hyphen(queries);
           queryParams = this.setQueryValues(queryParams, 'client');
           for (let key of this.getControls(this.seedFormGroup.get('client')?.value)) {
             queryParams = this.setQueryValues(queryParams, key);
           }
+          if (this.seedFormGroup.get('client')?.value === 'Cardano') {
+            queryParams = this.setQueryValues(queryParams, 'cardano-type');
+          }
           if (this.seedFormGroup.get('client')?.value === 'Cardano' &&
             ['byron-ledger', 'shelley-ledger'].includes(this.seedFormGroup.get('cardanoType')?.value)
           ) { queryParams = this.setQueryValues(queryParams, 'passphrase'); }
+          if (this.seedFormGroup.get('client')?.value === 'Electrum-V2') {
+            queryParams = this.setQueryValues(queryParams, 'mnemonic-type');
+          }
           queryParams = this.setQueryValues(queryParams, 'generate');
           this.router.navigate(
-            ['generate', generate], { queryParams: replaceUnderscore2Hyphen(queryParams), replaceUrl: true }
+            ['tools', tools], { queryParams: queryParams, replaceUrl: true }
           );
         });
       }
@@ -130,7 +134,7 @@ export class SeedComponent implements OnInit {
   }
 
   setQueryValues(queries: DictionaryInterface, key: string): DictionaryInterface {
-    const queryParams = { ...queries };
+    let queryParams: DictionaryInterface = { ...queries };
     if (key === 'client' && queryParams[key]) {
       queryParams[key] = toTitleCase(queryParams[key]);
       const clients: string[] = this.clients.map((item: ComboboxInterface) => item.value);
@@ -146,7 +150,7 @@ export class SeedComponent implements OnInit {
         );
         this.groupBoxService.update('seed', 'warning');
       }
-    } else if (key === 'mnemonic_type' && queryParams[key]) {
+    } else if (key === 'mnemonic-type' && queryParams[key]) {
       queryParams[key] = toLowerCase(queryParams[key]);
       const mnemonicTypes: string[] = this.mnemonicTypes.map((item: ComboboxInterface) => item.value);
       if (mnemonicTypes.includes(queryParams[key])) {
@@ -159,7 +163,7 @@ export class SeedComponent implements OnInit {
         );
         this.groupBoxService.update('seed', 'warning');
       }
-    } else if (key === 'cardano_type' && queryParams[key]) {
+    } else if (key === 'cardano-type' && queryParams[key]) {
       queryParams[key] = toLowerCase(queryParams[key]);
       const cardanoTypes: string[] = this.cardanoTypes.map((item: ComboboxInterface) => item.value);
       if (cardanoTypes.includes(queryParams[key])) {
@@ -198,9 +202,9 @@ export class SeedComponent implements OnInit {
     } else if (client === 'BIP39') {
       controls = ['mnemonic', 'passphrase'];
     } else if (client === 'Electrum-V2') {
-      controls = ['mnemonic_type', 'mnemonic', 'passphrase'];
+      controls = ['mnemonicType', 'mnemonic', 'passphrase'];
     } else if (client === 'Cardano') {
-      controls = ['cardano_type', 'mnemonic'];
+      controls = ['cardanoType', 'mnemonic'];
     }
     return controls;
   }

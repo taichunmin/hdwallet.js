@@ -8,7 +8,7 @@ import { ToolsComponent } from './tabs/tools/tools.component';
 import { DumpsComponent } from './tabs/dumps/dumps.component';
 import { TerminalComponent } from '../terminal/terminal.component';
 import { CustomModalComponent } from '../../common/custom-modal/custom-modal.component';
-import { DonationComponent } from './tabs/donation/donation.component';
+import { DonationComponent } from './donation/donation.component';
 import { TerminalService } from '../../services/terminal/terminal.service';
 import { CustomComboboxComponent } from '../../common/custom-combobox/custom-combobox.component';
 import { ShareComponent } from './tabs/dumps/share/share.component';
@@ -50,7 +50,6 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   showMobileTerminal: boolean = window.innerWidth < 640;
   @Input() selectedTab: ComboboxInterface = this.tabs[0];
   @ViewChild('dashboard', { static: false }) dashboard!: ElementRef;
-  @ViewChild('donationModal', { static: false }) donationModal!: CustomModalComponent;
   @ViewChild('shareModal', { static: false }) shareModal!: CustomModalComponent;
   @ViewChild(ToolsComponent) toolsComponent!: ToolsComponent;
   @ViewChild(DumpsComponent) dumpsComponent!: DumpsComponent;
@@ -92,7 +91,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
       this.toolsComponent.passphraseComponent.initFromURL(action);
     } else if (action && action.startsWith('dumps') && this.selectedTab.value.startsWith('dumps')) {
       const actions: string[] = action.split("/");
-      // this.dumpsComponent.initFromURL(actions[1], actions[2]);
+      this.dumpsComponent.initFromURL(actions[1], actions[2]);
     }
     this.storageService.clearStorage('action');
     this.terminalService.update('clear', null, false);
@@ -100,7 +99,6 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   }
 
   updateModalHeights(): void {
-    this.donationModal.customModalStyle = { height: this.dashboard.nativeElement.offsetHeight + 'px' };
     this.shareModal.customModalStyle = { height: this.dashboard.nativeElement.offsetHeight + 'px' };
     this.changeDetectorRef.detectChanges();
   }

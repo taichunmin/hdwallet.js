@@ -15,11 +15,11 @@
             (customSelectedOptionChange)="selectTab($event)"
           ></custom-combobox>
           <button type="button" class="custom-button sm:hidden" (click)="terminalService.showTerminal.set(true)">{{'>_'}}</button>
-          <div style="width: 110px;" class="flex items-center">
-            <a style="width: 100%" target="_blank" href="https://github.com/hdwallet-io/python-hdwallet">
-              <img style="width: 100%;" alt="GitHub" src="https://img.shields.io/github/stars/hdwallet-io/hdwallet.js">
-            </a>
-          </div>
+<!--          <div style="width: 85px;" class="flex items-center ">-->
+<!--            <a style="width: 100%" target="_blank" href="https://github.com/hdwallet-io/python-hdwallet">-->
+<!--              <img style="width: 100%;" alt="GitHub" src="https://img.shields.io/github/stars/hdwallet-io/hdwallet.js">-->
+<!--            </a>-->
+<!--          </div>-->
         </div>
       </div>
     </div>
@@ -69,10 +69,59 @@
     </fieldset>
   </div>
 
-  <div id="footer" class="flex-none" [ngClass]="{'hidden': terminalService.showTerminal()}">
+  <div id="footer" class="flex-none default-font" [ngClass]="{'hidden': terminalService.showTerminal()}">
 
-    <div class="custom-groupbox2" style="margin: 0 0 10px 0">
-      <button
+    <div class="py-2 px-3" style="border-left: solid 3px #83b9ff">
+      <h2 class="native-font uppercase">This project is 100% open-source code</h2>
+      <small class="">Powered by Talon-Lab</small>
+    </div>
+
+    <div class="overflow-x-hidden">
+      <table class="min-w-full">
+        <thead style="border-bottom: 1px solid rgba(128, 128, 128, 0.25);">
+          <tr>
+            <th class="p-2 text-left uppercase native-font ">Library</th>
+            <th class="p-2 text-left uppercase native-font ">Programming Language</th>
+            <th class="p-2 text-left uppercase native-font ">GitHub Stars</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="border-bottom: 1px solid rgba(128, 128, 128, 0.25);">
+            <td class="p-3">
+              <a style="width: 100%" target="_blank" href="https://github.com/hdwallet-io/hdwallet.js">
+                hdwallet.js
+              </a>
+            </td>
+            <td class="p-3">TypeScript / JavaScript</td>
+            <td class="p-3">
+              <div style="width: 87px;" class="flex items-center ">
+                <a style="width: 100%" target="_blank" href="https://github.com/hdwallet-io/hdwallet.js">
+                  <img style="width: 100%;" alt="GitHub" src="https://img.shields.io/github/stars/hdwallet-io/hdwallet.js">
+                </a>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td class="p-3">
+              <a style="width: 100%" target="_blank" href="https://github.com/hdwallet-io/python-hdwallet">
+                python-hdwallet
+              </a>
+            </td>
+            <td class="p-3">Python</td>
+            <td class="p-3">
+              <div style="width: 100px;" class="flex items-center ">
+                <a style="width: 100%" target="_blank" href="https://github.com/hdwallet-io/python-hdwallet">
+                  <img style="width: 100%;" alt="GitHub" src="https://img.shields.io/github/stars/hdwallet-io/python-hdwallet">
+                </a>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="custom-groupbox2" style="margin: 0 0 10px 0; padding: 0">
+      <button style="padding: 10px;"
         class="w-full flex justify-between items-center text-left"
         onclick="
           const content = this.nextElementSibling;
@@ -92,7 +141,7 @@
           <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
         </svg>
       </button>
-      <div class="hidden" style="padding: 10px 5px;">
+      <div class="hidden" style="padding: 0 10px 10px 10px;">
         <app-donation></app-donation>
       </div>
     </div>

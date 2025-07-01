@@ -2,10 +2,10 @@ import { Component, ElementRef, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { QRCodeComponent } from 'angularx-qrcode';
 
-import { CustomComboboxComponent } from '../../../../common/custom-combobox/custom-combobox.component';
-import { ComboboxInterface, DonationAddressInterface } from '../../../../../interfaces';
-import { copyToClipboard } from '../../../../../utils';
-import { donation } from '../../../../../donation';
+import { CustomComboboxComponent } from '../../../common/custom-combobox/custom-combobox.component';
+import { ComboboxInterface, DonationAddressInterface } from '../../../../interfaces';
+import { copyToClipboard } from '../../../../utils';
+import { donation } from '../../../../donation';
 
 @Component({
   selector: 'app-donation',
