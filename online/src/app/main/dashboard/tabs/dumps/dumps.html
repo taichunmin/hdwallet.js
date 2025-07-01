@@ -1,7 +1,11 @@
 <form class="flex flex-col gap-2.5 px-3 pt-1 pb-3"
       [formGroup]="dumpsFormGroup" (ngSubmit)="getDumps(dumpsFormGroup.value, 'generate')">
   <!-- Start - Dumps -->
-  <fieldset class="custom-groupbox3" [ngStyle]="{ 'border-color': groupBoxService.box.name === 'cryptocurrency' ? groupBoxService.box.flag : groupBoxService.box.color }">
+  <fieldset class="custom-groupbox" [ngStyle]="{ 'border-color': groupBoxService.box.name === 'cryptocurrency' ? groupBoxService.box.flag : groupBoxService.box.color }">
+    <legend class="uppercase">1st - Step</legend>
+    <div class="description-font mb-2">
+      This section sets the scope for how keys will be derived — defining the target cryptocurrency, network, HD standard, and the source of input data.
+    </div>
     <div class="grid grid-cols-9 max-xl:grid-cols-4 gap-2.5">
       <!-- Dumps - Cryptocurrency -->
       <fieldset class="col-span-3 max-xl:col-span-2">
@@ -36,8 +40,12 @@
   <!-- End - Dumps -->
 
   <!-- Start - BIP Entropy -->
-  <fieldset class="custom-groupbox3" *ngIf="dumpsFormGroup.get('from')?.value === 'bip-entropy'"
+  <fieldset class="custom-groupbox" *ngIf="dumpsFormGroup.get('from')?.value === 'bip-entropy'"
             [ngStyle]="{ 'border-color': groupBoxService.box.name === 'bip-entropy' ? groupBoxService.box.flag : groupBoxService.box.color }">
+    <legend class="uppercase">2nd - Step</legend>
+    <div class="description-font mb-2">
+      Provide a relevant raw input for Entropy to begin the wallet generation process with optional customization.
+    </div>
     <div class="grid grid-cols-4 gap-2.5">
       <!-- BIP Entropy - Client -->
       <fieldset class="col-span-1 max-2xl:col-span-2" [disabled]="dumpsFormGroup.get('symbol')?.value !== 'ALGO'">
@@ -82,8 +90,12 @@
   <!-- End - BIP Entropy -->
 
   <!-- Start - BIP Mnemonic -->
-  <fieldset class="custom-groupbox3" *ngIf="dumpsFormGroup.get('from')?.value === 'bip-mnemonic'"
+  <fieldset class="custom-groupbox" *ngIf="dumpsFormGroup.get('from')?.value === 'bip-mnemonic'"
             [ngStyle]="{ 'border-color': groupBoxService.box.name === 'bip-mnemonic' ? groupBoxService.box.flag : groupBoxService.box.color }">
+    <legend class="uppercase">2nd - Step</legend>
+    <div class="description-font mb-2">
+      Provide a relevant raw input for Mnemonic to begin the wallet generation process with optional customization.
+    </div>
     <div class="grid grid-cols-4 gap-2.5">
       <!-- BIP Mnemonic - Client -->
       <fieldset class="col-span-1 max-2xl:col-span-2" [disabled]="dumpsFormGroup.get('symbol')?.value !== 'ALGO'">
@@ -121,8 +133,12 @@
   <!-- End - BIP Mnemonic -->
 
   <!-- Start - BIP Private Key -->
-  <fieldset class="custom-groupbox2" *ngIf="dumpsFormGroup.get('from')?.value === 'bip-private-key'"
+  <fieldset class="custom-groupbox" *ngIf="dumpsFormGroup.get('from')?.value === 'bip-private-key'"
             [ngStyle]="{ 'border-color': groupBoxService.box.name === 'bip-private-key' ? groupBoxService.box.flag : groupBoxService.box.color }">
+    <legend class="uppercase">2nd - Step</legend>
+    <div class="description-font mb-2">
+      Provide a relevant raw input for Private Key to begin the wallet generation process with optional customization.
+    </div>
     <div class="grid grid-cols-3 max-xl:grid-cols-4 gap-2.5">
       <!-- BIP Private Key Input -->
       <fieldset class="col-span-full max-xl:col-span-4">
@@ -148,8 +164,12 @@
   <!-- End - BIP Private Key -->
 
   <!-- Start - BIP Public key -->
-  <fieldset class="custom-groupbox2" *ngIf="dumpsFormGroup.get('from')?.value === 'bip-public-key'"
+  <fieldset class="custom-groupbox" *ngIf="dumpsFormGroup.get('from')?.value === 'bip-public-key'"
             [ngStyle]="{ 'border-color': groupBoxService.box.name === 'bip-public-key' ? groupBoxService.box.flag : groupBoxService.box.color }">
+    <legend class="uppercase">2nd - Step</legend>
+    <div class="description-font mb-2">
+      Provide a relevant raw input for Public Key to begin the wallet generation process with optional customization.
+    </div>
     <div class="grid grid-cols-3 max-xl:grid-cols-4 gap-2.5">
       <!-- BIP Public Key Input -->
       <fieldset class="col-span-full">
@@ -175,8 +195,12 @@
   <!-- End - BIP Public key -->
 
   <!-- Start - BIP Seed -->
-  <fieldset class="custom-groupbox2" *ngIf="dumpsFormGroup.get('from')?.value === 'bip-seed'"
+  <fieldset class="custom-groupbox" *ngIf="dumpsFormGroup.get('from')?.value === 'bip-seed'"
             [ngStyle]="{ 'border-color': groupBoxService.box.name === 'bip-seed' ? groupBoxService.box.flag : groupBoxService.box.color }">
+    <legend class="uppercase">2nd - Step</legend>
+    <div class="description-font mb-2">
+      Provide a relevant raw input for Seed to begin the wallet generation process with optional customization.
+    </div>
     <div class="grid grid-cols-4 gap-2.5">
       <!-- BIP Seed - Client -->
       <fieldset class="col-span-1 max-2xl:col-span-2" [disabled]="dumpsFormGroup.get('symbol')?.value !== 'ALGO'">
@@ -209,20 +233,24 @@
   <!-- End - BIP Seed -->
 
   <!-- Start - BIP WIF -->
-  <fieldset class="custom-groupbox3" *ngIf="dumpsFormGroup.get('from')?.value === 'bip-wif'"
+  <fieldset class="custom-groupbox" *ngIf="dumpsFormGroup.get('from')?.value === 'bip-wif'"
             [ngStyle]="{ 'border-color': groupBoxService.box.name === 'bip-wif' ? groupBoxService.box.flag : groupBoxService.box.color }">
+    <legend class="uppercase">2nd - Step</legend>
+    <div class="description-font mb-2">
+      Provide a relevant raw input for {{ dumpsFormGroup.get('bip38')?.value ? 'Encrypted Wallet Import Format' : 'Wallet Import Format' }} to begin the wallet generation process with optional customization.
+    </div>
     <div class="grid grid-cols-7 gap-2.5">
       <!-- BIP WIF Input -->
       <fieldset class="col-span-full">
         <label class="uppercase">{{ dumpsFormGroup.get('bip38')?.value ? 'Encrypted Wallet Import Format' : 'Wallet Import Format' }}</label>
         <input type="text" class="custom-input" formControlName="wif">
       </fieldset>
-      <div class="grid grid-cols-[auto,1fr] col-span-3 max-xl:col-span-full gap-2.5">
+      <div class="grid grid-cols-[auto_1fr] col-span-3 max-xl:col-span-full gap-2.5">
         <!-- BIP WIF - BIP38 -->
-        <fieldset class="custom-checkbox pt-7">
+        <div class="custom-checkbox pt-7">
           <input type="checkbox" formControlName="bip38">
           <label class="ml-2">BIP38</label>
-        </fieldset>
+        </div>
         <!-- BIP WIF - BIP38 Passphrase -->
         <fieldset [disabled]="!dumpsFormGroup.get('bip38')?.value">
           <label class="uppercase">Passphrase</label>
@@ -248,20 +276,24 @@
   <!-- End - BIP WIF -->
 
   <!-- Start - BIP XPrivate Key -->
-  <fieldset class="custom-groupbox2" *ngIf="dumpsFormGroup.get('from')?.value === 'bip-xprivate-key'"
+  <fieldset class="custom-groupbox" *ngIf="dumpsFormGroup.get('from')?.value === 'bip-xprivate-key'"
             [ngStyle]="{ 'border-color': groupBoxService.box.name === 'bip-xprivate-key' ? groupBoxService.box.flag : groupBoxService.box.color }">
+    <legend class="uppercase">2nd - Step</legend>
+    <div class="description-font mb-2">
+      Provide a relevant raw input for XPrivate Key to begin the wallet generation process with optional customization.
+    </div>
     <div class="grid grid-cols-3 max-xl:grid-cols-4 gap-2.5">
-      <div class="grid grid-cols-[1fr,auto] col-span-3 max-xl:col-span-4 gap-2.5">
+      <div class="grid grid-cols-[1fr_auto] col-span-3 max-xl:col-span-4 gap-2.5">
         <!-- BIP XPrivate Key Input -->
         <fieldset>
           <label class="uppercase">XPrivate Key</label>
           <input type="text" class="custom-input" formControlName="xprivate_key">
         </fieldset>
         <!-- BIP XPrivate Key - Strict -->
-        <fieldset class="custom-checkbox pt-7">
+        <div class="custom-checkbox pt-7">
           <input type="checkbox" formControlName="strict">
           <label class="ml-2">Strict</label>
-        </fieldset>
+        </div>
       </div>
       <!-- BIP XPrivate Key - Public Key Type -->
       <fieldset class="max-xl:col-span-2">
@@ -282,20 +314,24 @@
   <!-- End - BIP XPrivate Key -->
 
   <!-- Start - BIP XPublic Key -->
-  <fieldset class="custom-groupbox2" *ngIf="dumpsFormGroup.get('from')?.value === 'bip-xpublic-key'"
+  <fieldset class="custom-groupbox" *ngIf="dumpsFormGroup.get('from')?.value === 'bip-xpublic-key'"
             [ngStyle]="{ 'border-color': groupBoxService.box.name === 'bip-xpublic-key' ? groupBoxService.box.flag : groupBoxService.box.color }">
+    <legend class="uppercase">2nd - Step</legend>
+    <div class="description-font mb-2">
+      Provide a relevant raw input for XPublic Key to begin the wallet generation process with optional customization.
+    </div>
     <div class="grid grid-cols-3 max-xl:grid-cols-4 gap-2.5">
-      <div class="grid grid-cols-[1fr,auto] col-span-3 max-xl:col-span-4 gap-2.5">
+      <div class="grid grid-cols-[1fr_auto] col-span-3 max-xl:col-span-4 gap-2.5">
         <!--  BIP XPublic Key Input  -->
         <fieldset>
           <label class="uppercase">XPublic Key</label>
           <input type="text" class="custom-input" formControlName="xpublic_key">
         </fieldset>
         <!--  BIP XPublic Key - Strict  -->
-        <fieldset class="custom-checkbox pt-7">
+        <div class="custom-checkbox pt-7">
           <input type="checkbox" formControlName="strict">
           <label class="ml-2">Strict</label>
-        </fieldset>
+        </div>
       </div>
       <!--  BIP XPublic Key - Public Key Type  -->
       <fieldset class="max-xl:col-span-2">
@@ -316,8 +352,12 @@
   <!-- End - BIP XPublic Key -->
 
   <!-- Start - Cardano Entropy -->
-  <fieldset class="custom-groupbox3" *ngIf="dumpsFormGroup.get('from')?.value === 'cardano-entropy'"
+  <fieldset class="custom-groupbox" *ngIf="dumpsFormGroup.get('from')?.value === 'cardano-entropy'"
             [ngStyle]="{ 'border-color': groupBoxService.box.name === 'cardano-entropy' ? groupBoxService.box.flag : groupBoxService.box.color }">
+    <legend class="uppercase">2nd - Step</legend>
+    <div class="description-font mb-2">
+      Provide a relevant raw input for Entropy to begin the wallet generation process with optional customization.
+    </div>
     <div class="grid grid-cols-12 max-2xl:grid-cols-6 gap-2.5">
       <!-- Cardano Entropy - Client -->
       <fieldset class="col-span-3" disabled>
@@ -367,8 +407,12 @@
   <!-- End Cardano Entropy -->
 
   <!-- Start - Cardano Mnemonic -->
-  <fieldset class="custom-groupbox3" *ngIf="dumpsFormGroup.get('from')?.value === 'cardano-mnemonic'"
+  <fieldset class="custom-groupbox" *ngIf="dumpsFormGroup.get('from')?.value === 'cardano-mnemonic'"
             [ngStyle]="{ 'border-color': groupBoxService.box.name === 'cardano-mnemonic' ? groupBoxService.box.flag : groupBoxService.box.color }">
+    <legend class="uppercase">2nd - Step</legend>
+    <div class="description-font mb-2">
+      Provide a relevant raw input for Mnemonic to begin the wallet generation process with optional customization.
+    </div>
     <div class="grid grid-cols-12 max-2xl:grid-cols-6 gap-2.5">
       <!-- Cardano Mnemonic - Client -->
       <fieldset class="col-span-3" disabled>
@@ -411,8 +455,12 @@
   <!-- End - Cardano Mnemonic -->
 
   <!-- Start - Cardano Private key -->
-  <fieldset class="custom-groupbox3" *ngIf="dumpsFormGroup.get('from')?.value === 'cardano-private-key'"
+  <fieldset class="custom-groupbox" *ngIf="dumpsFormGroup.get('from')?.value === 'cardano-private-key'"
             [ngStyle]="{ 'border-color': groupBoxService.box.name === 'cardano-private-key' ? groupBoxService.box.flag : groupBoxService.box.color }">
+    <legend class="uppercase">2nd - Step</legend>
+    <div class="description-font mb-2">
+      Provide a relevant raw input for Private Key to begin the wallet generation process with optional customization.
+    </div>
     <div class="grid grid-rows-2 grid-cols-3 max-xl:grid-rows-3 max-xl:grid-cols-1 gap-2.5">
       <div class="xl:col-span-2">
         <!-- Cardano Private key Input -->
@@ -447,8 +495,12 @@
   <!-- End - Cardano Private key -->
 
   <!-- Start - Cardano Public Key -->
-  <fieldset class="custom-groupbox3" *ngIf="dumpsFormGroup.get('from')?.value === 'cardano-public-key'"
+  <fieldset class="custom-groupbox" *ngIf="dumpsFormGroup.get('from')?.value === 'cardano-public-key'"
             [ngStyle]="{ 'border-color': groupBoxService.box.name === 'cardano-public-key' ? groupBoxService.box.flag : groupBoxService.box.color }">
+    <legend class="uppercase">2nd - Step</legend>
+    <div class="description-font mb-2">
+      Provide a relevant raw input for Public Key to begin the wallet generation process with optional customization.
+    </div>
     <div class="grid grid-rows-2 grid-cols-3 max-xl:grid-rows-3 max-xl:grid-cols-1 gap-2.5">
       <div class="xl:col-span-2">
         <!-- Cardano Public Key Input -->
@@ -483,8 +535,12 @@
   <!-- End - Cardano Public Key -->
 
   <!-- Start - Cardano Seed -->
-  <fieldset class="custom-groupbox3" *ngIf="dumpsFormGroup.get('from')?.value === 'cardano-seed'"
+  <fieldset class="custom-groupbox" *ngIf="dumpsFormGroup.get('from')?.value === 'cardano-seed'"
             [ngStyle]="{ 'border-color': groupBoxService.box.name === 'cardano-seed' ? groupBoxService.box.flag : groupBoxService.box.color }">
+    <legend class="uppercase">2nd - Step</legend>
+    <div class="description-font mb-2">
+      Provide a relevant raw input for Seed to begin the wallet generation process with optional customization.
+    </div>
     <div class="grid grid-cols-12 max-2xl:grid-cols-6 gap-2.5">
       <!-- Cardano Seed - Client -->
       <fieldset class="col-span-3" disabled>
@@ -527,20 +583,24 @@
   <!-- End - Cardano Seed -->
 
   <!-- Start - Cardano XPrivate key -->
-  <fieldset class="custom-groupbox3" *ngIf="dumpsFormGroup.get('from')?.value === 'cardano-xprivate-key'"
+  <fieldset class="custom-groupbox" *ngIf="dumpsFormGroup.get('from')?.value === 'cardano-xprivate-key'"
             [ngStyle]="{ 'border-color': groupBoxService.box.name === 'cardano-xprivate-key' ? groupBoxService.box.flag : groupBoxService.box.color }">
+    <legend class="uppercase">2nd - Step</legend>
+    <div class="description-font mb-2">
+      Provide a relevant raw input for XPrivate Key to begin the wallet generation process with optional customization.
+    </div>
     <div class="grid grid-rows-2 grid-cols-3 max-xl:grid-rows-3 max-xl:grid-cols-1 gap-2.5">
-      <div class="grid grid-cols-[1fr,auto] xl:col-span-2 gap-2.5">
+      <div class="grid grid-cols-[1fr_auto] xl:col-span-2 gap-2.5">
         <!-- Cardano XPrivate key Input -->
         <fieldset>
           <label class="uppercase">XPrivate Key</label>
           <input type="text" class="custom-input" formControlName="xprivate_key">
         </fieldset>
         <!-- Cardano XPrivate key Strict -->
-        <fieldset class="custom-checkbox pt-7">
+        <div class="custom-checkbox pt-7">
           <input type="checkbox" formControlName="strict">
           <label class="ml-2">Strict</label>
-        </fieldset>
+        </div>
       </div>
       <div class="grid grid-cols-1 max-xl:grid-cols-2 xl:row-span-2 gap-2.5">
         <!-- Cardano XPrivate key - Cardano Type -->
@@ -570,20 +630,24 @@
   <!-- End - Cardano XPrivate key -->
 
   <!-- Start - Cardano XPublic Key -->
-  <fieldset class="custom-groupbox3" *ngIf="dumpsFormGroup.get('from')?.value === 'cardano-xpublic-key'"
+  <fieldset class="custom-groupbox" *ngIf="dumpsFormGroup.get('from')?.value === 'cardano-xpublic-key'"
             [ngStyle]="{ 'border-color': groupBoxService.box.name === 'cardano-xpublic-key' ? groupBoxService.box.flag : groupBoxService.box.color }">
+    <legend class="uppercase">2nd - Step</legend>
+    <div class="description-font mb-2">
+      Provide a relevant raw input for XPublic Key to begin the wallet generation process with optional customization.
+    </div>
     <div class="grid grid-rows-2 grid-cols-3 max-xl:grid-rows-3 max-xl:grid-cols-1 gap-2.5">
-      <div class="grid grid-cols-[1fr,auto] xl:col-span-2 gap-2.5">
+      <div class="grid grid-cols-[1fr_auto] xl:col-span-2 gap-2.5">
         <!-- Cardano XPublic Key Input -->
         <fieldset>
           <label class="uppercase">XPublic Key</label>
           <input type="text" class="custom-input" formControlName="xpublic_key">
         </fieldset>
         <!-- Cardano XPublic Key Strict -->
-        <fieldset class="custom-checkbox pt-7">
+        <div class="custom-checkbox pt-7">
           <input type="checkbox" formControlName="strict">
           <label class="ml-2">Strict</label>
-        </fieldset>
+        </div>
       </div>
       <div class="grid grid-cols-1 max-xl:grid-cols-2 xl:row-span-2 gap-2.5">
         <!-- Cardano XPublic Key - Cardano Type -->
@@ -613,8 +677,12 @@
   <!-- End - Cardano XPublic Key -->
 
   <!-- Start - Electrum-V1 Entropy -->
-  <fieldset class="custom-groupbox3" *ngIf="dumpsFormGroup.get('from')?.value === 'electrum-v1-entropy'"
+  <fieldset class="custom-groupbox" *ngIf="dumpsFormGroup.get('from')?.value === 'electrum-v1-entropy'"
             [ngStyle]="{ 'border-color': groupBoxService.box.name === 'electrum-v1-entropy' ? groupBoxService.box.flag : groupBoxService.box.color }">
+    <legend class="uppercase">2nd - Step</legend>
+    <div class="description-font mb-2">
+      Provide a relevant raw input for Entropy to begin the wallet generation process with optional customization.
+    </div>
     <div class="grid grid-cols-6 max-xl:grid-cols-4 gap-2.5">
       <!-- Electrum-V1 Entropy - Client -->
       <fieldset class="col-span-2" disabled>
@@ -647,8 +715,12 @@
   <!-- End - Electrum-V1 Entropy -->
 
   <!-- Start of Electrum-V1 Mnemonic -->
-  <fieldset class="custom-groupbox3" *ngIf="dumpsFormGroup.get('from')?.value === 'electrum-v1-mnemonic'"
+  <fieldset class="custom-groupbox" *ngIf="dumpsFormGroup.get('from')?.value === 'electrum-v1-mnemonic'"
             [ngStyle]="{ 'border-color': groupBoxService.box.name === 'electrum-v1-mnemonic' ? groupBoxService.box.flag : groupBoxService.box.color }">
+    <legend class="uppercase">2nd - Step</legend>
+    <div class="description-font mb-2">
+      Provide a relevant raw input for Mnemonic to begin the wallet generation process with optional customization.
+    </div>
     <div class="grid grid-cols-6 max-xl:grid-cols-4 gap-2.5">
       <!-- Electrum-V1 Mnemonic - Client -->
       <fieldset class="col-span-2" disabled>
@@ -674,8 +746,12 @@
   <!-- End - Electrum-V1 Mnemonic -->
 
   <!-- Start - Electrum-V1 Private Key -->
-  <fieldset class="custom-groupbox2" *ngIf="dumpsFormGroup.get('from')?.value === 'electrum-v1-private-key'"
+  <fieldset class="custom-groupbox" *ngIf="dumpsFormGroup.get('from')?.value === 'electrum-v1-private-key'"
             [ngStyle]="{ 'border-color': groupBoxService.box.name === 'electrum-v1-private-key' ? groupBoxService.box.flag : groupBoxService.box.color }">
+    <legend class="uppercase">2nd - Step</legend>
+    <div class="description-font mb-2">
+      Provide a relevant raw input for Private Key to begin the wallet generation process with optional customization.
+    </div>
     <div class="grid grid-cols-3 max-xl:grid-cols-4 gap-2.5">
       <!-- Electrum-V1 Private Key Input -->
       <fieldset class="col-span-3 max-xl:col-span-4">
@@ -694,8 +770,12 @@
   <!-- End - Electrum-V1 Private Key -->
 
   <!-- Start - Electrum-V1 Public Key -->
-  <fieldset class="custom-groupbox2" *ngIf="dumpsFormGroup.get('from')?.value === 'electrum-v1-public-key'"
+  <fieldset class="custom-groupbox" *ngIf="dumpsFormGroup.get('from')?.value === 'electrum-v1-public-key'"
             [ngStyle]="{ 'border-color': groupBoxService.box.name === 'electrum-v1-public-key' ? groupBoxService.box.flag : groupBoxService.box.color }">
+    <legend class="uppercase">2nd - Step</legend>
+    <div class="description-font mb-2">
+      Provide a relevant raw input for Public Key to begin the wallet generation process with optional customization.
+    </div>
     <div class="grid grid-cols-3 max-xl:grid-cols-4 gap-2.5">
       <!-- Electrum-V1 Public Key Input -->
       <fieldset class="col-span-3 max-xl:col-span-4">
@@ -714,9 +794,12 @@
   <!-- End - Electrum-V1 Public Key -->
 
   <!-- Start - Electrum-V1 Seed -->
-  <fieldset class="custom-groupbox2" *ngIf="dumpsFormGroup.get('from')?.value === 'electrum-v1-seed'"
+  <fieldset class="custom-groupbox" *ngIf="dumpsFormGroup.get('from')?.value === 'electrum-v1-seed'"
             [ngStyle]="{ 'border-color': groupBoxService.box.name === 'electrum-v1-seed' ? groupBoxService.box.flag : groupBoxService.box.color }">
-
+    <legend class="uppercase">2nd - Step</legend>
+    <div class="description-font mb-2">
+      Provide a relevant raw input for Seed to begin the wallet generation process with optional customization.
+    </div>
     <div class="grid grid-cols-6 max-xl:grid-cols-4 gap-2.5">
       <!-- Electrum-V1 Seed - Client -->
       <fieldset class="col-span-2" disabled>
@@ -742,20 +825,24 @@
   <!-- End of Electrum-V1 Seed -->
 
   <!-- Start - Electrum-V1 WIF -->
-  <fieldset class="custom-groupbox3" *ngIf="dumpsFormGroup.get('from')?.value === 'electrum-v1-wif'"
+  <fieldset class="custom-groupbox" *ngIf="dumpsFormGroup.get('from')?.value === 'electrum-v1-wif'"
             [ngStyle]="{ 'border-color': groupBoxService.box.name === 'electrum-v1-wif' ? groupBoxService.box.flag : groupBoxService.box.color }">
+    <legend class="uppercase">2nd - Step</legend>
+    <div class="description-font mb-2">
+      Provide a relevant raw input for {{ dumpsFormGroup.get('bip38')?.value ? 'Encrypted Wallet Import Format' : 'Wallet Import Format' }} to begin the wallet generation process with optional customization.
+    </div>
     <div class="grid grid-cols-5 gap-2.5">
       <!-- Electrum-V1 WIF Input -->
       <fieldset class="col-span-5">
         <label class="uppercase">{{ dumpsFormGroup.get('bip38')?.value ? 'Encrypted Wallet Import Format' : 'Wallet Import Format' }}</label>
         <input type="text" class="custom-input" formControlName="wif">
       </fieldset>
-      <div class="grid grid-cols-[auto,1fr] col-span-3 max-xl:col-span-5 gap-2.5">
+      <div class="grid grid-cols-[auto_1fr] col-span-3 max-xl:col-span-5 gap-2.5">
         <!-- Electrum-V1 WIF - BIP38 -->
-        <fieldset class="custom-checkbox pt-7">
+        <div class="custom-checkbox pt-7">
           <input type="checkbox" formControlName="bip38">
           <label class="ml-2">BIP38</label>
-        </fieldset>
+        </div>
          <!-- Electrum-V1 WIF - BIP38 Passphrase -->
         <fieldset [disabled]="!dumpsFormGroup.get('bip38')?.value">
           <label class="uppercase">Passphrase</label>
@@ -774,8 +861,12 @@
   <!-- End - Electrum-V1 WIF -->
 
   <!-- Start - Electrum-V2 Entropy -->
-  <fieldset class="custom-groupbox3" *ngIf="dumpsFormGroup.get('from')?.value === 'electrum-v2-entropy'"
+  <fieldset class="custom-groupbox" *ngIf="dumpsFormGroup.get('from')?.value === 'electrum-v2-entropy'"
             [ngStyle]="{ 'border-color': groupBoxService.box.name === 'electrum-v2-entropy' ? groupBoxService.box.flag : groupBoxService.box.color }">
+    <legend class="uppercase">2nd - Step</legend>
+    <div class="description-font mb-2">
+      Provide a relevant raw input for Entropy to begin the wallet generation process with optional customization.
+    </div>
     <div class="grid grid-cols-12 max-2xl:grid-cols-6 gap-2.5">
       <!-- Electrum-V2 Entropy - Client -->
       <fieldset class="col-span-3" disabled>
@@ -822,8 +913,12 @@
   <!-- End - Electrum-V2 Entropy -->
 
   <!-- Start - Electrum-V2 Mnemonic -->
-  <fieldset class="custom-groupbox3" *ngIf="dumpsFormGroup.get('from')?.value === 'electrum-v2-mnemonic'"
+  <fieldset class="custom-groupbox" *ngIf="dumpsFormGroup.get('from')?.value === 'electrum-v2-mnemonic'"
             [ngStyle]="{ 'border-color': groupBoxService.box.name === 'electrum-v2-mnemonic' ? groupBoxService.box.flag : groupBoxService.box.color }">
+    <legend class="uppercase">2nd - Step</legend>
+    <div class="description-font mb-2">
+      Provide a relevant raw input for Mnemonic to begin the wallet generation process with optional customization.
+    </div>
     <div class="grid grid-cols-12 max-2xl:grid-cols-6 gap-2.5">
       <!-- Electrum-V2 Mnemonic - Client -->
       <fieldset class="col-span-3" disabled>
@@ -863,8 +958,12 @@
   <!-- End - Electrum-V2 Mnemonic -->
 
   <!-- Start - Electrum-V2 Seed -->
-  <fieldset class="custom-groupbox2" *ngIf="dumpsFormGroup.get('from')?.value === 'electrum-v2-seed'"
+  <fieldset class="custom-groupbox" *ngIf="dumpsFormGroup.get('from')?.value === 'electrum-v2-seed'"
             [ngStyle]="{ 'border-color': groupBoxService.box.name === 'electrum-v2-seed' ? groupBoxService.box.flag : groupBoxService.box.color }">
+    <legend class="uppercase">2nd - Step</legend>
+    <div class="description-font mb-2">
+      Provide a relevant raw input for Seed to begin the wallet generation process with optional customization.
+    </div>
     <div class="grid grid-cols-12 max-2xl:grid-cols-6 gap-2.5">
       <!-- Electrum-V2 Seed - Client -->
       <fieldset class="col-span-3" disabled>
@@ -897,8 +996,12 @@
   <!-- End - Electrum-V2 Seed -->
 
   <!-- Start - Monero Entropy -->
-  <fieldset class="custom-groupbox3" *ngIf="dumpsFormGroup.get('from')?.value === 'monero-entropy'"
+  <fieldset class="custom-groupbox" *ngIf="dumpsFormGroup.get('from')?.value === 'monero-entropy'"
             [ngStyle]="{ 'border-color': groupBoxService.box.name === 'monero-entropy' ? groupBoxService.box.flag : groupBoxService.box.color }">
+    <legend class="uppercase">2nd - Step</legend>
+    <div class="description-font mb-2">
+      Provide a relevant raw input for Entropy to begin the wallet generation process with optional customization.
+    </div>
     <div class="grid grid-cols-4 max-xl:grid-cols-2 gap-2.5">
       <!-- Monero Entropy - Client -->
       <fieldset class="col-span-1" disabled>
@@ -929,8 +1032,12 @@
   <!-- End - Monero Entropy -->
 
   <!-- Start - Monero Mnemonic -->
-  <fieldset class="custom-groupbox3" *ngIf="dumpsFormGroup.get('from')?.value === 'monero-mnemonic'"
+  <fieldset class="custom-groupbox" *ngIf="dumpsFormGroup.get('from')?.value === 'monero-mnemonic'"
             [ngStyle]="{ 'border-color': groupBoxService.box.name === 'monero-mnemonic' ? groupBoxService.box.flag : groupBoxService.box.color }">
+    <legend class="uppercase">2nd - Step</legend>
+    <div class="description-font mb-2">
+      Provide a relevant raw input for Mnemonic to begin the wallet generation process with optional customization.
+    </div>
     <div class="grid grid-cols-4 gap-2.5 ">
       <!-- Monero Mnemonic - Client -->
       <fieldset class="col-span-1" disabled>
@@ -954,8 +1061,12 @@
   <!-- End - Monero Mnemonic -->
 
   <!-- Start - Monero Private Key -->
-  <fieldset class="custom-groupbox3" *ngIf="dumpsFormGroup.get('from')?.value === 'monero-private-key'"
+  <fieldset class="custom-groupbox" *ngIf="dumpsFormGroup.get('from')?.value === 'monero-private-key'"
             [ngStyle]="{ 'border-color': groupBoxService.box.name === 'monero-private-key' ? groupBoxService.box.flag : groupBoxService.box.color }">
+    <legend class="uppercase">2nd - Step</legend>
+    <div class="description-font mb-2">
+      Provide a relevant raw input for Private Key to begin the wallet generation process with optional customization.
+    </div>
     <div class="grid grid-cols-1 gap-2.5 ">
       <!-- Monero Private Key - Private -->
       <fieldset>
@@ -972,8 +1083,12 @@
   <!-- End - Monero Private Key -->
 
   <!-- Start - Monero Seed -->
-  <fieldset class="custom-groupbox3" *ngIf="dumpsFormGroup.get('from')?.value === 'monero-seed'"
+  <fieldset class="custom-groupbox" *ngIf="dumpsFormGroup.get('from')?.value === 'monero-seed'"
             [ngStyle]="{ 'border-color': groupBoxService.box.name === 'monero-seed' ? groupBoxService.box.flag : groupBoxService.box.color }">
+    <legend class="uppercase">2nd - Step</legend>
+    <div class="description-font mb-2">
+      Provide a relevant raw input for Seed to begin the wallet generation process with optional customization.
+    </div>
     <div class="grid grid-cols-4 gap-2.5 ">
       <!-- Monero Seed - Client -->
       <fieldset class="col-span-1" disabled>
@@ -997,8 +1112,12 @@
   <!-- End - Monero Seed -->
 
   <!-- Start - Monero Spend Private Key -->
-  <fieldset class="custom-groupbox3" *ngIf="dumpsFormGroup.get('from')?.value === 'monero-spend-private-key'"
+  <fieldset class="custom-groupbox" *ngIf="dumpsFormGroup.get('from')?.value === 'monero-spend-private-key'"
             [ngStyle]="{ 'border-color': groupBoxService.box.name === 'monero-spend-private-key' ? groupBoxService.box.flag : groupBoxService.box.color }">
+    <legend class="uppercase">2nd - Step</legend>
+    <div class="description-font mb-2">
+      Provide a relevant raw input for Spend Private Key to begin the wallet generation process with optional customization.
+    </div>
     <div class="grid grid-cols-1 gap-2.5 ">
       <!-- Monero Spend Private Key - Spend Private Key -->
       <fieldset>
@@ -1015,8 +1134,12 @@
   <!-- End - Monero Spend Private Key -->
 
   <!--Start - Monero Watch Only -->
-  <fieldset class="custom-groupbox3" *ngIf="dumpsFormGroup.get('from')?.value === 'monero-watch-only'"
+  <fieldset class="custom-groupbox" *ngIf="dumpsFormGroup.get('from')?.value === 'monero-watch-only'"
             [ngStyle]="{ 'border-color': groupBoxService.box.name === 'monero-watch-only' ? groupBoxService.box.flag : groupBoxService.box.color }">
+    <legend class="uppercase">2nd - Step</legend>
+    <div class="description-font mb-2">
+      Provide a relevant raw input for Watch Only to begin the wallet generation process with optional customization.
+    </div>
     <div class="grid grid-cols-6 gap-2.5 ">
       <!-- Monero Watch Only - View Private Key -->
       <fieldset class="col-span-full">
@@ -1040,7 +1163,10 @@
   <!-- Start Derivation -->
   <fieldset class="custom-groupbox" [disabled]="['bip-wif', 'bip-private-key', 'bip-public-key', 'cardano-private-key', 'cardano-public-key'].includes(dumpsFormGroup.get('from')?.value)"
             [ngStyle]="{ 'border-color': groupBoxService.box.name === 'derivation' ? groupBoxService.box.flag : groupBoxService.box.color }">
-    <legend class="uppercase">Derivation</legend>
+    <div class="description-font mb-3">
+      This section covers derivation — the process of generating a structured tree of cryptographic keys from a master key using standard or client-specific paths.
+    </div>
+    <legend class="uppercase">3rd - Step</legend>
 
     <!-- Derivation Tabs -->
     <div class="relative flex items-center mt-1.5 mb-2.5" [ngStyle]="{ 'padding': isOverflowed ? '0 28px' : '0 0' }">
@@ -1339,7 +1465,11 @@
   <!-- End - Derivation -->
 
   <!-- Start - Dumps -->
-  <fieldset class="custom-groupbox3" [ngStyle]="{ 'border-color': groupBoxService.box.name === 'action' ? groupBoxService.box.flag : groupBoxService.box.color }">
+  <fieldset class="custom-groupbox" [ngStyle]="{ 'border-color': groupBoxService.box.name === 'action' ? groupBoxService.box.flag : groupBoxService.box.color }">
+    <legend class="uppercase">4th - Step</legend>
+    <div class="description-font mb-2">
+      This is the final step — select the output format, exclude/include specific fields, and generate, save, or share the HDWallet data.
+    </div>
     <div id="customActions" class="grid grid-cols-6 2xl:grid-flow-col gap-2.5">
       <!-- Dumps - Format -->
       <fieldset class="col-span-2" [disabled]="['bip-wif', 'bip-private-key', 'bip-public-key', 'cardano-private-key', 'cardano-public-key'].includes(dumpsFormGroup.get('from')?.value)">
@@ -1363,13 +1493,13 @@
         </fieldset>
         <!-- Dumps - Save -->
         <fieldset [disabled]="isLoading">
-          <div class="flex items-end justify-end">
+          <div class="flex items-end justify-end h-full">
             <button type="button" class="custom-button" (click)="getDumps(dumpsFormGroup.value, 'save')">Save</button>
           </div>
         </fieldset>
         <!-- Dumps - Share -->
         <fieldset [disabled]="isLoading">
-          <div class="flex items-end justify-end">
+          <div class="flex items-end justify-end h-full">
             <button type="button" class="custom-button" (click)="share(dumpsFormGroup.value)">Share</button>
           </div>
         </fieldset>

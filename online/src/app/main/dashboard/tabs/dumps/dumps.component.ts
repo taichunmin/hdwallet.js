@@ -191,9 +191,13 @@ export class DumpsComponent implements OnInit, AfterViewInit {
 
   updateFormGroup(key: string, value: any, emitEvent: boolean = true, timeout: number = 0): void {
     if (timeout > 0) {
-      setTimeout(() => { this.dumpsFormGroup.get(key)?.setValue(value, { emitEvent: emitEvent }); }, timeout);
+      setTimeout(() => {
+        this.dumpsFormGroup.get(key)?.setValue(value, { emitEvent: emitEvent });
+        this.changeDetectorRef.markForCheck();
+      }, timeout);
     } else {
       this.dumpsFormGroup.get(key)?.setValue(value, { emitEvent: emitEvent });
+      this.changeDetectorRef.markForCheck();
     }
   }
 

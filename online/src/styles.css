@@ -41,7 +41,7 @@ button:focus {
   background-color: transparent;
   font-weight: lighter;
   border-bottom: 1px solid rgba(128, 128, 128, 0.25);
-  padding: 5px 0 10px 0;
+  padding-bottom: 10px;
 }
 
 .custom-groupbox {
@@ -53,7 +53,7 @@ button:focus {
 }
 
 .custom-groupbox3 {
-  padding: 10px;
+  padding: 5px 10px 10px 10px;
   border-radius: 5px;
   background-color: rgb(16, 21, 27);
   border: 1px solid rgba(128, 128, 128, 0.25);
@@ -309,13 +309,13 @@ fieldset[disabled] input::placeholder {
   }
 
   ::-webkit-scrollbar-track {
-      background: rgb(16, 21, 27);
-      border-radius: 4px;
+      background: transparent;
+      border-radius: 0;
   }
 
   ::-webkit-scrollbar-thumb {
       background-color: rgba(131, 185, 255, 0.75);
-      border-radius: 4px;
+      border-radius: 0;
       margin-right: 2px;
       height: 55px;
   }
