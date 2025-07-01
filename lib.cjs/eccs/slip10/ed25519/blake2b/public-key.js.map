@@ -1,1 +1,0 @@
-{"version":3,"file":"public-key.js","sourceRoot":"","sources":["../../../../../src/eccs/slip10/ed25519/blake2b/public-key.ts"],"names":[],"mappings":";AAAA,+BAA+B;;;AAG/B,8CAAuD;AACvD,mCAAoD;AAEpD,MAAa,6BAA8B,SAAQ,mCAAsB;IAEvE,OAAO;QACL,OAAO,wBAAwB,CAAC;IAClC,CAAC;IAED,QAAQ;QACN,OAAO,IAAI,iCAAyB,CAAC,IAAI,CAAC,SAAS,CAAC,CAAC;IACvD,CAAC;CACF;AATD,sEASC"}
