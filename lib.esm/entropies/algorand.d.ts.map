@@ -1,0 +1,1 @@
+{"version":3,"file":"algorand.d.ts","sourceRoot":"","sources":["../../src/entropies/algorand.ts"],"names":[],"mappings":"AAEA,OAAO,EAAE,OAAO,EAAE,MAAM,WAAW,CAAC;AAEpC,eAAO,MAAM,0BAA0B;;CAE7B,CAAC;AAEX,qBAAa,eAAgB,SAAQ,OAAO;IAE1C,MAAM,CAAC,SAAS,QAEd;IAEF,MAAM,CAAC,OAAO,IAAI,MAAM;CAGzB"}
