@@ -1,0 +1,73 @@
+.tab-item {
+  color: white;
+  /*transition: background-color 0.3s, color 0.3s;*/
+  border-bottom: 3px solid transparent;
+  cursor: default;
+  padding-bottom: 3px;
+  letter-spacing: 0.03125em;
+}
+
+.tab-item:hover,
+.tab-item.active {
+  border-bottom: 3px solid #83B9FFFF;
+}
+
+.tab-item:disabled,
+fieldset[disabled] .tab-item {
+  color: rgba(255,255,255,0.5);
+  cursor: not-allowed;
+  pointer-events: none;
+  border-color: transparent;
+}
+
+#hdwDerivation {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  -webkit-overflow-scrolling: touch;
+  overflow-y: scroll;
+  z-index: 1;
+}
+
+#hdwDerivation::-webkit-scrollbar {
+  display: none;
+}
+
+.arrow-button-left {
+  left: 0;
+  /*-webkit-box-shadow: 0.5px 0 2px 0 rgba(0,0,0,0.75);*/
+  /*-moz-box-shadow: 0.5px 0 2px 0 rgba(0,0,0,0.75);*/
+  /*box-shadow: 0.5px 0 2px 0 rgba(0,0,0,0.75);*/
+}
+
+.arrow-button-right {
+  right: 0;
+  /*-webkit-box-shadow: -0.5px 0 2px 0 rgba(0,0,0,0.75);*/
+  /*-moz-box-shadow: -0.5px 0 2px 0 rgba(0,0,0,0.75);*/
+  /*box-shadow: -0.5px 0 2px 0 rgba(0,0,0,0.75);*/
+}
+
+.arrow-button {
+  position: absolute;
+  top: 50%;
+  height: 35px;
+  width: 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transform: translateY(-50%);
+  background-color: rgb(25, 30, 36);
+  border-radius: 5px;
+  color: white;
+  cursor: pointer;
+  z-index: 1;
+}
+
+/* Hide scrollbars (Webkit + Firefox) */
+.scrollbar-hide {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE 10+ */
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none; /* Chrome/Safari/Webkit */
+}
