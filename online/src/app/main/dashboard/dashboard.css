@@ -1,8 +1,7 @@
 /* Dashboard styles */
 
-#footer {
+.yo-footer {
   border-top: 1px solid rgba(128, 128, 128, 0.25);
-  margin-top: 5px;
   padding: 15px;
 }
 
