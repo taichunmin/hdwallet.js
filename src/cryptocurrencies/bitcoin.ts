@@ -19,6 +19,7 @@ import { Cryptocurrency, Network } from './cryptocurrency';
 
 export class Mainnet extends Network {
 
+  static NAME = 'mainnet';
   static PUBLIC_KEY_ADDRESS_PREFIX = 0x00;
   static SCRIPT_ADDRESS_PREFIX = 0x05;
   static HRP = 'bc';
@@ -51,6 +52,7 @@ export class Mainnet extends Network {
 
 export class Testnet extends Network {
 
+  static NAME = 'testnet';
   static PUBLIC_KEY_ADDRESS_PREFIX = 0x6f;
   static SCRIPT_ADDRESS_PREFIX = 0xc4;
   static HRP = 'tb';
@@ -83,6 +85,7 @@ export class Testnet extends Network {
 
 export class Regtest extends Testnet {
 
+  static NAME = 'regtest';
   static HRP = 'bcrt';
 }
 
@@ -143,6 +146,7 @@ export class Bitcoin extends Cryptocurrency {
     { P2WSH_IN_P2SH: 'P2WSH-In-P2SH' }
   ]);
   static DEFAULT_ADDRESS = Bitcoin.ADDRESSES.P2PKH;
+  static SEMANTICS = ['p2pkh', 'p2sh', 'p2tr', 'p2wpkh', 'p2wpkh-in-p2sh', 'p2wsh', 'p2wsh-in-p2sh'];
   static DEFAULT_SEMANTIC = 'p2pkh';
   static PARAMS = new Params({
     ALPHABET: '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz',

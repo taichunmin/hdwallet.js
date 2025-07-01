@@ -4,6 +4,7 @@ import { SLIP10Secp256k1ECC } from '../eccs';
 import { Info, Entropies, Mnemonics, Seeds, HDs, Addresses, Networks, XPrivateKeyVersions, XPublicKeyVersions } from '../consts';
 import { Cryptocurrency, Network } from './cryptocurrency';
 export class Mainnet extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x19;
     static SCRIPT_ADDRESS_PREFIX = 0x08;
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
@@ -54,6 +55,7 @@ export class BitcoinPlus extends Cryptocurrency {
         'P2SH'
     ]);
     static DEFAULT_ADDRESS = BitcoinPlus.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 //# sourceMappingURL=bitcoinplus.js.map

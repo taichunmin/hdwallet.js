@@ -4,6 +4,7 @@ import { SLIP10Nist256p1ECC } from '../eccs';
 import { Info, Entropies, Mnemonics, Seeds, HDs, Addresses, Networks, Params, XPrivateKeyVersions, XPublicKeyVersions } from '../consts';
 import { Cryptocurrency, Network } from './cryptocurrency';
 export class Mainnet extends Network {
+    static NAME = 'mainnet';
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
         P2PKH: 0x0488ade4
     });
@@ -47,6 +48,7 @@ export class Neo extends Cryptocurrency {
         NEO: 'Neo'
     });
     static DEFAULT_ADDRESS = Neo.ADDRESSES.NEO;
+    static SEMANTICS = ['p2pkh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
     static PARAMS = new Params({
         ADDRESS_PREFIX: 0x21,

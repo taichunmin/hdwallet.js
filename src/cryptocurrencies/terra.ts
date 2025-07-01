@@ -17,6 +17,7 @@ import { Cryptocurrency, Network } from './cryptocurrency';
 
 export class Mainnet extends Network {
 
+  static NAME = 'mainnet';
   static HRP = 'terra';
   static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
     P2PKH: 0x0488ade4
@@ -64,5 +65,6 @@ export class Terra extends Cryptocurrency {
     COSMOS: 'Cosmos'
   });
   static DEFAULT_ADDRESS = Terra.ADDRESSES.COSMOS;
+  static SEMANTICS = ['p2pkh'];
   static DEFAULT_SEMANTIC = 'p2pkh';
 }

@@ -3,6 +3,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Cryptocurrency = exports.Network = void 0;
 class Network {
+    static NAME;
     // Bitcoin
     static PUBLIC_KEY_ADDRESS_PREFIX;
     static SCRIPT_ADDRESS_PREFIX;
@@ -25,11 +26,6 @@ class Network {
     static TYPE;
     static PAYMENT_ADDRESS_HRP;
     static REWARD_ADDRESS_HRP;
-    static getName() {
-        const name = this.prototype.constructor.name;
-        const base = name.includes('$') ? name.slice(0, name.indexOf('$')) : name;
-        return base.toLowerCase();
-    }
 }
 exports.Network = Network;
 class Cryptocurrency {
@@ -52,6 +48,7 @@ class Cryptocurrency {
     static DEFAULT_ADDRESS_TYPE;
     static ADDRESS_PREFIXES;
     static DEFAULT_ADDRESS_PREFIX;
+    static SEMANTICS;
     static DEFAULT_SEMANTIC;
     static PARAMS;
 }

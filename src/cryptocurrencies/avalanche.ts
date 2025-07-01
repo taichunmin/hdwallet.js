@@ -19,6 +19,7 @@ import { Cryptocurrency, Network } from './cryptocurrency';
 
 export class Mainnet extends Network {
 
+  static NAME = 'mainnet';
   static HRP = 'avax';
   static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
     P2PKH: 0x0488ade4
@@ -68,6 +69,7 @@ export class Avalanche extends Cryptocurrency {
     ETHEREUM: 'Ethereum'
   });
   static DEFAULT_ADDRESS = Avalanche.ADDRESSES.AVALANCHE;
+  static SEMANTICS = ['p2pkh'];
   static DEFAULT_SEMANTIC = 'p2pkh';
   static ADDRESS_TYPES = new AddressTypes({
     C_CHAIN: 'c-chain',

@@ -4,6 +4,7 @@ import { SLIP10Secp256k1ECC } from '../eccs';
 import { Info, Entropies, Mnemonics, Seeds, HDs, Addresses, Networks, Params, XPrivateKeyVersions, XPublicKeyVersions } from '../consts';
 import { Cryptocurrency, Network } from './cryptocurrency';
 export class Mainnet extends Network {
+    static NAME = 'mainnet';
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
         P2PKH: 0x0488ade4
     });
@@ -49,6 +50,7 @@ export class XinFin extends Cryptocurrency {
         XINFIN: 'XinFin'
     });
     static DEFAULT_ADDRESS = XinFin.ADDRESSES.XINFIN;
+    static SEMANTICS = ['p2pkh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
     static PARAMS = new Params({
         ADDRESS_PREFIX: 'xdc'

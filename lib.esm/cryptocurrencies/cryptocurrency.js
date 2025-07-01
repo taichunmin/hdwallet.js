@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: MIT
 export class Network {
+    static NAME;
     // Bitcoin
     static PUBLIC_KEY_ADDRESS_PREFIX;
     static SCRIPT_ADDRESS_PREFIX;
@@ -22,11 +23,6 @@ export class Network {
     static TYPE;
     static PAYMENT_ADDRESS_HRP;
     static REWARD_ADDRESS_HRP;
-    static getName() {
-        const name = this.prototype.constructor.name;
-        const base = name.includes('$') ? name.slice(0, name.indexOf('$')) : name;
-        return base.toLowerCase();
-    }
 }
 export class Cryptocurrency {
     static NAME;
@@ -48,6 +44,7 @@ export class Cryptocurrency {
     static DEFAULT_ADDRESS_TYPE;
     static ADDRESS_PREFIXES;
     static DEFAULT_ADDRESS_PREFIX;
+    static SEMANTICS;
     static DEFAULT_SEMANTIC;
     static PARAMS;
 }

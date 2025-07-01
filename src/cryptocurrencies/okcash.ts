@@ -17,6 +17,7 @@ import { Cryptocurrency, Network } from './cryptocurrency';
 
 export class Mainnet extends Network {
 
+  static NAME = 'mainnet';
   static PUBLIC_KEY_ADDRESS_PREFIX = 0x37;
   static SCRIPT_ADDRESS_PREFIX = 0x1c;
   static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
@@ -69,5 +70,6 @@ export class OKCash extends Cryptocurrency {
     'P2SH'
   ]);
   static DEFAULT_ADDRESS = OKCash.ADDRESSES.P2PKH;
+  static SEMANTICS = ['p2pkh', 'p2sh'];
   static DEFAULT_SEMANTIC = 'p2pkh';
 }

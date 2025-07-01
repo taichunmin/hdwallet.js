@@ -18,6 +18,7 @@ import { Cryptocurrency, Network } from './cryptocurrency';
 
 export class Mainnet extends Network {
 
+  static NAME = 'mainnet';
   static PUBLIC_KEY_ADDRESS_PREFIX = 0x38;
   static SCRIPT_ADDRESS_PREFIX = 0x3c;
   static HRP = 'pw';
@@ -76,5 +77,6 @@ export class Particl extends Cryptocurrency {
     'P2SH'
   ]);
   static DEFAULT_ADDRESS = Particl.ADDRESSES.P2PKH;
+  static SEMANTICS = ['p2pkh', 'p2sh'];
   static DEFAULT_SEMANTIC = 'p2pkh';
 }

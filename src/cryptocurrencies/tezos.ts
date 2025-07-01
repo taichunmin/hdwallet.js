@@ -19,6 +19,7 @@ import { Cryptocurrency, Network } from './cryptocurrency';
 
 export class Mainnet extends Network {
 
+  static NAME = 'mainnet';
   static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
     P2PKH: 0x0488ade4
   });
@@ -64,6 +65,7 @@ export class Tezos extends Cryptocurrency {
     TEZOS: 'Tezos'
   });
   static DEFAULT_ADDRESS = Tezos.ADDRESSES.TEZOS;
+  static SEMANTICS = ['p2pkh'];
   static DEFAULT_SEMANTIC = 'p2pkh';
   static ADDRESS_PREFIXES = new AddressPrefixes({
     TZ1: 'tz1',

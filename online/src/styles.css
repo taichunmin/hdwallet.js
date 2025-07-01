@@ -1,0 +1,344 @@
+@import "tailwindcss";
+/*@tailwind base;*/
+/*@tailwind components;*/
+@tailwind utilities;
+
+body {
+  background-color: black;
+}
+
+button:focus {
+  outline: none;
+  border: none;
+  box-shadow: none;
+}
+
+@font-face {
+  font-family: 'HDWallet';
+  src: url("../public/font/HDWallet.ttf") format("truetype");
+}
+
+.native-font {
+  font: 10pt "HDWallet";
+  font-weight: lighter;
+  font-size: 15px;
+  letter-spacing: 0.03125em;
+  color: rgb(255, 255, 255);
+  background-color: transparent;
+}
+
+.default-font {
+  font: 10pt 'Tahoma', sans-serif;
+  letter-spacing: 1px;
+  color: rgb(255, 255, 255);
+  background-color: transparent;
+}
+
+.description-font {
+  font: 9pt 'Tahoma', sans-serif;
+  letter-spacing: 1px;
+  color: rgba(236, 240, 241, 0.5);
+  background-color: transparent;
+  font-weight: lighter;
+  border-bottom: 1px solid rgba(128, 128, 128, 0.25);
+  padding-bottom: 10px;
+}
+
+.custom-groupbox {
+  padding: 5px 10px 10px 10px;
+  border-radius: 5px;
+  background-color: rgb(16, 21, 27);
+  border: 1px solid rgba(128, 128, 128, 0.25);
+  font: 11pt "HDWallet";
+}
+
+.custom-groupbox3 {
+  padding: 5px 10px 10px 10px;
+  border-radius: 5px;
+  background-color: rgb(16, 21, 27);
+  border: 1px solid rgba(128, 128, 128, 0.25);
+  margin-top: 1ex;
+  font: 11pt "HDWallet";
+}
+
+.custom-groupbox2 {
+  padding: 10px;
+  border-radius: 5px;
+  background-color: rgb(16, 21, 27);
+  border: 1px solid rgba(128, 128, 128, 0.25);
+  margin-top: 1ex;
+  font: 11pt "HDWallet";
+}
+
+.custom-button {
+  font: 10pt "HDWallet";
+  font-weight: normal;
+  letter-spacing: 0.03125em;
+  background-color: rgb(25, 30, 36);
+  color: rgb(255, 255, 255);
+  border-radius: 5px;
+  padding: 5px 10px;
+  height: 35px;
+}
+
+.custom-button:active {
+  background-color: rgba(25, 30, 36, 0.5);
+}
+
+fieldset[disabled] .custom-button,
+.custom-button:hover {
+  background-color: rgba(25, 30, 36, 0.7);
+}
+
+.custom-button-success {
+  font: 10pt "HDWallet";
+  font-weight: normal;
+  letter-spacing: 0.03125em;
+  background-color: rgb(16, 129, 80); /* success green */
+  color: rgb(255, 255, 255);
+  border-radius: 5px;
+  padding: 5px 10px;
+  height: 35px;
+}
+
+.custom-button-success:active {
+  background-color: rgba(16, 129, 80);
+}
+
+.custom-button-success:hover {
+  background-color: rgba(16, 129, 80, 0.75);
+}
+
+fieldset[disabled] .custom-button-success {
+  background-color: rgba(16, 129, 80, 0.7);
+  cursor: not-allowed;
+}
+
+.custom-button-warning {
+  font: 10pt "HDWallet";
+  font-weight: normal;
+  letter-spacing: 0.03125em;
+  background-color: rgb(221, 125, 10); /* warning orange */
+  color: rgb(255, 255, 255);
+  border-radius: 5px;
+  padding: 5px 10px;
+  height: 35px;
+}
+
+.custom-button-warning:active {
+  background-color: rgba(221, 125, 10);
+}
+
+.custom-button-warning:hover {
+  background-color: rgba(221, 125, 10, 0.75);
+}
+
+fieldset[disabled] .custom-button-warning {
+  background-color: rgba(221, 125, 10, 0.7);
+  cursor: not-allowed;
+}
+
+.custom-button-error {
+  font: 10pt "HDWallet";
+  font-weight: normal;
+  letter-spacing: 0.03125em;
+  background-color: rgb(180, 46, 49); /* error red */
+  color: rgb(255, 255, 255);
+  border-radius: 5px;
+  padding: 5px 10px;
+  height: 35px;
+}
+
+.custom-button-error:active {
+  background-color: rgba(180, 46, 49); /* slightly darker on press */
+}
+
+.custom-button-error:hover {
+  background-color: rgba(180, 46, 49, 0.75); /* hover */
+}
+
+fieldset[disabled] .custom-button-error {
+  background-color: rgba(180, 46, 49, 0.7);
+  cursor: not-allowed;
+}
+
+.form-element {
+  margin-bottom: 15px;
+  margin-top: 8px;
+}
+
+legend {
+  color: white;
+  letter-spacing: 0.03125em;
+}
+
+label {
+  font-size: 14px;
+  color: white;
+  letter-spacing: 0.03125em;
+}
+select {
+  margin-top: 10px;
+}
+input {
+  -webkit-appearance: none;
+  appearance: none;
+  margin-top: 8px;
+}
+
+.custom-input {
+  -webkit-appearance: none;
+  background-color: rgb(25, 30, 36);
+  border-radius: 5px;
+  color: rgb(255, 255, 255);
+  padding: 5px 10px;
+  height: 35px;
+  selection-color: #000000;
+  selection-background-color: #83b9ff;
+  border: none;
+  outline: none;
+  font : 10pt 'Tahoma', sans-serif;
+  letter-spacing: 1px;
+  width: 100%;
+}
+
+.custom-radio {
+  display: flex;
+  align-items: center;
+  color: white;
+  letter-spacing: 1px;
+  font : 10pt 'Tahoma', sans-serif;
+}
+
+.custom-radio[type="radio"] {
+  appearance: none;
+  background-color: rgb(25, 30, 36);
+  width: 16px;
+  height: 16px;
+  border-radius: 10px;
+  display: inline-block;
+  position: relative;
+  cursor: pointer;
+  border-color: rgba(163, 159, 159, 0.25);
+}
+
+.custom-radio[type="radio"]:hover {
+  background-color: rgba(25, 30, 36, 1);
+}
+
+.custom-radio[type="radio"]:checked {
+  background-color: #83b9ff;
+}
+
+.custom-radio[type="radio"]:disabled,
+fieldset[disabled] .custom-radio[type="radio"]:disabled {
+  background-color: rgb(103, 103, 103);
+}
+
+.custom-checkbox {
+  display: flex;
+  align-items: center;
+  color: white;
+  letter-spacing: 1px;
+  font : 10pt 'Tahoma', sans-serif;
+}
+
+.custom-checkbox input[type="checkbox"] {
+  appearance: none;
+  background-color: rgb(25, 30, 36);
+  width: 16px;
+  height: 16px;
+  border-radius: 2px;
+  margin-top: auto;
+  margin-bottom: auto;
+  display: inline-block;
+  position: relative;
+  cursor: pointer;
+  flex-shrink: 0;
+  overflow: visible;
+}
+
+.custom-checkbox input[type="checkbox"]:hover {
+  background-color: rgba(25, 30, 36, 1);
+}
+
+.custom-checkbox input[type="checkbox"]:checked {
+  background-color: #83b9ff;
+}
+
+input[type="checkbox"]:disabled,
+fieldset[disabled] input[type="checkbox"]:disabled {
+  background-color: rgb(103, 103, 103);
+}
+
+fieldset {
+  display: block;
+  border: none; /* Remove the default border */
+  padding: 0; /* Remove default padding */
+  margin: 0; /* Remove default margin */
+  width: 100%; /* Ensure full width */
+  box-sizing: border-box; /* Include padding and border in width calculation */
+  min-inline-size: auto;
+}
+
+fieldset[disabled],
+fieldset[disabled] * {
+  color: rgba(255, 255, 255, 0.4);
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+fieldset[disabled] svg {
+  opacity: 0.2;
+}
+
+input:disabled,
+fieldset[disabled] input {
+  color: rgba(255, 255, 255, 0.5);
+  background-color: rgba(25, 30, 36, 0.7);
+  opacity: 1 !important;
+}
+
+fieldset[disabled] input::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+@supports (-webkit-appearance: none) {
+  ::-webkit-scrollbar {
+      width: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+      background: transparent;
+      border-radius: 0;
+  }
+
+  ::-webkit-scrollbar-thumb {
+      background-color: rgba(131, 185, 255, 0.75);
+      border-radius: 0;
+      margin-right: 2px;
+      height: 55px;
+  }
+}
+
+@-moz-document url-prefix() {
+    html * {
+        scrollbar-width: thin;
+        scrollbar-color: rgba(131, 185, 255, 0.75) transparent;
+        -ms-overflow-style: none;
+    }
+    ::-webkit-scrollbar {
+        display: none;
+    }
+}
+
+::selection {
+  background-color: #83b9ff;
+  color: #000000;
+}
+
+::-moz-selection {
+  background-color: #83b9ff;
+  color: #000000;
+}
+

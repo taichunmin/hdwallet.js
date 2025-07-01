@@ -7,6 +7,7 @@ const eccs_1 = require("../eccs");
 const consts_1 = require("../consts");
 const cryptocurrency_1 = require("./cryptocurrency");
 class Mainnet extends cryptocurrency_1.Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x66;
     static SCRIPT_ADDRESS_PREFIX = 0x05;
     static XPRIVATE_KEY_VERSIONS = new consts_1.XPrivateKeyVersions({
@@ -59,6 +60,7 @@ class BitSend extends cryptocurrency_1.Cryptocurrency {
         'P2SH'
     ]);
     static DEFAULT_ADDRESS = BitSend.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 exports.BitSend = BitSend;

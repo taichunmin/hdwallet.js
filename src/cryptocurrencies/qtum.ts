@@ -18,6 +18,7 @@ import { Cryptocurrency, Network } from './cryptocurrency';
 
 export class Mainnet extends Network {
 
+  static NAME = 'mainnet';
   static SCRIPT_ADDRESS_PREFIX = 0x32;
   static PUBLIC_KEY_ADDRESS_PREFIX = 0x3a;
   static HRP = 'qc1';
@@ -48,6 +49,7 @@ export class Mainnet extends Network {
 
 export class Testnet extends Network {
 
+  static NAME = 'testnet';
   static SCRIPT_ADDRESS_PREFIX = 0x6e;
   static PUBLIC_KEY_ADDRESS_PREFIX = 0x78;
   static HRP = 'tq1';
@@ -125,5 +127,6 @@ export class Qtum extends Cryptocurrency {
     { P2WSH_IN_P2SH: 'P2WSH-In-P2SH' }
   ]);
   static DEFAULT_ADDRESS = Qtum.ADDRESSES.P2PKH;
+  static SEMANTICS = ['p2pkh', 'p2sh', 'p2wpkh', 'p2wpkh-in-p2sh', 'p2wsh', 'p2wsh-in-p2sh'];
   static DEFAULT_SEMANTIC = 'p2pkh';
 }

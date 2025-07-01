@@ -7,6 +7,7 @@ const eccs_1 = require("../eccs");
 const consts_1 = require("../consts");
 const cryptocurrency_1 = require("./cryptocurrency");
 class Mainnet extends cryptocurrency_1.Network {
+    static NAME = 'mainnet';
     static TYPE = 0x00;
     static XPRIVATE_KEY_VERSIONS = new consts_1.XPrivateKeyVersions({
         P2PKH: 0x0488ade4
@@ -18,6 +19,7 @@ class Mainnet extends cryptocurrency_1.Network {
 }
 exports.Mainnet = Mainnet;
 class Testnet extends cryptocurrency_1.Network {
+    static NAME = 'testnet';
     static TYPE = 0x10;
     static XPRIVATE_KEY_VERSIONS = new consts_1.XPrivateKeyVersions({
         P2PKH: 0x04358394
@@ -65,6 +67,7 @@ class Ergo extends cryptocurrency_1.Cryptocurrency {
         ERGO: 'Ergo'
     });
     static DEFAULT_ADDRESS = Ergo.ADDRESSES.ERGO;
+    static SEMANTICS = ['p2pkh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
     static ADDRESS_TYPES = new consts_1.AddressTypes({
         P2PKH: 'p2pkh',

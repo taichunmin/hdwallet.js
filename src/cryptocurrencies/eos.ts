@@ -18,6 +18,7 @@ import { Cryptocurrency, Network } from './cryptocurrency';
 
 export class Mainnet extends Network {
 
+  static NAME = 'mainnet';
   static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
     P2PKH: 0x0488ade4
   });
@@ -64,6 +65,7 @@ export class EOS extends Cryptocurrency {
     'EOS'
   ]);
   static DEFAULT_ADDRESS = EOS.ADDRESSES.EOS;
+  static SEMANTICS = ['p2pkh'];
   static DEFAULT_SEMANTIC = 'p2pkh';
   static PARAMS = new Params({
     ADDRESS_PREFIX: 'EOS',

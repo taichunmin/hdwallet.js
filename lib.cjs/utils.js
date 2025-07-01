@@ -339,8 +339,7 @@ function isAllEqual(...inputs) {
         return true;
     });
 }
-function generatePassphrase(length = 32) {
-    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+function generatePassphrase(length = 32, chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789') {
     const bytes = randomBytes(length);
     let result = '';
     for (let i = 0; i < length; i++) {

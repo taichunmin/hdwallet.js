@@ -7,6 +7,7 @@ const eccs_1 = require("../eccs");
 const consts_1 = require("../consts");
 const cryptocurrency_1 = require("./cryptocurrency");
 class Mainnet extends cryptocurrency_1.Network {
+    static NAME = 'mainnet';
     static XPRIVATE_KEY_VERSIONS = new consts_1.XPrivateKeyVersions({
         P2PKH: 0x0488ade4
     });
@@ -51,6 +52,7 @@ class Tezos extends cryptocurrency_1.Cryptocurrency {
         TEZOS: 'Tezos'
     });
     static DEFAULT_ADDRESS = Tezos.ADDRESSES.TEZOS;
+    static SEMANTICS = ['p2pkh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
     static ADDRESS_PREFIXES = new consts_1.AddressPrefixes({
         TZ1: 'tz1',

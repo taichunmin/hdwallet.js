@@ -1,0 +1,10 @@
+<div class="grid h-screen gap-0" [ngClass]="gridCols">
+  <div #main class="relative max-sm:col-span-full overflow-auto"
+       style="background-color: rgb(16, 21, 27); scroll-behavior: smooth;">
+    <app-dashboard [main]="main" [selectedTab]="tab"></app-dashboard>
+  </div>
+  <div class="h-screen overflow-auto" *ngIf="showTerminal"
+       style="background-color: rgb(0, 0, 0);">
+    <app-terminal></app-terminal>
+  </div>
+</div>

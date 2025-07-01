@@ -17,6 +17,7 @@ import { Cryptocurrency, Network } from './cryptocurrency';
 
 export class Mainnet extends Network {
 
+  static NAME = 'mainnet';
   static HRP = 'zil';
   static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
     P2PKH: 0x0488ade4
@@ -64,5 +65,6 @@ export class Zilliqa extends Cryptocurrency {
     ZILLIQA: 'Zilliqa'
   });
   static DEFAULT_ADDRESS = Zilliqa.ADDRESSES.ZILLIQA;
+  static SEMANTICS = ['p2pkh'];
   static DEFAULT_SEMANTIC = 'p2pkh';
 }

@@ -4,6 +4,7 @@ import { SLIP10Secp256k1ECC } from '../eccs';
 import { Info, Entropies, Mnemonics, Seeds, HDs, Addresses, Networks, Params, XPrivateKeyVersions, XPublicKeyVersions } from '../consts';
 import { Cryptocurrency, Network } from './cryptocurrency';
 export class Mainnet extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x00;
     static SCRIPT_ADDRESS_PREFIX = 0x00;
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
@@ -53,6 +54,7 @@ export class Ripple extends Cryptocurrency {
         RIPPLE: 'Ripple'
     });
     static DEFAULT_ADDRESS = Ripple.ADDRESSES.RIPPLE;
+    static SEMANTICS = ['p2pkh', 'p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
     static PARAMS = new Params({
         ALPHABET: 'rpshnaf39wBUDNEGHJKLM4PQRST7VWXYZ2bcdeCg65jkm8oFqi1tuvAxyz'

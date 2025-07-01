@@ -18,6 +18,7 @@ import { Cryptocurrency, Network } from './cryptocurrency';
 
 export class Mainnet extends Network {
 
+  static NAME = 'mainnet';
   static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
     P2PKH: 0x0488ade4
   });
@@ -67,6 +68,7 @@ export class Algorand extends Cryptocurrency {
     ALGORAND: 'Algorand'
   });
   static DEFAULT_ADDRESS = Algorand.ADDRESSES.ALGORAND;
+  static SEMANTICS = ['p2pkh'];
   static DEFAULT_SEMANTIC = 'p2pkh';
   static PARAMS = new Params({
     CHECKSUM_LENGTH: 0x04

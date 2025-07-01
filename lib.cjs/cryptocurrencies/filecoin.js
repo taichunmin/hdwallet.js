@@ -7,6 +7,7 @@ const eccs_1 = require("../eccs");
 const consts_1 = require("../consts");
 const cryptocurrency_1 = require("./cryptocurrency");
 class Mainnet extends cryptocurrency_1.Network {
+    static NAME = 'mainnet';
     static XPRIVATE_KEY_VERSIONS = new consts_1.XPrivateKeyVersions({
         P2PKH: 0x0488ade4
     });
@@ -52,6 +53,7 @@ class Filecoin extends cryptocurrency_1.Cryptocurrency {
         FILECOIN: 'Filecoin'
     });
     static DEFAULT_ADDRESS = Filecoin.ADDRESSES.FILECOIN;
+    static SEMANTICS = ['p2pkh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
     static ADDRESS_TYPES = new consts_1.AddressTypes({
         SECP256K1: 'secp256k1',

@@ -19,6 +19,7 @@ import {
 
 export class Network {
 
+  static NAME: string;
   // Bitcoin
   static PUBLIC_KEY_ADDRESS_PREFIX?: number;
   static SCRIPT_ADDRESS_PREFIX?: number;
@@ -41,12 +42,6 @@ export class Network {
   static TYPE?: number;
   static PAYMENT_ADDRESS_HRP?: string;
   static REWARD_ADDRESS_HRP?: string;
-
-  static getName(): string {
-    const name = this.prototype.constructor.name;
-    const base = name.includes('$') ? name.slice(0, name.indexOf('$')) : name;
-    return base.toLowerCase();
-  }
 }
 
 export class Cryptocurrency {
@@ -70,6 +65,7 @@ export class Cryptocurrency {
   static DEFAULT_ADDRESS_TYPE?: string;
   static ADDRESS_PREFIXES?: AddressPrefixes;
   static DEFAULT_ADDRESS_PREFIX?: string;
+  static SEMANTICS?: string[];
   static DEFAULT_SEMANTIC?: string;
   static PARAMS?: Params;
 }

@@ -1,7 +1,7 @@
 const __$G = (typeof globalThis !== 'undefined' ? globalThis: typeof window !== 'undefined' ? window: typeof global !== 'undefined' ? global: typeof self !== 'undefined' ? self: {});
 // SPDX-License-Identifier: MIT
 const __name__ = 'hdwallet';
-const __version__ = '1.0.0-beta.0';
+const __version__ = '1.0.0-beta.2';
 const __license__ = 'MIT';
 const __author__ = 'Meheret Tesfaye Batu';
 const __email__ = 'meherett.batu@gmail.com';
@@ -626,8 +626,7 @@ function isAllEqual(...inputs) {
         return true;
     });
 }
-function generatePassphrase(length = 32) {
-    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+function generatePassphrase(length = 32, chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789') {
     const bytes = randomBytes(length);
     let result = '';
     for (let i = 0; i < length; i++) {
@@ -3690,6 +3689,7 @@ var crypto$1 = /*#__PURE__*/Object.freeze({
 
 // SPDX-License-Identifier: MIT
 class Network {
+    static NAME;
     // Bitcoin
     static PUBLIC_KEY_ADDRESS_PREFIX;
     static SCRIPT_ADDRESS_PREFIX;
@@ -3712,11 +3712,6 @@ class Network {
     static TYPE;
     static PAYMENT_ADDRESS_HRP;
     static REWARD_ADDRESS_HRP;
-    static getName() {
-        const name = this.prototype.constructor.name;
-        const base = name.includes('$') ? name.slice(0, name.indexOf('$')) : name;
-        return base.toLowerCase();
-    }
 }
 class Cryptocurrency {
     static NAME;
@@ -3738,6 +3733,7 @@ class Cryptocurrency {
     static DEFAULT_ADDRESS_TYPE;
     static ADDRESS_PREFIXES;
     static DEFAULT_ADDRESS_PREFIX;
+    static SEMANTICS;
     static DEFAULT_SEMANTIC;
     static PARAMS;
 }
@@ -10063,6 +10059,7 @@ var eccs = /*#__PURE__*/Object.freeze({
 
 // SPDX-License-Identifier: MIT
 class Mainnet$3h extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x17;
     static SCRIPT_ADDRESS_PREFIX = 0x05;
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
@@ -10113,11 +10110,13 @@ class Adcoin extends Cryptocurrency {
         'P2SH'
     ]);
     static DEFAULT_ADDRESS = Adcoin.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$3g extends Network {
+    static NAME = 'mainnet';
     static HRP = 'akash';
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
         P2PKH: 0x0488ade4
@@ -10162,11 +10161,13 @@ class AkashNetwork extends Cryptocurrency {
         COSMOS: 'Cosmos'
     });
     static DEFAULT_ADDRESS = AkashNetwork.ADDRESSES.COSMOS;
+    static SEMANTICS = ['p2pkh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$3f extends Network {
+    static NAME = 'mainnet';
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
         P2PKH: 0x0488ade4
     });
@@ -10214,6 +10215,7 @@ class Algorand extends Cryptocurrency {
         ALGORAND: 'Algorand'
     });
     static DEFAULT_ADDRESS = Algorand.ADDRESSES.ALGORAND;
+    static SEMANTICS = ['p2pkh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
     static PARAMS = new Params({
         CHECKSUM_LENGTH: 0x04
@@ -10222,6 +10224,7 @@ class Algorand extends Cryptocurrency {
 
 // SPDX-License-Identifier: MIT
 class Mainnet$3e extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x00000582;
     static SCRIPT_ADDRESS_PREFIX = 0x00005389;
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
@@ -10272,11 +10275,13 @@ class Anon extends Cryptocurrency {
         'P2SH'
     ]);
     static DEFAULT_ADDRESS = Anon.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$3d extends Network {
+    static NAME = 'mainnet';
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
         P2PKH: 0x0488ade4
     });
@@ -10320,6 +10325,7 @@ class Aptos extends Cryptocurrency {
         APTOS: 'Aptos'
     });
     static DEFAULT_ADDRESS = Aptos.ADDRESSES.APTOS;
+    static SEMANTICS = ['p2pkh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
     static PARAMS = new Params({
         SUFFIX: 0x00,
@@ -10329,6 +10335,7 @@ class Aptos extends Cryptocurrency {
 
 // SPDX-License-Identifier: MIT
 class Mainnet$3c extends Network {
+    static NAME = 'mainnet';
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
         P2PKH: 0x0488ade4
     });
@@ -10373,11 +10380,13 @@ class Arbitrum extends Cryptocurrency {
         ETHEREUM: 'Ethereum'
     });
     static DEFAULT_ADDRESS = Arbitrum.ADDRESSES.ETHEREUM;
+    static SEMANTICS = ['p2pkh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$3b extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x32;
     static SCRIPT_ADDRESS_PREFIX = 0x61;
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
@@ -10427,11 +10436,13 @@ class Argoneum extends Cryptocurrency {
         'P2SH'
     ]);
     static DEFAULT_ADDRESS = Argoneum.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$3a extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x17;
     static SCRIPT_ADDRESS_PREFIX = 0x00001cbd;
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
@@ -10481,11 +10492,13 @@ class Artax extends Cryptocurrency {
         'P2SH'
     ]);
     static DEFAULT_ADDRESS = Artax.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$39 extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x17;
     static SCRIPT_ADDRESS_PREFIX = 0x6f;
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
@@ -10535,11 +10548,13 @@ class Aryacoin extends Cryptocurrency {
         'P2SH'
     ]);
     static DEFAULT_ADDRESS = Aryacoin.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$38 extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x17;
     static SCRIPT_ADDRESS_PREFIX = 0x08;
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
@@ -10588,11 +10603,13 @@ class Asiacoin extends Cryptocurrency {
         'P2SH'
     ]);
     static DEFAULT_ADDRESS = Asiacoin.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$37 extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x17;
     static SCRIPT_ADDRESS_PREFIX = 0x05;
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
@@ -10642,11 +10659,13 @@ class Auroracoin extends Cryptocurrency {
         'P2SH'
     ]);
     static DEFAULT_ADDRESS = Auroracoin.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$36 extends Network {
+    static NAME = 'mainnet';
     static HRP = 'avax';
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
         P2PKH: 0x0488ade4
@@ -10694,6 +10713,7 @@ class Avalanche extends Cryptocurrency {
         ETHEREUM: 'Ethereum'
     });
     static DEFAULT_ADDRESS = Avalanche.ADDRESSES.AVALANCHE;
+    static SEMANTICS = ['p2pkh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
     static ADDRESS_TYPES = new AddressTypes({
         C_CHAIN: 'c-chain',
@@ -10711,6 +10731,7 @@ class Avalanche extends Cryptocurrency {
 
 // SPDX-License-Identifier: MIT
 class Mainnet$35 extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x3c;
     static SCRIPT_ADDRESS_PREFIX = 0x7a;
     static HRP = 'av';
@@ -10778,11 +10799,13 @@ class Avian extends Cryptocurrency {
         { P2WSH_IN_P2SH: 'P2WSH-In-P2SH' }
     ]);
     static DEFAULT_ADDRESS = Avian.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh', 'p2wpkh', 'p2wpkh-in-p2sh', 'p2wsh', 'p2wsh-in-p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$34 extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x37;
     static SCRIPT_ADDRESS_PREFIX = 0x10;
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
@@ -10832,11 +10855,13 @@ class Axe extends Cryptocurrency {
         'P2SH'
     ]);
     static DEFAULT_ADDRESS = Axe.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$33 extends Network {
+    static NAME = 'mainnet';
     static HRP = 'axelar';
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
         P2PKH: 0x0488ade4
@@ -10883,11 +10908,13 @@ class Axelar extends Cryptocurrency {
         COSMOS: 'Cosmos'
     });
     static DEFAULT_ADDRESS = Axelar.ADDRESSES.COSMOS;
+    static SEMANTICS = ['p2pkh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$32 extends Network {
+    static NAME = 'mainnet';
     static HRP = 'band';
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
         P2PKH: 0x0488ade4
@@ -10933,11 +10960,13 @@ class BandProtocol extends Cryptocurrency {
         COSMOS: 'Cosmos'
     });
     static DEFAULT_ADDRESS = BandProtocol.ADDRESSES.COSMOS;
+    static SEMANTICS = ['p2pkh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$31 extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x19;
     static SCRIPT_ADDRESS_PREFIX = 0x05;
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
@@ -10989,11 +11018,13 @@ class Bata extends Cryptocurrency {
         'P2SH'
     ]);
     static DEFAULT_ADDRESS = Bata.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$30 extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x1a;
     static SCRIPT_ADDRESS_PREFIX = 0x55;
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
@@ -11043,11 +11074,13 @@ class BeetleCoin extends Cryptocurrency {
         'P2SH'
     ]);
     static DEFAULT_ADDRESS = BeetleCoin.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$2$ extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x19;
     static SCRIPT_ADDRESS_PREFIX = 0x05;
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
@@ -11098,11 +11131,13 @@ class BelaCoin extends Cryptocurrency {
         'P2SH'
     ]);
     static DEFAULT_ADDRESS = BelaCoin.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$2_ extends Network {
+    static NAME = 'mainnet';
     static HRP = 'bnb';
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
         P2PKH: 0x0488ade4
@@ -11149,6 +11184,7 @@ class Binance extends Cryptocurrency {
         ETHEREUM: 'Ethereum'
     });
     static DEFAULT_ADDRESS = Binance.ADDRESSES.COSMOS;
+    static SEMANTICS = ['p2pkh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
     static ADDRESS_TYPES = new AddressTypes({
         CHAIN: 'chain',
@@ -11159,6 +11195,7 @@ class Binance extends Cryptocurrency {
 
 // SPDX-License-Identifier: MIT
 class Mainnet$2Z extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x19;
     static SCRIPT_ADDRESS_PREFIX = 0x05;
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
@@ -11209,11 +11246,13 @@ class BitCloud extends Cryptocurrency {
         'P2SH'
     ]);
     static DEFAULT_ADDRESS = BitCloud.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$2Y extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x00;
     static SCRIPT_ADDRESS_PREFIX = 0x05;
     static HRP = 'bc';
@@ -11244,6 +11283,7 @@ class Mainnet$2Y extends Network {
     static WIF_PREFIX = 0x80;
 }
 class Testnet$t extends Network {
+    static NAME = 'testnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x6f;
     static SCRIPT_ADDRESS_PREFIX = 0xc4;
     static HRP = 'tb';
@@ -11274,6 +11314,7 @@ class Testnet$t extends Network {
     static WIF_PREFIX = 0xef;
 }
 class Regtest$1 extends Testnet$t {
+    static NAME = 'regtest';
     static HRP = 'bcrt';
 }
 class Bitcoin extends Cryptocurrency {
@@ -11332,6 +11373,7 @@ class Bitcoin extends Cryptocurrency {
         { P2WSH_IN_P2SH: 'P2WSH-In-P2SH' }
     ]);
     static DEFAULT_ADDRESS = Bitcoin.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh', 'p2tr', 'p2wpkh', 'p2wpkh-in-p2sh', 'p2wsh', 'p2wsh-in-p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
     static PARAMS = new Params({
         ALPHABET: '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz',
@@ -11342,6 +11384,7 @@ class Bitcoin extends Cryptocurrency {
 
 // SPDX-License-Identifier: MIT
 class Mainnet$2X extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x17;
     static SCRIPT_ADDRESS_PREFIX = 0x0a;
     static HRP = 'bca';
@@ -11402,11 +11445,13 @@ class BitcoinAtom extends Cryptocurrency {
         { P2WPKH_IN_P2SH: 'P2WPKH-In-P2SH' }
     ]);
     static DEFAULT_ADDRESS = BitcoinAtom.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh', 'p2wpkh', 'p2wpkh-in-p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$2W extends Network {
+    static NAME = 'mainnet';
     static LEGACY_PUBLIC_KEY_ADDRESS_PREFIX = 0x00;
     static LEGACY_SCRIPT_ADDRESS_PREFIX = 0x05;
     static STD_PUBLIC_KEY_ADDRESS_PREFIX = 0x00;
@@ -11435,6 +11480,7 @@ class Mainnet$2W extends Network {
     static WIF_PREFIX = 0x80;
 }
 class Testnet$s extends Network {
+    static NAME = 'testnet';
     static LEGACY_PUBLIC_KEY_ADDRESS_PREFIX = 0x6f;
     static LEGACY_SCRIPT_ADDRESS_PREFIX = 0xc4;
     static STD_PUBLIC_KEY_ADDRESS_PREFIX = 0x00;
@@ -11463,6 +11509,7 @@ class Testnet$s extends Network {
     static WIF_PREFIX = 0xef;
 }
 class Regtest extends Testnet$s {
+    static NAME = 'regtest';
     static HRP = 'bchreg';
 }
 class BitcoinCash extends Cryptocurrency {
@@ -11507,6 +11554,7 @@ class BitcoinCash extends Cryptocurrency {
         { P2WSH_IN_P2SH: 'P2WSH-In-P2SH' }
     ]);
     static DEFAULT_ADDRESS = BitcoinCash.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh', 'p2wpkh', 'p2wpkh-in-p2sh', 'p2wsh', 'p2wsh-in-p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
     static ADDRESS_TYPES = new AddressTypes({
         STD: 'std',
@@ -11517,6 +11565,7 @@ class BitcoinCash extends Cryptocurrency {
 
 // SPDX-License-Identifier: MIT
 class Mainnet$2V extends Network {
+    static NAME = 'mainnet';
     static LEGACY_PUBLIC_KEY_ADDRESS_PREFIX = 0x00;
     static LEGACY_SCRIPT_ADDRESS_PREFIX = 0x05;
     static STD_PUBLIC_KEY_ADDRESS_PREFIX = 0x00;
@@ -11545,6 +11594,7 @@ class Mainnet$2V extends Network {
     static WIF_PREFIX = 0x80;
 }
 class Testnet$r extends Network {
+    static NAME = 'testnet';
     static LEGACY_PUBLIC_KEY_ADDRESS_PREFIX = 0x6f;
     static LEGACY_SCRIPT_ADDRESS_PREFIX = 0xc4;
     static STD_PUBLIC_KEY_ADDRESS_PREFIX = 0x00;
@@ -11613,6 +11663,7 @@ class BitcoinCashSLP extends Cryptocurrency {
         { P2WSH_IN_P2SH: 'P2WSH-In-P2SH' }
     ]);
     static DEFAULT_ADDRESS = BitcoinCashSLP.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh', 'p2wpkh', 'p2wpkh-in-p2sh', 'p2wsh', 'p2wsh-in-p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
     static ADDRESS_TYPES = new AddressTypes({
         STD: 'std',
@@ -11623,6 +11674,7 @@ class BitcoinCashSLP extends Cryptocurrency {
 
 // SPDX-License-Identifier: MIT
 class Mainnet$2U extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x26;
     static SCRIPT_ADDRESS_PREFIX = 0x17;
     static HRP = 'btg';
@@ -11690,11 +11742,13 @@ class BitcoinGold extends Cryptocurrency {
         { P2WSH_IN_P2SH: 'P2WSH-In-P2SH' }
     ]);
     static DEFAULT_ADDRESS = BitcoinGold.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh', 'p2wpkh', 'p2wpkh-in-p2sh', 'p2wsh', 'p2wsh-in-p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$2T extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x26;
     static SCRIPT_ADDRESS_PREFIX = 0x00001cbd;
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
@@ -11744,11 +11798,13 @@ class BitcoinGreen extends Cryptocurrency {
         'P2SH'
     ]);
     static DEFAULT_ADDRESS = BitcoinGreen.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$2S extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x19;
     static SCRIPT_ADDRESS_PREFIX = 0x08;
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
@@ -11799,11 +11855,13 @@ class BitcoinPlus extends Cryptocurrency {
         'P2SH'
     ]);
     static DEFAULT_ADDRESS = BitcoinPlus.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$2R extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x00001325;
     static SCRIPT_ADDRESS_PREFIX = 0x000013af;
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
@@ -11818,6 +11876,7 @@ class Mainnet$2R extends Network {
     static WIF_PREFIX = 0x80;
 }
 class Testnet$q extends Network {
+    static NAME = 'testnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x00001957;
     static SCRIPT_ADDRESS_PREFIX = 0x000019e0;
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
@@ -11869,11 +11928,13 @@ class BitcoinPrivate extends Cryptocurrency {
         'P2SH'
     ]);
     static DEFAULT_ADDRESS = BitcoinPrivate.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$2Q extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x00;
     static SCRIPT_ADDRESS_PREFIX = 0x05;
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
@@ -11923,11 +11984,13 @@ class BitcoinSV extends Cryptocurrency {
         'P2SH'
     ]);
     static DEFAULT_ADDRESS = BitcoinSV.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$2P extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x00001cb8;
     static SCRIPT_ADDRESS_PREFIX = 0x00001cbd;
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
@@ -11978,11 +12041,13 @@ class BitcoinZ extends Cryptocurrency {
         'P2SH'
     ]);
     static DEFAULT_ADDRESS = BitcoinZ.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$2O extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x03;
     static SCRIPT_ADDRESS_PREFIX = 0x7d;
     static HRP = 'bitcore';
@@ -12044,11 +12109,13 @@ class Bitcore extends Cryptocurrency {
         { P2WPKH_IN_P2SH: 'P2WPKH-In-P2SH' }
     ]);
     static DEFAULT_ADDRESS = Bitcore.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh', 'p2wpkh', 'p2wpkh-in-p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$2N extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x66;
     static SCRIPT_ADDRESS_PREFIX = 0x05;
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
@@ -12100,11 +12167,13 @@ class BitSend extends Cryptocurrency {
         'P2SH'
     ]);
     static DEFAULT_ADDRESS = BitSend.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$2M extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x19;
     static SCRIPT_ADDRESS_PREFIX = 0x55;
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
@@ -12156,11 +12225,13 @@ class Blackcoin extends Cryptocurrency {
         'P2SH'
     ]);
     static DEFAULT_ADDRESS = Blackcoin.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$2L extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x19;
     static SCRIPT_ADDRESS_PREFIX = 0x3f;
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
@@ -12175,6 +12246,7 @@ class Mainnet$2L extends Network {
     static WIF_PREFIX = 0x4b;
 }
 class Testnet$p extends Network {
+    static NAME = 'testnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x55;
     static SCRIPT_ADDRESS_PREFIX = 0x7d;
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
@@ -12225,11 +12297,13 @@ class Blocknode extends Cryptocurrency {
         'P2SH'
     ]);
     static DEFAULT_ADDRESS = Blocknode.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$2K extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x00;
     static SCRIPT_ADDRESS_PREFIX = 0x05;
     static HRP = 'bc';
@@ -12291,11 +12365,13 @@ class BlockStamp extends Cryptocurrency {
         { P2WPKH_IN_P2SH: 'P2WPKH-In-P2SH' }
     ]);
     static DEFAULT_ADDRESS = BlockStamp.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh', 'p2wpkh', 'p2wpkh-in-p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$2J extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x55;
     static SCRIPT_ADDRESS_PREFIX = 0x05;
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
@@ -12345,11 +12421,13 @@ class Bolivarcoin extends Cryptocurrency {
         'P2SH'
     ]);
     static DEFAULT_ADDRESS = Bolivarcoin.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$2I extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x19;
     static SCRIPT_ADDRESS_PREFIX = 0x55;
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
@@ -12399,11 +12477,13 @@ class BritCoin extends Cryptocurrency {
         'P2SH'
     ]);
     static DEFAULT_ADDRESS = BritCoin.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$2H extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x1c;
     static SCRIPT_ADDRESS_PREFIX = 0x05;
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
@@ -12453,11 +12533,13 @@ class CanadaECoin extends Cryptocurrency {
         'P2SH'
     ]);
     static DEFAULT_ADDRESS = CanadaECoin.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$2G extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x1c;
     static SCRIPT_ADDRESS_PREFIX = 0x05;
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
@@ -12508,6 +12590,7 @@ class Cannacoin extends Cryptocurrency {
         'P2SH'
     ]);
     static DEFAULT_ADDRESS = Cannacoin.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
@@ -12521,6 +12604,7 @@ class Types extends NestedNamespace {
     }
 }
 class Mainnet$2F extends Network {
+    static NAME = 'mainnet';
     static TYPE = 0x01;
     static PAYMENT_ADDRESS_HRP = 'addr';
     static REWARD_ADDRESS_HRP = 'stake';
@@ -12532,6 +12616,7 @@ class Mainnet$2F extends Network {
     });
 }
 class Testnet$o extends Network {
+    static NAME = 'testnet';
     static TYPE = 0x00;
     static PAYMENT_ADDRESS_HRP = 'addr_test';
     static REWARD_ADDRESS_HRP = 'stake_test';
@@ -12585,6 +12670,7 @@ class Cardano extends Cryptocurrency {
         CARDANO: 'Cardano'
     });
     static DEFAULT_ADDRESS = Cardano.ADDRESSES.CARDANO;
+    static SEMANTICS = ['p2pkh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
     static ADDRESS_TYPES = new AddressTypes({
         PUBLIC_KEY: 'public-key',
@@ -12603,6 +12689,7 @@ class Cardano extends Cryptocurrency {
 
 // SPDX-License-Identifier: MIT
 class Mainnet$2E extends Network {
+    static NAME = 'mainnet';
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
         P2PKH: 0x0488ade4
     });
@@ -12648,11 +12735,13 @@ class Celo extends Cryptocurrency {
         ETHEREUM: 'Ethereum'
     });
     static DEFAULT_ADDRESS = Celo.ADDRESSES.ETHEREUM;
+    static SEMANTICS = ['p2pkh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$2D extends Network {
+    static NAME = 'mainnet';
     static HRP = 'chihuahua';
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
         P2PKH: 0x0488ade4
@@ -12697,11 +12786,13 @@ class Chihuahua extends Cryptocurrency {
         COSMOS: 'Cosmos'
     });
     static DEFAULT_ADDRESS = Chihuahua.ADDRESSES.COSMOS;
+    static SEMANTICS = ['p2pkh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$2C extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x89;
     static SCRIPT_ADDRESS_PREFIX = 0x0d;
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
@@ -12751,11 +12842,13 @@ class Clams extends Cryptocurrency {
         'P2SH'
     ]);
     static DEFAULT_ADDRESS = Clams.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$2B extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x1c;
     static SCRIPT_ADDRESS_PREFIX = 0x55;
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
@@ -12805,11 +12898,13 @@ class ClubCoin extends Cryptocurrency {
         'P2SH'
     ]);
     static DEFAULT_ADDRESS = ClubCoin.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$2A extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x1c;
     static SCRIPT_ADDRESS_PREFIX = 0x55;
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
@@ -12858,11 +12953,13 @@ class Compcoin extends Cryptocurrency {
         'P2SH'
     ]);
     static DEFAULT_ADDRESS = Compcoin.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$2z extends Network {
+    static NAME = 'mainnet';
     static HRP = 'cosmos';
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
         P2PKH: 0x0488ade4
@@ -12908,11 +13005,13 @@ class Cosmos extends Cryptocurrency {
         COSMOS: 'Cosmos'
     });
     static DEFAULT_ADDRESS = Cosmos.ADDRESSES.COSMOS;
+    static SEMANTICS = ['p2pkh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$2y extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x1c;
     static SCRIPT_ADDRESS_PREFIX = 0x1e;
     static HRP = 'cpu';
@@ -12974,11 +13073,13 @@ class CPUChain extends Cryptocurrency {
         { P2WPKH_IN_P2SH: 'P2WPKH-In-P2SH' }
     ]);
     static DEFAULT_ADDRESS = CPUChain.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh', 'p2wpkh', 'p2wpkh-in-p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$2x extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x1c;
     static SCRIPT_ADDRESS_PREFIX = 0x0a;
     static HRP = 'cp';
@@ -13039,11 +13140,13 @@ class CranePay extends Cryptocurrency {
         { P2WPKH_IN_P2SH: 'P2WPKH-In-P2SH' }
     ]);
     static DEFAULT_ADDRESS = CranePay.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh', 'p2wpkh', 'p2wpkh-in-p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$2w extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x46;
     static SCRIPT_ADDRESS_PREFIX = 0x55;
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
@@ -13094,11 +13197,13 @@ class Crave extends Cryptocurrency {
         'P2SH'
     ]);
     static DEFAULT_ADDRESS = Crave.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$2v extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x4c;
     static SCRIPT_ADDRESS_PREFIX = 0x10;
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
@@ -13113,6 +13218,7 @@ class Mainnet$2v extends Network {
     static WIF_PREFIX = 0xcc;
 }
 class Testnet$n extends Network {
+    static NAME = 'testnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x8c;
     static SCRIPT_ADDRESS_PREFIX = 0x13;
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
@@ -13165,11 +13271,13 @@ class Dash extends Cryptocurrency {
         'P2SH'
     ]);
     static DEFAULT_ADDRESS = Dash.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$2u extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x1f;
     static SCRIPT_ADDRESS_PREFIX = 0x4e;
     static HRP = 'dpn';
@@ -13231,11 +13339,13 @@ class DeepOnion extends Cryptocurrency {
         { P2WPKH_IN_P2SH: 'P2WPKH-In-P2SH' }
     ]);
     static DEFAULT_ADDRESS = DeepOnion.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh', 'p2wpkh', 'p2wpkh-in-p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$2t extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x1e;
     static SCRIPT_ADDRESS_PREFIX = 0x05;
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
@@ -13285,11 +13395,13 @@ class Defcoin extends Cryptocurrency {
         'P2SH'
     ]);
     static DEFAULT_ADDRESS = Defcoin.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$2s extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x1e;
     static SCRIPT_ADDRESS_PREFIX = 0x5a;
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
@@ -13340,11 +13452,13 @@ class Denarius extends Cryptocurrency {
         'P2SH'
     ]);
     static DEFAULT_ADDRESS = Denarius.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$2r extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x5a;
     static SCRIPT_ADDRESS_PREFIX = 0x08;
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
@@ -13395,11 +13509,13 @@ class Diamond extends Cryptocurrency {
         'P2SH'
     ]);
     static DEFAULT_ADDRESS = Diamond.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$2q extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x1e;
     static SCRIPT_ADDRESS_PREFIX = 0x05;
     static HRP = 'dgb';
@@ -13462,11 +13578,13 @@ class DigiByte extends Cryptocurrency {
         { P2WPKH_IN_P2SH: 'P2WPKH-In-P2SH' }
     ]);
     static DEFAULT_ADDRESS = DigiByte.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh', 'p2wpkh', 'p2wpkh-in-p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$2p extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x1e;
     static SCRIPT_ADDRESS_PREFIX = 0x05;
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
@@ -13518,11 +13636,13 @@ class Digitalcoin extends Cryptocurrency {
         'P2SH'
     ]);
     static DEFAULT_ADDRESS = Digitalcoin.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$2o extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x1e;
     static SCRIPT_ADDRESS_PREFIX = 0x0d;
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
@@ -13537,6 +13657,7 @@ class Mainnet$2o extends Network {
     static WIF_PREFIX = 0xd4;
 }
 class Testnet$m extends Network {
+    static NAME = 'testnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x1e;
     static SCRIPT_ADDRESS_PREFIX = 0x0d;
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
@@ -13589,11 +13710,13 @@ class Divi extends Cryptocurrency {
         'P2SH'
     ]);
     static DEFAULT_ADDRESS = Divi.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$2n extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x1e;
     static SCRIPT_ADDRESS_PREFIX = 0x16;
     static HRP = 'dogecoin';
@@ -13619,6 +13742,7 @@ class Mainnet$2n extends Network {
     static WIF_PREFIX = 0xf1;
 }
 class Testnet$l extends Network {
+    static NAME = 'testnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x71;
     static SCRIPT_ADDRESS_PREFIX = 0xc4;
     static HRP = 'dogecointestnet';
@@ -13683,11 +13807,13 @@ class Dogecoin extends Cryptocurrency {
         { P2WPKH_IN_P2SH: 'P2WPKH-In-P2SH' }
     ]);
     static DEFAULT_ADDRESS = Dogecoin.ADDRESSES.P2PKH;
+    static SEMANTICS = ['dogecoin', 'p2pkh', 'p2sh', 'p2wpkh', 'p2wpkh-in-p2sh'];
     static DEFAULT_SEMANTIC = 'dogecoin';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$2m extends Network {
+    static NAME = 'mainnet';
     static HRP = 'dydx';
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
         P2PKH: 0x0488ade4
@@ -13732,11 +13858,13 @@ class dYdX extends Cryptocurrency {
         COSMOS: 'Cosmos'
     });
     static DEFAULT_ADDRESS = dYdX.ADDRESSES.COSMOS;
+    static SEMANTICS = ['p2pkh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$2l extends Network {
+    static NAME = 'mainnet';
     static LEGACY_PUBLIC_KEY_ADDRESS_PREFIX = 0x00;
     static LEGACY_SCRIPT_ADDRESS_PREFIX = 0x05;
     static STD_PUBLIC_KEY_ADDRESS_PREFIX = 0x00;
@@ -13765,6 +13893,7 @@ class Mainnet$2l extends Network {
     static WIF_PREFIX = 0x80;
 }
 class Testnet$k extends Network {
+    static NAME = 'testnet';
     static LEGACY_PUBLIC_KEY_ADDRESS_PREFIX = 0x6f;
     static LEGACY_SCRIPT_ADDRESS_PREFIX = 0xc4;
     static STD_PUBLIC_KEY_ADDRESS_PREFIX = 0x00;
@@ -13833,6 +13962,7 @@ class eCash extends Cryptocurrency {
         { P2WSH_IN_P2SH: 'P2WSH-In-P2SH' }
     ]);
     static DEFAULT_ADDRESS = eCash.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh', 'p2wpkh', 'p2wpkh-in-p2sh', 'p2wsh', 'p2wsh-in-p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
     static ADDRESS_TYPES = new AddressTypes({
         STD: 'std',
@@ -13843,6 +13973,7 @@ class eCash extends Cryptocurrency {
 
 // SPDX-License-Identifier: MIT
 class Mainnet$2k extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x5c;
     static SCRIPT_ADDRESS_PREFIX = 0x14;
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
@@ -13892,11 +14023,13 @@ class ECoin extends Cryptocurrency {
         'P2SH'
     ]);
     static DEFAULT_ADDRESS = ECoin.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$2j extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x5d;
     static SCRIPT_ADDRESS_PREFIX = 0x1c;
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
@@ -13947,11 +14080,13 @@ class EDRCoin extends Cryptocurrency {
         'P2SH'
     ]);
     static DEFAULT_ADDRESS = EDRCoin.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$2i extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x30;
     static SCRIPT_ADDRESS_PREFIX = 0x05;
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
@@ -14001,11 +14136,13 @@ class eGulden extends Cryptocurrency {
         'P2SH'
     ]);
     static DEFAULT_ADDRESS = eGulden.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$2h extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x21;
     static SCRIPT_ADDRESS_PREFIX = 0x05;
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
@@ -14056,11 +14193,13 @@ class Einsteinium extends Cryptocurrency {
         'P2SH'
     ]);
     static DEFAULT_ADDRESS = Einsteinium.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$2g extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x21;
     static SCRIPT_ADDRESS_PREFIX = 0x05;
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
@@ -14112,11 +14251,13 @@ class Elastos extends Cryptocurrency {
         'P2SH'
     ]);
     static DEFAULT_ADDRESS = Elastos.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$2f extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x21;
     static SCRIPT_ADDRESS_PREFIX = 0x35;
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
@@ -14168,11 +14309,13 @@ class Energi extends Cryptocurrency {
         'P2SH'
     ]);
     static DEFAULT_ADDRESS = Energi.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$2e extends Network {
+    static NAME = 'mainnet';
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
         P2PKH: 0x0488ade4
     });
@@ -14217,6 +14360,7 @@ class EOS extends Cryptocurrency {
         'EOS'
     ]);
     static DEFAULT_ADDRESS = EOS.ADDRESSES.EOS;
+    static SEMANTICS = ['p2pkh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
     static PARAMS = new Params({
         ADDRESS_PREFIX: 'EOS',
@@ -14226,6 +14370,7 @@ class EOS extends Cryptocurrency {
 
 // SPDX-License-Identifier: MIT
 class Mainnet$2d extends Network {
+    static NAME = 'mainnet';
     static TYPE = 0x00;
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
         P2PKH: 0x0488ade4
@@ -14236,6 +14381,7 @@ class Mainnet$2d extends Network {
     static WIF_PREFIX = 0x80;
 }
 class Testnet$j extends Network {
+    static NAME = 'testnet';
     static TYPE = 0x10;
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
         P2PKH: 0x04358394
@@ -14282,6 +14428,7 @@ class Ergo extends Cryptocurrency {
         ERGO: 'Ergo'
     });
     static DEFAULT_ADDRESS = Ergo.ADDRESSES.ERGO;
+    static SEMANTICS = ['p2pkh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
     static ADDRESS_TYPES = new AddressTypes({
         P2PKH: 'p2pkh',
@@ -14299,6 +14446,7 @@ class Ergo extends Cryptocurrency {
 
 // SPDX-License-Identifier: MIT
 class Mainnet$2c extends Network {
+    static NAME = 'mainnet';
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
         P2PKH: 0x0488ade4
     });
@@ -14344,6 +14492,7 @@ class Ethereum extends Cryptocurrency {
         ETHEREUM: 'Ethereum'
     });
     static DEFAULT_ADDRESS = Ethereum.ADDRESSES.ETHEREUM;
+    static SEMANTICS = ['p2pkh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
     static PARAMS = new Params({
         ADDRESS_PREFIX: '0x'
@@ -14352,6 +14501,7 @@ class Ethereum extends Cryptocurrency {
 
 // SPDX-License-Identifier: MIT
 class Mainnet$2b extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x21;
     static SCRIPT_ADDRESS_PREFIX = 0x05;
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
@@ -14402,11 +14552,13 @@ class EuropeCoin extends Cryptocurrency {
         'P2SH'
     ]);
     static DEFAULT_ADDRESS = EuropeCoin.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$2a extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x21;
     static SCRIPT_ADDRESS_PREFIX = 0x5c;
     static HRP = 'ev';
@@ -14434,6 +14586,7 @@ class Mainnet$2a extends Network {
     static WIF_PREFIX = 0x80;
 }
 class Testnet$i extends Network {
+    static NAME = 'testnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x6f;
     static SCRIPT_ADDRESS_PREFIX = 0xc4;
     static HRP = 'te';
@@ -14502,11 +14655,13 @@ class Evrmore extends Cryptocurrency {
         { P2WSH_IN_P2SH: 'P2WSH-In-P2SH' }
     ]);
     static DEFAULT_ADDRESS = Evrmore.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh', 'p2wpkh', 'p2wpkh-in-p2sh', 'p2wsh', 'p2wsh-in-p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$29 extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x21;
     static SCRIPT_ADDRESS_PREFIX = 0x89;
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
@@ -14556,11 +14711,13 @@ class ExclusiveCoin extends Cryptocurrency {
         'P2SH'
     ]);
     static DEFAULT_ADDRESS = ExclusiveCoin.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$28 extends Network {
+    static NAME = 'mainnet';
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
         P2PKH: 0x0488ade4
     });
@@ -14605,11 +14762,13 @@ class Fantom extends Cryptocurrency {
         ETHEREUM: 'Ethereum'
     });
     static DEFAULT_ADDRESS = Fantom.ADDRESSES.ETHEREUM;
+    static SEMANTICS = ['p2pkh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$27 extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x0e;
     static SCRIPT_ADDRESS_PREFIX = 0x05;
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
@@ -14660,11 +14819,13 @@ class Feathercoin extends Cryptocurrency {
         'P2SH'
     ]);
     static DEFAULT_ADDRESS = Feathercoin.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$26 extends Network {
+    static NAME = 'mainnet';
     static HRP = 'fetch';
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
         P2PKH: 0x0488ade4
@@ -14711,11 +14872,13 @@ class FetchAI extends Cryptocurrency {
         COSMOS: 'Cosmos'
     });
     static DEFAULT_ADDRESS = FetchAI.ADDRESSES.COSMOS;
+    static SEMANTICS = ['p2pkh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$25 extends Network {
+    static NAME = 'mainnet';
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
         P2PKH: 0x0488ade4
     });
@@ -14760,6 +14923,7 @@ class Filecoin extends Cryptocurrency {
         FILECOIN: 'Filecoin'
     });
     static DEFAULT_ADDRESS = Filecoin.ADDRESSES.FILECOIN;
+    static SEMANTICS = ['p2pkh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
     static ADDRESS_TYPES = new AddressTypes({
         SECP256K1: 'secp256k1',
@@ -14778,6 +14942,7 @@ class Filecoin extends Cryptocurrency {
 
 // SPDX-License-Identifier: MIT
 class Mainnet$24 extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x52;
     static SCRIPT_ADDRESS_PREFIX = 0x07;
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
@@ -14827,11 +14992,13 @@ class Firo extends Cryptocurrency {
         'P2SH'
     ]);
     static DEFAULT_ADDRESS = Firo.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$23 extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x23;
     static SCRIPT_ADDRESS_PREFIX = 0x05;
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
@@ -14881,11 +15048,13 @@ class Firstcoin extends Cryptocurrency {
         'P2SH'
     ]);
     static DEFAULT_ADDRESS = Firstcoin.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$22 extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x23;
     static SCRIPT_ADDRESS_PREFIX = 0x5f;
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
@@ -14900,6 +15069,7 @@ class Mainnet$22 extends Network {
     static WIF_PREFIX = 0x3c;
 }
 class Testnet$h extends Network {
+    static NAME = 'testnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x4c;
     static SCRIPT_ADDRESS_PREFIX = 0x89;
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
@@ -14950,11 +15120,13 @@ class FIX extends Cryptocurrency {
         'P2SH'
     ]);
     static DEFAULT_ADDRESS = FIX.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$21 extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x44;
     static SCRIPT_ADDRESS_PREFIX = 0x82;
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
@@ -15005,11 +15177,13 @@ class Flashcoin extends Cryptocurrency {
         'P2SH'
     ]);
     static DEFAULT_ADDRESS = Flashcoin.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$20 extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x00001cb8;
     static SCRIPT_ADDRESS_PREFIX = 0x00001cbd;
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
@@ -15061,11 +15235,13 @@ class Flux extends Cryptocurrency {
         'P2SH'
     ]);
     static DEFAULT_ADDRESS = Flux.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$1$ extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x23;
     static SCRIPT_ADDRESS_PREFIX = 0x1e;
     static HRP = 'fx';
@@ -15093,6 +15269,7 @@ class Mainnet$1$ extends Network {
     static WIF_PREFIX = 0x80;
 }
 class Testnet$g extends Network {
+    static NAME = 'testnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x5f;
     static SCRIPT_ADDRESS_PREFIX = 0x5a;
     static HRP = 'tf';
@@ -15160,11 +15337,13 @@ class Foxdcoin extends Cryptocurrency {
         { P2WSH_IN_P2SH: 'P2WSH-In-P2SH' }
     ]);
     static DEFAULT_ADDRESS = Foxdcoin.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh', 'p2wpkh', 'p2wpkh-in-p2sh', 'p2wsh', 'p2wsh-in-p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$1_ extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x24;
     static SCRIPT_ADDRESS_PREFIX = 0x10;
     static HRP = 'fc';
@@ -15226,11 +15405,13 @@ class FujiCoin extends Cryptocurrency {
         { P2WPKH_IN_P2SH: 'P2WPKH-In-P2SH' }
     ]);
     static DEFAULT_ADDRESS = FujiCoin.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh', 'p2wpkh', 'p2wpkh-in-p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$1Z extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x26;
     static SCRIPT_ADDRESS_PREFIX = 0x05;
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
@@ -15280,11 +15461,13 @@ class GameCredits extends Cryptocurrency {
         'P2SH'
     ]);
     static DEFAULT_ADDRESS = GameCredits.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$1Y extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x26;
     static SCRIPT_ADDRESS_PREFIX = 0x61;
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
@@ -15333,11 +15516,13 @@ class GCRCoin extends Cryptocurrency {
         'P2SH'
     ]);
     static DEFAULT_ADDRESS = GCRCoin.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$1X extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x26;
     static SCRIPT_ADDRESS_PREFIX = 0x0a;
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
@@ -15388,11 +15573,13 @@ class GoByte extends Cryptocurrency {
         'P2SH'
     ]);
     static DEFAULT_ADDRESS = GoByte.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$1W extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x3e;
     static SCRIPT_ADDRESS_PREFIX = 0x55;
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
@@ -15443,11 +15630,13 @@ class Gridcoin extends Cryptocurrency {
         'P2SH'
     ]);
     static DEFAULT_ADDRESS = Gridcoin.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$1V extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x24;
     static SCRIPT_ADDRESS_PREFIX = 0x05;
     static HRP = 'grs';
@@ -15471,6 +15660,7 @@ class Mainnet$1V extends Network {
     static WIF_PREFIX = 0x80;
 }
 class Testnet$f extends Network {
+    static NAME = 'testnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x6f;
     static SCRIPT_ADDRESS_PREFIX = 0xc4;
     static HRP = 'tgrs';
@@ -15533,11 +15723,13 @@ class GroestlCoin extends Cryptocurrency {
         { P2WPKH_IN_P2SH: 'P2WPKH-In-P2SH' }
     ]);
     static DEFAULT_ADDRESS = GroestlCoin.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh', 'p2wpkh', 'p2wpkh-in-p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$1U extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x26;
     static SCRIPT_ADDRESS_PREFIX = 0x62;
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
@@ -15587,11 +15779,13 @@ class Gulden extends Cryptocurrency {
         'P2SH'
     ]);
     static DEFAULT_ADDRESS = Gulden.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$1T extends Network {
+    static NAME = 'mainnet';
     static HRP = 'one';
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
         P2PKH: 0x0488ade4
@@ -15638,11 +15832,13 @@ class Harmony extends Cryptocurrency {
         HARMONY: 'Harmony'
     });
     static DEFAULT_ADDRESS = Harmony.ADDRESSES.HARMONY;
+    static SEMANTICS = ['p2pkh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$1S extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x30;
     static SCRIPT_ADDRESS_PREFIX = 0x05;
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
@@ -15694,11 +15890,13 @@ class Helleniccoin extends Cryptocurrency {
         'P2SH'
     ]);
     static DEFAULT_ADDRESS = Helleniccoin.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$1R extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x28;
     static SCRIPT_ADDRESS_PREFIX = 0x08;
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
@@ -15749,11 +15947,13 @@ class Hempcoin extends Cryptocurrency {
         'P2SH'
     ]);
     static DEFAULT_ADDRESS = Hempcoin.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$1Q extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x00002089;
     static SCRIPT_ADDRESS_PREFIX = 0x00002096;
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
@@ -15805,11 +16005,13 @@ class Horizen extends Cryptocurrency {
         'P2SH'
     ]);
     static DEFAULT_ADDRESS = Horizen.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$1P extends Network {
+    static NAME = 'mainnet';
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
         P2PKH: 0x0488ade4
     });
@@ -15853,11 +16055,13 @@ class HuobiToken extends Cryptocurrency {
         ETHEREUM: 'Ethereum'
     });
     static DEFAULT_ADDRESS = HuobiToken.ADDRESSES.ETHEREUM;
+    static SEMANTICS = ['p2pkh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$1O extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x00001cb8;
     static SCRIPT_ADDRESS_PREFIX = 0x00001cbd;
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
@@ -15909,11 +16113,13 @@ class Hush extends Cryptocurrency {
         'P2SH'
     ]);
     static DEFAULT_ADDRESS = Hush.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$1N extends Network {
+    static NAME = 'mainnet';
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
         P2PKH: 0x0488ade4
     });
@@ -15959,6 +16165,7 @@ class Icon extends Cryptocurrency {
         ICON: 'Icon'
     });
     static DEFAULT_ADDRESS = Icon.ADDRESSES.ICON;
+    static SEMANTICS = ['p2pkh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
     static PARAMS = new Params({
         ADDRESS_PREFIX: 'hx',
@@ -15968,6 +16175,7 @@ class Icon extends Cryptocurrency {
 
 // SPDX-License-Identifier: MIT
 class Mainnet$1M extends Network {
+    static NAME = 'mainnet';
     static HRP = 'inj';
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
         P2PKH: 0x0488ade4
@@ -16013,11 +16221,13 @@ class Injective extends Cryptocurrency {
         INJECTIVE: 'Injective'
     });
     static DEFAULT_ADDRESS = Injective.ADDRESSES.INJECTIVE;
+    static SEMANTICS = ['p2pkh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$1L extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x66;
     static SCRIPT_ADDRESS_PREFIX = 0x39;
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
@@ -16068,11 +16278,13 @@ class InsaneCoin extends Cryptocurrency {
         'P2SH'
     ]);
     static DEFAULT_ADDRESS = InsaneCoin.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$1K extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x75;
     static SCRIPT_ADDRESS_PREFIX = 0xae;
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
@@ -16123,11 +16335,13 @@ class InternetOfPeople extends Cryptocurrency {
         'P2SH'
     ]);
     static DEFAULT_ADDRESS = InternetOfPeople.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$1J extends Network {
+    static NAME = 'mainnet';
     static HRP = 'iaa';
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
         P2PKH: 0x0488ade4
@@ -16173,11 +16387,13 @@ class IRISnet extends Cryptocurrency {
         COSMOS: 'Cosmos'
     });
     static DEFAULT_ADDRESS = IRISnet.ADDRESSES.COSMOS;
+    static SEMANTICS = ['p2pkh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$1I extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x8a;
     static SCRIPT_ADDRESS_PREFIX = 0x05;
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
@@ -16228,11 +16444,13 @@ class IXCoin extends Cryptocurrency {
         'P2SH'
     ]);
     static DEFAULT_ADDRESS = IXCoin.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$1H extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x2b;
     static SCRIPT_ADDRESS_PREFIX = 0x05;
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
@@ -16281,11 +16499,13 @@ class Jumbucks extends Cryptocurrency {
         'P2SH'
     ]);
     static DEFAULT_ADDRESS = Jumbucks.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$1G extends Network {
+    static NAME = 'mainnet';
     static HRP = 'kava';
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
         P2PKH: 0x0488ade4
@@ -16332,11 +16552,13 @@ class Kava extends Cryptocurrency {
         COSMOS: 'Cosmos'
     });
     static DEFAULT_ADDRESS = Kava.ADDRESSES.COSMOS;
+    static SEMANTICS = ['p2pkh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$1F extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x23;
     static SCRIPT_ADDRESS_PREFIX = 0x1c;
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
@@ -16387,11 +16609,13 @@ class Kobocoin extends Cryptocurrency {
         'P2SH'
     ]);
     static DEFAULT_ADDRESS = Kobocoin.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$1E extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x3c;
     static SCRIPT_ADDRESS_PREFIX = 0x55;
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
@@ -16442,11 +16666,13 @@ class Komodo extends Cryptocurrency {
         'P2SH'
     ]);
     static DEFAULT_ADDRESS = Komodo.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$1D extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x30;
     static SCRIPT_ADDRESS_PREFIX = 0x7a;
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
@@ -16495,11 +16721,13 @@ class Landcoin extends Cryptocurrency {
         'P2SH'
     ]);
     static DEFAULT_ADDRESS = Landcoin.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$1C extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x55;
     static SCRIPT_ADDRESS_PREFIX = 0x7a;
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
@@ -16551,11 +16779,13 @@ class LBRYCredits extends Cryptocurrency {
         'P2SH'
     ]);
     static DEFAULT_ADDRESS = LBRYCredits.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$1B extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x4b;
     static SCRIPT_ADDRESS_PREFIX = 0x05;
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
@@ -16606,11 +16836,13 @@ class Linx extends Cryptocurrency {
         'P2SH'
     ]);
     static DEFAULT_ADDRESS = Linx.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$1A extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x30;
     static SCRIPT_ADDRESS_PREFIX = 0x32;
     static HRP = 'ltc';
@@ -16638,6 +16870,7 @@ class Mainnet$1A extends Network {
     static WIF_PREFIX = 0xb0;
 }
 class Testnet$e extends Network {
+    static NAME = 'testnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x6f;
     static SCRIPT_ADDRESS_PREFIX = 0x3a;
     static HRP = 'tltc';
@@ -16706,11 +16939,13 @@ class Litecoin extends Cryptocurrency {
         { P2WSH_IN_P2SH: 'P2WSH-In-P2SH' }
     ]);
     static DEFAULT_ADDRESS = Litecoin.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh', 'p2wpkh', 'p2wpkh-in-p2sh', 'p2wsh', 'p2wsh-in-p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$1z extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x1c;
     static SCRIPT_ADDRESS_PREFIX = 0x05;
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
@@ -16761,11 +16996,13 @@ class LitecoinCash extends Cryptocurrency {
         'P2SH'
     ]);
     static DEFAULT_ADDRESS = LitecoinCash.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$1y extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x00000ab3;
     static SCRIPT_ADDRESS_PREFIX = 0x00000ab8;
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
@@ -16816,11 +17053,13 @@ class LitecoinZ extends Cryptocurrency {
         'P2SH'
     ]);
     static DEFAULT_ADDRESS = LitecoinZ.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$1x extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x30;
     static SCRIPT_ADDRESS_PREFIX = 0x55;
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
@@ -16871,11 +17110,13 @@ class Lkrcoin extends Cryptocurrency {
         'P2SH'
     ]);
     static DEFAULT_ADDRESS = Lkrcoin.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$1w extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x2d;
     static SCRIPT_ADDRESS_PREFIX = 0x32;
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
@@ -16925,11 +17166,13 @@ class Lynx extends Cryptocurrency {
         'P2SH'
     ]);
     static DEFAULT_ADDRESS = Lynx.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$1v extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x32;
     static SCRIPT_ADDRESS_PREFIX = 0x09;
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
@@ -16979,11 +17222,13 @@ class Mazacoin extends Cryptocurrency {
         'P2SH'
     ]);
     static DEFAULT_ADDRESS = Mazacoin.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$1u extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x32;
     static SCRIPT_ADDRESS_PREFIX = 0x05;
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
@@ -17034,11 +17279,13 @@ class Megacoin extends Cryptocurrency {
         'P2SH'
     ]);
     static DEFAULT_ADDRESS = Megacoin.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$1t extends Network {
+    static NAME = 'mainnet';
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
         P2PKH: 0x0488ade4
     });
@@ -17083,11 +17330,13 @@ class Metis extends Cryptocurrency {
         ETHEREUM: 'Ethereum'
     });
     static DEFAULT_ADDRESS = Metis.ADDRESSES.ETHEREUM;
+    static SEMANTICS = ['p2pkh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$1s extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x4b;
     static SCRIPT_ADDRESS_PREFIX = 0x05;
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
@@ -17138,11 +17387,13 @@ class Minexcoin extends Cryptocurrency {
         'P2SH'
     ]);
     static DEFAULT_ADDRESS = Minexcoin.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$1r extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x32;
     static SCRIPT_ADDRESS_PREFIX = 0x37;
     static HRP = 'mona';
@@ -17204,21 +17455,25 @@ class Monacoin extends Cryptocurrency {
         { P2WPKH_IN_P2SH: 'P2WPKH-In-P2SH' }
     ]);
     static DEFAULT_ADDRESS = Monacoin.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh', 'p2wpkh', 'p2wpkh-in-p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$1q extends Network {
+    static NAME = 'mainnet';
     static STANDARD = 0x12;
     static INTEGRATED = 0x13;
     static SUB_ADDRESS = 0x2a;
 }
 class Stagenet extends Network {
+    static NAME = 'stagenet';
     static STANDARD = 0x18;
     static INTEGRATED = 0x19;
     static SUB_ADDRESS = 0x24;
 }
 class Testnet$d extends Network {
+    static NAME = 'testnet';
     static STANDARD = 0x35;
     static INTEGRATED = 0x36;
     static SUB_ADDRESS = 0x3f;
@@ -17277,6 +17532,7 @@ class Monero extends Cryptocurrency {
 
 // SPDX-License-Identifier: MIT
 class Mainnet$1p extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x33;
     static SCRIPT_ADDRESS_PREFIX = 0x1c;
     static HRP = 'monkey';
@@ -17338,11 +17594,13 @@ class Monk extends Cryptocurrency {
         { P2WPKH_IN_P2SH: 'P2WPKH-In-P2SH' }
     ]);
     static DEFAULT_ADDRESS = Monk.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh', 'p2wpkh', 'p2wpkh-in-p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$1o extends Network {
+    static NAME = 'mainnet';
     static HRP = 'erd';
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
         P2PKH: 0x0488ade4
@@ -17388,11 +17646,13 @@ class MultiversX extends Cryptocurrency {
         MULTIVERSX: 'MultiversX'
     });
     static DEFAULT_ADDRESS = MultiversX.ADDRESSES.MULTIVERSX;
+    static SEMANTICS = ['p2pkh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$1n extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x32;
     static SCRIPT_ADDRESS_PREFIX = 0x09;
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
@@ -17442,11 +17702,13 @@ class Myriadcoin extends Cryptocurrency {
         'P2SH'
     ]);
     static DEFAULT_ADDRESS = Myriadcoin.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$1m extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x34;
     static SCRIPT_ADDRESS_PREFIX = 0x0d;
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
@@ -17497,11 +17759,13 @@ class Namecoin extends Cryptocurrency {
         'P2SH'
     ]);
     static DEFAULT_ADDRESS = Namecoin.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$1l extends Network {
+    static NAME = 'mainnet';
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
         P2PKH: 0x0488ade4
     });
@@ -17545,6 +17809,7 @@ class Nano extends Cryptocurrency {
         NANO: 'Nano'
     });
     static DEFAULT_ADDRESS = Nano.ADDRESSES.NANO;
+    static SEMANTICS = ['p2pkh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
     static PARAMS = new Params({
         ADDRESS_PREFIX: 'nano_',
@@ -17556,6 +17821,7 @@ class Nano extends Cryptocurrency {
 
 // SPDX-License-Identifier: MIT
 class Mainnet$1k extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x35;
     static SCRIPT_ADDRESS_PREFIX = 0x55;
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
@@ -17606,11 +17872,13 @@ class Navcoin extends Cryptocurrency {
         'P2SH'
     ]);
     static DEFAULT_ADDRESS = Navcoin.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$1j extends Network {
+    static NAME = 'mainnet';
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
         P2PKH: 0x0488ade4
     });
@@ -17654,11 +17922,13 @@ class Near extends Cryptocurrency {
         NEAR: 'Near'
     });
     static DEFAULT_ADDRESS = Near.ADDRESSES.NEAR;
+    static SEMANTICS = ['p2pkh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$1i extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x35;
     static SCRIPT_ADDRESS_PREFIX = 0x70;
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
@@ -17709,11 +17979,13 @@ class Neblio extends Cryptocurrency {
         'P2SH'
     ]);
     static DEFAULT_ADDRESS = Neblio.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$1h extends Network {
+    static NAME = 'mainnet';
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
         P2PKH: 0x0488ade4
     });
@@ -17757,6 +18029,7 @@ class Neo extends Cryptocurrency {
         NEO: 'Neo'
     });
     static DEFAULT_ADDRESS = Neo.ADDRESSES.NEO;
+    static SEMANTICS = ['p2pkh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
     static PARAMS = new Params({
         ADDRESS_PREFIX: 0x21,
@@ -17768,6 +18041,7 @@ class Neo extends Cryptocurrency {
 
 // SPDX-License-Identifier: MIT
 class Mainnet$1g extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x35;
     static SCRIPT_ADDRESS_PREFIX = 0x05;
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
@@ -17817,11 +18091,13 @@ class Neoscoin extends Cryptocurrency {
         'P2SH'
     ]);
     static DEFAULT_ADDRESS = Neoscoin.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$1f extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x35;
     static SCRIPT_ADDRESS_PREFIX = 0x75;
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
@@ -17871,11 +18147,13 @@ class Neurocoin extends Cryptocurrency {
         'P2SH'
     ]);
     static DEFAULT_ADDRESS = Neurocoin.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$1e extends Network {
+    static NAME = 'mainnet';
     static HRP = 'neutron';
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
         P2PKH: 0x0488ade4
@@ -17921,11 +18199,13 @@ class Neutron extends Cryptocurrency {
         COSMOS: 'Cosmos'
     });
     static DEFAULT_ADDRESS = Neutron.ADDRESSES.COSMOS;
+    static SEMANTICS = ['p2pkh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$1d extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x3c;
     static SCRIPT_ADDRESS_PREFIX = 0x16;
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
@@ -17976,11 +18256,13 @@ class NewYorkCoin extends Cryptocurrency {
         'P2SH'
     ]);
     static DEFAULT_ADDRESS = NewYorkCoin.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$1c extends Network {
+    static NAME = 'mainnet';
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
         P2PKH: 0x0488ade4
     });
@@ -18025,11 +18307,13 @@ class NineChronicles extends Cryptocurrency {
         ETHEREUM: 'Ethereum'
     });
     static DEFAULT_ADDRESS = NineChronicles.ADDRESSES.ETHEREUM;
+    static SEMANTICS = ['p2pkh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$1b extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x26;
     static SCRIPT_ADDRESS_PREFIX = 0x35;
     static HRP = 'nix';
@@ -18092,11 +18376,13 @@ class NIX extends Cryptocurrency {
         { P2WPKH_IN_P2SH: 'P2WPKH-In-P2SH' }
     ]);
     static DEFAULT_ADDRESS = NIX.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh', 'p2wpkh', 'p2wpkh-in-p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$1a extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x08;
     static SCRIPT_ADDRESS_PREFIX = 0x14;
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
@@ -18148,11 +18434,13 @@ class Novacoin extends Cryptocurrency {
         'P2SH'
     ]);
     static DEFAULT_ADDRESS = Novacoin.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$19 extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x19;
     static SCRIPT_ADDRESS_PREFIX = 0x1a;
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
@@ -18203,11 +18491,13 @@ class NuBits extends Cryptocurrency {
         'P2SH'
     ]);
     static DEFAULT_ADDRESS = NuBits.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$18 extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x3f;
     static SCRIPT_ADDRESS_PREFIX = 0x40;
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
@@ -18258,11 +18548,13 @@ class NuShares extends Cryptocurrency {
         'P2SH'
     ]);
     static DEFAULT_ADDRESS = NuShares.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$17 extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x37;
     static SCRIPT_ADDRESS_PREFIX = 0x1c;
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
@@ -18313,11 +18605,13 @@ class OKCash extends Cryptocurrency {
         'P2SH'
     ]);
     static DEFAULT_ADDRESS = OKCash.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$16 extends Network {
+    static NAME = 'mainnet';
     static HRP = 'ex';
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
         P2PKH: 0x0488ade4
@@ -18363,11 +18657,13 @@ class OKTChain extends Cryptocurrency {
         OKT_CHAIN: 'OKT-Chain'
     });
     static DEFAULT_ADDRESS = OKTChain.ADDRESSES.OKT_CHAIN;
+    static SEMANTICS = ['p2pkh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$15 extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x00;
     static SCRIPT_ADDRESS_PREFIX = 0x05;
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
@@ -18382,6 +18678,7 @@ class Mainnet$15 extends Network {
     static WIF_PREFIX = 0x80;
 }
 class Testnet$c extends Network {
+    static NAME = 'testnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x6f;
     static SCRIPT_ADDRESS_PREFIX = 0xc4;
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
@@ -18433,11 +18730,13 @@ class Omni extends Cryptocurrency {
         'P2SH'
     ]);
     static DEFAULT_ADDRESS = Omni.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$14 extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x4b;
     static SCRIPT_ADDRESS_PREFIX = 0x05;
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
@@ -18487,11 +18786,13 @@ class Onix extends Cryptocurrency {
         'P2SH'
     ]);
     static DEFAULT_ADDRESS = Onix.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$13 extends Network {
+    static NAME = 'mainnet';
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
         P2PKH: 0x0488ade4
     });
@@ -18535,6 +18836,7 @@ class Ontology extends Cryptocurrency {
         NEO: 'Neo'
     });
     static DEFAULT_ADDRESS = Ontology.ADDRESSES.NEO;
+    static SEMANTICS = ['p2pkh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
     static PARAMS = new Params({
         ADDRESS_VERSION: 0x17
@@ -18543,6 +18845,7 @@ class Ontology extends Cryptocurrency {
 
 // SPDX-License-Identifier: MIT
 class Mainnet$12 extends Network {
+    static NAME = 'mainnet';
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
         P2PKH: 0x0488ade4
     });
@@ -18586,11 +18889,13 @@ class Optimism extends Cryptocurrency {
         ETHEREUM: 'Ethereum'
     });
     static DEFAULT_ADDRESS = Optimism.ADDRESSES.ETHEREUM;
+    static SEMANTICS = ['p2pkh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$11 extends Network {
+    static NAME = 'mainnet';
     static HRP = 'osmo';
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
         P2PKH: 0x0488ade4
@@ -18635,11 +18940,13 @@ class Osmosis extends Cryptocurrency {
         COSMOS: 'Cosmos'
     });
     static DEFAULT_ADDRESS = Osmosis.ADDRESSES.COSMOS;
+    static SEMANTICS = ['p2pkh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$10 extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x38;
     static SCRIPT_ADDRESS_PREFIX = 0x3c;
     static HRP = 'pw';
@@ -18696,11 +19003,13 @@ class Particl extends Cryptocurrency {
         'P2SH'
     ]);
     static DEFAULT_ADDRESS = Particl.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$$ extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x37;
     static SCRIPT_ADDRESS_PREFIX = 0x75;
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
@@ -18751,11 +19060,13 @@ class Peercoin extends Cryptocurrency {
         'P2SH'
     ]);
     static DEFAULT_ADDRESS = Peercoin.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$_ extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x37;
     static SCRIPT_ADDRESS_PREFIX = 0x55;
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
@@ -18805,11 +19116,13 @@ class Pesobit extends Cryptocurrency {
         'P2SH'
     ]);
     static DEFAULT_ADDRESS = Pesobit.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$Z extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x37;
     static SCRIPT_ADDRESS_PREFIX = 0x0d;
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
@@ -18860,11 +19173,13 @@ class Phore extends Cryptocurrency {
         'P2SH'
     ]);
     static DEFAULT_ADDRESS = Phore.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$Y extends Network {
+    static NAME = 'mainnet';
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
         P2PKH: 0x0488ade4
     });
@@ -18908,6 +19223,7 @@ class PiNetwork extends Cryptocurrency {
         STELLAR: 'Stellar'
     });
     static DEFAULT_ADDRESS = PiNetwork.ADDRESSES.STELLAR;
+    static SEMANTICS = ['p2pkh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
     static ADDRESS_TYPES = new AddressTypes({
         PRIVATE_KEY: 'private_key',
@@ -18925,6 +19241,7 @@ class PiNetwork extends Cryptocurrency {
 
 // SPDX-License-Identifier: MIT
 class Mainnet$X extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x03;
     static SCRIPT_ADDRESS_PREFIX = 0x1c;
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
@@ -18975,11 +19292,13 @@ class Pinkcoin extends Cryptocurrency {
         'P2SH'
     ]);
     static DEFAULT_ADDRESS = Pinkcoin.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$W extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x1e;
     static SCRIPT_ADDRESS_PREFIX = 0x0d;
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
@@ -18994,6 +19313,7 @@ class Mainnet$W extends Network {
     static WIF_PREFIX = 0xd4;
 }
 class Testnet$b extends Network {
+    static NAME = 'testnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x8b;
     static SCRIPT_ADDRESS_PREFIX = 0x13;
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
@@ -19045,11 +19365,13 @@ class Pivx extends Cryptocurrency {
         'P2SH'
     ]);
     static DEFAULT_ADDRESS = Pivx.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$V extends Network {
+    static NAME = 'mainnet';
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
         P2PKH: 0x0488ade4
     });
@@ -19094,11 +19416,13 @@ class Polygon extends Cryptocurrency {
         ETHEREUM: 'Ethereum'
     });
     static DEFAULT_ADDRESS = Polygon.ADDRESSES.ETHEREUM;
+    static SEMANTICS = ['p2pkh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$U extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x37;
     static SCRIPT_ADDRESS_PREFIX = 0x55;
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
@@ -19147,11 +19471,13 @@ class PoSWCoin extends Cryptocurrency {
         'P2SH'
     ]);
     static DEFAULT_ADDRESS = PoSWCoin.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$T extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x37;
     static SCRIPT_ADDRESS_PREFIX = 0x05;
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
@@ -19202,11 +19528,13 @@ class Potcoin extends Cryptocurrency {
         'P2SH'
     ]);
     static DEFAULT_ADDRESS = Potcoin.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$S extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x37;
     static SCRIPT_ADDRESS_PREFIX = 0x08;
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
@@ -19256,11 +19584,13 @@ class ProjectCoin extends Cryptocurrency {
         'P2SH'
     ]);
     static DEFAULT_ADDRESS = ProjectCoin.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$R extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x37;
     static SCRIPT_ADDRESS_PREFIX = 0x14;
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
@@ -19311,11 +19641,13 @@ class Putincoin extends Cryptocurrency {
         'P2SH'
     ]);
     static DEFAULT_ADDRESS = Putincoin.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$Q extends Network {
+    static NAME = 'mainnet';
     static SCRIPT_ADDRESS_PREFIX = 0x32;
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x3a;
     static HRP = 'qc1';
@@ -19344,6 +19676,7 @@ class Mainnet$Q extends Network {
     static WIF_PREFIX = 0x80;
 }
 class Testnet$a extends Network {
+    static NAME = 'testnet';
     static SCRIPT_ADDRESS_PREFIX = 0x6e;
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x78;
     static HRP = 'tq1';
@@ -19419,11 +19752,13 @@ class Qtum extends Cryptocurrency {
         { P2WSH_IN_P2SH: 'P2WSH-In-P2SH' }
     ]);
     static DEFAULT_ADDRESS = Qtum.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh', 'p2wpkh', 'p2wpkh-in-p2sh', 'p2wsh', 'p2wsh-in-p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$P extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x3d;
     static SCRIPT_ADDRESS_PREFIX = 0x06;
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
@@ -19474,11 +19809,13 @@ class Rapids extends Cryptocurrency {
         'P2SH'
     ]);
     static DEFAULT_ADDRESS = Rapids.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$O extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x3c;
     static SCRIPT_ADDRESS_PREFIX = 0x7a;
     static HRP = 'ra';
@@ -19506,6 +19843,7 @@ class Mainnet$O extends Network {
     static WIF_PREFIX = 0x80;
 }
 class Testnet$9 extends Network {
+    static NAME = 'testnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x6f;
     static SCRIPT_ADDRESS_PREFIX = 0xc4;
     static HRP = 'tr';
@@ -19575,11 +19913,13 @@ class Ravencoin extends Cryptocurrency {
         { P2WSH_IN_P2SH: 'P2WSH-In-P2SH' }
     ]);
     static DEFAULT_ADDRESS = Ravencoin.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh', 'p2wpkh', 'p2wpkh-in-p2sh', 'p2wsh', 'p2wsh-in-p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$N extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x3d;
     static SCRIPT_ADDRESS_PREFIX = 0x05;
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
@@ -19631,11 +19971,13 @@ class Reddcoin extends Cryptocurrency {
         'P2SH'
     ]);
     static DEFAULT_ADDRESS = Reddcoin.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$M extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x00;
     static SCRIPT_ADDRESS_PREFIX = 0x00;
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
@@ -19685,6 +20027,7 @@ class Ripple extends Cryptocurrency {
         RIPPLE: 'Ripple'
     });
     static DEFAULT_ADDRESS = Ripple.ADDRESSES.RIPPLE;
+    static SEMANTICS = ['p2pkh', 'p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
     static PARAMS = new Params({
         ALPHABET: 'rpshnaf39wBUDNEGHJKLM4PQRST7VWXYZ2bcdeCg65jkm8oFqi1tuvAxyz'
@@ -19693,6 +20036,7 @@ class Ripple extends Cryptocurrency {
 
 // SPDX-License-Identifier: MIT
 class Mainnet$L extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x19;
     static SCRIPT_ADDRESS_PREFIX = 0x69;
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
@@ -19743,11 +20087,13 @@ class Ritocoin extends Cryptocurrency {
         'P2SH'
     ]);
     static DEFAULT_ADDRESS = Ritocoin.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$K extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x00;
     static SCRIPT_ADDRESS_PREFIX = 0x05;
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
@@ -19762,6 +20108,7 @@ class Mainnet$K extends Network {
     static WIF_PREFIX = 0x80;
 }
 class Testnet$8 extends Network {
+    static NAME = 'testnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x6f;
     static SCRIPT_ADDRESS_PREFIX = 0xc4;
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
@@ -19813,11 +20160,13 @@ class RSK extends Cryptocurrency {
         'P2SH'
     ]);
     static DEFAULT_ADDRESS = RSK.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$J extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x3c;
     static SCRIPT_ADDRESS_PREFIX = 0x55;
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
@@ -19867,11 +20216,13 @@ class Rubycoin extends Cryptocurrency {
         'P2SH'
     ]);
     static DEFAULT_ADDRESS = Rubycoin.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$I extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x3d;
     static SCRIPT_ADDRESS_PREFIX = 0x56;
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
@@ -19922,11 +20273,13 @@ class Safecoin extends Cryptocurrency {
         'P2SH'
     ]);
     static DEFAULT_ADDRESS = Safecoin.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$H extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x3f;
     static SCRIPT_ADDRESS_PREFIX = 0xc4;
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
@@ -19977,11 +20330,13 @@ class Saluscoin extends Cryptocurrency {
         'P2SH'
     ]);
     static DEFAULT_ADDRESS = Saluscoin.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$G extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x3c;
     static SCRIPT_ADDRESS_PREFIX = 0x7d;
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
@@ -20031,11 +20386,13 @@ class Scribe extends Cryptocurrency {
         'P2SH'
     ]);
     static DEFAULT_ADDRESS = Scribe.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$F extends Network {
+    static NAME = 'mainnet';
     static HRP = 'secret';
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
         P2PKH: 0x0488ade4
@@ -20081,11 +20438,13 @@ class Secret extends Cryptocurrency {
         COSMOS: 'Cosmos'
     });
     static DEFAULT_ADDRESS = Secret.ADDRESSES.COSMOS;
+    static SEMANTICS = ['p2pkh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$E extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x3f;
     static SCRIPT_ADDRESS_PREFIX = 0x7d;
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
@@ -20100,6 +20459,7 @@ class Mainnet$E extends Network {
     static WIF_PREFIX = 0xbf;
 }
 class Testnet$7 extends Network {
+    static NAME = 'testnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x7f;
     static SCRIPT_ADDRESS_PREFIX = 0xc4;
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
@@ -20151,11 +20511,13 @@ class ShadowCash extends Cryptocurrency {
         'P2SH'
     ]);
     static DEFAULT_ADDRESS = ShadowCash.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$D extends Network {
+    static NAME = 'mainnet';
     static HRP = 'certik';
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
         P2PKH: 0x0488ade4
@@ -20201,11 +20563,13 @@ class Shentu extends Cryptocurrency {
         COSMOS: 'Cosmos'
     });
     static DEFAULT_ADDRESS = Shentu.ADDRESSES.COSMOS;
+    static SEMANTICS = ['p2pkh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$C extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x3f;
     static SCRIPT_ADDRESS_PREFIX = 0x7d;
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
@@ -20220,6 +20584,7 @@ class Mainnet$C extends Network {
     static WIF_PREFIX = 0x46;
 }
 class Testnet$6 extends Network {
+    static NAME = 'testnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x6f;
     static SCRIPT_ADDRESS_PREFIX = 0xc4;
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
@@ -20271,11 +20636,13 @@ class Slimcoin extends Cryptocurrency {
         'P2SH'
     ]);
     static DEFAULT_ADDRESS = Slimcoin.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$B extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x19;
     static SCRIPT_ADDRESS_PREFIX = 0x05;
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
@@ -20326,11 +20693,13 @@ class Smileycoin extends Cryptocurrency {
         'P2SH'
     ]);
     static DEFAULT_ADDRESS = Smileycoin.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$A extends Network {
+    static NAME = 'mainnet';
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
         P2PKH: 0x0488ade4
     });
@@ -20374,6 +20743,7 @@ class Solana extends Cryptocurrency {
         SOLANA: 'Solana'
     });
     static DEFAULT_ADDRESS = Solana.ADDRESSES.SOLANA;
+    static SEMANTICS = ['p2pkh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
     static PARAMS = new Params({
         ALPHABET: '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz'
@@ -20382,6 +20752,7 @@ class Solana extends Cryptocurrency {
 
 // SPDX-License-Identifier: MIT
 class Mainnet$z extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x12;
     static SCRIPT_ADDRESS_PREFIX = 0x05;
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
@@ -20432,11 +20803,13 @@ class Solarcoin extends Cryptocurrency {
         'P2SH'
     ]);
     static DEFAULT_ADDRESS = Solarcoin.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$y extends Network {
+    static NAME = 'mainnet';
     static HRP = 'stafi';
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
         P2PKH: 0x0488ade4
@@ -20482,11 +20855,13 @@ class Stafi extends Cryptocurrency {
         COSMOS: 'Cosmos'
     });
     static DEFAULT_ADDRESS = Stafi.ADDRESSES.COSMOS;
+    static SEMANTICS = ['p2pkh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$x extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x4c;
     static SCRIPT_ADDRESS_PREFIX = 0x10;
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
@@ -20501,6 +20876,7 @@ class Mainnet$x extends Network {
     static WIF_PREFIX = 0xcc;
 }
 class Testnet$5 extends Network {
+    static NAME = 'testnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x8c;
     static SCRIPT_ADDRESS_PREFIX = 0x13;
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
@@ -20553,11 +20929,13 @@ class Stash extends Cryptocurrency {
         'P2SH'
     ]);
     static DEFAULT_ADDRESS = Stash.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$w extends Network {
+    static NAME = 'mainnet';
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
         P2PKH: 0x0488ade4
     });
@@ -20601,6 +20979,7 @@ class Stellar extends Cryptocurrency {
         STELLAR: 'Stellar'
     });
     static DEFAULT_ADDRESS = Stellar.ADDRESSES.STELLAR;
+    static SEMANTICS = ['p2pkh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
     static ADDRESS_TYPES = new AddressTypes({
         PRIVATE_KEY: 'privateKey',
@@ -20618,6 +20997,7 @@ class Stellar extends Cryptocurrency {
 
 // SPDX-License-Identifier: MIT
 class Mainnet$v extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x3f;
     static SCRIPT_ADDRESS_PREFIX = 0x7d;
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
@@ -20632,6 +21012,7 @@ class Mainnet$v extends Network {
     static WIF_PREFIX = 0xbf;
 }
 class Testnet$4 extends Network {
+    static NAME = 'testnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x41;
     static SCRIPT_ADDRESS_PREFIX = 0x7d;
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
@@ -20683,11 +21064,13 @@ class Stratis extends Cryptocurrency {
         'P2SH'
     ]);
     static DEFAULT_ADDRESS = Stratis.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$u extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x3f;
     static SCRIPT_ADDRESS_PREFIX = 0x7d;
     static HRP = 'sugar';
@@ -20711,6 +21094,7 @@ class Mainnet$u extends Network {
     static WIF_PREFIX = 0x80;
 }
 class Testnet$3 extends Network {
+    static NAME = 'testnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x42;
     static SCRIPT_ADDRESS_PREFIX = 0x80;
     static HRP = 'tugar';
@@ -20773,11 +21157,13 @@ class Sugarchain extends Cryptocurrency {
         { P2WPKH_IN_P2SH: 'P2WPKH-In-P2SH' }
     ]);
     static DEFAULT_ADDRESS = Sugarchain.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh', 'p2wpkh', 'p2wpkh-in-p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$t extends Network {
+    static NAME = 'mainnet';
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
         P2PKH: 0x0488ade4
     });
@@ -20821,6 +21207,7 @@ class Sui extends Cryptocurrency {
         SUI: 'Sui'
     });
     static DEFAULT_ADDRESS = Sui.ADDRESSES.SUI;
+    static SEMANTICS = ['p2pkh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
     static PARAMS = new Params({
         KEY_TYPE: 0x00,
@@ -20830,6 +21217,7 @@ class Sui extends Cryptocurrency {
 
 // SPDX-License-Identifier: MIT
 class Mainnet$s extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x3f;
     static SCRIPT_ADDRESS_PREFIX = 0x05;
     static HRP = 'sys';
@@ -20891,11 +21279,13 @@ class Syscoin extends Cryptocurrency {
         { P2WPKH_IN_P2SH: 'P2WPKH-In-P2SH' }
     ]);
     static DEFAULT_ADDRESS = Syscoin.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh', 'p2wpkh', 'p2wpkh-in-p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$r extends Network {
+    static NAME = 'mainnet';
     static HRP = 'terra';
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
         P2PKH: 0x0488ade4
@@ -20941,11 +21331,13 @@ class Terra extends Cryptocurrency {
         COSMOS: 'Cosmos'
     });
     static DEFAULT_ADDRESS = Terra.ADDRESSES.COSMOS;
+    static SEMANTICS = ['p2pkh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$q extends Network {
+    static NAME = 'mainnet';
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
         P2PKH: 0x0488ade4
     });
@@ -20989,6 +21381,7 @@ class Tezos extends Cryptocurrency {
         TEZOS: 'Tezos'
     });
     static DEFAULT_ADDRESS = Tezos.ADDRESSES.TEZOS;
+    static SEMANTICS = ['p2pkh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
     static ADDRESS_PREFIXES = new AddressPrefixes({
         TZ1: 'tz1',
@@ -21007,6 +21400,7 @@ class Tezos extends Cryptocurrency {
 
 // SPDX-License-Identifier: MIT
 class Mainnet$p extends Network {
+    static NAME = 'mainnet';
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
         P2PKH: 0x0488ade4
     });
@@ -21051,11 +21445,13 @@ class Theta extends Cryptocurrency {
         ETHEREUM: 'Ethereum'
     });
     static DEFAULT_ADDRESS = Theta.ADDRESSES.ETHEREUM;
+    static SEMANTICS = ['p2pkh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$o extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x07;
     static SCRIPT_ADDRESS_PREFIX = 0x09;
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
@@ -21106,11 +21502,13 @@ class ThoughtAI extends Cryptocurrency {
         'P2SH'
     ]);
     static DEFAULT_ADDRESS = ThoughtAI.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$n extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x41;
     static SCRIPT_ADDRESS_PREFIX = 0x17;
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
@@ -21161,11 +21559,13 @@ class TOACoin extends Cryptocurrency {
         'P2SH'
     ]);
     static DEFAULT_ADDRESS = TOACoin.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$m extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x41;
     static SCRIPT_ADDRESS_PREFIX = 0x05;
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
@@ -21216,6 +21616,7 @@ class Tron extends Cryptocurrency {
         TRON: 'Tron'
     });
     static DEFAULT_ADDRESS = Tron.ADDRESSES.TRON;
+    static SEMANTICS = ['p2pkh', 'p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
     static PARAMS = new Params({
         ALPHABET: '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz'
@@ -21224,6 +21625,7 @@ class Tron extends Cryptocurrency {
 
 // SPDX-License-Identifier: MIT
 class Mainnet$l extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x49;
     static SCRIPT_ADDRESS_PREFIX = 0x53;
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
@@ -21238,6 +21640,7 @@ class Mainnet$l extends Network {
     static WIF_PREFIX = 0x42;
 }
 class Testnet$2 extends Network {
+    static NAME = 'testnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x4c;
     static SCRIPT_ADDRESS_PREFIX = 0x89;
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
@@ -21288,11 +21691,13 @@ class TWINS extends Cryptocurrency {
         'P2SH'
     ]);
     static DEFAULT_ADDRESS = TWINS.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$k extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x44;
     static SCRIPT_ADDRESS_PREFIX = 0x7d;
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
@@ -21343,11 +21748,13 @@ class UltimateSecureCash extends Cryptocurrency {
         'P2SH'
     ]);
     static DEFAULT_ADDRESS = UltimateSecureCash.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$j extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x82;
     static SCRIPT_ADDRESS_PREFIX = 0x1e;
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
@@ -21397,11 +21804,13 @@ class Unobtanium extends Cryptocurrency {
         'P2SH'
     ]);
     static DEFAULT_ADDRESS = Unobtanium.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$i extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x47;
     static SCRIPT_ADDRESS_PREFIX = 0x08;
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
@@ -21451,11 +21860,13 @@ class Vcash extends Cryptocurrency {
         'P2SH'
     ]);
     static DEFAULT_ADDRESS = Vcash.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$h extends Network {
+    static NAME = 'mainnet';
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
         P2PKH: 0x0488ade4
     });
@@ -21501,11 +21912,13 @@ class VeChain extends Cryptocurrency {
         ETHEREUM: 'Ethereum'
     });
     static DEFAULT_ADDRESS = VeChain.ADDRESSES.ETHEREUM;
+    static SEMANTICS = ['p2pkh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$g extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x1e;
     static SCRIPT_ADDRESS_PREFIX = 0x21;
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
@@ -21556,11 +21969,13 @@ class Verge extends Cryptocurrency {
         'P2SH'
     ]);
     static DEFAULT_ADDRESS = Verge.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$f extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x47;
     static SCRIPT_ADDRESS_PREFIX = 0x05;
     static HRP = 'vtc';
@@ -21622,11 +22037,13 @@ class Vertcoin extends Cryptocurrency {
         { P2WPKH_IN_P2SH: 'P2WPKH-In-P2SH' }
     ]);
     static DEFAULT_ADDRESS = Vertcoin.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh', 'p2wpkh', 'p2wpkh-in-p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$e extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x47;
     static SCRIPT_ADDRESS_PREFIX = 0x21;
     static HRP = 'via';
@@ -21650,6 +22067,7 @@ class Mainnet$e extends Network {
     static WIF_PREFIX = 0xc7;
 }
 class Testnet$1 extends Network {
+    static NAME = 'testnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x7f;
     static SCRIPT_ADDRESS_PREFIX = 0xc4;
     static HRP = 'tvia';
@@ -21712,11 +22130,13 @@ class Viacoin extends Cryptocurrency {
         { P2WPKH_IN_P2SH: 'P2WPKH-In-P2SH' }
     ]);
     static DEFAULT_ADDRESS = Viacoin.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh', 'p2wpkh', 'p2wpkh-in-p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$d extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x46;
     static SCRIPT_ADDRESS_PREFIX = 0x0a;
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
@@ -21767,11 +22187,13 @@ class Vivo extends Cryptocurrency {
         'P2SH'
     ]);
     static DEFAULT_ADDRESS = Vivo.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$c extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x46;
     static SCRIPT_ADDRESS_PREFIX = 0x05;
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
@@ -21821,11 +22243,13 @@ class Voxels extends Cryptocurrency {
         'P2SH'
     ]);
     static DEFAULT_ADDRESS = Voxels.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$b extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x47;
     static SCRIPT_ADDRESS_PREFIX = 0x05;
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
@@ -21875,11 +22299,13 @@ class VPNCoin extends Cryptocurrency {
         'P2SH'
     ]);
     static DEFAULT_ADDRESS = VPNCoin.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$a extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x49;
     static SCRIPT_ADDRESS_PREFIX = 0x3f;
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
@@ -21929,11 +22355,13 @@ class Wagerr extends Cryptocurrency {
         'P2SH'
     ]);
     static DEFAULT_ADDRESS = Wagerr.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$9 extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x49;
     static SCRIPT_ADDRESS_PREFIX = 0x57;
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
@@ -21985,11 +22413,13 @@ class Whitecoin extends Cryptocurrency {
         'P2SH'
     ]);
     static DEFAULT_ADDRESS = Whitecoin.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$8 extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x49;
     static SCRIPT_ADDRESS_PREFIX = 0x1c;
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
@@ -22040,11 +22470,13 @@ class Wincoin extends Cryptocurrency {
         'P2SH'
     ]);
     static DEFAULT_ADDRESS = Wincoin.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$7 extends Network {
+    static NAME = 'mainnet';
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
         P2PKH: 0x0488ade4
     });
@@ -22090,6 +22522,7 @@ class XinFin extends Cryptocurrency {
         XINFIN: 'XinFin'
     });
     static DEFAULT_ADDRESS = XinFin.ADDRESSES.XINFIN;
+    static SEMANTICS = ['p2pkh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
     static PARAMS = new Params({
         ADDRESS_PREFIX: 'xdc'
@@ -22098,6 +22531,7 @@ class XinFin extends Cryptocurrency {
 
 // SPDX-License-Identifier: MIT
 class Mainnet$6 extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x4b;
     static SCRIPT_ADDRESS_PREFIX = 0x12;
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
@@ -22148,11 +22582,13 @@ class XUEZ extends Cryptocurrency {
         'P2SH'
     ]);
     static DEFAULT_ADDRESS = XUEZ.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$5 extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x00001c28;
     static SCRIPT_ADDRESS_PREFIX = 0x00001c2c;
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
@@ -22203,11 +22639,13 @@ class Ycash extends Cryptocurrency {
         'P2SH'
     ]);
     static DEFAULT_ADDRESS = Ycash.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$4 extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x00001cb8;
     static SCRIPT_ADDRESS_PREFIX = 0x00001cbd;
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
@@ -22222,6 +22660,7 @@ class Mainnet$4 extends Network {
     static WIF_PREFIX = 0x80;
 }
 class Testnet extends Network {
+    static NAME = 'testnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x00001d25;
     static SCRIPT_ADDRESS_PREFIX = 0x00001cba;
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
@@ -22273,11 +22712,13 @@ class Zcash extends Cryptocurrency {
         'P2SH'
     ]);
     static DEFAULT_ADDRESS = Zcash.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$3 extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x00001cb8;
     static SCRIPT_ADDRESS_PREFIX = 0x00001cbd;
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
@@ -22328,11 +22769,13 @@ class ZClassic extends Cryptocurrency {
         'P2SH'
     ]);
     static DEFAULT_ADDRESS = ZClassic.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$2 extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x50;
     static SCRIPT_ADDRESS_PREFIX = 0x09;
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
@@ -22382,11 +22825,13 @@ class Zetacoin extends Cryptocurrency {
         'P2SH'
     ]);
     static DEFAULT_ADDRESS = Zetacoin.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet$1 extends Network {
+    static NAME = 'mainnet';
     static HRP = 'zil';
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
         P2PKH: 0x0488ade4
@@ -22432,11 +22877,13 @@ class Zilliqa extends Cryptocurrency {
         ZILLIQA: 'Zilliqa'
     });
     static DEFAULT_ADDRESS = Zilliqa.ADDRESSES.ZILLIQA;
+    static SEMANTICS = ['p2pkh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
 // SPDX-License-Identifier: MIT
 class Mainnet extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x00;
     static SCRIPT_ADDRESS_PREFIX = 0x05;
     static HRP = 'bc';
@@ -22493,6 +22940,7 @@ class ZooBC extends Cryptocurrency {
         'P2SH'
     ]);
     static DEFAULT_ADDRESS = ZooBC.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 
@@ -82236,7 +82684,7 @@ class HDWallet {
             });
         }
         const hdClass = HDS.getHDClass(hdName);
-        const _network = options.network ?? this.cryptocurrency.DEFAULT_NETWORK.getName();
+        const _network = options.network ?? this.cryptocurrency.DEFAULT_NETWORK.NAME;
         const resolvedNetwork = ensureTypeMatch(_network, Network, { otherTypes: ['string'] });
         const networkName = resolvedNetwork.isValid ? resolvedNetwork.value.getName() : _network;
         if (!this.cryptocurrency.NETWORKS.isNetwork(networkName)) {
@@ -82473,7 +82921,7 @@ class HDWallet {
         return this.cryptocurrency.COIN_TYPE;
     }
     getNetwork() {
-        return this.network.getName();
+        return this.network.NAME;
     }
     getEntropy() {
         return this.entropy?.getEntropy() ?? null;
@@ -82700,7 +83148,7 @@ class HDWallet {
         }
         const hdName = this.hd.getName();
         if (hdName === 'Cardano') {
-            options.network = options.network ?? this.network.getName();
+            options.network = options.network ?? this.network.NAME;
             options.addressType = options.addressType ?? this.addressType;
             options.stakingPublicKey = options.stakingPublicKey ?? this.stakingPublicKey;
             return this.hd.getAddress(options);
@@ -82736,7 +83184,7 @@ class HDWallet {
                 return addressClass.encode(this.getPublicKey(), {
                     publicKeyAddressPrefix: this.network[`${addressType?.toUpperCase()}_PUBLIC_KEY_ADDRESS_PREFIX`],
                     scriptAddressPrefix: this.network[`${addressType?.toUpperCase()}_SCRIPT_ADDRESS_PREFIX`],
-                    networkType: this.network.getName(),
+                    networkType: this.network.NAME,
                     publicKeyType: this.getPublicKeyType(),
                     hrp: this.network.HRP
                 });
@@ -82745,7 +83193,7 @@ class HDWallet {
                 return addressClass.encode(this.getPublicKey(), {
                     publicKeyAddressPrefix: this.network.PUBLIC_KEY_ADDRESS_PREFIX,
                     scriptAddressPrefix: this.network.SCRIPT_ADDRESS_PREFIX,
-                    networkType: this.network.getName(),
+                    networkType: this.network.NAME,
                     publicKeyType: this.getPublicKeyType(),
                     hrp: this.network.HRP,
                     addressType: options.addressType ?? this.addressType,
@@ -82912,7 +83360,7 @@ class HDWallet {
                     Cardano.TYPES.SHELLEY_ICARUS, Cardano.TYPES.SHELLEY_LEDGER
                 ].includes(this.cardanoType)) {
                     derivationDump['address'] = this.getAddress({
-                        network: this.network.getName(),
+                        network: this.network.NAME,
                         addressType: this.addressType,
                         stakingPublicKey: this.stakingPublicKey
                     });

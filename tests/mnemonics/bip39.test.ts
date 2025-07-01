@@ -10,8 +10,13 @@ import { BIP39Entropy, BIP39_ENTROPY_STRENGTHS } from "../../src/entropies";
 import { MnemonicError, ChecksumError, EntropyError } from "../../src/exceptions";
 import { getBytes } from "../../src/utils";
 
-import vectors from "../data/json/mnemonics.json";
-
+import { readFileSync } from 'fs';
+import * as path from "node:path";
+const raw = readFileSync(
+  path.join(__dirname, '../data/json/mnemonics.json'),
+  'utf8'
+).normalize('NFC');
+const vectors = JSON.parse(raw) as { BIP39: BIP39Case[] };
 
 type BIP39Case = {
   name: string;
@@ -38,7 +43,7 @@ describe("BIP39Mnemonic (data-driven)", () => {
     const raw = "  foo   bar\tbaz\nqux  ";
     expect(BIP39Mnemonic.normalize(raw)).toEqual(["foo", "bar", "baz", "qux"]);
     const arr = ["alpha", "beta"];
-    expect(BIP39Mnemonic.normalize(arr)).toBe(arr);
+    expect(BIP39Mnemonic.normalize(arr)).toEqual(arr);
   });
 
   it("encodes and decodes a 128-bit entropy round-trip in all supported languages", () => {
@@ -57,7 +62,7 @@ describe("BIP39Mnemonic (data-driven)", () => {
     }
   });
 
-  (vectors.BIP39 as BIP39Case[]).forEach(({ name, entropy, words, languages }) => {
+  vectors.BIP39.forEach(({ name, entropy, words, languages }) => {
     Object.entries(languages).forEach(([langKey, mnemonic]) => {
       const enumKey = langKey.toUpperCase().replace(/-/g, "_") as keyof typeof BIP39_MNEMONIC_LANGUAGES;
       const language = BIP39_MNEMONIC_LANGUAGES[enumKey];
@@ -65,8 +70,8 @@ describe("BIP39Mnemonic (data-driven)", () => {
       describe(`example: ${words}-word mnemonic in ${language}`, () => {
         let fromRegistry: BIP39Mnemonic;
         let direct: BIP39Mnemonic;
-        let roundViaRegistry: BIP39Mnemonic;
-        let roundDirect: BIP39Mnemonic;
+        let roundViaRegistry: String;
+        let roundDirect: String;
 
         beforeAll(() => {
           const RegistryClass = MNEMONICS.getMnemonicClass(name) as typeof BIP39Mnemonic;
@@ -77,20 +82,20 @@ describe("BIP39Mnemonic (data-driven)", () => {
         });
 
         it("round-trips entropy → mnemonic → entropy", () => {
-          expect(roundViaRegistry.getMnemonic()).toBe(mnemonic);
-          expect(roundDirect.getMnemonic()).toBe(mnemonic);
+          expect(roundViaRegistry.normalize('NFC')).toBe(mnemonic);
+          expect(roundDirect.normalize('NFC')).toBe(mnemonic);
           expect(BIP39Mnemonic.decode(mnemonic)).toBe(entropy);
         });
 
         it("preserves the original mnemonic string", () => {
-          expect(fromRegistry.getMnemonic()).toBe(mnemonic);
-          expect(direct.getMnemonic()).toBe(mnemonic);
+          expect(fromRegistry.getMnemonic().normalize('NFC')).toBe(mnemonic);
+          expect(direct.getMnemonic().normalize('NFC')).toBe(mnemonic);
         });
 
         it("reports the correct language and word count", () => {
-          [fromRegistry, direct, roundViaRegistry, roundDirect].forEach(inst => {
-            expect(inst.getLanguage()).toBe(language);
-            expect(inst.getWords()).toBe(words);
+          [fromRegistry, direct].forEach(inst => {
+             expect(inst.getLanguage()).toBe(language);
+             expect(inst.getWords()).toBe(words);
           });
         });
 
@@ -99,8 +104,6 @@ describe("BIP39Mnemonic (data-driven)", () => {
           expect(BIP39Mnemonic.isValidLanguage(language)).toBe(true);
           expect(BIP39Mnemonic.isValidWords(words)).toBe(true);
         });
-
-        // … inside your data-driven loop over languages …
 
         it("throws a MnemonicError for a mnemonic containing an unknown word", () => {
           const bad = mnemonic
@@ -112,10 +115,13 @@ describe("BIP39Mnemonic (data-driven)", () => {
 
 
         it("supports fromWords()", () => {
-          const m = BIP39Mnemonic.fromWords(words, language);
-          expect(m.getWords()).toBe(words);
-          expect(m.getLanguage()).toBe(language);
-          expect(m.getMnemonic().split(" ")).toHaveLength(words);
+           const m = BIP39Mnemonic.fromWords(words, language);
+           expect(typeof m).toBe("string");
+           expect(m.split(" ")).toHaveLength(words);
+
+           const inst = new BIP39Mnemonic(m);
+           expect(inst.getWords()).toBe(words);
+           expect(inst.getLanguage()).toBe(language);
         });
 
         it("throws on an unsupported word count in fromWords()", () => {
@@ -131,7 +137,7 @@ describe("BIP39Mnemonic (data-driven)", () => {
 
           [e, bytes, ent].forEach(input => {
             const m = BIP39Mnemonic.fromEntropy(input, language);
-            expect(BIP39Mnemonic.decode(m.getMnemonic())).toBe(e);
+            expect(BIP39Mnemonic.decode(m)).toBe(e);
           });
         });
 
@@ -152,7 +158,7 @@ describe("BIP39Mnemonic (data-driven)", () => {
 
     [entropy, bytes, ent].forEach(input => {
       const m = BIP39Mnemonic.fromEntropy(input, BIP39_MNEMONIC_LANGUAGES.ENGLISH);
-      expect(BIP39Mnemonic.decode(m.getMnemonic())).toBe(entropy);
+      expect(BIP39Mnemonic.decode(m)).toBe(entropy);
     });
   });
 });

@@ -48,7 +48,7 @@ class HDWallet {
             });
         }
         const hdClass = hds_1.HDS.getHDClass(hdName);
-        const _network = options.network ?? this.cryptocurrency.DEFAULT_NETWORK.getName();
+        const _network = options.network ?? this.cryptocurrency.DEFAULT_NETWORK.NAME;
         const resolvedNetwork = (0, utils_1.ensureTypeMatch)(_network, cryptocurrency_1.Network, { otherTypes: ['string'] });
         const networkName = resolvedNetwork.isValid ? resolvedNetwork.value.getName() : _network;
         if (!this.cryptocurrency.NETWORKS.isNetwork(networkName)) {
@@ -285,7 +285,7 @@ class HDWallet {
         return this.cryptocurrency.COIN_TYPE;
     }
     getNetwork() {
-        return this.network.getName();
+        return this.network.NAME;
     }
     getEntropy() {
         return this.entropy?.getEntropy() ?? null;
@@ -512,7 +512,7 @@ class HDWallet {
         }
         const hdName = this.hd.getName();
         if (hdName === 'Cardano') {
-            options.network = options.network ?? this.network.getName();
+            options.network = options.network ?? this.network.NAME;
             options.addressType = options.addressType ?? this.addressType;
             options.stakingPublicKey = options.stakingPublicKey ?? this.stakingPublicKey;
             return this.hd.getAddress(options);
@@ -548,7 +548,7 @@ class HDWallet {
                 return addressClass.encode(this.getPublicKey(), {
                     publicKeyAddressPrefix: this.network[`${addressType?.toUpperCase()}_PUBLIC_KEY_ADDRESS_PREFIX`],
                     scriptAddressPrefix: this.network[`${addressType?.toUpperCase()}_SCRIPT_ADDRESS_PREFIX`],
-                    networkType: this.network.getName(),
+                    networkType: this.network.NAME,
                     publicKeyType: this.getPublicKeyType(),
                     hrp: this.network.HRP
                 });
@@ -557,7 +557,7 @@ class HDWallet {
                 return addressClass.encode(this.getPublicKey(), {
                     publicKeyAddressPrefix: this.network.PUBLIC_KEY_ADDRESS_PREFIX,
                     scriptAddressPrefix: this.network.SCRIPT_ADDRESS_PREFIX,
-                    networkType: this.network.getName(),
+                    networkType: this.network.NAME,
                     publicKeyType: this.getPublicKeyType(),
                     hrp: this.network.HRP,
                     addressType: options.addressType ?? this.addressType,
@@ -724,7 +724,7 @@ class HDWallet {
                     cryptocurrencies_1.Cardano.TYPES.SHELLEY_ICARUS, cryptocurrencies_1.Cardano.TYPES.SHELLEY_LEDGER
                 ].includes(this.cardanoType)) {
                     derivationDump['address'] = this.getAddress({
-                        network: this.network.getName(),
+                        network: this.network.NAME,
                         addressType: this.addressType,
                         stakingPublicKey: this.stakingPublicKey
                     });

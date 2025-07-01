@@ -12,6 +12,7 @@ export class Types extends NestedNamespace {
     }
 }
 export class Mainnet extends Network {
+    static NAME = 'mainnet';
     static TYPE = 0x01;
     static PAYMENT_ADDRESS_HRP = 'addr';
     static REWARD_ADDRESS_HRP = 'stake';
@@ -23,6 +24,7 @@ export class Mainnet extends Network {
     });
 }
 export class Testnet extends Network {
+    static NAME = 'testnet';
     static TYPE = 0x00;
     static PAYMENT_ADDRESS_HRP = 'addr_test';
     static REWARD_ADDRESS_HRP = 'stake_test';
@@ -76,6 +78,7 @@ export class Cardano extends Cryptocurrency {
         CARDANO: 'Cardano'
     });
     static DEFAULT_ADDRESS = Cardano.ADDRESSES.CARDANO;
+    static SEMANTICS = ['p2pkh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
     static ADDRESS_TYPES = new AddressTypes({
         PUBLIC_KEY: 'public-key',

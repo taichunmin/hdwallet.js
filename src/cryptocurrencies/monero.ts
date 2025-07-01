@@ -17,6 +17,7 @@ import { Cryptocurrency, Network } from './cryptocurrency';
 
 export class Mainnet extends Network {
 
+  static NAME = 'mainnet';
   static STANDARD = 0x12;
   static INTEGRATED = 0x13;
   static SUB_ADDRESS = 0x2a;
@@ -24,6 +25,7 @@ export class Mainnet extends Network {
 
 export class Stagenet extends Network {
 
+  static NAME = 'stagenet';
   static STANDARD = 0x18;
   static INTEGRATED = 0x19;
   static SUB_ADDRESS = 0x24;
@@ -31,6 +33,7 @@ export class Stagenet extends Network {
 
 export class Testnet extends Network {
 
+  static NAME = 'testnet';
   static STANDARD = 0x35;
   static INTEGRATED = 0x36;
   static SUB_ADDRESS = 0x3f;

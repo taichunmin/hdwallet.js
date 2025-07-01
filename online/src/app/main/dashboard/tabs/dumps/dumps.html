@@ -1,0 +1,1510 @@
+<form class="flex flex-col gap-2.5 px-3 pt-1 pb-3"
+      [formGroup]="dumpsFormGroup" (ngSubmit)="getDumps(dumpsFormGroup.value, 'generate')">
+  <!-- Start - Dumps -->
+  <fieldset class="custom-groupbox" [ngStyle]="{ 'border-color': groupBoxService.box.name === 'cryptocurrency' ? groupBoxService.box.flag : groupBoxService.box.color }">
+    <legend class="uppercase">1st - Step</legend>
+    <div class="description-font mb-2">
+      This section sets the scope for how keys will be derived — defining the target cryptocurrency, network, HD standard, and the source of input data.
+    </div>
+    <div class="grid grid-cols-9 max-xl:grid-cols-4 gap-2.5">
+      <!-- Dumps - Cryptocurrency -->
+      <fieldset class="col-span-3 max-xl:col-span-2">
+        <label class="uppercase">Cryptocurrency</label>
+        <div class="mt-2">
+          <custom-combobox [customOptions]="symbols" formControlName="symbol"></custom-combobox>
+        </div>
+      </fieldset>
+      <!-- Dumps - Network -->
+      <fieldset class="col-span-2">
+        <label class="uppercase">Network</label>
+        <div class="mt-2">
+          <custom-combobox [customOptions]="networks" formControlName="network"></custom-combobox>
+        </div>
+      </fieldset>
+      <!-- Dumps - HD -->
+      <fieldset class="col-span-2">
+        <label class="uppercase">HD</label>
+        <div class="mt-2">
+          <custom-combobox [customOptions]="hds" formControlName="hd"></custom-combobox>
+        </div>
+      </fieldset>
+      <!-- Dumps - From -->
+      <fieldset class="col-span-2">
+        <label class="uppercase">From</label>
+        <div class="mt-2">
+          <custom-combobox [customOptions]="froms" formControlName="from"></custom-combobox>
+        </div>
+      </fieldset>
+    </div>
+  </fieldset>
+  <!-- End - Dumps -->
+
+  <!-- Start - BIP Entropy -->
+  <fieldset class="custom-groupbox" *ngIf="dumpsFormGroup.get('from')?.value === 'bip-entropy'"
+            [ngStyle]="{ 'border-color': groupBoxService.box.name === 'bip-entropy' ? groupBoxService.box.flag : groupBoxService.box.color }">
+    <legend class="uppercase">2nd - Step</legend>
+    <div class="description-font mb-2">
+      Provide a relevant raw input for Entropy to begin the wallet generation process with optional customization.
+    </div>
+    <div class="grid grid-cols-4 gap-2.5">
+      <!-- BIP Entropy - Client -->
+      <fieldset class="col-span-1 max-2xl:col-span-2" [disabled]="dumpsFormGroup.get('symbol')?.value !== 'ALGO'">
+        <label class="uppercase">Client</label>
+        <div class="mt-2">
+          <custom-combobox [customOptions]="clients" formControlName="client"></custom-combobox>
+        </div>
+      </fieldset>
+      <!-- BIP Entropy Input -->
+      <fieldset class="col-span-2 max-2xl:col-span-full">
+        <label class="uppercase">Entropy</label>
+        <input type="text" class="custom-input" formControlName="entropy">
+      </fieldset>
+      <!-- BIP Entropy - Language -->
+      <fieldset class="col-span-1 max-2xl:col-span-2 max-2xl:row-start-1 max-2xl:col-start-3">
+        <label class="uppercase">Language</label>
+        <div class="mt-2">
+          <custom-combobox [customOptions]="languages" formControlName="language"></custom-combobox>
+        </div>
+      </fieldset>
+      <!-- BIP Entropy - Passphrase -->
+      <fieldset class="col-span-2 max-2xl:col-span-full">
+        <label class="uppercase">Passphrase</label>
+        <input type="text" class="custom-input" placeholder="(Optional)" formControlName="passphrase">
+      </fieldset>
+      <!-- BIP Entropy - Public Key Type -->
+      <fieldset class="max-2xl:col-span-2">
+        <label class="uppercase">Public Key Type</label>
+        <div class="mt-2">
+          <custom-combobox [customOptions]="publicKeyTypes" formControlName="public_key_type"></custom-combobox>
+        </div>
+      </fieldset>
+      <!-- BIP Entropy - Semantic -->
+      <fieldset class="max-2xl:col-span-2">
+        <label class="uppercase">Semantic</label>
+        <div class="mt-2">
+          <custom-combobox [customOptions]="semantics" formControlName="semantic"></custom-combobox>
+        </div>
+      </fieldset>
+    </div>
+  </fieldset>
+  <!-- End - BIP Entropy -->
+
+  <!-- Start - BIP Mnemonic -->
+  <fieldset class="custom-groupbox" *ngIf="dumpsFormGroup.get('from')?.value === 'bip-mnemonic'"
+            [ngStyle]="{ 'border-color': groupBoxService.box.name === 'bip-mnemonic' ? groupBoxService.box.flag : groupBoxService.box.color }">
+    <legend class="uppercase">2nd - Step</legend>
+    <div class="description-font mb-2">
+      Provide a relevant raw input for Mnemonic to begin the wallet generation process with optional customization.
+    </div>
+    <div class="grid grid-cols-4 gap-2.5">
+      <!-- BIP Mnemonic - Client -->
+      <fieldset class="col-span-1 max-2xl:col-span-2" [disabled]="dumpsFormGroup.get('symbol')?.value !== 'ALGO'">
+        <label class="uppercase">Client</label>
+        <div class="mt-2">
+          <custom-combobox [customOptions]="clients" formControlName="client"></custom-combobox>
+        </div>
+      </fieldset>
+      <!-- BIP Mnemonic Input -->
+      <fieldset class="col-span-3 max-2xl:col-span-full">
+        <label class="uppercase">Mnemonic</label>
+        <input type="text" class="custom-input" formControlName="mnemonic">
+      </fieldset>
+      <!-- BIP Mnemonic - Passphrase -->
+      <fieldset class="col-span-2 max-2xl:col-span-full">
+        <label class="uppercase">Passphrase</label>
+        <input type="text" class="custom-input" placeholder="(Optional)" formControlName="passphrase">
+      </fieldset>
+      <!-- BIP Mnemonic - Public Key Type -->
+      <fieldset class="max-2xl:col-span-2 max-2xl:row-start-1 max-2xl:col-start-3">
+        <label class="uppercase">Public Key Type</label>
+        <div class="mt-2">
+          <custom-combobox [customOptions]="publicKeyTypes" formControlName="public_key_type"></custom-combobox>
+        </div>
+      </fieldset>
+      <!-- BIP Mnemonic - Semantic -->
+      <fieldset class="max-2xl:col-span-2">
+        <label class="uppercase">Semantic</label>
+        <div class="mt-2">
+          <custom-combobox [customOptions]="semantics" formControlName="semantic"></custom-combobox>
+        </div>
+      </fieldset>
+    </div>
+  </fieldset>
+  <!-- End - BIP Mnemonic -->
+
+  <!-- Start - BIP Private Key -->
+  <fieldset class="custom-groupbox" *ngIf="dumpsFormGroup.get('from')?.value === 'bip-private-key'"
+            [ngStyle]="{ 'border-color': groupBoxService.box.name === 'bip-private-key' ? groupBoxService.box.flag : groupBoxService.box.color }">
+    <legend class="uppercase">2nd - Step</legend>
+    <div class="description-font mb-2">
+      Provide a relevant raw input for Private Key to begin the wallet generation process with optional customization.
+    </div>
+    <div class="grid grid-cols-3 max-xl:grid-cols-4 gap-2.5">
+      <!-- BIP Private Key Input -->
+      <fieldset class="col-span-full max-xl:col-span-4">
+        <label class="uppercase">Private Key</label>
+        <input type="text" class="custom-input" formControlName="private_key">
+      </fieldset>
+      <!-- BIP Private Key - Public Key Type -->
+      <fieldset class="max-xl:col-span-2">
+        <label class="uppercase">Public Key Type</label>
+        <div class="mt-2">
+          <custom-combobox [customOptions]="publicKeyTypes" formControlName="public_key_type"></custom-combobox>
+        </div>
+      </fieldset>
+      <!-- BIP Private Key - Semantic -->
+      <fieldset class="max-xl:col-span-2" [disabled]="dumpsFormGroup.get('hd')?.value !== 'BIP141'">
+        <label class="uppercase">Semantic</label>
+        <div class="mt-2">
+          <custom-combobox [customOptions]="semantics" formControlName="semantic"></custom-combobox>
+        </div>
+      </fieldset>
+    </div>
+  </fieldset>
+  <!-- End - BIP Private Key -->
+
+  <!-- Start - BIP Public key -->
+  <fieldset class="custom-groupbox" *ngIf="dumpsFormGroup.get('from')?.value === 'bip-public-key'"
+            [ngStyle]="{ 'border-color': groupBoxService.box.name === 'bip-public-key' ? groupBoxService.box.flag : groupBoxService.box.color }">
+    <legend class="uppercase">2nd - Step</legend>
+    <div class="description-font mb-2">
+      Provide a relevant raw input for Public Key to begin the wallet generation process with optional customization.
+    </div>
+    <div class="grid grid-cols-3 max-xl:grid-cols-4 gap-2.5">
+      <!-- BIP Public Key Input -->
+      <fieldset class="col-span-full">
+        <label class="uppercase">Public Key</label>
+        <input type="text" class="custom-input" formControlName="public_key">
+      </fieldset>
+      <!-- BIP Public Key - Public Key Type -->
+      <fieldset class="max-xl:col-span-2">
+        <label class="uppercase">Public Key Type</label>
+        <div class="mt-2">
+          <custom-combobox [customOptions]="publicKeyTypes" formControlName="public_key_type"></custom-combobox>
+        </div>
+      </fieldset>
+      <!-- BIP Public Key - Semantic -->
+      <fieldset class="max-xl:col-span-2" [disabled]="dumpsFormGroup.get('hd')?.value !== 'BIP141'">
+        <label class="uppercase">Semantic</label>
+        <div class="mt-2">
+          <custom-combobox [customOptions]="semantics" formControlName="semantic"></custom-combobox>
+        </div>
+      </fieldset>
+    </div>
+  </fieldset>
+  <!-- End - BIP Public key -->
+
+  <!-- Start - BIP Seed -->
+  <fieldset class="custom-groupbox" *ngIf="dumpsFormGroup.get('from')?.value === 'bip-seed'"
+            [ngStyle]="{ 'border-color': groupBoxService.box.name === 'bip-seed' ? groupBoxService.box.flag : groupBoxService.box.color }">
+    <legend class="uppercase">2nd - Step</legend>
+    <div class="description-font mb-2">
+      Provide a relevant raw input for Seed to begin the wallet generation process with optional customization.
+    </div>
+    <div class="grid grid-cols-4 gap-2.5">
+      <!-- BIP Seed - Client -->
+      <fieldset class="col-span-1 max-2xl:col-span-2" [disabled]="dumpsFormGroup.get('symbol')?.value !== 'ALGO'">
+        <label class="uppercase">Client</label>
+        <div class="mt-2">
+          <custom-combobox [customOptions]="clients" formControlName="client"></custom-combobox>
+        </div>
+      </fieldset>
+      <!-- BIP Seed Input -->
+      <fieldset class="col-span-3 max-2xl:col-span-full">
+        <label class="uppercase">Seed</label>
+        <input type="text" class="custom-input" formControlName="seed">
+      </fieldset>
+      <!-- BIP Seed - Public Key Type -->
+      <fieldset class="col-span-1 max-2xl:col-span-2 max-2xl:row-start-1 max-2xl:col-start-3">
+        <label class="uppercase">Public Key Type</label>
+        <div class="mt-2">
+          <custom-combobox [customOptions]="publicKeyTypes" formControlName="public_key_type"></custom-combobox>
+        </div>
+      </fieldset>
+      <!-- BIP Seed - Semantic -->
+      <fieldset class="max-2xl:col-span-2">
+        <label class="uppercase">Semantic</label>
+        <div class="mt-2">
+          <custom-combobox [customOptions]="semantics" formControlName="semantic"></custom-combobox>
+        </div>
+      </fieldset>
+    </div>
+  </fieldset>
+  <!-- End - BIP Seed -->
+
+  <!-- Start - BIP WIF -->
+  <fieldset class="custom-groupbox" *ngIf="dumpsFormGroup.get('from')?.value === 'bip-wif'"
+            [ngStyle]="{ 'border-color': groupBoxService.box.name === 'bip-wif' ? groupBoxService.box.flag : groupBoxService.box.color }">
+    <legend class="uppercase">2nd - Step</legend>
+    <div class="description-font mb-2">
+      Provide a relevant raw input for {{ dumpsFormGroup.get('bip38')?.value ? 'Encrypted Wallet Import Format' : 'Wallet Import Format' }} to begin the wallet generation process with optional customization.
+    </div>
+    <div class="grid grid-cols-7 gap-2.5">
+      <!-- BIP WIF Input -->
+      <fieldset class="col-span-full">
+        <label class="uppercase">{{ dumpsFormGroup.get('bip38')?.value ? 'Encrypted Wallet Import Format' : 'Wallet Import Format' }}</label>
+        <input type="text" class="custom-input" formControlName="wif">
+      </fieldset>
+      <div class="grid grid-cols-[auto_1fr] col-span-3 max-xl:col-span-full gap-2.5">
+        <!-- BIP WIF - BIP38 -->
+        <div class="custom-checkbox pt-7">
+          <input type="checkbox" formControlName="bip38">
+          <label class="ml-2">BIP38</label>
+        </div>
+        <!-- BIP WIF - BIP38 Passphrase -->
+        <fieldset [disabled]="!dumpsFormGroup.get('bip38')?.value">
+          <label class="uppercase">Passphrase</label>
+          <input type="text" class="custom-input" placeholder="(Optional)" formControlName="passphrase">
+        </fieldset>
+      </div>
+      <!-- BIP WIF - Public Key Type -->
+      <fieldset class="col-span-2 max-xl:col-span-3">
+        <label class="uppercase">Public Key Type</label>
+        <div class="mt-2">
+          <custom-combobox [customOptions]="publicKeyTypes" formControlName="public_key_type"></custom-combobox>
+        </div>
+      </fieldset>
+      <!-- BIP WIF - Semantic -->
+      <fieldset class="col-span-2 max-xl:col-span-4" [disabled]="dumpsFormGroup.get('hd')?.value !== 'BIP141'">
+        <label class="uppercase">Semantic</label>
+        <div class="mt-2">
+          <custom-combobox [customOptions]="semantics" formControlName="semantic"></custom-combobox>
+        </div>
+      </fieldset>
+    </div>
+  </fieldset>
+  <!-- End - BIP WIF -->
+
+  <!-- Start - BIP XPrivate Key -->
+  <fieldset class="custom-groupbox" *ngIf="dumpsFormGroup.get('from')?.value === 'bip-xprivate-key'"
+            [ngStyle]="{ 'border-color': groupBoxService.box.name === 'bip-xprivate-key' ? groupBoxService.box.flag : groupBoxService.box.color }">
+    <legend class="uppercase">2nd - Step</legend>
+    <div class="description-font mb-2">
+      Provide a relevant raw input for XPrivate Key to begin the wallet generation process with optional customization.
+    </div>
+    <div class="grid grid-cols-3 max-xl:grid-cols-4 gap-2.5">
+      <div class="grid grid-cols-[1fr_auto] col-span-3 max-xl:col-span-4 gap-2.5">
+        <!-- BIP XPrivate Key Input -->
+        <fieldset>
+          <label class="uppercase">XPrivate Key</label>
+          <input type="text" class="custom-input" formControlName="xprivate_key">
+        </fieldset>
+        <!-- BIP XPrivate Key - Strict -->
+        <div class="custom-checkbox pt-7">
+          <input type="checkbox" formControlName="strict">
+          <label class="ml-2">Strict</label>
+        </div>
+      </div>
+      <!-- BIP XPrivate Key - Public Key Type -->
+      <fieldset class="max-xl:col-span-2">
+        <label class="uppercase">Public Key Type</label>
+        <div class="mt-2">
+          <custom-combobox [customOptions]="publicKeyTypes" formControlName="public_key_type"></custom-combobox>
+        </div>
+      </fieldset>
+      <!-- BIP XPrivate Key - Semantic -->
+      <fieldset class="max-xl:col-span-2">
+        <label class="uppercase">Semantic</label>
+        <div class="mt-2">
+          <custom-combobox [customOptions]="semantics" formControlName="semantic"></custom-combobox>
+        </div>
+      </fieldset>
+    </div>
+  </fieldset>
+  <!-- End - BIP XPrivate Key -->
+
+  <!-- Start - BIP XPublic Key -->
+  <fieldset class="custom-groupbox" *ngIf="dumpsFormGroup.get('from')?.value === 'bip-xpublic-key'"
+            [ngStyle]="{ 'border-color': groupBoxService.box.name === 'bip-xpublic-key' ? groupBoxService.box.flag : groupBoxService.box.color }">
+    <legend class="uppercase">2nd - Step</legend>
+    <div class="description-font mb-2">
+      Provide a relevant raw input for XPublic Key to begin the wallet generation process with optional customization.
+    </div>
+    <div class="grid grid-cols-3 max-xl:grid-cols-4 gap-2.5">
+      <div class="grid grid-cols-[1fr_auto] col-span-3 max-xl:col-span-4 gap-2.5">
+        <!--  BIP XPublic Key Input  -->
+        <fieldset>
+          <label class="uppercase">XPublic Key</label>
+          <input type="text" class="custom-input" formControlName="xpublic_key">
+        </fieldset>
+        <!--  BIP XPublic Key - Strict  -->
+        <div class="custom-checkbox pt-7">
+          <input type="checkbox" formControlName="strict">
+          <label class="ml-2">Strict</label>
+        </div>
+      </div>
+      <!--  BIP XPublic Key - Public Key Type  -->
+      <fieldset class="max-xl:col-span-2">
+        <label class="uppercase">Public Key Type</label>
+        <div class="mt-2">
+          <custom-combobox [customOptions]="publicKeyTypes" formControlName="public_key_type"></custom-combobox>
+        </div>
+      </fieldset>
+      <!-- BIP XPublic Key - Semantic -->
+      <fieldset class="max-xl:col-span-2">
+        <label class="uppercase">Semantic</label>
+        <div class="mt-2">
+          <custom-combobox [customOptions]="semantics" formControlName="semantic"></custom-combobox>
+        </div>
+      </fieldset>
+    </div>
+  </fieldset>
+  <!-- End - BIP XPublic Key -->
+
+  <!-- Start - Cardano Entropy -->
+  <fieldset class="custom-groupbox" *ngIf="dumpsFormGroup.get('from')?.value === 'cardano-entropy'"
+            [ngStyle]="{ 'border-color': groupBoxService.box.name === 'cardano-entropy' ? groupBoxService.box.flag : groupBoxService.box.color }">
+    <legend class="uppercase">2nd - Step</legend>
+    <div class="description-font mb-2">
+      Provide a relevant raw input for Entropy to begin the wallet generation process with optional customization.
+    </div>
+    <div class="grid grid-cols-12 max-2xl:grid-cols-6 gap-2.5">
+      <!-- Cardano Entropy - Client -->
+      <fieldset class="col-span-3" disabled>
+        <label class="uppercase">Client</label>
+        <div class="mt-2">
+          <custom-combobox [customOptions]="clients" formControlName="client"></custom-combobox>
+        </div>
+      </fieldset>
+      <!-- Cardano Entropy Input -->
+      <fieldset class="col-span-6 max-2xl:col-span-full">
+        <label class="uppercase">Entropy</label>
+        <input type="text" class="custom-input" formControlName="entropy">
+      </fieldset>
+      <!-- Cardano Entropy - Cardano Type -->
+      <fieldset class="col-span-3 max-2xl:row-start-1 max-2xl:col-start-4">
+        <label class="uppercase">Cardano Type</label>
+        <div class="mt-2">
+          <custom-combobox [customOptions]="cardanoTypes" formControlName="cardano_type"></custom-combobox>
+        </div>
+      </fieldset>
+      <!-- Cardano Entropy - Staking Public Key -->
+      <fieldset class="col-span-3 max-2xl:col-span-full" [disabled]="dumpsFormGroup.get('address_type')?.value !== 'payment'">
+        <label class="uppercase">Staking Public Key</label>
+        <input type="text" class="custom-input" formControlName="staking_public_key">
+      </fieldset>
+      <!-- Cardano Entropy - Passphrase -->
+      <fieldset class="col-span-3 max-2xl:col-span-full">
+        <label class="uppercase">Passphrase</label>
+        <input type="text" class="custom-input" placeholder="(Optional)" formControlName="passphrase">
+      </fieldset>
+      <!-- Cardano Entropy - Language -->
+      <fieldset class="col-span-3">
+        <label class="uppercase">Language</label>
+        <div class="mt-2">
+          <custom-combobox [customOptions]="languages" formControlName="language"></custom-combobox>
+        </div>
+      </fieldset>
+      <!-- Cardano Entropy - Address Type -->
+      <fieldset class="col-span-3" [disabled]="!['shelley-icarus', 'shelley-ledger'].includes(dumpsFormGroup.get('cardano_type')?.value)">
+        <label class="uppercase">Address Type</label>
+        <div class="mt-2">
+          <custom-combobox [customOptions]="addressTypes" formControlName="address_type"></custom-combobox>
+        </div>
+      </fieldset>
+    </div>
+  </fieldset>
+  <!-- End Cardano Entropy -->
+
+  <!-- Start - Cardano Mnemonic -->
+  <fieldset class="custom-groupbox" *ngIf="dumpsFormGroup.get('from')?.value === 'cardano-mnemonic'"
+            [ngStyle]="{ 'border-color': groupBoxService.box.name === 'cardano-mnemonic' ? groupBoxService.box.flag : groupBoxService.box.color }">
+    <legend class="uppercase">2nd - Step</legend>
+    <div class="description-font mb-2">
+      Provide a relevant raw input for Mnemonic to begin the wallet generation process with optional customization.
+    </div>
+    <div class="grid grid-cols-12 max-2xl:grid-cols-6 gap-2.5">
+      <!-- Cardano Mnemonic - Client -->
+      <fieldset class="col-span-3" disabled>
+        <label class="uppercase">Client</label>
+        <div class="mt-2">
+          <custom-combobox [customOptions]="clients" formControlName="client"></custom-combobox>
+        </div>
+      </fieldset>
+      <!-- Cardano Mnemonic Input -->
+      <fieldset class="col-span-6">
+        <label class="uppercase">Mnemonic</label>
+        <input type="text" class="custom-input" formControlName="mnemonic">
+      </fieldset>
+      <!-- Cardano Mnemonic - Cardano Type -->
+      <fieldset class="col-span-3 max-2xl:row-start-1 max-2xl:col-start-4">
+        <label class="uppercase">Cardano Type</label>
+        <div class="mt-2">
+          <custom-combobox [customOptions]="cardanoTypes" formControlName="cardano_type"></custom-combobox>
+        </div>
+      </fieldset>
+      <!-- Cardano Mnemonic - Address Type -->
+      <fieldset class="col-span-3 max-2xl:row-start-5" [disabled]="!['shelley-icarus', 'shelley-ledger'].includes(dumpsFormGroup.get('cardano_type')?.value)">
+        <label class="uppercase">Address Type</label>
+        <div class="mt-2">
+          <custom-combobox [customOptions]="addressTypes" formControlName="address_type"></custom-combobox>
+        </div>
+      </fieldset>
+      <!-- Cardano Mnemonic - Staking Public Key -->
+      <fieldset  class="col-span-5 max-2xl:col-span-full" [disabled]="dumpsFormGroup.get('address_type')?.value !== 'payment'">
+        <label class="uppercase">Staking Public Key</label>
+        <input type="text" class="custom-input" formControlName="staking_public_key">
+      </fieldset>
+      <!-- Cardano Mnemonic - Passphrase -->
+      <fieldset class="col-span-4 max-2xl:col-span-full">
+        <label class="uppercase">Passphrase</label>
+        <input type="text" class="custom-input" placeholder="(Optional)" formControlName="passphrase">
+      </fieldset>
+    </div>
+  </fieldset>
+  <!-- End - Cardano Mnemonic -->
+
+  <!-- Start - Cardano Private key -->
+  <fieldset class="custom-groupbox" *ngIf="dumpsFormGroup.get('from')?.value === 'cardano-private-key'"
+            [ngStyle]="{ 'border-color': groupBoxService.box.name === 'cardano-private-key' ? groupBoxService.box.flag : groupBoxService.box.color }">
+    <legend class="uppercase">2nd - Step</legend>
+    <div class="description-font mb-2">
+      Provide a relevant raw input for Private Key to begin the wallet generation process with optional customization.
+    </div>
+    <div class="grid grid-rows-2 grid-cols-3 max-xl:grid-rows-3 max-xl:grid-cols-1 gap-2.5">
+      <div class="xl:col-span-2">
+        <!-- Cardano Private key Input -->
+        <fieldset>
+          <label class="uppercase">Private Key</label>
+          <input type="text" class="custom-input" formControlName="private_key">
+        </fieldset>
+      </div>
+      <div class="grid grid-cols-1 max-xl:grid-cols-2 xl:row-span-2 gap-2.5">
+        <!-- Cardano Private key - Cardano Type -->
+        <fieldset>
+          <label class="uppercase">Cardano Type</label>
+          <div class="mt-2">
+            <custom-combobox [customOptions]="cardanoTypes" formControlName="cardano_type"></custom-combobox>
+          </div>
+        </fieldset>
+        <!-- Cardano Private key - Address Type -->
+        <fieldset [disabled]="!['shelley-icarus', 'shelley-ledger'].includes(dumpsFormGroup.get('cardano_type')?.value)">
+          <label class="uppercase">Address Type</label>
+          <div class="mt-2">
+            <custom-combobox [customOptions]="addressTypes" formControlName="address_type"></custom-combobox>
+          </div>
+        </fieldset>
+      </div>
+      <!-- Cardano Private key - Staking Public Key -->
+      <fieldset class="xl:col-span-2" [disabled]="dumpsFormGroup.get('address_type')?.value !== 'payment'">
+        <label class="uppercase">Staking Public Key</label>
+        <input type="text" class="custom-input" formControlName="staking_public_key">
+      </fieldset>
+    </div>
+  </fieldset>
+  <!-- End - Cardano Private key -->
+
+  <!-- Start - Cardano Public Key -->
+  <fieldset class="custom-groupbox" *ngIf="dumpsFormGroup.get('from')?.value === 'cardano-public-key'"
+            [ngStyle]="{ 'border-color': groupBoxService.box.name === 'cardano-public-key' ? groupBoxService.box.flag : groupBoxService.box.color }">
+    <legend class="uppercase">2nd - Step</legend>
+    <div class="description-font mb-2">
+      Provide a relevant raw input for Public Key to begin the wallet generation process with optional customization.
+    </div>
+    <div class="grid grid-rows-2 grid-cols-3 max-xl:grid-rows-3 max-xl:grid-cols-1 gap-2.5">
+      <div class="xl:col-span-2">
+        <!-- Cardano Public Key Input -->
+        <fieldset>
+          <label class="uppercase">Public Key</label>
+          <input type="text" class="custom-input" formControlName="public_key">
+        </fieldset>
+      </div>
+      <div class="grid grid-cols-1 max-xl:grid-cols-2 xl:row-span-2 gap-2.5">
+        <!-- Cardano Public Key - Cardano Type -->
+        <fieldset>
+          <label class="uppercase">Cardano Type</label>
+          <div class="mt-2">
+            <custom-combobox [customOptions]="cardanoTypes" formControlName="cardano_type"></custom-combobox>
+          </div>
+        </fieldset>
+        <!-- Cardano Public Key - Address Type -->
+        <fieldset [disabled]="!['shelley-icarus', 'shelley-ledger'].includes(dumpsFormGroup.get('cardano_type')?.value)">
+          <label class="uppercase">Address Type</label>
+          <div class="mt-2">
+            <custom-combobox [customOptions]="addressTypes" formControlName="address_type"></custom-combobox>
+          </div>
+        </fieldset>
+      </div>
+      <!-- Cardano Public Key - Staking Public Key -->
+      <fieldset class="xl:col-span-2" [disabled]="dumpsFormGroup.get('address_type')?.value !== 'payment'">
+        <label class="uppercase">Staking Public Key</label>
+        <input type="text" class="custom-input" formControlName="staking_public_key">
+      </fieldset>
+    </div>
+  </fieldset>
+  <!-- End - Cardano Public Key -->
+
+  <!-- Start - Cardano Seed -->
+  <fieldset class="custom-groupbox" *ngIf="dumpsFormGroup.get('from')?.value === 'cardano-seed'"
+            [ngStyle]="{ 'border-color': groupBoxService.box.name === 'cardano-seed' ? groupBoxService.box.flag : groupBoxService.box.color }">
+    <legend class="uppercase">2nd - Step</legend>
+    <div class="description-font mb-2">
+      Provide a relevant raw input for Seed to begin the wallet generation process with optional customization.
+    </div>
+    <div class="grid grid-cols-12 max-2xl:grid-cols-6 gap-2.5">
+      <!-- Cardano Seed - Client -->
+      <fieldset class="col-span-3" disabled>
+        <label class="uppercase">Client</label>
+        <div class="mt-2">
+          <custom-combobox [customOptions]="clients" formControlName="client"></custom-combobox>
+        </div>
+      </fieldset>
+      <!-- Cardano Seed Input -->
+      <fieldset class="col-span-6">
+        <label class="uppercase">Seed</label>
+        <input type="text" class="custom-input" formControlName="seed">
+      </fieldset>
+      <!-- Cardano Seed - Cardano Type -->
+      <fieldset class="col-span-3 max-2xl:row-start-1 max-2xl:col-start-4">
+        <label class="uppercase">Cardano Type</label>
+        <div class="mt-2">
+          <custom-combobox [customOptions]="cardanoTypes" formControlName="cardano_type"></custom-combobox>
+        </div>
+      </fieldset>
+       <!-- Cardano Seed - Address Type -->
+      <fieldset class="col-span-3 max-2xl:row-start-5" [disabled]="!['shelley-icarus', 'shelley-ledger'].includes(dumpsFormGroup.get('cardano_type')?.value)">
+        <label class="uppercase">Address Type</label>
+        <div class="mt-2">
+          <custom-combobox [customOptions]="addressTypes" formControlName="address_type"></custom-combobox>
+        </div>
+      </fieldset>
+       <!-- Cardano Seed - Staking Public Key -->
+      <fieldset class="col-span-5 max-2xl:col-span-full" [disabled]="dumpsFormGroup.get('address_type')?.value !== 'payment'">
+        <label class="uppercase">Staking Public Key</label>
+        <input type="text" class="custom-input" formControlName="staking_public_key">
+      </fieldset>
+      <!-- Cardano Seed - Passphrase -->
+       <fieldset class="col-span-4 max-2xl:col-span-full">
+        <label class="uppercase">Passphrase</label>
+        <input type="text" class="custom-input" placeholder="(Optional)" formControlName="passphrase">
+      </fieldset>
+    </div>
+  </fieldset>
+  <!-- End - Cardano Seed -->
+
+  <!-- Start - Cardano XPrivate key -->
+  <fieldset class="custom-groupbox" *ngIf="dumpsFormGroup.get('from')?.value === 'cardano-xprivate-key'"
+            [ngStyle]="{ 'border-color': groupBoxService.box.name === 'cardano-xprivate-key' ? groupBoxService.box.flag : groupBoxService.box.color }">
+    <legend class="uppercase">2nd - Step</legend>
+    <div class="description-font mb-2">
+      Provide a relevant raw input for XPrivate Key to begin the wallet generation process with optional customization.
+    </div>
+    <div class="grid grid-rows-2 grid-cols-3 max-xl:grid-rows-3 max-xl:grid-cols-1 gap-2.5">
+      <div class="grid grid-cols-[1fr_auto] xl:col-span-2 gap-2.5">
+        <!-- Cardano XPrivate key Input -->
+        <fieldset>
+          <label class="uppercase">XPrivate Key</label>
+          <input type="text" class="custom-input" formControlName="xprivate_key">
+        </fieldset>
+        <!-- Cardano XPrivate key Strict -->
+        <div class="custom-checkbox pt-7">
+          <input type="checkbox" formControlName="strict">
+          <label class="ml-2">Strict</label>
+        </div>
+      </div>
+      <div class="grid grid-cols-1 max-xl:grid-cols-2 xl:row-span-2 gap-2.5">
+        <!-- Cardano XPrivate key - Cardano Type -->
+        <fieldset>
+          <label class="uppercase">Cardano Type</label>
+          <div class="mt-2">
+            <custom-combobox [customOptions]="cardanoTypes" formControlName="cardano_type"></custom-combobox>
+          </div>
+        </fieldset>
+        <!-- Cardano XPrivate key - Address Type -->
+        <fieldset [disabled]="!['shelley-icarus', 'shelley-ledger'].includes(dumpsFormGroup.get('cardano_type')?.value)">
+          <label class="uppercase">Address Type</label>
+          <div class="mt-2">
+            <custom-combobox [customOptions]="addressTypes" formControlName="address_type"></custom-combobox>
+          </div>
+        </fieldset>
+      </div>
+      <div class="xl:col-span-2">
+        <!-- Cardano XPrivate key - Staking Public Key -->
+        <fieldset [disabled]="dumpsFormGroup.get('address_type')?.value !== 'payment'">
+          <label class="uppercase">Staking Public Key</label>
+          <input type="text" class="custom-input" formControlName="staking_public_key">
+        </fieldset>
+      </div>
+    </div>
+  </fieldset>
+  <!-- End - Cardano XPrivate key -->
+
+  <!-- Start - Cardano XPublic Key -->
+  <fieldset class="custom-groupbox" *ngIf="dumpsFormGroup.get('from')?.value === 'cardano-xpublic-key'"
+            [ngStyle]="{ 'border-color': groupBoxService.box.name === 'cardano-xpublic-key' ? groupBoxService.box.flag : groupBoxService.box.color }">
+    <legend class="uppercase">2nd - Step</legend>
+    <div class="description-font mb-2">
+      Provide a relevant raw input for XPublic Key to begin the wallet generation process with optional customization.
+    </div>
+    <div class="grid grid-rows-2 grid-cols-3 max-xl:grid-rows-3 max-xl:grid-cols-1 gap-2.5">
+      <div class="grid grid-cols-[1fr_auto] xl:col-span-2 gap-2.5">
+        <!-- Cardano XPublic Key Input -->
+        <fieldset>
+          <label class="uppercase">XPublic Key</label>
+          <input type="text" class="custom-input" formControlName="xpublic_key">
+        </fieldset>
+        <!-- Cardano XPublic Key Strict -->
+        <div class="custom-checkbox pt-7">
+          <input type="checkbox" formControlName="strict">
+          <label class="ml-2">Strict</label>
+        </div>
+      </div>
+      <div class="grid grid-cols-1 max-xl:grid-cols-2 xl:row-span-2 gap-2.5">
+        <!-- Cardano XPublic Key - Cardano Type -->
+        <fieldset>
+          <label class="uppercase">Cardano Type</label>
+          <div class="mt-2">
+            <custom-combobox [customOptions]="cardanoTypes" formControlName="cardano_type"></custom-combobox>
+          </div>
+        </fieldset>
+        <!-- Cardano XPublic Key - Address Type -->
+        <fieldset [disabled]="!['shelley-icarus', 'shelley-ledger'].includes(dumpsFormGroup.get('cardano_type')?.value)">
+          <label class="uppercase">Address Type</label>
+          <div class="mt-2">
+            <custom-combobox [customOptions]="addressTypes" formControlName="address_type"></custom-combobox>
+          </div>
+        </fieldset>
+      </div>
+      <div class="xl:col-span-2">
+        <!-- Cardano XPublic Key - Staking Public Key -->
+        <fieldset [disabled]="dumpsFormGroup.get('address_type')?.value !== 'payment'">
+          <label class="uppercase">Staking Public Key</label>
+          <input type="text" class="custom-input" formControlName="staking_public_key">
+        </fieldset>
+      </div>
+    </div>
+  </fieldset>
+  <!-- End - Cardano XPublic Key -->
+
+  <!-- Start - Electrum-V1 Entropy -->
+  <fieldset class="custom-groupbox" *ngIf="dumpsFormGroup.get('from')?.value === 'electrum-v1-entropy'"
+            [ngStyle]="{ 'border-color': groupBoxService.box.name === 'electrum-v1-entropy' ? groupBoxService.box.flag : groupBoxService.box.color }">
+    <legend class="uppercase">2nd - Step</legend>
+    <div class="description-font mb-2">
+      Provide a relevant raw input for Entropy to begin the wallet generation process with optional customization.
+    </div>
+    <div class="grid grid-cols-6 max-xl:grid-cols-4 gap-2.5">
+      <!-- Electrum-V1 Entropy - Client -->
+      <fieldset class="col-span-2" disabled>
+        <label class="uppercase">Client</label>
+        <div class="mt-2">
+          <custom-combobox [customOptions]="clients" formControlName="client"></custom-combobox>
+        </div>
+      </fieldset>
+      <!-- Electrum-V1 Entropy Input -->
+      <fieldset class="col-span-4 max-xl:col-span-full">
+        <label class="uppercase">Entropy</label>
+        <input type="text" class="custom-input" formControlName="entropy">
+      </fieldset>
+      <!-- Electrum-V1 Entropy - Language -->
+      <fieldset class="col-span-2 max-xl:row-start-1 max-xl:col-start-3">
+        <label class="uppercase">Language</label>
+        <div class="mt-2">
+          <custom-combobox [customOptions]="languages" formControlName="language"></custom-combobox>
+        </div>
+      </fieldset>
+      <!-- Electrum-V1 Entropy - Public Key Type -->
+      <fieldset class="col-span-2">
+        <label class="uppercase">Public Key Type</label>
+        <div class="mt-2">
+          <custom-combobox [customOptions]="publicKeyTypes" formControlName="public_key_type"></custom-combobox>
+        </div>
+      </fieldset>
+    </div>
+  </fieldset>
+  <!-- End - Electrum-V1 Entropy -->
+
+  <!-- Start of Electrum-V1 Mnemonic -->
+  <fieldset class="custom-groupbox" *ngIf="dumpsFormGroup.get('from')?.value === 'electrum-v1-mnemonic'"
+            [ngStyle]="{ 'border-color': groupBoxService.box.name === 'electrum-v1-mnemonic' ? groupBoxService.box.flag : groupBoxService.box.color }">
+    <legend class="uppercase">2nd - Step</legend>
+    <div class="description-font mb-2">
+      Provide a relevant raw input for Mnemonic to begin the wallet generation process with optional customization.
+    </div>
+    <div class="grid grid-cols-6 max-xl:grid-cols-4 gap-2.5">
+      <!-- Electrum-V1 Mnemonic - Client -->
+      <fieldset class="col-span-2" disabled>
+        <label class="uppercase">Client</label>
+        <div class="mt-2">
+          <custom-combobox [customOptions]="clients" formControlName="client"></custom-combobox>
+        </div>
+      </fieldset>
+      <!-- Electrum-V1 Mnemonic Input -->
+      <fieldset class="col-span-4">
+        <label class="uppercase">Mnemonic</label>
+        <input type="text" class="custom-input" formControlName="mnemonic">
+      </fieldset>
+      <!-- Electrum-V1 Mnemonic - Public Key Type -->
+      <fieldset class="col-span-2 max-xl:row-start-1 max-xl:col-start-3">
+        <label class="uppercase">Public Key Type</label>
+        <div class="mt-2">
+          <custom-combobox [customOptions]="publicKeyTypes" formControlName="public_key_type"></custom-combobox>
+        </div>
+      </fieldset>
+    </div>
+  </fieldset>
+  <!-- End - Electrum-V1 Mnemonic -->
+
+  <!-- Start - Electrum-V1 Private Key -->
+  <fieldset class="custom-groupbox" *ngIf="dumpsFormGroup.get('from')?.value === 'electrum-v1-private-key'"
+            [ngStyle]="{ 'border-color': groupBoxService.box.name === 'electrum-v1-private-key' ? groupBoxService.box.flag : groupBoxService.box.color }">
+    <legend class="uppercase">2nd - Step</legend>
+    <div class="description-font mb-2">
+      Provide a relevant raw input for Private Key to begin the wallet generation process with optional customization.
+    </div>
+    <div class="grid grid-cols-3 max-xl:grid-cols-4 gap-2.5">
+      <!-- Electrum-V1 Private Key Input -->
+      <fieldset class="col-span-3 max-xl:col-span-4">
+        <label class="uppercase">Private Key</label>
+        <input type="text" class="custom-input" formControlName="private_key">
+      </fieldset>
+      <!-- Electrum-V1 Private Key - Public Key Type -->
+      <fieldset class="max-xl:col-span-2">
+        <label class="uppercase">Public Key Type</label>
+        <div class="mt-2">
+          <custom-combobox [customOptions]="publicKeyTypes" formControlName="public_key_type"></custom-combobox>
+        </div>
+      </fieldset>
+    </div>
+  </fieldset>
+  <!-- End - Electrum-V1 Private Key -->
+
+  <!-- Start - Electrum-V1 Public Key -->
+  <fieldset class="custom-groupbox" *ngIf="dumpsFormGroup.get('from')?.value === 'electrum-v1-public-key'"
+            [ngStyle]="{ 'border-color': groupBoxService.box.name === 'electrum-v1-public-key' ? groupBoxService.box.flag : groupBoxService.box.color }">
+    <legend class="uppercase">2nd - Step</legend>
+    <div class="description-font mb-2">
+      Provide a relevant raw input for Public Key to begin the wallet generation process with optional customization.
+    </div>
+    <div class="grid grid-cols-3 max-xl:grid-cols-4 gap-2.5">
+      <!-- Electrum-V1 Public Key Input -->
+      <fieldset class="col-span-3 max-xl:col-span-4">
+        <label class="uppercase">Public Key</label>
+        <input type="text" class="custom-input" formControlName="public_key">
+      </fieldset>
+      <!-- Electrum-V1 Public Key - Public Key Type -->
+      <fieldset class="max-xl:col-span-2">
+        <label class="uppercase">Public Key Type</label>
+        <div class="mt-2">
+          <custom-combobox [customOptions]="publicKeyTypes" formControlName="public_key_type"></custom-combobox>
+        </div>
+      </fieldset>
+    </div>
+  </fieldset>
+  <!-- End - Electrum-V1 Public Key -->
+
+  <!-- Start - Electrum-V1 Seed -->
+  <fieldset class="custom-groupbox" *ngIf="dumpsFormGroup.get('from')?.value === 'electrum-v1-seed'"
+            [ngStyle]="{ 'border-color': groupBoxService.box.name === 'electrum-v1-seed' ? groupBoxService.box.flag : groupBoxService.box.color }">
+    <legend class="uppercase">2nd - Step</legend>
+    <div class="description-font mb-2">
+      Provide a relevant raw input for Seed to begin the wallet generation process with optional customization.
+    </div>
+    <div class="grid grid-cols-6 max-xl:grid-cols-4 gap-2.5">
+      <!-- Electrum-V1 Seed - Client -->
+      <fieldset class="col-span-2" disabled>
+        <label class="uppercase">Client</label>
+        <div class="mt-2">
+          <custom-combobox [customOptions]="clients" formControlName="client"></custom-combobox>
+        </div>
+      </fieldset>
+      <!-- Electrum-V1 Seed Input -->
+      <fieldset class="col-span-4">
+        <label class="uppercase">Seed</label>
+        <input type="text" class="custom-input" formControlName="seed">
+      </fieldset>
+      <!-- Electrum-V1 Seed - Public Key Type -->
+      <fieldset class="col-span-2 max-xl:row-start-1 max-xl:col-start-3">
+        <label class="uppercase">Public Key Type</label>
+        <div class="mt-2">
+          <custom-combobox [customOptions]="publicKeyTypes" formControlName="public_key_type"></custom-combobox>
+        </div>
+      </fieldset>
+    </div>
+  </fieldset>
+  <!-- End of Electrum-V1 Seed -->
+
+  <!-- Start - Electrum-V1 WIF -->
+  <fieldset class="custom-groupbox" *ngIf="dumpsFormGroup.get('from')?.value === 'electrum-v1-wif'"
+            [ngStyle]="{ 'border-color': groupBoxService.box.name === 'electrum-v1-wif' ? groupBoxService.box.flag : groupBoxService.box.color }">
+    <legend class="uppercase">2nd - Step</legend>
+    <div class="description-font mb-2">
+      Provide a relevant raw input for {{ dumpsFormGroup.get('bip38')?.value ? 'Encrypted Wallet Import Format' : 'Wallet Import Format' }} to begin the wallet generation process with optional customization.
+    </div>
+    <div class="grid grid-cols-5 gap-2.5">
+      <!-- Electrum-V1 WIF Input -->
+      <fieldset class="col-span-5">
+        <label class="uppercase">{{ dumpsFormGroup.get('bip38')?.value ? 'Encrypted Wallet Import Format' : 'Wallet Import Format' }}</label>
+        <input type="text" class="custom-input" formControlName="wif">
+      </fieldset>
+      <div class="grid grid-cols-[auto_1fr] col-span-3 max-xl:col-span-5 gap-2.5">
+        <!-- Electrum-V1 WIF - BIP38 -->
+        <div class="custom-checkbox pt-7">
+          <input type="checkbox" formControlName="bip38">
+          <label class="ml-2">BIP38</label>
+        </div>
+         <!-- Electrum-V1 WIF - BIP38 Passphrase -->
+        <fieldset [disabled]="!dumpsFormGroup.get('bip38')?.value">
+          <label class="uppercase">Passphrase</label>
+          <input type="text" class="custom-input" placeholder="(Optional)" formControlName="passphrase">
+        </fieldset>
+      </div>
+       <!-- Electrum-V1 WIF - Public Key Type -->
+      <fieldset class="col-span-2">
+        <label class="uppercase">Public Key Type</label>
+        <div class="mt-2">
+          <custom-combobox [customOptions]="publicKeyTypes" formControlName="public_key_type"></custom-combobox>
+        </div>
+      </fieldset>
+    </div>
+  </fieldset>
+  <!-- End - Electrum-V1 WIF -->
+
+  <!-- Start - Electrum-V2 Entropy -->
+  <fieldset class="custom-groupbox" *ngIf="dumpsFormGroup.get('from')?.value === 'electrum-v2-entropy'"
+            [ngStyle]="{ 'border-color': groupBoxService.box.name === 'electrum-v2-entropy' ? groupBoxService.box.flag : groupBoxService.box.color }">
+    <legend class="uppercase">2nd - Step</legend>
+    <div class="description-font mb-2">
+      Provide a relevant raw input for Entropy to begin the wallet generation process with optional customization.
+    </div>
+    <div class="grid grid-cols-12 max-2xl:grid-cols-6 gap-2.5">
+      <!-- Electrum-V2 Entropy - Client -->
+      <fieldset class="col-span-3" disabled>
+        <label class="uppercase">Client</label>
+        <div class="mt-2">
+          <custom-combobox [customOptions]="clients" formControlName="client"></custom-combobox>
+        </div>
+      </fieldset>
+      <!-- Electrum-V2 Entropy Input -->
+      <fieldset class="col-span-9 max-2xl:col-span-full">
+        <label class="uppercase">Entropy</label>
+        <input type="text" class="custom-input" formControlName="entropy">
+      </fieldset>
+      <!-- Electrum-V2 Entropy - Mode -->
+      <fieldset class="col-span-3 max-2xl:row-start-1 max-2xl:col-start-4">
+        <label class="uppercase">Mode</label>
+        <div class="mt-2">
+          <custom-combobox [customOptions]="modes" formControlName="mode"></custom-combobox>
+        </div>
+      </fieldset>
+      <!-- Electrum-V2 Entropy - Language -->
+      <fieldset class="col-span-3">
+        <label class="uppercase">Language</label>
+        <div class="mt-2">
+          <custom-combobox [customOptions]="languages" formControlName="language"></custom-combobox>
+        </div>
+      </fieldset>
+      <!-- Electrum-V2 Entropy - Mnemonic Type -->
+      <fieldset class="col-span-3">
+        <label class="uppercase">Mnemonic Type</label>
+        <div class="mt-2">
+          <custom-combobox [customOptions]="mnemonicTypes" formControlName="mnemonic_type"></custom-combobox>
+        </div>
+      </fieldset>
+      <!-- Electrum-V2 Entropy - Public Key Type -->
+      <fieldset class="col-span-3">
+        <label class="uppercase">Public Key Type</label>
+        <div class="mt-2">
+          <custom-combobox [customOptions]="publicKeyTypes" formControlName="public_key_type"></custom-combobox>
+        </div>
+      </fieldset>
+    </div>
+  </fieldset>
+  <!-- End - Electrum-V2 Entropy -->
+
+  <!-- Start - Electrum-V2 Mnemonic -->
+  <fieldset class="custom-groupbox" *ngIf="dumpsFormGroup.get('from')?.value === 'electrum-v2-mnemonic'"
+            [ngStyle]="{ 'border-color': groupBoxService.box.name === 'electrum-v2-mnemonic' ? groupBoxService.box.flag : groupBoxService.box.color }">
+    <legend class="uppercase">2nd - Step</legend>
+    <div class="description-font mb-2">
+      Provide a relevant raw input for Mnemonic to begin the wallet generation process with optional customization.
+    </div>
+    <div class="grid grid-cols-12 max-2xl:grid-cols-6 gap-2.5">
+      <!-- Electrum-V2 Mnemonic - Client -->
+      <fieldset class="col-span-3" disabled>
+        <label class="uppercase">Client</label>
+        <div class="mt-2">
+          <custom-combobox [customOptions]="clients" formControlName="client"></custom-combobox>
+        </div>
+      </fieldset>
+      <!-- Electrum-V2 Mnemonic Input -->
+      <fieldset class="col-span-9 max-2xl:col-span-full">
+        <label class="uppercase">Mnemonic</label>
+        <input type="text" class="custom-input" formControlName="mnemonic">
+      </fieldset>
+      <!-- Electrum-V2 Mnemonic - Mode -->
+      <fieldset class="col-span-3 max-2xl:row-start-1 max-2xl:col-start-4">
+        <label class="uppercase">Mode</label>
+        <div class="mt-2">
+          <custom-combobox [customOptions]="modes" formControlName="mode"></custom-combobox>
+        </div>
+      </fieldset>
+      <!-- Electrum-V2 Mnemonic - Mnemonic Type -->
+      <fieldset class="col-span-3">
+        <label class="uppercase">Mnemonic Type</label>
+        <div class="mt-2">
+          <custom-combobox [customOptions]="mnemonicTypes" formControlName="mnemonic_type"></custom-combobox>
+        </div>
+      </fieldset>
+      <!-- Electrum-V2 Mnemonic - Public Key Type -->
+      <fieldset class="col-span-3">
+        <label class="uppercase">Public Key Type</label>
+        <div class="mt-2">
+          <custom-combobox [customOptions]="publicKeyTypes" formControlName="public_key_type"></custom-combobox>
+        </div>
+      </fieldset>
+    </div>
+  </fieldset>
+  <!-- End - Electrum-V2 Mnemonic -->
+
+  <!-- Start - Electrum-V2 Seed -->
+  <fieldset class="custom-groupbox" *ngIf="dumpsFormGroup.get('from')?.value === 'electrum-v2-seed'"
+            [ngStyle]="{ 'border-color': groupBoxService.box.name === 'electrum-v2-seed' ? groupBoxService.box.flag : groupBoxService.box.color }">
+    <legend class="uppercase">2nd - Step</legend>
+    <div class="description-font mb-2">
+      Provide a relevant raw input for Seed to begin the wallet generation process with optional customization.
+    </div>
+    <div class="grid grid-cols-12 max-2xl:grid-cols-6 gap-2.5">
+      <!-- Electrum-V2 Seed - Client -->
+      <fieldset class="col-span-3" disabled>
+        <label class="uppercase">Client</label>
+        <div class="mt-2">
+          <custom-combobox [customOptions]="clients" formControlName="client"></custom-combobox>
+        </div>
+      </fieldset>
+      <!-- Electrum-V2 Seed Input -->
+        <fieldset class="col-span-9 max-2xl:col-span-full">
+          <label class="uppercase">Seed</label>
+          <input type="text" class="custom-input" formControlName="seed">
+        </fieldset>
+      <!-- Electrum-V2 Seed - Mode -->
+        <fieldset class="col-span-3 max-2xl:row-start-1 max-2xl:col-start-4">
+          <label class="uppercase">Mode</label>
+          <div class="mt-2">
+            <custom-combobox [customOptions]="modes" formControlName="mode"></custom-combobox>
+          </div>
+        </fieldset>
+      <!-- Electrum-V2 Seed - Public Key Type -->
+        <fieldset class="col-span-3">
+          <label class="uppercase">Public Key Type</label>
+          <div class="mt-2">
+            <custom-combobox [customOptions]="publicKeyTypes" formControlName="public_key_type"></custom-combobox>
+          </div>
+        </fieldset>
+    </div>
+  </fieldset>
+  <!-- End - Electrum-V2 Seed -->
+
+  <!-- Start - Monero Entropy -->
+  <fieldset class="custom-groupbox" *ngIf="dumpsFormGroup.get('from')?.value === 'monero-entropy'"
+            [ngStyle]="{ 'border-color': groupBoxService.box.name === 'monero-entropy' ? groupBoxService.box.flag : groupBoxService.box.color }">
+    <legend class="uppercase">2nd - Step</legend>
+    <div class="description-font mb-2">
+      Provide a relevant raw input for Entropy to begin the wallet generation process with optional customization.
+    </div>
+    <div class="grid grid-cols-4 max-xl:grid-cols-2 gap-2.5">
+      <!-- Monero Entropy - Client -->
+      <fieldset class="col-span-1" disabled>
+        <label class="uppercase">Client</label>
+        <div class="mt-2">
+          <custom-combobox [customOptions]="clients" formControlName="client"></custom-combobox>
+        </div>
+      </fieldset>
+      <!-- Monero Entropy Input -->
+      <fieldset class="col-span-3 max-xl:col-span-full">
+        <label class="uppercase">Entropy</label>
+        <input type="text" class="custom-input" formControlName="entropy">
+      </fieldset>
+      <!-- Monero Entropy - Language -->
+      <fieldset class="col-span-1 max-xl:row-start-1 max-xl:col-start-2">
+        <label class="uppercase">Language</label>
+        <div class="mt-2">
+          <custom-combobox [customOptions]="languages" formControlName="language"></custom-combobox>
+        </div>
+      </fieldset>
+      <!-- Monero Entropy - Payment ID -->
+      <fieldset class="col-span-3 max-xl:col-span-full">
+        <label class="uppercase">Payment ID</label>
+        <input type="text" class="custom-input" placeholder="(Optional)" formControlName="payment_id">
+      </fieldset>
+    </div>
+  </fieldset>
+  <!-- End - Monero Entropy -->
+
+  <!-- Start - Monero Mnemonic -->
+  <fieldset class="custom-groupbox" *ngIf="dumpsFormGroup.get('from')?.value === 'monero-mnemonic'"
+            [ngStyle]="{ 'border-color': groupBoxService.box.name === 'monero-mnemonic' ? groupBoxService.box.flag : groupBoxService.box.color }">
+    <legend class="uppercase">2nd - Step</legend>
+    <div class="description-font mb-2">
+      Provide a relevant raw input for Mnemonic to begin the wallet generation process with optional customization.
+    </div>
+    <div class="grid grid-cols-4 gap-2.5 ">
+      <!-- Monero Mnemonic - Client -->
+      <fieldset class="col-span-1" disabled>
+        <label class="uppercase">Client</label>
+        <div class="mt-2">
+          <custom-combobox [customOptions]="clients" formControlName="client"></custom-combobox>
+        </div>
+      </fieldset>
+      <!-- Monero Mnemonic Input -->
+      <fieldset class="col-span-3 max-xl:col-span-full">
+        <label class="uppercase">Mnemonic</label>
+        <input type="text" class="custom-input" formControlName="mnemonic">
+      </fieldset>
+      <!-- Monero Mnemonic - Payment ID -->
+      <fieldset class="col-span-full max-xl:col-span-3 max-xl:row-start-1 max-xl:col-start-2">
+        <label class="uppercase">Payment ID</label>
+        <input type="text" class="custom-input" placeholder="(Optional)" formControlName="payment_id">
+      </fieldset>
+    </div>
+  </fieldset>
+  <!-- End - Monero Mnemonic -->
+
+  <!-- Start - Monero Private Key -->
+  <fieldset class="custom-groupbox" *ngIf="dumpsFormGroup.get('from')?.value === 'monero-private-key'"
+            [ngStyle]="{ 'border-color': groupBoxService.box.name === 'monero-private-key' ? groupBoxService.box.flag : groupBoxService.box.color }">
+    <legend class="uppercase">2nd - Step</legend>
+    <div class="description-font mb-2">
+      Provide a relevant raw input for Private Key to begin the wallet generation process with optional customization.
+    </div>
+    <div class="grid grid-cols-1 gap-2.5 ">
+      <!-- Monero Private Key - Private -->
+      <fieldset>
+        <label class="uppercase">Private Key</label>
+        <input type="text" class="custom-input" formControlName="private_key">
+      </fieldset>
+      <!-- Monero Private Key - Payment ID -->
+      <fieldset>
+        <label class="uppercase">Payment ID</label>
+        <input type="text" class="custom-input" placeholder="(Optional)" formControlName="payment_id">
+      </fieldset>
+    </div>
+  </fieldset>
+  <!-- End - Monero Private Key -->
+
+  <!-- Start - Monero Seed -->
+  <fieldset class="custom-groupbox" *ngIf="dumpsFormGroup.get('from')?.value === 'monero-seed'"
+            [ngStyle]="{ 'border-color': groupBoxService.box.name === 'monero-seed' ? groupBoxService.box.flag : groupBoxService.box.color }">
+    <legend class="uppercase">2nd - Step</legend>
+    <div class="description-font mb-2">
+      Provide a relevant raw input for Seed to begin the wallet generation process with optional customization.
+    </div>
+    <div class="grid grid-cols-4 gap-2.5 ">
+      <!-- Monero Seed - Client -->
+      <fieldset class="col-span-1" disabled>
+        <label class="uppercase">Client</label>
+        <div class="mt-2">
+          <custom-combobox [customOptions]="clients" formControlName="client"></custom-combobox>
+        </div>
+      </fieldset>
+      <!-- Monero Seed - Seed -->
+      <fieldset class="col-span-3 max-xl:col-span-full">
+        <label class="uppercase">Seed</label>
+        <input type="text" class="custom-input" formControlName="seed">
+      </fieldset>
+      <!-- Monero Seed - Payment ID -->
+      <fieldset class="col-span-full max-xl:col-span-3 max-xl:row-start-1 max-xl:col-start-2">
+        <label class="uppercase">Payment ID</label>
+        <input type="text" class="custom-input" placeholder="(Optional)" formControlName="payment_id">
+      </fieldset>
+    </div>
+  </fieldset>
+  <!-- End - Monero Seed -->
+
+  <!-- Start - Monero Spend Private Key -->
+  <fieldset class="custom-groupbox" *ngIf="dumpsFormGroup.get('from')?.value === 'monero-spend-private-key'"
+            [ngStyle]="{ 'border-color': groupBoxService.box.name === 'monero-spend-private-key' ? groupBoxService.box.flag : groupBoxService.box.color }">
+    <legend class="uppercase">2nd - Step</legend>
+    <div class="description-font mb-2">
+      Provide a relevant raw input for Spend Private Key to begin the wallet generation process with optional customization.
+    </div>
+    <div class="grid grid-cols-1 gap-2.5 ">
+      <!-- Monero Spend Private Key - Spend Private Key -->
+      <fieldset>
+        <label class="uppercase">Spend Private Key</label>
+        <input type="text" class="custom-input" formControlName="spend_private_key">
+      </fieldset>
+      <!-- Monero Spend Private Key - Payment ID -->
+      <fieldset>
+        <label class="uppercase">Payment ID</label>
+        <input type="text" class="custom-input" placeholder="(Optional)" formControlName="payment_id">
+      </fieldset>
+    </div>
+  </fieldset>
+  <!-- End - Monero Spend Private Key -->
+
+  <!--Start - Monero Watch Only -->
+  <fieldset class="custom-groupbox" *ngIf="dumpsFormGroup.get('from')?.value === 'monero-watch-only'"
+            [ngStyle]="{ 'border-color': groupBoxService.box.name === 'monero-watch-only' ? groupBoxService.box.flag : groupBoxService.box.color }">
+    <legend class="uppercase">2nd - Step</legend>
+    <div class="description-font mb-2">
+      Provide a relevant raw input for Watch Only to begin the wallet generation process with optional customization.
+    </div>
+    <div class="grid grid-cols-6 gap-2.5 ">
+      <!-- Monero Watch Only - View Private Key -->
+      <fieldset class="col-span-full">
+        <label class="uppercase">View Private Key</label>
+        <input type="text" class="custom-input" formControlName="view_private_key">
+      </fieldset>
+      <!-- Monero Watch Only - Spend Public Key -->
+      <fieldset class="col-span-4 max-xl:col-span-full">
+        <label class="uppercase">Spend Public Key</label>
+        <input type="text" class="custom-input" formControlName="spend_public_key">
+      </fieldset>
+      <!-- Monero Watch Only - Payment ID -->
+      <fieldset class="col-span-2 max-xl:col-span-full">
+        <label class="uppercase">Payment ID</label>
+        <input type="text" class="custom-input" placeholder="(Optional)" formControlName="payment_id">
+      </fieldset>
+    </div>
+  </fieldset>
+  <!-- End - Monero Watch Only -->
+
+  <!-- Start Derivation -->
+  <fieldset class="custom-groupbox" [disabled]="['bip-wif', 'bip-private-key', 'bip-public-key', 'cardano-private-key', 'cardano-public-key'].includes(dumpsFormGroup.get('from')?.value)"
+            [ngStyle]="{ 'border-color': groupBoxService.box.name === 'derivation' ? groupBoxService.box.flag : groupBoxService.box.color }">
+    <div class="description-font mb-3">
+      This section covers derivation — the process of generating a structured tree of cryptographic keys from a master key using standard or client-specific paths.
+    </div>
+    <legend class="uppercase">3rd - Step</legend>
+
+    <!-- Derivation Tabs -->
+    <div class="relative flex items-center mt-1.5 mb-2.5" [ngStyle]="{ 'padding': isOverflowed ? '0 28px' : '0 0' }">
+      <button type="button" class="arrow-button arrow-button-left" (click)="scrollLeft()" *ngIf="isOverflowed">
+        <div style="width: 16px; height: auto">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50">
+            <defs>
+              <style>.cls-11 {
+                fill: none;
+                stroke: #fff;
+                stroke-linecap: round;
+                stroke-miterlimit: 10;
+                stroke-width: 10px;
+              }</style>
+            </defs>
+            <g id="Layer_3" data-name="Layer 3">
+              <polyline class="cls-11" points="35 5 15 25 35 45"/>
+            </g>
+          </svg>
+        </div>
+      </button>
+      <div id="customDerivation" class="flex overflow-x-auto scrollbar-hide">
+        <ng-container *ngFor="let derivation of derivations">
+          <button type="button" class="tab-item px-2.5 uppercase"
+                  (click)="dumpsFormGroup.get('derivation')?.setValue(derivation)"
+                  [ngClass]="{'active': dumpsFormGroup.get('derivation')?.value === derivation}"
+                  [disabled]="!currentAllowedDerivations.includes(derivation)"
+          >{{ derivation }}</button>
+        </ng-container>
+      </div>
+      <button type="button" class="arrow-button arrow-button-right" (click)="scrollRight()" *ngIf="isOverflowed">
+        <div style="width: 16px; height: auto">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50">
+            <defs>+=-
+              <style>.cls-12 {
+                fill: none;
+                stroke: #fff;
+                stroke-linecap: round;
+                stroke-miterlimit: 10;
+                stroke-width: 10px;
+              }</style>
+            </defs>
+            <g id="Layer_3" data-name="Layer 3">
+              <polyline class="cls-12" points="15 45 35 25 15 5"/>
+            </g>
+          </svg>
+        </div>
+      </button>
+    </div>
+
+    <!-- Start - Derivation Custom -->
+    <fieldset *ngIf="dumpsFormGroup.get('derivation')?.value === 'Custom'">
+      <div class="grid grid-cols-3 gap-2.5">
+        <!-- Derivation Custom - Path -->
+        <fieldset class="col-span-2 max-xl:col-span-full" [disabled]="dumpsFormGroup.get('custom_client')?.value">
+          <label class="uppercase">Path</label>
+          <input type="text" class="custom-input" placeholder="m/0'/0" formControlName="path">
+        </fieldset>
+        <!-- Derivation Custom - Client -->
+        <fieldset class="max-xl:col-span-full">
+          <label class="uppercase">Client</label>
+          <div class="mt-2">
+            <custom-combobox [customOptions]="customClients" formControlName="custom_client"></custom-combobox>
+          </div>
+        </fieldset>
+      </div>
+    </fieldset>
+    <!-- End - Derivation Custom -->
+
+    <!-- Start - Derivation BIP44 -->
+    <fieldset *ngIf="dumpsFormGroup.get('derivation')?.value === 'BIP44'">
+      <div class="grid grid-cols-5 max-xl:grid-cols-3 gap-2.5">
+        <!-- Derivation BIP44 - Purpose -->
+        <fieldset disabled>
+          <label class="uppercase">Purpose</label>
+          <input type="text" class="custom-input" placeholder="index" value="44">
+        </fieldset>
+        <!-- Derivation BIP44 - Coin Type -->
+        <fieldset disabled>
+          <label class="uppercase">Coin Type</label>
+          <input type="text" class="custom-input" placeholder="index" [value]="cryptocurrency.COIN_TYPE">
+        </fieldset>
+        <!-- Derivation BIP44 - Account -->
+        <fieldset>
+          <label class="uppercase">Account</label>
+          <input type="text" class="custom-input" placeholder="index" formControlName="account">
+        </fieldset>
+        <!-- Derivation BIP44 - Change -->
+        <fieldset class="max-xl:col-span-2">
+          <label class="uppercase">Change</label>
+          <div class="mt-2">
+            <custom-combobox [customOptions]="changes" formControlName="change"></custom-combobox>
+          </div>
+        </fieldset>
+        <!-- Derivation BIP44 - Address -->
+        <fieldset>
+          <label class="uppercase">Address</label>
+          <input type="text" class="custom-input" placeholder="index" formControlName="address">
+        </fieldset>
+      </div>
+    </fieldset>
+    <!-- End - Derivation BIP44 -->
+
+    <!-- Start - Derivation BIP49 -->
+    <fieldset *ngIf="dumpsFormGroup.get('derivation')?.value === 'BIP49'">
+      <div class="grid grid-cols-5 max-xl:grid-cols-3 gap-2.5">
+        <!-- Derivation BIP49 - Purpose -->
+        <fieldset disabled>
+          <label class="uppercase">Purpose</label>
+          <input type="text" class="custom-input" placeholder="index" value="49">
+        </fieldset>
+        <!-- Derivation BIP49 - Coin Type -->
+        <fieldset disabled>
+          <label class="uppercase">Coin Type</label>
+          <input type="text" class="custom-input" placeholder="index" [value]="cryptocurrency.COIN_TYPE">
+        </fieldset>
+        <!-- Derivation BIP49 - Account -->
+        <fieldset>
+          <label class="uppercase">Account</label>
+          <input type="text" class="custom-input" placeholder="index" formControlName="account">
+        </fieldset>
+        <!-- Derivation BIP49 - Change -->
+        <fieldset class="max-xl:col-span-2">
+          <label class="uppercase">Change</label>
+          <div class="mt-2">
+            <custom-combobox [customOptions]="changes" formControlName="change"></custom-combobox>
+          </div>
+        </fieldset>
+        <!-- Derivation BIP49 - Address -->
+        <fieldset>
+          <label class="uppercase">Address</label>
+          <input type="text" class="custom-input" placeholder="index" formControlName="address">
+        </fieldset>
+      </div>
+    </fieldset>
+    <!-- End - Derivation BIP49 -->
+
+    <!-- Start - Derivation BIP84 -->
+    <fieldset *ngIf="dumpsFormGroup.get('derivation')?.value === 'BIP84'">
+      <div class="grid grid-cols-5 max-xl:grid-cols-3 gap-2.5">
+        <!-- Derivation BIP84 - Purpose -->
+        <fieldset disabled>
+          <label class="uppercase">Purpose</label>
+          <input type="text" class="custom-input" placeholder="index" value="84">
+        </fieldset>
+        <!-- Derivation BIP84 - Coin Type -->
+        <fieldset disabled>
+          <label class="uppercase">Coin Type</label>
+          <input type="text" class="custom-input" placeholder="index" [value]="cryptocurrency.COIN_TYPE">
+        </fieldset>
+        <!-- Derivation BIP84 - Account -->
+        <fieldset>
+          <label class="uppercase">Account</label>
+          <input type="text" class="custom-input" placeholder="index" formControlName="account">
+        </fieldset>
+        <!-- Derivation BIP84 - Change -->
+        <fieldset class="max-xl:col-span-2">
+          <label class="uppercase">Change</label>
+          <div class="mt-2">
+            <custom-combobox [customOptions]="changes" formControlName="change"></custom-combobox>
+          </div>
+        </fieldset>
+        <!-- Derivation BIP84 - Address -->
+        <fieldset>
+          <label class="uppercase">Address</label>
+          <input type="text" class="custom-input" placeholder="index" formControlName="address">
+        </fieldset>
+      </div>
+    </fieldset>
+    <!-- End - Derivation BIP84 -->
+
+    <!-- Start - Derivation BIP86 -->
+    <fieldset *ngIf="dumpsFormGroup.get('derivation')?.value === 'BIP86'">
+      <div class="grid grid-cols-5 max-xl:grid-cols-3 gap-2.5">
+        <!-- Derivation BIP86 - Purpose -->
+        <fieldset disabled>
+          <label class="uppercase">Purpose</label>
+          <input type="text" class="custom-input" placeholder="index" value="86">
+        </fieldset>
+        <!-- Derivation BIP86 - Coin Type -->
+        <fieldset disabled>
+          <label class="uppercase">Coin Type</label>
+          <input type="text" class="custom-input" placeholder="index" [value]="cryptocurrency.COIN_TYPE">
+        </fieldset>
+        <!-- Derivation BIP86 - Account -->
+        <fieldset>
+          <label class="uppercase">Account</label>
+          <input type="text" class="custom-input" placeholder="index" formControlName="account">
+        </fieldset>
+        <!-- Derivation BIP86 - Change -->
+        <fieldset class="max-xl:col-span-2">
+          <label class="uppercase">Change</label>
+          <div class="mt-2">
+            <custom-combobox [customOptions]="changes" formControlName="change"></custom-combobox>
+          </div>
+        </fieldset>
+        <!-- Derivation BIP86 - Address -->
+        <fieldset>
+          <label class="uppercase">Address</label>
+          <input type="text" class="custom-input" placeholder="index" formControlName="address">
+        </fieldset>
+      </div>
+    </fieldset>
+    <!-- End - Derivation BIP44 -->
+
+    <!-- Start - Derivation CIP1852 -->
+    <fieldset *ngIf="dumpsFormGroup.get('derivation')?.value === 'CIP1852'">
+      <div class="grid grid-cols-5 max-xl:grid-cols-3 gap-2.5">
+        <!-- Derivation CIP1852 - Purpose -->
+        <fieldset disabled>
+          <label class="uppercase">Purpose</label>
+          <input type="text" class="custom-input" placeholder="index" value="1852">
+        </fieldset>
+        <!-- Derivation CIP1852 - Coin Type -->
+        <fieldset disabled>
+          <label class="uppercase">Coin Type</label>
+          <input type="text" class="custom-input" placeholder="index" [value]="cryptocurrency.COIN_TYPE">
+        </fieldset>
+        <!-- Derivation CIP1852 - Account -->
+        <fieldset>
+          <label class="uppercase">Account</label>
+          <input type="text" class="custom-input" placeholder="index" formControlName="account">
+        </fieldset>
+        <!-- Derivation CIP1852 - Role -->
+        <fieldset class="max-xl:col-span-2">
+          <label class="uppercase">Role</label>
+          <div class="mt-2">
+            <custom-combobox [customOptions]="roles" formControlName="role"></custom-combobox>
+          </div>
+        </fieldset>
+        <!-- Derivation CIP1852 - Address -->
+        <fieldset>
+          <label class="uppercase">Address</label>
+          <input type="text" class="custom-input" placeholder="index" formControlName="address">
+        </fieldset>
+      </div>
+    </fieldset>
+    <!-- End - Derivation CIP1852 -->
+
+    <!-- Start - Derivation Electrum -->
+    <fieldset *ngIf="dumpsFormGroup.get('derivation')?.value === 'Electrum'">
+      <div class="grid grid-cols-2 gap-2.5">
+        <!-- Derivation Electrum - Change -->
+        <fieldset>
+          <label class="uppercase">Change</label>
+          <input type="text" class="custom-input" placeholder="index" formControlName="change">
+        </fieldset>
+        <!-- Derivation Electrum - Address -->
+        <fieldset>
+          <label class="uppercase">Address</label>
+          <input type="text" class="custom-input" placeholder="index" formControlName="address">
+        </fieldset>
+      </div>
+    </fieldset>
+    <!-- End - Derivation Electrum -->
+
+    <!-- Start - Derivation Monero -->
+    <fieldset *ngIf="dumpsFormGroup.get('derivation')?.value === 'Monero'">
+      <div class="grid grid-cols-2 gap-2.5">
+        <!-- Derivation Monero - Minor -->
+        <fieldset>
+          <label class="uppercase">Minor</label>
+          <input type="text" class="custom-input" placeholder="index" formControlName="minor">
+        </fieldset>
+        <!-- Derivation Monero - Major -->
+        <fieldset>
+          <label class="uppercase">Major</label>
+          <input type="text" class="custom-input" placeholder="index" formControlName="major">
+        </fieldset>
+      </div>
+    </fieldset>
+    <!-- End - Derivation Monero -->
+
+    <!-- Start - Derivation HDW -->
+    <fieldset *ngIf="dumpsFormGroup.get('derivation')?.value === 'HDW'">
+      <div class="grid grid-cols-3 gap-2.5">
+        <!-- Derivation HDW - Account -->
+        <fieldset>
+          <label class="uppercase">Account</label>
+          <input type="text" class="custom-input" placeholder="index" formControlName="account">
+        </fieldset>
+        <!-- Derivation HDW - ECC -->
+        <fieldset disabled>
+          <label class="uppercase">ECC</label>
+          <input type="text" class="custom-input" [value]="cryptocurrency.ECC.NAME">
+        </fieldset>
+        <!-- Derivation HDW - Address -->
+        <fieldset>
+          <label class="uppercase">Address</label>
+          <input type="text" class="custom-input" placeholder="index" formControlName="address">
+        </fieldset>
+      </div>
+    </fieldset>
+    <!-- End - Derivation HDW -->
+  </fieldset>
+  <!-- End - Derivation -->
+
+  <!-- Start - Dumps -->
+  <fieldset class="custom-groupbox" [ngStyle]="{ 'border-color': groupBoxService.box.name === 'action' ? groupBoxService.box.flag : groupBoxService.box.color }">
+    <legend class="uppercase">4th - Step</legend>
+    <div class="description-font mb-2">
+      This is the final step — select the output format, exclude/include specific fields, and generate, save, or share the HDWallet data.
+    </div>
+    <div id="customActions" class="grid grid-cols-6 2xl:grid-flow-col gap-2.5">
+      <!-- Dumps - Format -->
+      <fieldset class="col-span-2" [disabled]="['bip-wif', 'bip-private-key', 'bip-public-key', 'cardano-private-key', 'cardano-public-key'].includes(dumpsFormGroup.get('from')?.value)">
+        <label class="uppercase">Format</label>
+        <div class="mt-2">
+          <custom-combobox [customOptions]="formats" formControlName="format"></custom-combobox>
+        </div>
+      </fieldset>
+      <!-- Dumps - Exclude or Include -->
+      <fieldset class="col-span-4">
+        <label class="uppercase">{{ dumpsFormGroup.get('format')?.value === 'json' ? 'Exclude' : 'Include' }}</label>
+        <input type="text" class="custom-input" placeholder="eg. root,indexes" *ngIf="dumpsFormGroup.get('format')?.value === 'json'" formControlName="exclude">
+        <input type="text" class="custom-input" placeholder="eg. at:path,address" *ngIf="dumpsFormGroup.get('format')?.value === 'csv'" formControlName="include">
+      </fieldset>
+      <div class="grid grid-cols-1 grid-flow-col max-2xl:col-span-full gap-2.5">
+        <!-- Dumps - Generate -->
+        <fieldset  [disabled]="isLoading">
+          <div class="flex items-end justify-end h-full">
+            <button type="submit" class="custom-button-success">Generate</button>
+          </div>
+        </fieldset>
+        <!-- Dumps - Save -->
+        <fieldset [disabled]="isLoading">
+          <div class="flex items-end justify-end h-full">
+            <button type="button" class="custom-button" (click)="getDumps(dumpsFormGroup.value, 'save')">Save</button>
+          </div>
+        </fieldset>
+        <!-- Dumps - Share -->
+        <fieldset [disabled]="isLoading">
+          <div class="flex items-end justify-end h-full">
+            <button type="button" class="custom-button" (click)="share(dumpsFormGroup.value)">Share</button>
+          </div>
+        </fieldset>
+      </div>
+    </div>
+  </fieldset>
+  <!-- End - Dumps -->
+</form>

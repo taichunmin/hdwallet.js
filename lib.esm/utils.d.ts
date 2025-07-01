@@ -17,7 +17,7 @@ export declare function binaryStringToInteger(data: Uint8Array | string): bigint
 export declare function integerToBinaryString(data: number | bigint, zeroPadBits?: number): string;
 export declare function binaryStringToBytes(data: Uint8Array | string, zeroPadByteLen?: number): Uint8Array;
 export declare function isAllEqual(...inputs: (Uint8Array | ArrayBuffer | ArrayBufferView | string | number | boolean | string[] | number[] | boolean[])[]): boolean;
-export declare function generatePassphrase(length?: number): string;
+export declare function generatePassphrase(length?: number, chars?: string): string;
 export declare function getHmac(eccName: string): Uint8Array;
 export declare function excludeKeys(nested: Record<string, any>, keys: string[]): Record<string, any>;
 export declare function pathToIndexes(path: string): number[];

@@ -2,6 +2,7 @@ import { SLIP10Secp256k1ECC } from '../eccs';
 import { Info, WitnessVersions, Entropies, Mnemonics, Seeds, HDs, Addresses, AddressTypes, Networks, XPrivateKeyVersions, XPublicKeyVersions } from '../consts';
 import { Cryptocurrency, Network } from './cryptocurrency';
 export declare class Mainnet extends Network {
+    static NAME: string;
     static LEGACY_PUBLIC_KEY_ADDRESS_PREFIX: number;
     static LEGACY_SCRIPT_ADDRESS_PREFIX: number;
     static STD_PUBLIC_KEY_ADDRESS_PREFIX: number;
@@ -13,6 +14,7 @@ export declare class Mainnet extends Network {
     static WIF_PREFIX: number;
 }
 export declare class Testnet extends Network {
+    static NAME: string;
     static LEGACY_PUBLIC_KEY_ADDRESS_PREFIX: number;
     static LEGACY_SCRIPT_ADDRESS_PREFIX: number;
     static STD_PUBLIC_KEY_ADDRESS_PREFIX: number;
@@ -24,6 +26,7 @@ export declare class Testnet extends Network {
     static WIF_PREFIX: number;
 }
 export declare class Regtest extends Testnet {
+    static NAME: string;
     static HRP: string;
 }
 export declare class BitcoinCash extends Cryptocurrency {
@@ -43,6 +46,7 @@ export declare class BitcoinCash extends Cryptocurrency {
     static DEFAULT_PATH: string;
     static ADDRESSES: Addresses;
     static DEFAULT_ADDRESS: any;
+    static SEMANTICS: string[];
     static DEFAULT_SEMANTIC: string;
     static ADDRESS_TYPES: AddressTypes;
     static DEFAULT_ADDRESS_TYPE: any;

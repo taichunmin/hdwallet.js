@@ -7,6 +7,7 @@ const eccs_1 = require("../eccs");
 const consts_1 = require("../consts");
 const cryptocurrency_1 = require("./cryptocurrency");
 class Mainnet extends cryptocurrency_1.Network {
+    static NAME = 'mainnet';
     static SCRIPT_ADDRESS_PREFIX = 0x32;
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x3a;
     static HRP = 'qc1';
@@ -36,6 +37,7 @@ class Mainnet extends cryptocurrency_1.Network {
 }
 exports.Mainnet = Mainnet;
 class Testnet extends cryptocurrency_1.Network {
+    static NAME = 'testnet';
     static SCRIPT_ADDRESS_PREFIX = 0x6e;
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x78;
     static HRP = 'tq1';
@@ -112,6 +114,7 @@ class Qtum extends cryptocurrency_1.Cryptocurrency {
         { P2WSH_IN_P2SH: 'P2WSH-In-P2SH' }
     ]);
     static DEFAULT_ADDRESS = Qtum.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh', 'p2wpkh', 'p2wpkh-in-p2sh', 'p2wsh', 'p2wsh-in-p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 exports.Qtum = Qtum;

@@ -4,6 +4,7 @@ import { SLIP10Secp256k1ECC } from '../eccs';
 import { Info, WitnessVersions, Entropies, Mnemonics, Seeds, HDs, Addresses, Networks, XPrivateKeyVersions, XPublicKeyVersions } from '../consts';
 import { Cryptocurrency, Network } from './cryptocurrency';
 export class Mainnet extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x1e;
     static SCRIPT_ADDRESS_PREFIX = 0x16;
     static HRP = 'dogecoin';
@@ -29,6 +30,7 @@ export class Mainnet extends Network {
     static WIF_PREFIX = 0xf1;
 }
 export class Testnet extends Network {
+    static NAME = 'testnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x71;
     static SCRIPT_ADDRESS_PREFIX = 0xc4;
     static HRP = 'dogecointestnet';
@@ -93,6 +95,7 @@ export class Dogecoin extends Cryptocurrency {
         { P2WPKH_IN_P2SH: 'P2WPKH-In-P2SH' }
     ]);
     static DEFAULT_ADDRESS = Dogecoin.ADDRESSES.P2PKH;
+    static SEMANTICS = ['dogecoin', 'p2pkh', 'p2sh', 'p2wpkh', 'p2wpkh-in-p2sh'];
     static DEFAULT_SEMANTIC = 'dogecoin';
 }
 //# sourceMappingURL=dogecoin.js.map

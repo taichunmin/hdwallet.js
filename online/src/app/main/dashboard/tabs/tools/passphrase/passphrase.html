@@ -1,0 +1,42 @@
+<fieldset class="custom-groupbox mt-0" style="margin-top: 0;" [ngStyle]="{ 'border-color': groupBoxService.box.name === 'passphrase' ? groupBoxService.box.flag : groupBoxService.box.color }">
+  <legend class="uppercase">Passphrase</legend>
+  <div class="description-font mb-2">
+    Produces randomized, secure phrases to extend mnemonic security. Ideal for safeguarding wallet backups and cryptographic seeds.
+  </div>
+  <form class="grid grid-cols-[auto_1fr_auto] max-xl:grid-cols-[auto_1fr] gap-2.5"
+        [formGroup]="passphraseFormGroup" (ngSubmit)="generatePassphrase(passphraseFormGroup.value)">
+    <div class="grid grid-cols-2 grid-rows-2 gap-2.5">
+      <!-- Passphrase - Upper Case -->
+      <fieldset class="custom-checkbox">
+        <input type="checkbox" formControlName="upperCase">
+        <label class="ml-2">Upper Case</label>
+      </fieldset>
+      <!-- Passphrase - Numbers -->
+      <fieldset class="custom-checkbox">
+        <input type="checkbox" formControlName="numbers">
+        <label class="ml-2">Numbers</label>
+      </fieldset>
+      <!-- Passphrase - Lower Case -->
+      <fieldset class="custom-checkbox">
+        <input type="checkbox" formControlName="lowerCase">
+        <label class="ml-2">Lower Case</label>
+      </fieldset>
+      <!-- Passphrase - Characters -->
+      <fieldset class="custom-checkbox">
+        <input type="checkbox" formControlName="characters">
+        <label class="ml-2">Characters</label>
+      </fieldset>
+    </div>
+    <!-- Passphrase - Length -->
+    <fieldset>
+      <label class="uppercase">Length</label>
+      <input type="text" class="custom-input" formControlName="length">
+    </fieldset>
+    <!-- Passphrase - Generate -->
+    <fieldset class="max-xl:col-span-full" [disabled]="isLoading">
+      <div class="flex items-end justify-end h-full">
+        <button type="submit" class="custom-button-success uppercase">Generate</button>
+      </div>
+    </fieldset>
+  </form>
+</fieldset>

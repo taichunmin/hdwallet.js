@@ -4,6 +4,7 @@ import { SLIP10Secp256k1ECC } from '../eccs';
 import { Info, WitnessVersions, Entropies, Mnemonics, Seeds, HDs, Addresses, Networks, XPrivateKeyVersions, XPublicKeyVersions } from '../consts';
 import { Cryptocurrency, Network } from './cryptocurrency';
 export class Mainnet extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x00;
     static SCRIPT_ADDRESS_PREFIX = 0x05;
     static HRP = 'bc';
@@ -60,6 +61,7 @@ export class ZooBC extends Cryptocurrency {
         'P2SH'
     ]);
     static DEFAULT_ADDRESS = ZooBC.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 //# sourceMappingURL=zoobc.js.map

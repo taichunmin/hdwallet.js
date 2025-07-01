@@ -4,6 +4,7 @@ import { SLIP10Secp256k1ECC } from '../eccs';
 import { Info, WitnessVersions, Entropies, Mnemonics, Seeds, HDs, Addresses, Networks, XPrivateKeyVersions, XPublicKeyVersions } from '../consts';
 import { Cryptocurrency, Network } from './cryptocurrency';
 export class Mainnet extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x47;
     static SCRIPT_ADDRESS_PREFIX = 0x21;
     static HRP = 'via';
@@ -27,6 +28,7 @@ export class Mainnet extends Network {
     static WIF_PREFIX = 0xc7;
 }
 export class Testnet extends Network {
+    static NAME = 'testnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x7f;
     static SCRIPT_ADDRESS_PREFIX = 0xc4;
     static HRP = 'tvia';
@@ -89,6 +91,7 @@ export class Viacoin extends Cryptocurrency {
         { P2WPKH_IN_P2SH: 'P2WPKH-In-P2SH' }
     ]);
     static DEFAULT_ADDRESS = Viacoin.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh', 'p2wpkh', 'p2wpkh-in-p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 //# sourceMappingURL=viacoin.js.map

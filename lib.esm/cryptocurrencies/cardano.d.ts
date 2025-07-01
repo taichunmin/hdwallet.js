@@ -6,6 +6,7 @@ export declare class Types extends NestedNamespace {
     isCardanoType(type: string): boolean;
 }
 export declare class Mainnet extends Network {
+    static NAME: string;
     static TYPE: number;
     static PAYMENT_ADDRESS_HRP: string;
     static REWARD_ADDRESS_HRP: string;
@@ -13,6 +14,7 @@ export declare class Mainnet extends Network {
     static XPUBLIC_KEY_VERSIONS: XPublicKeyVersions;
 }
 export declare class Testnet extends Network {
+    static NAME: string;
     static TYPE: number;
     static PAYMENT_ADDRESS_HRP: string;
     static REWARD_ADDRESS_HRP: string;
@@ -37,6 +39,7 @@ export declare class Cardano extends Cryptocurrency {
     static TYPES: Types;
     static ADDRESSES: Addresses;
     static DEFAULT_ADDRESS: any;
+    static SEMANTICS: string[];
     static DEFAULT_SEMANTIC: string;
     static ADDRESS_TYPES: AddressTypes;
     static PARAMS: Params;

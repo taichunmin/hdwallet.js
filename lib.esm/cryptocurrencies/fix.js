@@ -4,6 +4,7 @@ import { SLIP10Secp256k1ECC } from '../eccs';
 import { Info, Entropies, Mnemonics, Seeds, HDs, Addresses, Networks, XPrivateKeyVersions, XPublicKeyVersions } from '../consts';
 import { Cryptocurrency, Network } from './cryptocurrency';
 export class Mainnet extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x23;
     static SCRIPT_ADDRESS_PREFIX = 0x5f;
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
@@ -18,6 +19,7 @@ export class Mainnet extends Network {
     static WIF_PREFIX = 0x3c;
 }
 export class Testnet extends Network {
+    static NAME = 'testnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x4c;
     static SCRIPT_ADDRESS_PREFIX = 0x89;
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
@@ -68,6 +70,7 @@ export class FIX extends Cryptocurrency {
         'P2SH'
     ]);
     static DEFAULT_ADDRESS = FIX.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 //# sourceMappingURL=fix.js.map

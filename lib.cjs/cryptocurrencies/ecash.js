@@ -7,6 +7,7 @@ const eccs_1 = require("../eccs");
 const consts_1 = require("../consts");
 const cryptocurrency_1 = require("./cryptocurrency");
 class Mainnet extends cryptocurrency_1.Network {
+    static NAME = 'mainnet';
     static LEGACY_PUBLIC_KEY_ADDRESS_PREFIX = 0x00;
     static LEGACY_SCRIPT_ADDRESS_PREFIX = 0x05;
     static STD_PUBLIC_KEY_ADDRESS_PREFIX = 0x00;
@@ -36,6 +37,7 @@ class Mainnet extends cryptocurrency_1.Network {
 }
 exports.Mainnet = Mainnet;
 class Testnet extends cryptocurrency_1.Network {
+    static NAME = 'testnet';
     static LEGACY_PUBLIC_KEY_ADDRESS_PREFIX = 0x6f;
     static LEGACY_SCRIPT_ADDRESS_PREFIX = 0xc4;
     static STD_PUBLIC_KEY_ADDRESS_PREFIX = 0x00;
@@ -105,6 +107,7 @@ class eCash extends cryptocurrency_1.Cryptocurrency {
         { P2WSH_IN_P2SH: 'P2WSH-In-P2SH' }
     ]);
     static DEFAULT_ADDRESS = eCash.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh', 'p2wpkh', 'p2wpkh-in-p2sh', 'p2wsh', 'p2wsh-in-p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
     static ADDRESS_TYPES = new consts_1.AddressTypes({
         STD: 'std',

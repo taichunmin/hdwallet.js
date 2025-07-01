@@ -4,6 +4,7 @@ import { SLIP10Secp256k1ECC } from '../eccs';
 import { Info, Entropies, Mnemonics, Seeds, HDs, Addresses, Networks, XPrivateKeyVersions, XPublicKeyVersions } from '../consts';
 import { Cryptocurrency, Network } from './cryptocurrency';
 export class Mainnet extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x3f;
     static SCRIPT_ADDRESS_PREFIX = 0xc4;
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
@@ -54,6 +55,7 @@ export class Saluscoin extends Cryptocurrency {
         'P2SH'
     ]);
     static DEFAULT_ADDRESS = Saluscoin.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 //# sourceMappingURL=saluscoin.js.map

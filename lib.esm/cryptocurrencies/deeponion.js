@@ -4,6 +4,7 @@ import { SLIP10Secp256k1ECC } from '../eccs';
 import { Info, WitnessVersions, Entropies, Mnemonics, Seeds, HDs, Addresses, Networks, XPrivateKeyVersions, XPublicKeyVersions } from '../consts';
 import { Cryptocurrency, Network } from './cryptocurrency';
 export class Mainnet extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x1f;
     static SCRIPT_ADDRESS_PREFIX = 0x4e;
     static HRP = 'dpn';
@@ -65,6 +66,7 @@ export class DeepOnion extends Cryptocurrency {
         { P2WPKH_IN_P2SH: 'P2WPKH-In-P2SH' }
     ]);
     static DEFAULT_ADDRESS = DeepOnion.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh', 'p2wpkh', 'p2wpkh-in-p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 //# sourceMappingURL=deeponion.js.map

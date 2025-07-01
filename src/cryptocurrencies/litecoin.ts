@@ -18,6 +18,7 @@ import { Cryptocurrency, Network } from './cryptocurrency';
 
 export class Mainnet extends Network {
 
+  static NAME = 'mainnet';
   static PUBLIC_KEY_ADDRESS_PREFIX = 0x30;
   static SCRIPT_ADDRESS_PREFIX = 0x32;
   static HRP = 'ltc';
@@ -47,6 +48,7 @@ export class Mainnet extends Network {
 
 export class Testnet extends Network {
 
+  static NAME = 'testnet';
   static PUBLIC_KEY_ADDRESS_PREFIX = 0x6f;
   static SCRIPT_ADDRESS_PREFIX = 0x3a;
   static HRP = 'tltc';
@@ -117,5 +119,6 @@ export class Litecoin extends Cryptocurrency {
     { P2WSH_IN_P2SH: 'P2WSH-In-P2SH' }
   ]);
   static DEFAULT_ADDRESS = Litecoin.ADDRESSES.P2PKH;
+  static SEMANTICS = ['p2pkh', 'p2sh', 'p2wpkh', 'p2wpkh-in-p2sh', 'p2wsh', 'p2wsh-in-p2sh'];
   static DEFAULT_SEMANTIC = 'p2pkh';
 }

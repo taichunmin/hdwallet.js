@@ -4,6 +4,7 @@ import { SLIP10Ed25519ECC } from '../eccs';
 import { Info, Entropies, Mnemonics, Seeds, HDs, Addresses, Networks, XPrivateKeyVersions, XPublicKeyVersions } from '../consts';
 import { Cryptocurrency, Network } from './cryptocurrency';
 export class Mainnet extends Network {
+    static NAME = 'mainnet';
     static HRP = 'erd';
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
         P2PKH: 0x0488ade4
@@ -49,6 +50,7 @@ export class MultiversX extends Cryptocurrency {
         MULTIVERSX: 'MultiversX'
     });
     static DEFAULT_ADDRESS = MultiversX.ADDRESSES.MULTIVERSX;
+    static SEMANTICS = ['p2pkh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 //# sourceMappingURL=multiversx.js.map

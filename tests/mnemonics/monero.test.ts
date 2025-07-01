@@ -1,93 +1,132 @@
 // SPDX-License-Identifier: MIT
 
-import {MnemonicError,  EntropyError} from "../../src/exceptions";
-import { getBytes } from "../../src/utils";
-import {MONERO_MNEMONIC_LANGUAGES, MONERO_MNEMONIC_WORDS, MoneroMnemonic} from "../../src/mnemonics";
-import {MONERO_ENTROPY_STRENGTHS, MoneroEntropy} from "../../src/entropies";
+import { readFileSync } from 'fs';
+import { join }         from 'path';
 
+import { MnemonicError, EntropyError } from '../../src/exceptions';
+import {
+  MNEMONICS,
+  MoneroMnemonic,
+  MONERO_MNEMONIC_LANGUAGES
+} from '../../src/mnemonics';
 
-describe("MoneroMnemonic", (): void => {
+const raw = readFileSync(
+  join(__dirname, '../data/json/mnemonics.json'),
+  'utf8'
+).normalize('NFC');
 
-  it("should expose the correct client identifier and validate languages & word counts", (): void => {
-    expect(MoneroMnemonic.client()).toBe("Monero");
-    expect(MoneroMnemonic.isValidLanguage(MONERO_MNEMONIC_LANGUAGES.ENGLISH)).toBe(true);
-    expect(MoneroMnemonic.isValidLanguage("klingon")).toBe(false);
-    expect(MoneroMnemonic.isValidWords(MONERO_MNEMONIC_WORDS.TWENTY_FIVE)).toBe(true);
-    expect(MoneroMnemonic.isValidWords(14)).toBe(false);
+interface MoneroCase {
+  name:     string;
+  entropy:  string;
+  words:    number;
+  checksum: boolean;
+  languages: Record<string, string>;
+}
+
+const vectors = (JSON.parse(raw) as { Monero: MoneroCase[] }).Monero;
+
+describe('MoneroMnemonic (data-driven)', () => {
+  it('is registered under MNEMONICS by name', () => {
+    expect(MNEMONICS.getMnemonicClass('Monero')).toBe(MoneroMnemonic);
   });
 
-  it("should normalize a string into an array of words", (): void => {
-    const raw = "  foo   bar\tbaz\nqux  ";
-    expect(MoneroMnemonic.normalize(raw)).toEqual(["foo", "bar", "baz", "qux"]);
-    const arr = ["alpha", "beta"];
-    expect(MoneroMnemonic.normalize(arr)).toStrictEqual(arr);
-  });
+  for (const { name, entropy, words, checksum, languages } of vectors) {
+    for (const [langKey, mnemonic] of Object.entries(languages)) {
+      const enumKey = langKey
+        .toUpperCase()
+        .replace(/-/g, '_') as keyof typeof MONERO_MNEMONIC_LANGUAGES;
+      const language = MONERO_MNEMONIC_LANGUAGES[enumKey];
 
-  it("should encode and decode a round-trip in every supported length", (): void => {
-  for (const words of MoneroMnemonic.wordsList) {
-    const strength = MoneroMnemonic.wordsToStrength[words];
-    for (const language of MoneroMnemonic.languages) {
-      const entropy = MoneroEntropy.generate(strength);
-      const needChecksum = MoneroMnemonic.checksumWordCounts.includes(words);
+      describe(`${words}-word Monero mnemonic in ${langKey}`, () => {
+        let instFromRegistry: MoneroMnemonic;
+        let directInst:       MoneroMnemonic;
+        let fromWordsStr:     string;
+        let fromEntropyStr:   string;
+        let staticEncoded:    string;
 
-      const mnemonic = MoneroMnemonic.encode(
-        entropy,
-        language,
-        { checksum: needChecksum }
-      );
-      const parts = mnemonic.split(" ");
-      expect(parts).toHaveLength(words);
-      expect(MoneroMnemonic.isValid(mnemonic)).toBe(true);
+        beforeAll(() => {
+          const Registry = MNEMONICS.getMnemonicClass(name) as typeof MoneroMnemonic;
 
-      const decoded = MoneroMnemonic.decode(mnemonic);
-      expect(decoded).toBe(entropy);
+          instFromRegistry = new Registry(mnemonic);
+          directInst       = new MoneroMnemonic(mnemonic);
+
+          fromWordsStr    = MoneroMnemonic.fromWords(words, language);
+          fromEntropyStr  = MoneroMnemonic.fromEntropy(entropy, language, { checksum });
+          staticEncoded   = MoneroMnemonic.encode(entropy, language, { checksum });
+        });
+
+        it('round-trips encode → decode (static)', () => {
+          expect(staticEncoded.normalize('NFC')).toBe(mnemonic);
+          expect(
+            MoneroMnemonic.decode(staticEncoded, { checksum })
+          ).toBe(entropy);
+        });
+
+        it('decodes the original mnemonic', () => {
+          expect(
+            MoneroMnemonic.decode(mnemonic, { checksum })
+          ).toBe(entropy);
+        });
+
+        it('constructor preserves the mnemonic', () => {
+          expect(instFromRegistry.getMnemonic().normalize('NFC')).toBe(mnemonic);
+          expect(directInst.getMnemonic().normalize('NFC')).toBe(mnemonic);
+        });
+
+        it('reports correct language & word count', () => {
+          [instFromRegistry, directInst].forEach(inst => {
+            expect(inst.getLanguage()).toBe(language);
+            expect(inst.getWords()).toBe(words);
+          });
+
+          const wrapWords   = new MoneroMnemonic(fromWordsStr);
+          const wrapEntropy = new MoneroMnemonic(fromEntropyStr);
+
+          expect(wrapWords.getLanguage()).toBe(language);
+          expect(wrapWords.getWords()).toBe(words);
+
+          expect(wrapEntropy.getLanguage()).toBe(language);
+          expect(wrapEntropy.getWords()).toBe(words);
+        });
+
+        it('validates consistently', () => {
+          expect(MoneroMnemonic.isValid(mnemonic, { checksum })).toBe(true);
+          expect(MoneroMnemonic.isValidLanguage(language)).toBe(true);
+          expect(MoneroMnemonic.isValidWords(words)).toBe(true);
+        });
+
+        it('fromWords() yields a valid instance', () => {
+          const inst = new MoneroMnemonic(fromWordsStr);
+          expect(inst.getWords()).toBe(words);
+          expect(inst.getLanguage()).toBe(language);
+          expect(inst.getMnemonic().split(' ')).toHaveLength(words);
+        });
+
+        it('fromEntropy() yields a valid instance', () => {
+          const inst = new MoneroMnemonic(fromEntropyStr);
+          expect(inst.getWords()).toBe(words);
+          expect(inst.getLanguage()).toBe(language);
+          expect(inst.getMnemonic().split(' ')).toHaveLength(words);
+        });
+
+        if (checksum) {
+          it('throws on a valid-length but bad-checksum mnemonic', () => {
+            const bad = mnemonic
+              .split(' ')
+              .map((w, i) => (i === words - 1 ? 'invalidword' : w))
+              .join(' ');
+            expect(() =>
+              MoneroMnemonic.decode(bad, { checksum })
+            ).toThrowError(MnemonicError);
+          });
+        }
+        it('encode() throws on unsupported entropy length', () => {
+          const badHex = '00'.repeat(100 / 4);
+          expect(() =>
+            MoneroMnemonic.encode(badHex, language, { checksum })
+          ).toThrowError(EntropyError);
+        });
+      });
     }
   }
-});
-
-
-  it("should throw a ChecksumError for a valid-length but bad-checksum mnemonic", (): void => {
-    const good = "abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about";
-    const words: string[] = good.split(" ");
-    words[11] = "ability";
-    const bad: string = words.join(" ");
-    expect((): string => MoneroMnemonic.decode(bad)).toThrowError(MnemonicError);
-  });
-
-  it("fromWords() should generate mnemonics of each supported length", (): void => {
-    for (const words of MoneroMnemonic.wordsList) {
-      const moneroMnemonic: MoneroMnemonic = MoneroMnemonic.fromWords(
-          words, MONERO_MNEMONIC_LANGUAGES.ENGLISH
-      );
-      expect(moneroMnemonic.words()).toBe(words);
-      expect(moneroMnemonic.language()).toBe(MONERO_MNEMONIC_LANGUAGES.ENGLISH);
-      const mnemonic: string[] = moneroMnemonic.mnemonic().split(" ");
-      expect(mnemonic).toHaveLength(words);
-      expect(MoneroMnemonic.isValid(moneroMnemonic.mnemonic())).toBe(true);
-    }
-  });
-
-  it("fromWords() should throw on an unsupported word count", (): void => {
-    expect(() => MoneroMnemonic.fromWords(14, MONERO_MNEMONIC_LANGUAGES.ENGLISH)).toThrowError(MnemonicError);
-  });
-
-  it("fromEntropy() should accept hex, Uint8Array, or MoneroEntropy and round-trip correctly", (): void => {
-    const entropy: string = MoneroEntropy.generate(MONERO_ENTROPY_STRENGTHS.TWO_HUNDRED_FIFTY_SIX);
-    const entropyBytes: Uint8Array<ArrayBuffer> = getBytes(entropy);
-    const moneroEntropy: MoneroEntropy = new MoneroEntropy(entropy);
-
-    for (const input of [entropy, entropyBytes, moneroEntropy]) {
-      const moneroMnemonic: MoneroMnemonic= MoneroMnemonic.fromEntropy(
-          input, MONERO_MNEMONIC_LANGUAGES.ENGLISH
-      );
-      const decoded: string = MoneroMnemonic.decode(moneroMnemonic.mnemonic());
-      expect(decoded).toBe(entropy);
-    }
-  });
-
-  it("encode() should throw on unsupported entropy lengths", (): void => {
-    expect((): string => MoneroMnemonic.encode(
-        "00".repeat(100 / 4), MONERO_MNEMONIC_LANGUAGES.ENGLISH
-    )).toThrowError(EntropyError);
-  });
 });

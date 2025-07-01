@@ -7,6 +7,7 @@ const eccs_1 = require("../eccs");
 const consts_1 = require("../consts");
 const cryptocurrency_1 = require("./cryptocurrency");
 class Mainnet extends cryptocurrency_1.Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x00001cb8;
     static SCRIPT_ADDRESS_PREFIX = 0x00001cbd;
     static XPRIVATE_KEY_VERSIONS = new consts_1.XPrivateKeyVersions({
@@ -22,6 +23,7 @@ class Mainnet extends cryptocurrency_1.Network {
 }
 exports.Mainnet = Mainnet;
 class Testnet extends cryptocurrency_1.Network {
+    static NAME = 'testnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x00001d25;
     static SCRIPT_ADDRESS_PREFIX = 0x00001cba;
     static XPRIVATE_KEY_VERSIONS = new consts_1.XPrivateKeyVersions({
@@ -74,6 +76,7 @@ class Zcash extends cryptocurrency_1.Cryptocurrency {
         'P2SH'
     ]);
     static DEFAULT_ADDRESS = Zcash.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 exports.Zcash = Zcash;

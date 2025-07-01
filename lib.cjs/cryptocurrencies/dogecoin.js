@@ -7,6 +7,7 @@ const eccs_1 = require("../eccs");
 const consts_1 = require("../consts");
 const cryptocurrency_1 = require("./cryptocurrency");
 class Mainnet extends cryptocurrency_1.Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x1e;
     static SCRIPT_ADDRESS_PREFIX = 0x16;
     static HRP = 'dogecoin';
@@ -33,6 +34,7 @@ class Mainnet extends cryptocurrency_1.Network {
 }
 exports.Mainnet = Mainnet;
 class Testnet extends cryptocurrency_1.Network {
+    static NAME = 'testnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x71;
     static SCRIPT_ADDRESS_PREFIX = 0xc4;
     static HRP = 'dogecointestnet';
@@ -98,6 +100,7 @@ class Dogecoin extends cryptocurrency_1.Cryptocurrency {
         { P2WPKH_IN_P2SH: 'P2WPKH-In-P2SH' }
     ]);
     static DEFAULT_ADDRESS = Dogecoin.ADDRESSES.P2PKH;
+    static SEMANTICS = ['dogecoin', 'p2pkh', 'p2sh', 'p2wpkh', 'p2wpkh-in-p2sh'];
     static DEFAULT_SEMANTIC = 'dogecoin';
 }
 exports.Dogecoin = Dogecoin;

@@ -7,18 +7,21 @@ const eccs_1 = require("../eccs");
 const consts_1 = require("../consts");
 const cryptocurrency_1 = require("./cryptocurrency");
 class Mainnet extends cryptocurrency_1.Network {
+    static NAME = 'mainnet';
     static STANDARD = 0x12;
     static INTEGRATED = 0x13;
     static SUB_ADDRESS = 0x2a;
 }
 exports.Mainnet = Mainnet;
 class Stagenet extends cryptocurrency_1.Network {
+    static NAME = 'stagenet';
     static STANDARD = 0x18;
     static INTEGRATED = 0x19;
     static SUB_ADDRESS = 0x24;
 }
 exports.Stagenet = Stagenet;
 class Testnet extends cryptocurrency_1.Network {
+    static NAME = 'testnet';
     static STANDARD = 0x35;
     static INTEGRATED = 0x36;
     static SUB_ADDRESS = 0x3f;

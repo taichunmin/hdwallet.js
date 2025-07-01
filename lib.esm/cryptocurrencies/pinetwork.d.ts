@@ -2,6 +2,7 @@ import { SLIP10Ed25519ECC } from '../eccs';
 import { Info, Entropies, Mnemonics, Seeds, HDs, Addresses, AddressTypes, Networks, Params, XPrivateKeyVersions, XPublicKeyVersions } from '../consts';
 import { Cryptocurrency, Network } from './cryptocurrency';
 export declare class Mainnet extends Network {
+    static NAME: string;
     static XPRIVATE_KEY_VERSIONS: XPrivateKeyVersions;
     static XPUBLIC_KEY_VERSIONS: XPublicKeyVersions;
 }
@@ -22,6 +23,7 @@ export declare class PiNetwork extends Cryptocurrency {
     static DEFAULT_PATH: string;
     static ADDRESSES: Addresses;
     static DEFAULT_ADDRESS: any;
+    static SEMANTICS: string[];
     static DEFAULT_SEMANTIC: string;
     static ADDRESS_TYPES: AddressTypes;
     static DEFAULT_ADDRESS_TYPE: any;

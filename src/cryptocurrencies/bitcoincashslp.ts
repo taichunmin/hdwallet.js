@@ -19,6 +19,7 @@ import { Cryptocurrency, Network } from './cryptocurrency';
 
 export class Mainnet extends Network {
 
+  static NAME = 'mainnet';
   static LEGACY_PUBLIC_KEY_ADDRESS_PREFIX = 0x00;
   static LEGACY_SCRIPT_ADDRESS_PREFIX = 0x05;
   static STD_PUBLIC_KEY_ADDRESS_PREFIX = 0x00;
@@ -49,6 +50,7 @@ export class Mainnet extends Network {
 
 export class Testnet extends Network {
 
+  static NAME = 'testnet';
   static LEGACY_PUBLIC_KEY_ADDRESS_PREFIX = 0x6f;
   static LEGACY_SCRIPT_ADDRESS_PREFIX = 0xc4;
   static STD_PUBLIC_KEY_ADDRESS_PREFIX = 0x00;
@@ -119,6 +121,7 @@ export class BitcoinCashSLP extends Cryptocurrency {
     { P2WSH_IN_P2SH: 'P2WSH-In-P2SH' }
   ]);
   static DEFAULT_ADDRESS = BitcoinCashSLP.ADDRESSES.P2PKH;
+  static SEMANTICS = ['p2pkh', 'p2sh', 'p2wpkh', 'p2wpkh-in-p2sh', 'p2wsh', 'p2wsh-in-p2sh'];
   static DEFAULT_SEMANTIC = 'p2pkh';
   static ADDRESS_TYPES = new AddressTypes({
     STD: 'std',

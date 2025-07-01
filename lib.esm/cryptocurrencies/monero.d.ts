@@ -2,16 +2,19 @@ import { SLIP10Ed25519MoneroECC } from '../eccs';
 import { Info, Entropies, Mnemonics, Seeds, HDs, Addresses, AddressTypes, Networks, Params } from '../consts';
 import { Cryptocurrency, Network } from './cryptocurrency';
 export declare class Mainnet extends Network {
+    static NAME: string;
     static STANDARD: number;
     static INTEGRATED: number;
     static SUB_ADDRESS: number;
 }
 export declare class Stagenet extends Network {
+    static NAME: string;
     static STANDARD: number;
     static INTEGRATED: number;
     static SUB_ADDRESS: number;
 }
 export declare class Testnet extends Network {
+    static NAME: string;
     static STANDARD: number;
     static INTEGRATED: number;
     static SUB_ADDRESS: number;

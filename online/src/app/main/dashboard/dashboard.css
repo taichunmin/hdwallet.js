@@ -1,0 +1,60 @@
+/* Dashboard styles */
+
+.yo-footer {
+  border-top: 1px solid rgba(128, 128, 128, 0.25);
+  padding: 15px;
+}
+
+::ng-deep #tabs .custom-combobox {
+  background: transparent;
+  min-width: 80px;
+  border-bottom: 3px solid #83B9FFFF;
+  border-radius: 0;
+  padding: 0;
+}
+
+::ng-deep #tabs button {
+  font: 10pt "HDWallet";
+  font-weight: lighter;
+  font-size: 15px;
+  letter-spacing: 0.03125em;
+  text-transform: uppercase;
+}
+
+.svg-dash {
+  height: 45px;
+  width: auto;
+}
+
+.tab-button-item {
+  color: white;
+  transition: background-color 0.3s, color 0.3s;
+  border-bottom: 3px solid transparent;
+  letter-spacing: 0.03125em;
+  font-size: 14px;
+  cursor: pointer;
+  height: 30px;
+}
+
+.tab-button-item:hover,
+.tab-button-item.active {
+  border-bottom: 3px solid #83B9FFFF;
+}
+
+.disclaimer-close {
+  background: transparent;
+  padding: 8px;
+}
+
+.disclaimer-close:disabled .disclaimer-close-svg {
+  fill: rgba(221, 221, 221, 0.5);
+}
+
+small {
+  cursor: default;
+}
+
+.customLink:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}

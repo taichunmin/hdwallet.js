@@ -1,6 +1,7 @@
 import { EllipticCurveCryptography } from '../eccs';
 import { Info, WitnessVersions, Entropies, Mnemonics, Seeds, HDs, Addresses, AddressTypes, AddressPrefixes, Networks, Params, XPrivateKeyVersions, XPublicKeyVersions } from '../consts';
 export declare class Network {
+    static NAME: string;
     static PUBLIC_KEY_ADDRESS_PREFIX?: number;
     static SCRIPT_ADDRESS_PREFIX?: number;
     static HRP?: string;
@@ -19,7 +20,6 @@ export declare class Network {
     static TYPE?: number;
     static PAYMENT_ADDRESS_HRP?: string;
     static REWARD_ADDRESS_HRP?: string;
-    static getName(): string;
 }
 export declare class Cryptocurrency {
     static NAME: string;
@@ -41,6 +41,7 @@ export declare class Cryptocurrency {
     static DEFAULT_ADDRESS_TYPE?: string;
     static ADDRESS_PREFIXES?: AddressPrefixes;
     static DEFAULT_ADDRESS_PREFIX?: string;
+    static SEMANTICS?: string[];
     static DEFAULT_SEMANTIC?: string;
     static PARAMS?: Params;
 }

@@ -4,6 +4,7 @@ import { SLIP10Secp256k1ECC } from '../eccs';
 import { Info, Entropies, Mnemonics, Seeds, HDs, Addresses, Networks, XPrivateKeyVersions, XPublicKeyVersions } from '../consts';
 import { Cryptocurrency, Network } from './cryptocurrency';
 export class Mainnet extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x00001325;
     static SCRIPT_ADDRESS_PREFIX = 0x000013af;
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
@@ -18,6 +19,7 @@ export class Mainnet extends Network {
     static WIF_PREFIX = 0x80;
 }
 export class Testnet extends Network {
+    static NAME = 'testnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x00001957;
     static SCRIPT_ADDRESS_PREFIX = 0x000019e0;
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
@@ -69,6 +71,7 @@ export class BitcoinPrivate extends Cryptocurrency {
         'P2SH'
     ]);
     static DEFAULT_ADDRESS = BitcoinPrivate.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 //# sourceMappingURL=bitcoinprivate.js.map

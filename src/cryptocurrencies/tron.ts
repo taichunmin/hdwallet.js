@@ -18,6 +18,7 @@ import { Cryptocurrency, Network } from './cryptocurrency';
 
 export class Mainnet extends Network {
 
+  static NAME = 'mainnet';
   static PUBLIC_KEY_ADDRESS_PREFIX = 0x41;
   static SCRIPT_ADDRESS_PREFIX = 0x05;
   static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
@@ -70,6 +71,7 @@ export class Tron extends Cryptocurrency {
     TRON: 'Tron'
   });
   static DEFAULT_ADDRESS = Tron.ADDRESSES.TRON;
+  static SEMANTICS = ['p2pkh', 'p2sh'];
   static DEFAULT_SEMANTIC = 'p2pkh';
   static PARAMS = new Params({
     ALPHABET: '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz'

@@ -7,6 +7,7 @@ const eccs_1 = require("../eccs");
 const consts_1 = require("../consts");
 const cryptocurrency_1 = require("./cryptocurrency");
 class Mainnet extends cryptocurrency_1.Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x00;
     static SCRIPT_ADDRESS_PREFIX = 0x00;
     static XPRIVATE_KEY_VERSIONS = new consts_1.XPrivateKeyVersions({
@@ -57,6 +58,7 @@ class Ripple extends cryptocurrency_1.Cryptocurrency {
         RIPPLE: 'Ripple'
     });
     static DEFAULT_ADDRESS = Ripple.ADDRESSES.RIPPLE;
+    static SEMANTICS = ['p2pkh', 'p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
     static PARAMS = new consts_1.Params({
         ALPHABET: 'rpshnaf39wBUDNEGHJKLM4PQRST7VWXYZ2bcdeCg65jkm8oFqi1tuvAxyz'

@@ -4,6 +4,7 @@ import { SLIP10Secp256k1ECC } from '../eccs';
 import { Info, Entropies, Mnemonics, Seeds, HDs, Addresses, Networks, XPrivateKeyVersions, XPublicKeyVersions } from '../consts';
 import { Cryptocurrency, Network } from './cryptocurrency';
 export class Mainnet extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x3c;
     static SCRIPT_ADDRESS_PREFIX = 0x7d;
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
@@ -53,6 +54,7 @@ export class Scribe extends Cryptocurrency {
         'P2SH'
     ]);
     static DEFAULT_ADDRESS = Scribe.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 //# sourceMappingURL=scribe.js.map

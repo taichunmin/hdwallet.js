@@ -4,6 +4,7 @@ import { SLIP10Secp256k1ECC } from '../eccs';
 import { Info, WitnessVersions, Entropies, Mnemonics, Seeds, HDs, Addresses, Networks, XPrivateKeyVersions, XPublicKeyVersions } from '../consts';
 import { Cryptocurrency, Network } from './cryptocurrency';
 export class Mainnet extends Network {
+    static NAME = 'mainnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x23;
     static SCRIPT_ADDRESS_PREFIX = 0x1e;
     static HRP = 'fx';
@@ -31,6 +32,7 @@ export class Mainnet extends Network {
     static WIF_PREFIX = 0x80;
 }
 export class Testnet extends Network {
+    static NAME = 'testnet';
     static PUBLIC_KEY_ADDRESS_PREFIX = 0x5f;
     static SCRIPT_ADDRESS_PREFIX = 0x5a;
     static HRP = 'tf';
@@ -98,6 +100,7 @@ export class Foxdcoin extends Cryptocurrency {
         { P2WSH_IN_P2SH: 'P2WSH-In-P2SH' }
     ]);
     static DEFAULT_ADDRESS = Foxdcoin.ADDRESSES.P2PKH;
+    static SEMANTICS = ['p2pkh', 'p2sh', 'p2wpkh', 'p2wpkh-in-p2sh', 'p2wsh', 'p2wsh-in-p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 //# sourceMappingURL=foxdcoin.js.map

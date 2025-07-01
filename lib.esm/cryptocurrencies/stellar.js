@@ -4,6 +4,7 @@ import { SLIP10Ed25519ECC } from '../eccs';
 import { Info, Entropies, Mnemonics, Seeds, HDs, Addresses, AddressTypes, Networks, Params, XPrivateKeyVersions, XPublicKeyVersions } from '../consts';
 import { Cryptocurrency, Network } from './cryptocurrency';
 export class Mainnet extends Network {
+    static NAME = 'mainnet';
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
         P2PKH: 0x0488ade4
     });
@@ -47,6 +48,7 @@ export class Stellar extends Cryptocurrency {
         STELLAR: 'Stellar'
     });
     static DEFAULT_ADDRESS = Stellar.ADDRESSES.STELLAR;
+    static SEMANTICS = ['p2pkh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
     static ADDRESS_TYPES = new AddressTypes({
         PRIVATE_KEY: 'privateKey',

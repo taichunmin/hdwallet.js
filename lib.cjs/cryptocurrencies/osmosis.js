@@ -7,6 +7,7 @@ const eccs_1 = require("../eccs");
 const consts_1 = require("../consts");
 const cryptocurrency_1 = require("./cryptocurrency");
 class Mainnet extends cryptocurrency_1.Network {
+    static NAME = 'mainnet';
     static HRP = 'osmo';
     static XPRIVATE_KEY_VERSIONS = new consts_1.XPrivateKeyVersions({
         P2PKH: 0x0488ade4
@@ -52,6 +53,7 @@ class Osmosis extends cryptocurrency_1.Cryptocurrency {
         COSMOS: 'Cosmos'
     });
     static DEFAULT_ADDRESS = Osmosis.ADDRESSES.COSMOS;
+    static SEMANTICS = ['p2pkh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
 exports.Osmosis = Osmosis;
