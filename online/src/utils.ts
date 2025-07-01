@@ -24,6 +24,12 @@ export function toTitleCase(data: string, searchValue?: RegExp, replaceValue?: s
   return searchValue && replaceValue ? titleCase.replace(searchValue, replaceValue) : titleCase;
 }
 
+export function toBoolean(value: string): boolean {
+  if (['true', true, '1', 1].includes(value)) { return true; }
+  else if (['false', false, '0', 0].includes(value)) { return false; }
+  throw new Error('Invalid boolean data');
+}
+
 export function replaceUnderscore2Hyphen(dictionary: DictionaryInterface): DictionaryInterface {
   let resultDictionary: DictionaryInterface = { };
   for (const key in dictionary) {
@@ -175,7 +181,6 @@ export function getDateTimeStamp(): string {
   return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
 }
 
-
 export function saveAsJSON(data: any, name: string): void {
   const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
   const url: string = window.URL.createObjectURL(blob);
@@ -202,36 +207,35 @@ export function saveAsCSV(data: any[][], name: string): void {
 }
 
 export function fallbackCopyText(text: string): boolean {
-    const textarea: HTMLTextAreaElement = document.createElement('textarea');
-    textarea.value = text;
-    textarea.style.position = 'fixed';
-    textarea.style.opacity = '0';
-    document.body.appendChild(textarea);
-    textarea.focus();
-    textarea.select();
-    try {
-      const successful: boolean = document.execCommand('copy');
-      document.body.removeChild(textarea);
-      return successful;
-    } catch {
-      document.body.removeChild(textarea);
-      return false;
-    }
+  const textarea: HTMLTextAreaElement = document.createElement('textarea');
+  textarea.value = text;
+  textarea.style.position = 'fixed';
+  textarea.style.opacity = '0';
+  document.body.appendChild(textarea);
+  textarea.focus();
+  textarea.select();
+  try {
+    const successful: boolean = document.execCommand('copy');
+    document.body.removeChild(textarea);
+    return successful;
+  } catch {
+    document.body.removeChild(textarea);
+    return false;
+  }
 }
 
 export async function copyToClipboard(content: string): Promise<boolean> {
-
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-        return await navigator.clipboard.writeText(
-          content
-        ).then((): boolean => {
-          return true;
-        }).catch((): boolean => {
-          return fallbackCopyText(content);
-        });
-    } else {
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+      return await navigator.clipboard.writeText(
+        content
+      ).then((): boolean => {
+        return true;
+      }).catch((): boolean => {
         return fallbackCopyText(content);
-    }
+      });
+  } else {
+      return fallbackCopyText(content);
+  }
 }
 
 export function objectIsIncluded(items: any[], item: any): boolean {

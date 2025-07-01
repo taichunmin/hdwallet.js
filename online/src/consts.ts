@@ -60,6 +60,40 @@ export const formats: string[] = [
   'json', 'csv'
 ];
 
+export const derivations: string[] = [
+  'Custom', 'BIP44', 'BIP49', 'BIP84', 'BIP86', 'CIP1852', 'Electrum', 'Monero', 'HDW'
+];
+
+export function getAllowedDerivations(hd: string, from: string): string[] {
+  if (['BIP32', 'BIP141'].includes(hd)) {
+    if (from === 'bip-xpublic-key') {
+      return ['Custom'];
+    } else {
+      return ['Custom', 'BIP44', 'BIP49', 'BIP84', 'BIP86', 'CIP1852', 'HDW'];
+    }
+  } else if (hd === 'BIP44') {
+    return ['BIP44'];
+  } else if (hd === 'BIP49') {
+    return ['BIP49'];
+  } else if (hd === 'BIP84') {
+    return ['BIP84'];
+  } else if (hd === 'BIP86') {
+    return ['BIP86'];
+  } else if (hd === 'Cardano') {
+    if (from === 'cardano-xpublic-key') {
+      return ['Custom'];
+    } else {
+      return ['Custom', 'BIP44', 'CIP1852'];
+    }
+  } else if (['Electrum-V1', 'Electrum-V2'].includes(hd)) {
+    return ['Electrum'];
+  } else if (hd === 'Monero') {
+    return ['Monero'];
+  } else {
+    return [];
+  }
+}
+
 export const groupBox: GroupBoxInterface = {
   name: null,
   color: 'rgba(128, 128, 128, 0.25)',
