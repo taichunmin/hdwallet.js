@@ -5,7 +5,9 @@ import {
   EventEmitter,
   forwardRef,
   HostListener,
-  Input, OnDestroy, OnInit,
+  Input,
+  OnDestroy,
+  OnInit,
   Output,
   QueryList,
   ViewChild,
@@ -27,7 +29,7 @@ import { ComboboxInterface } from '../../../interfaces';
     {
       provide: NG_VALUE_ACCESSOR,
       useExisting: forwardRef(() => CustomComboboxComponent),
-      multi: true,
+      multi: true
     }
   ],
   templateUrl: './custom-combobox.html',

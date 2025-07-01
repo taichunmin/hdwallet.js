@@ -1,4 +1,4 @@
-<fieldset class="custom-combobox" (click)="toggleDropdown()" [ngClass]="{'bs': isOpen}">
+<div class="custom-combobox" (click)="toggleDropdown()" [ngClass]="{'bs': isOpen}">
   <button type="button" class="items-center w-full h-full" #dropdownButton>
     <div class="flex items-center justify-between w-full">
       <div id="customSelectedOptionName" class="whitespace-nowrap overflow-hidden text-ellipsis hyphens-none">
@@ -18,4 +18,4 @@
       }
     </ul>
   }
-</fieldset>
+</div>
