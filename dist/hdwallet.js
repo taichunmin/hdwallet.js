@@ -1,7 +1,7 @@
 const __$G = (typeof globalThis !== 'undefined' ? globalThis: typeof window !== 'undefined' ? window: typeof global !== 'undefined' ? global: typeof self !== 'undefined' ? self: {});
 // SPDX-License-Identifier: MIT
 const __name__ = 'hdwallet';
-const __version__ = '1.0.0-beta.2';
+const __version__ = '1.0.0-beta.3';
 const __license__ = 'MIT';
 const __author__ = 'Meheret Tesfaye Batu';
 const __email__ = 'meherett.batu@gmail.com';
@@ -82686,7 +82686,7 @@ class HDWallet {
         const hdClass = HDS.getHDClass(hdName);
         const _network = options.network ?? this.cryptocurrency.DEFAULT_NETWORK.NAME;
         const resolvedNetwork = ensureTypeMatch(_network, Network, { otherTypes: ['string'] });
-        const networkName = resolvedNetwork.isValid ? resolvedNetwork.value.getName() : _network;
+        const networkName = resolvedNetwork.isValid ? resolvedNetwork.value.NAME : _network;
         if (!this.cryptocurrency.NETWORKS.isNetwork(networkName)) {
             throw new NetworkError(`${this.cryptocurrency.NAME} doesn't support network type`, {
                 expected: this.cryptocurrency.NETWORKS.getNetworks(), got: networkName

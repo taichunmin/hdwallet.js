@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.0.0-beta.3](https://github.com/hdwallet-io/hdwallet.js/tree/1.0.0-beta.3) (2025-07-02)
+
+[Full Changelog](https://github.com/hdwallet-io/hdwallet.js/compare/1.0.0-beta.2...1.0.0-beta.3)
+
+**Fix Bugs:**
+
+- Fix: network name issue in constructor HDWallet class.
+
 ## [1.0.0-beta.2](https://github.com/hdwallet-io/hdwallet.js/tree/1.0.0-beta.2) (2025-07-02)
 
 [Full Changelog](https://github.com/hdwallet-io/hdwallet.js/compare/1.0.0-beta.1...1.0.0-beta.2)

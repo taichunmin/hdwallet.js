@@ -50,7 +50,7 @@ class HDWallet {
         const hdClass = hds_1.HDS.getHDClass(hdName);
         const _network = options.network ?? this.cryptocurrency.DEFAULT_NETWORK.NAME;
         const resolvedNetwork = (0, utils_1.ensureTypeMatch)(_network, cryptocurrency_1.Network, { otherTypes: ['string'] });
-        const networkName = resolvedNetwork.isValid ? resolvedNetwork.value.getName() : _network;
+        const networkName = resolvedNetwork.isValid ? resolvedNetwork.value.NAME : _network;
         if (!this.cryptocurrency.NETWORKS.isNetwork(networkName)) {
             throw new exceptions_1.NetworkError(`${this.cryptocurrency.NAME} doesn't support network type`, {
                 expected: this.cryptocurrency.NETWORKS.getNetworks(), got: networkName
