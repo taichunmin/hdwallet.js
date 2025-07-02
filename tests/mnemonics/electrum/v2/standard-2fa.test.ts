@@ -1,98 +1,161 @@
 // SPDX-License-Identifier: MIT
 
-import { ElectrumV2Entropy } from "../../../../src/entropies";
+import { readFileSync } from 'fs';
+import { join }         from 'path';
+
+import { ElectrumV2Entropy } from '../../../../src/entropies';
 import {
-  ElectrumV2Mnemonic, ELECTRUM_V2_MNEMONIC_WORDS, ELECTRUM_V2_MNEMONIC_LANGUAGES, ELECTRUM_V2_MNEMONIC_TYPES
-} from "../../../../src/mnemonics";
-import {EntropyError, MnemonicError} from "../../../../src/exceptions";
-import { getBytes } from "../../../../src/utils";
-import jsonData from "../../../data/json/mnemonics.json";
+  MNEMONICS,
+  ElectrumV2Mnemonic,
+  ELECTRUM_V2_MNEMONIC_WORDS,
+  ELECTRUM_V2_MNEMONIC_LANGUAGES,
+  ELECTRUM_V2_MNEMONIC_TYPES
+} from '../../../../src/mnemonics';
+import { EntropyError, MnemonicError } from '../../../../src/exceptions';
+import { getBytes } from '../../../../src/utils';
 
+const raw = readFileSync(
+  join(__dirname, '../../../data/json/mnemonics.json'),
+  'utf8'
+).normalize('NFC');
+const jsonData = JSON.parse(raw) as Record<string, any[]>;
 
-describe("ElectrumV2Mnemonic", (): void => {
+describe('ElectrumV2Mnemonic (Standard-2FA)', () => {
+  const mnemonicType = ELECTRUM_V2_MNEMONIC_TYPES.STANDARD_2FA;
 
-  it("should expose the correct client identifier and validate languages & word counts", (): void => {
-    expect(ElectrumV2Mnemonic.client()).toBe("Electrum-V2");
-    expect(ElectrumV2Mnemonic.isValidLanguage(ELECTRUM_V2_MNEMONIC_LANGUAGES.ENGLISH)).toBe(true);
-    expect(ElectrumV2Mnemonic.isValidLanguage("klingon")).toBe(false);
-    expect(ElectrumV2Mnemonic.isValidWords(ELECTRUM_V2_MNEMONIC_WORDS.TWELVE)).toBe(true);
+  it('is registered under MNEMONICS by name', () => {
+    expect(MNEMONICS.getMnemonicClass('Electrum-V2')).toBe(ElectrumV2Mnemonic);
+  });
+
+  it('exposes correct client ID and validates languages & word counts', () => {
+    expect(ElectrumV2Mnemonic.getName()).toBe('Electrum-V2');
+    expect(
+      ElectrumV2Mnemonic.isValidLanguage(
+        ELECTRUM_V2_MNEMONIC_LANGUAGES.ENGLISH
+      )
+    ).toBe(true);
+    expect(ElectrumV2Mnemonic.isValidLanguage('klingon')).toBe(false);
+
+    expect(
+      ElectrumV2Mnemonic.isValidWords(
+        ELECTRUM_V2_MNEMONIC_WORDS.TWELVE
+      )
+    ).toBe(true);
+    expect(
+      ElectrumV2Mnemonic.isValidWords(
+        ELECTRUM_V2_MNEMONIC_WORDS.TWENTY_FOUR
+      )
+    ).toBe(true);
     expect(ElectrumV2Mnemonic.isValidWords(13)).toBe(false);
   });
 
-  it("should normalize a string into an array of words", (): void => {
-    const raw = "  foo   bar\tbaz\nqux  ";
-    expect(ElectrumV2Mnemonic.normalize(raw)).toEqual(["foo", "bar", "baz", "qux"]);
-    const arr = ["alpha", "beta"];
+  it('normalizes whitespace correctly', () => {
+    const rawInput = '  foo   bar\tbaz\nqux  ';
+    expect(ElectrumV2Mnemonic.normalize(rawInput)).toEqual([
+      'foo', 'bar', 'baz', 'qux'
+    ]);
+    const arr = ['alpha', 'beta'];
     expect(ElectrumV2Mnemonic.normalize(arr)).toStrictEqual(arr);
   });
 
-  it("should encode and decode a 128-bit entropy round-trip in English", (): void => {
-    for (const words of ElectrumV2Mnemonic.wordsList) {
-      type Vector = {
-          words: number;
-          'mnemonic-types': Record<string, Record<string, { mnemonic: string; 'entropy-suitable': string }>>;
-        };
-        const vectors = jsonData['Electrum-V2'] as Vector[];
-        const suitable: Record<number, Record<string, string>> = Object.fromEntries(
-          vectors.map(v => {
-            const byLang = v['mnemonic-types']['standard-2fa'];
-            const entropies = Object.fromEntries(
-              Object.entries(byLang).map(([lang, obj]) => [lang, obj['entropy-suitable']])
-            );
-            return [ v.words, entropies ];
-          })
-        ) as Record<number, Record<string, string>>;
-        for (const language of ElectrumV2Mnemonic.languages) {
-        const entropy: string = suitable[words][language];
-        const mnemonic: string = ElectrumV2Mnemonic.encode(
-            entropy, language, { mnemonicType: ELECTRUM_V2_MNEMONIC_TYPES.STANDARD_2FA }
+  it('encodes & decodes each supported entropy → mnemonic → entropy', () => {
+    type Vector = {
+      words: number;
+      'mnemonic-types': Record<
+        string,
+        Record<string, { mnemonic: string; 'entropy-suitable': string }>
+      >;
+    };
+    const vectors = (jsonData['Electrum-V2'] as Vector[])
+      .filter(v => v['mnemonic-types']['standard-2fa']);
+
+    for (const { words, 'mnemonic-types': m } of vectors) {
+      const byLang = m['standard-2fa'];
+      for (const lang of ElectrumV2Mnemonic.languages) {
+        const entropySuitable = byLang[lang]['entropy-suitable'];
+
+        const mnemStr = ElectrumV2Mnemonic.encode(
+          entropySuitable,
+          lang,
+          { mnemonicType }
         );
-        expect(typeof mnemonic).toBe("string");
-        expect(mnemonic.split(" ")).toHaveLength(words);
-        expect(ElectrumV2Mnemonic.isValid(mnemonic, { mnemonicType: ELECTRUM_V2_MNEMONIC_TYPES.STANDARD_2FA })).toBe(true);
-        const decoded: string = ElectrumV2Mnemonic.decode(
-            mnemonic, { mnemonicType: ELECTRUM_V2_MNEMONIC_TYPES.STANDARD_2FA }
-        );
-        expect(decoded).toBe(entropy);
+        expect(typeof mnemStr).toBe('string');
+        expect(mnemStr.split(' ')).toHaveLength(words);
+        expect(
+          ElectrumV2Mnemonic.isValid(mnemStr, { mnemonicType })
+        ).toBe(true);
+
+        const decoded = ElectrumV2Mnemonic.decode(mnemStr, { mnemonicType });
+        expect(decoded).toBe(entropySuitable);
       }
     }
   });
 
-  it("fromWords() should generate mnemonics of each supported length", (): void => {
+  it('fromWords() generates valid instances of each supported length', () => {
     for (const words of ElectrumV2Mnemonic.wordsList) {
-      const electrumV2Mnemonic: ElectrumV2Mnemonic = ElectrumV2Mnemonic.fromWords(
-          words, ELECTRUM_V2_MNEMONIC_LANGUAGES.ENGLISH, { mnemonicType: ELECTRUM_V2_MNEMONIC_TYPES.STANDARD_2FA }
+      // static → mnemonic string
+      const mnemStr = ElectrumV2Mnemonic.fromWords(
+        words,
+        ELECTRUM_V2_MNEMONIC_LANGUAGES.ENGLISH,
+        { mnemonicType }
       );
-      expect(electrumV2Mnemonic.words()).toBe(words);
-      expect(electrumV2Mnemonic.language()).toBe(ELECTRUM_V2_MNEMONIC_LANGUAGES.ENGLISH);
-      const mnemonic: string[] = electrumV2Mnemonic.mnemonic().split(" ");
-      expect(mnemonic).toHaveLength(words);
-      expect(ElectrumV2Mnemonic.isValid(electrumV2Mnemonic.mnemonic(), { mnemonicType: ELECTRUM_V2_MNEMONIC_TYPES.STANDARD_2FA })).toBe(true);
+      const inst = new ElectrumV2Mnemonic(mnemStr, { mnemonicType });
+
+      expect(inst).toBeInstanceOf(ElectrumV2Mnemonic);
+      expect(inst.getWords()).toBe(words);
+      expect(inst.getLanguage()).toBe(
+        ELECTRUM_V2_MNEMONIC_LANGUAGES.ENGLISH
+      );
+      expect(inst.getMnemonic().split(' ')).toHaveLength(words);
+      expect(
+        ElectrumV2Mnemonic.isValid(inst.getMnemonic(), { mnemonicType })
+      ).toBe(true);
     }
   });
 
-  it("fromWords() should throw on an unsupported word count", (): void => {
-    expect(() => ElectrumV2Mnemonic.fromWords(13, ELECTRUM_V2_MNEMONIC_LANGUAGES.ENGLISH)).toThrowError(MnemonicError);
+  it('fromWords() throws on unsupported word counts', () => {
+    expect(() =>
+      ElectrumV2Mnemonic.fromWords(
+        13,
+        ELECTRUM_V2_MNEMONIC_LANGUAGES.ENGLISH,
+        { mnemonicType }
+      )
+    ).toThrowError(MnemonicError);
   });
 
-  it("fromEntropy() should accept hex, Uint8Array, or ElectrumV2Entropy and round-trip correctly", (): void => {
-    const vec12 = (jsonData['Electrum-V2'] as any[]).find(v => v.words === 12)!;
-    const entropy = vec12['mnemonic-types']['standard-2fa'][ELECTRUM_V2_MNEMONIC_LANGUAGES.ENGLISH]['entropy-suitable']
-    const entropyBytes: Uint8Array<ArrayBuffer> = getBytes(entropy);
-    const electrumV2Entropy: ElectrumV2Entropy = new ElectrumV2Entropy(entropy);
+  it('fromEntropy() accepts hex, Uint8Array or ElectrumV2Entropy and round-trips', () => {
+    const vec12 = (jsonData['Electrum-V2'] as any[])
+      .find(v => v.words === 12)!;
+    const entropyHex =
+      vec12['mnemonic-types']['standard-2fa'][
+        ELECTRUM_V2_MNEMONIC_LANGUAGES.ENGLISH
+      ]['entropy-suitable'];
+    const entropyBytes = getBytes(entropyHex);
+    const entropyObj   = new ElectrumV2Entropy(entropyHex);
 
-    for (const input of [entropy, entropyBytes, electrumV2Entropy]) {
-      const electrumV2Mnemonic: ElectrumV2Mnemonic= ElectrumV2Mnemonic.fromEntropy(
-          input, ELECTRUM_V2_MNEMONIC_LANGUAGES.ENGLISH, { mnemonicType: ELECTRUM_V2_MNEMONIC_TYPES.STANDARD_2FA }
+    for (const input of [entropyHex, entropyBytes, entropyObj]) {
+      const mnemStr = ElectrumV2Mnemonic.fromEntropy(
+        input,
+        ELECTRUM_V2_MNEMONIC_LANGUAGES.ENGLISH,
+        { mnemonicType }
       );
-      const decoded: string = ElectrumV2Mnemonic.decode(electrumV2Mnemonic.mnemonic(), { mnemonicType: ELECTRUM_V2_MNEMONIC_TYPES.STANDARD_2FA });
-      expect(decoded).toBe(entropy);
+      const inst = new ElectrumV2Mnemonic(mnemStr, { mnemonicType });
+
+      const decoded = ElectrumV2Mnemonic.decode(
+        inst.getMnemonic(),
+        { mnemonicType }
+      );
+      expect(decoded).toBe(entropyHex);
     }
   });
 
-  it("encode() should throw on unsupported entropy lengths", (): void => {
-    expect((): string => ElectrumV2Mnemonic.encode(
-        "00".repeat(100 / 4), ELECTRUM_V2_MNEMONIC_LANGUAGES.ENGLISH
-    )).toThrowError(EntropyError);
+  it('encode() throws on unsupported entropy lengths', () => {
+    expect(() =>
+      ElectrumV2Mnemonic.encode(
+        '00'.repeat(100 / 4),
+        ELECTRUM_V2_MNEMONIC_LANGUAGES.ENGLISH,
+        { mnemonicType }
+      )
+    ).toThrowError(EntropyError);
   });
 });

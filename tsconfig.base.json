@@ -15,5 +15,5 @@
     "sourceMap": true,
     "target": "es2022"
   },
-  "include": ["src/**/*", "tests/**/*", "json.d.ts"]
+  "include": ["src/**/*"]
 }
