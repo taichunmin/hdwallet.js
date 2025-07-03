@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: MIT
 
-import {AlgorandSeed} from "../../src/seeds";
+import {AlgorandSeed} from "../../src/seeds/algorand";
 import {MnemonicError} from "../../src/exceptions";
-import jsonData from "../data/json/seeds.json";
+const jsonData = require('../data/json/seeds.json');
 
 
 describe("AlgorandSeed.fromMnemonic", () => {

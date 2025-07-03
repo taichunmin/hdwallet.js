@@ -1,28 +1,38 @@
 // SPDX-License-Identifier: MIT
 
-import {BIP39Seed} from "../../src/seeds";
-import {MnemonicError} from "../../src/exceptions";
-import jsonData from "../data/json/seeds.json";
-
+import { BIP39Seed } from "../../src/seeds/bip39";
+import { MnemonicError } from "../../src/exceptions";
+const jsonData = require('../data/json/seeds.json');
 
 describe("BIP39Seed.fromMnemonic", () => {
-  const allVectors = (jsonData as any).BIP39 as Record<string, Record<string, any>>;
+  const allVectors = (jsonData as any).BIP39 as Record<string, Record<string, {
+    mnemonic: string;
+    "non-passphrase-seed": string;
+    passphrases: Record<string, string> | null;
+  }>>;
 
-  it("generates the correct seed for every English test‐vector", () => {
-    for (const wordCount of Object.keys(allVectors)) {
-      const vector = allVectors[wordCount].english;
-      const {
-        mnemonic,
-        passphrases,
-        "non-passphrase-seed": noPassSeed,
-      } = vector;
+  Object.entries(allVectors).forEach(([wordCount, languages]) => {
+    describe(`${wordCount}-word`, () => {
 
-      expect(BIP39Seed.fromMnemonic(mnemonic)).toBe(noPassSeed);
+      Object.entries(languages).forEach(([lang, vector]) => {
+        const { mnemonic, passphrases, "non-passphrase-seed": noPassSeed } = vector;
 
-      for (const [pw, expectedSeed] of Object.entries(passphrases)) {
-        expect(BIP39Seed.fromMnemonic(mnemonic, pw)).toBe(expectedSeed);
-      }
-    }
+        it(`📜 [${wordCount} words · ${lang}] generates correct seed without passphrase`, () => {
+          expect(BIP39Seed.fromMnemonic(mnemonic)).toBe(noPassSeed);
+        });
+
+        if (passphrases) {
+          Object.entries(passphrases).forEach(([pw, expectedSeed]) => {
+            it(`🔑 [${wordCount} words · ${lang}] with passphrase "${pw}"`, () => {
+              expect(
+                BIP39Seed.fromMnemonic(mnemonic, { passphrase: pw })
+              ).toBe(expectedSeed);
+            });
+          });
+        }
+      });
+
+    });
   });
 
   it("throws on invalid mnemonic", () => {
