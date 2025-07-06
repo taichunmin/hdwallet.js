@@ -46,9 +46,9 @@ class CardanoHD extends bip32_1.BIP32HD {
             return d;
         };
         if (this.cardanoType === cryptocurrencies_1.Cardano.TYPES.BYRON_LEGACY) {
-            if (this.seed.length !== 32) {
+            if (this.seed.length !== 64) {
                 throw new exceptions_1.BaseError('Invalid seed length', {
-                    expected: 32,
+                    expected: 64,
                     got: this.seed.length
                 });
             }
@@ -91,7 +91,7 @@ class CardanoHD extends bip32_1.BIP32HD {
             }
             let kl = tweakMasterKeyBits(hmac.slice(0, hmacHalfLength));
             const kr = hmac.slice(hmacHalfLength);
-            const chainCode = (0, crypto_1.hmacSha256)((0, utils_1.getHmac)(this.ecc.NAME), (0, utils_1.concatBytes)(Buffer.from([0x01]), this.seed));
+            const chainCode = (0, crypto_1.hmacSha256)((0, utils_1.getHmac)(this.ecc.NAME), (0, utils_1.concatBytes)((0, utils_1.toBuffer)([0x01]), this.seed));
             this.rootPrivateKey = this.ecc.PRIVATE_KEY.fromBytes((0, utils_1.concatBytes)(kl, kr));
             this.rootChainCode = chainCode;
         }
@@ -137,13 +137,13 @@ class CardanoHD extends bip32_1.BIP32HD {
         if (this.privateKey) {
             let zHmac, hmac;
             if (index & 0x80000000) {
-                zHmac = (0, crypto_1.hmacSha512)(this.chainCode, (0, utils_1.concatBytes)(Buffer.from([0x00]), this.privateKey.getRaw(), indexBytes));
-                hmac = (0, crypto_1.hmacSha512)(this.chainCode, (0, utils_1.concatBytes)(Buffer.from([0x01]), this.privateKey.getRaw(), indexBytes));
+                zHmac = (0, crypto_1.hmacSha512)(this.chainCode, (0, utils_1.concatBytes)((0, utils_1.toBuffer)([0x00]), this.privateKey.getRaw(), indexBytes));
+                hmac = (0, crypto_1.hmacSha512)(this.chainCode, (0, utils_1.concatBytes)((0, utils_1.toBuffer)([0x01]), this.privateKey.getRaw(), indexBytes));
             }
             else {
                 const pubRaw = this.publicKey.getRawCompressed().slice(1);
-                zHmac = (0, crypto_1.hmacSha512)(this.chainCode, (0, utils_1.concatBytes)(Buffer.from([0x02]), pubRaw, indexBytes));
-                hmac = (0, crypto_1.hmacSha512)(this.chainCode, (0, utils_1.concatBytes)(Buffer.from([0x03]), pubRaw, indexBytes));
+                zHmac = (0, crypto_1.hmacSha512)(this.chainCode, (0, utils_1.concatBytes)((0, utils_1.toBuffer)([0x02]), pubRaw, indexBytes));
+                hmac = (0, crypto_1.hmacSha512)(this.chainCode, (0, utils_1.concatBytes)((0, utils_1.toBuffer)([0x03]), pubRaw, indexBytes));
             }
             const zl = zHmac.slice(0, digestHalf);
             const zr = zHmac.slice(digestHalf);
@@ -178,8 +178,8 @@ class CardanoHD extends bip32_1.BIP32HD {
                 throw new exceptions_1.DerivationError('Hardened derivation path is invalid for xpublic key');
             }
             const pubRaw = this.publicKey.getRawCompressed().slice(1);
-            const zHmac = (0, crypto_1.hmacSha512)(this.chainCode, (0, utils_1.concatBytes)(Buffer.from([0x02]), pubRaw, indexBytes));
-            const hmac = (0, crypto_1.hmacSha512)(this.chainCode, (0, utils_1.concatBytes)(Buffer.from([0x03]), pubRaw, indexBytes));
+            const zHmac = (0, crypto_1.hmacSha512)(this.chainCode, (0, utils_1.concatBytes)((0, utils_1.toBuffer)([0x02]), pubRaw, indexBytes));
+            const hmac = (0, crypto_1.hmacSha512)(this.chainCode, (0, utils_1.concatBytes)((0, utils_1.toBuffer)([0x03]), pubRaw, indexBytes));
             const zl = zHmac.slice(0, digestHalf);
             const tweak = isLegacy
                 ? (0, utils_1.bytesToInteger)((0, utils_1.multiplyScalarNoCarry)(zl, 8), true)

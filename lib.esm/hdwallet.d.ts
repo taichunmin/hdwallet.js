@@ -16,7 +16,7 @@ export declare class HDWallet {
     private passphrase;
     private mnemonic?;
     private seed?;
-    private derivation?;
+    derivation?: Derivation;
     private semantic?;
     private mode?;
     private mnemonicType?;

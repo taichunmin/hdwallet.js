@@ -7,7 +7,7 @@ const __$G = (typeof globalThis !== 'undefined' ? globalThis: typeof window !== 
 
     // SPDX-License-Identifier: MIT
     const __name__ = 'hdwallet';
-    const __version__ = '1.0.0-beta.3';
+    const __version__ = '1.0.0-beta.4';
     const __license__ = 'MIT';
     const __author__ = 'Meheret Tesfaye Batu';
     const __email__ = 'meherett.batu@gmail.com';
@@ -81930,9 +81930,9 @@ ${O$2.repeat(r.depth)}}`:r.close="}";break}case f$4.TAG:e+=String(i),e+=a(f$4.PO
                 return d;
             };
             if (this.cardanoType === Cardano.TYPES.BYRON_LEGACY) {
-                if (this.seed.length !== 32) {
+                if (this.seed.length !== 64) {
                     throw new BaseError('Invalid seed length', {
-                        expected: 32,
+                        expected: 64,
                         got: this.seed.length
                     });
                 }
@@ -81975,7 +81975,7 @@ ${O$2.repeat(r.depth)}}`:r.close="}";break}case f$4.TAG:e+=String(i),e+=a(f$4.PO
                 }
                 let kl = tweakMasterKeyBits(hmac.slice(0, hmacHalfLength));
                 const kr = hmac.slice(hmacHalfLength);
-                const chainCode = hmacSha256(getHmac(this.ecc.NAME), concatBytes(Buffer.from([0x01]), this.seed));
+                const chainCode = hmacSha256(getHmac(this.ecc.NAME), concatBytes(toBuffer([0x01]), this.seed));
                 this.rootPrivateKey = this.ecc.PRIVATE_KEY.fromBytes(concatBytes(kl, kr));
                 this.rootChainCode = chainCode;
             }
@@ -82021,13 +82021,13 @@ ${O$2.repeat(r.depth)}}`:r.close="}";break}case f$4.TAG:e+=String(i),e+=a(f$4.PO
             if (this.privateKey) {
                 let zHmac, hmac;
                 if (index & 0x80000000) {
-                    zHmac = hmacSha512(this.chainCode, concatBytes(Buffer.from([0x00]), this.privateKey.getRaw(), indexBytes));
-                    hmac = hmacSha512(this.chainCode, concatBytes(Buffer.from([0x01]), this.privateKey.getRaw(), indexBytes));
+                    zHmac = hmacSha512(this.chainCode, concatBytes(toBuffer([0x00]), this.privateKey.getRaw(), indexBytes));
+                    hmac = hmacSha512(this.chainCode, concatBytes(toBuffer([0x01]), this.privateKey.getRaw(), indexBytes));
                 }
                 else {
                     const pubRaw = this.publicKey.getRawCompressed().slice(1);
-                    zHmac = hmacSha512(this.chainCode, concatBytes(Buffer.from([0x02]), pubRaw, indexBytes));
-                    hmac = hmacSha512(this.chainCode, concatBytes(Buffer.from([0x03]), pubRaw, indexBytes));
+                    zHmac = hmacSha512(this.chainCode, concatBytes(toBuffer([0x02]), pubRaw, indexBytes));
+                    hmac = hmacSha512(this.chainCode, concatBytes(toBuffer([0x03]), pubRaw, indexBytes));
                 }
                 const zl = zHmac.slice(0, digestHalf);
                 const zr = zHmac.slice(digestHalf);
@@ -82062,8 +82062,8 @@ ${O$2.repeat(r.depth)}}`:r.close="}";break}case f$4.TAG:e+=String(i),e+=a(f$4.PO
                     throw new DerivationError('Hardened derivation path is invalid for xpublic key');
                 }
                 const pubRaw = this.publicKey.getRawCompressed().slice(1);
-                const zHmac = hmacSha512(this.chainCode, concatBytes(Buffer.from([0x02]), pubRaw, indexBytes));
-                const hmac = hmacSha512(this.chainCode, concatBytes(Buffer.from([0x03]), pubRaw, indexBytes));
+                const zHmac = hmacSha512(this.chainCode, concatBytes(toBuffer([0x02]), pubRaw, indexBytes));
+                const hmac = hmacSha512(this.chainCode, concatBytes(toBuffer([0x03]), pubRaw, indexBytes));
                 const zl = zHmac.slice(0, digestHalf);
                 const tweak = isLegacy
                     ? bytesToInteger(multiplyScalarNoCarry(zl, 8), true)
@@ -82530,7 +82530,7 @@ ${O$2.repeat(r.depth)}}`:r.close="}";break}case f$4.TAG:e+=String(i),e+=a(f$4.PO
             if (minorIndex === 0 && majorIndex === 0) {
                 return [this.spendPublicKey, this.viewPublicKey];
             }
-            const m = intDecode(scalarReduce(keccak256(concatBytes(Buffer.from('SubAddr\x00', 'utf-8'), this.viewPrivateKey.getRaw(), integerToBytes(majorIndex, 4, 'little'), integerToBytes(minorIndex, 4, 'little')))));
+            const m = intDecode(scalarReduce(keccak256(concatBytes(toBuffer('SubAddr\x00', 'utf8'), this.viewPrivateKey.getRaw(), integerToBytes(majorIndex, 4, 'little'), integerToBytes(minorIndex, 4, 'little')))));
             const subAddressSpendPoint = this.spendPublicKey.getPoint().add(SLIP10Ed25519MoneroECC.GENERATOR.multiply(m));
             const subAddressViewPoint = subAddressSpendPoint.multiply(bytesToInteger(this.viewPrivateKey.getRaw(), true));
             return [

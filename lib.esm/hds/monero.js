@@ -4,7 +4,7 @@ import { Monero } from '../cryptocurrencies';
 import { scalarReduce, intDecode } from '../libs/ed25519-utils';
 import { keccak256 } from '../crypto';
 import { SLIP10Ed25519MoneroECC, SLIP10Ed25519MoneroPrivateKey, SLIP10Ed25519MoneroPublicKey } from '../eccs';
-import { getBytes, bytesToString, integerToBytes, bytesToInteger, ensureTypeMatch, concatBytes } from '../utils';
+import { getBytes, bytesToString, integerToBytes, bytesToInteger, ensureTypeMatch, concatBytes, toBuffer } from '../utils';
 import { MoneroDerivation } from '../derivations';
 import { DerivationError, AddressError, NetworkError, PrivateKeyError, PublicKeyError, SeedError } from '../exceptions';
 import { Network } from '../cryptocurrencies/cryptocurrency';
@@ -116,7 +116,7 @@ export class MoneroHD extends HD {
         if (minorIndex === 0 && majorIndex === 0) {
             return [this.spendPublicKey, this.viewPublicKey];
         }
-        const m = intDecode(scalarReduce(keccak256(concatBytes(Buffer.from('SubAddr\x00', 'utf-8'), this.viewPrivateKey.getRaw(), integerToBytes(majorIndex, 4, 'little'), integerToBytes(minorIndex, 4, 'little')))));
+        const m = intDecode(scalarReduce(keccak256(concatBytes(toBuffer('SubAddr\x00', 'utf8'), this.viewPrivateKey.getRaw(), integerToBytes(majorIndex, 4, 'little'), integerToBytes(minorIndex, 4, 'little')))));
         const subAddressSpendPoint = this.spendPublicKey.getPoint().add(SLIP10Ed25519MoneroECC.GENERATOR.multiply(m));
         const subAddressViewPoint = subAddressSpendPoint.multiply(bytesToInteger(this.viewPrivateKey.getRaw(), true));
         return [

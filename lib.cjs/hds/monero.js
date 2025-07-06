@@ -119,7 +119,7 @@ class MoneroHD extends hd_1.HD {
         if (minorIndex === 0 && majorIndex === 0) {
             return [this.spendPublicKey, this.viewPublicKey];
         }
-        const m = (0, ed25519_utils_1.intDecode)((0, ed25519_utils_1.scalarReduce)((0, crypto_1.keccak256)((0, utils_1.concatBytes)(Buffer.from('SubAddr\x00', 'utf-8'), this.viewPrivateKey.getRaw(), (0, utils_1.integerToBytes)(majorIndex, 4, 'little'), (0, utils_1.integerToBytes)(minorIndex, 4, 'little')))));
+        const m = (0, ed25519_utils_1.intDecode)((0, ed25519_utils_1.scalarReduce)((0, crypto_1.keccak256)((0, utils_1.concatBytes)((0, utils_1.toBuffer)('SubAddr\x00', 'utf8'), this.viewPrivateKey.getRaw(), (0, utils_1.integerToBytes)(majorIndex, 4, 'little'), (0, utils_1.integerToBytes)(minorIndex, 4, 'little')))));
         const subAddressSpendPoint = this.spendPublicKey.getPoint().add(eccs_1.SLIP10Ed25519MoneroECC.GENERATOR.multiply(m));
         const subAddressViewPoint = subAddressSpendPoint.multiply((0, utils_1.bytesToInteger)(this.viewPrivateKey.getRaw(), true));
         return [
