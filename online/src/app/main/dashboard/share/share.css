@@ -1,0 +1,13 @@
+#URL {
+  margin: 16px 0;
+  word-break: break-all;
+  white-space: normal;
+  padding: 10px;
+  background-color: rgb(25, 30, 36);
+  border-radius: 5px;
+  color: #ffffff;
+  font-size: 14px;
+  line-height: 1.4;
+  max-height: 200px;
+  overflow-y: auto;
+}

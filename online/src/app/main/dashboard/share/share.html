@@ -1,0 +1,235 @@
+<!--{{ shareData?.from }}-->
+
+<div class="flex ml-2 mt-2 mr-9">
+  <div class="flex-none">
+    <div class="flex items-center native-font h-full">
+      <h3 class="uppercase" style="font-size: 18px">Share</h3>
+    </div>
+  </div>
+  <div class="flex-1">
+    <div class="flex justify-end items-center native-font h-full">
+
+    </div>
+  </div>
+</div>
+
+<div *ngIf="shareFormGroup" style="border-top: 1px solid rgba(128, 128, 128, 0.25);" class="mt-4 pt-3">
+  <form [formGroup]="shareFormGroup" class="grid grid-cols-4 max-2xl:grid-cols-2 gap-4">
+    <!-- Share - ECC -->
+    <div *ngIf="shareData.ecc" class="custom-checkbox">
+      <input (change)="makeURL(this.shareFormGroup?.value)" type="checkbox" formControlName="ecc">
+      <label class="ml-2">ECC</label>
+    </div>
+    <!-- Share - Symbol -->
+    <fieldset disabled>
+      <div *ngIf="shareData.symbol" class="custom-checkbox">
+        <input (change)="makeURL(this.shareFormGroup?.value)" type="checkbox" formControlName="symbol">
+        <label class="ml-2">Symbol</label>
+      </div>
+    </fieldset>
+    <!-- Share - Network -->
+    <fieldset disabled>
+      <div *ngIf="shareData.network" class="custom-checkbox">
+        <input (change)="makeURL(this.shareFormGroup?.value)" type="checkbox" formControlName="network">
+        <label class="ml-2">Network</label>
+      </div>
+    </fieldset>
+    <!-- Share - HD -->
+    <fieldset disabled>
+      <div *ngIf="shareData.hd" class="custom-checkbox">
+        <input (change)="makeURL(this.shareFormGroup?.value)" type="checkbox" formControlName="hd">
+        <label class="ml-2">HD</label>
+      </div>
+    </fieldset>
+    <!-- Share - From -->
+    <fieldset disabled>
+      <div *ngIf="shareData.from" class="custom-checkbox">
+        <input (change)="makeURL(this.shareFormGroup?.value)" type="checkbox" formControlName="from">
+        <label class="ml-2">From</label>
+      </div>
+    </fieldset>
+    <!-- Share - Client -->
+    <div *ngIf="shareData.client" class="custom-checkbox">
+      <input (change)="makeURL(this.shareFormGroup?.value)" type="checkbox" formControlName="client">
+      <label class="ml-2">Client</label>
+    </div>
+    <!-- Share - Entropy -->
+    <div *ngIf="shareData.entropy" class="custom-checkbox">
+      <input (change)="makeURL(this.shareFormGroup?.value)" type="checkbox" formControlName="entropy">
+      <label class="ml-2">Entropy</label>
+    </div>
+    <!-- Share - Mnemonic -->
+    <div *ngIf="shareData.mnemonic" class="custom-checkbox">
+      <input (change)="makeURL(this.shareFormGroup?.value)" type="checkbox" formControlName="mnemonic">
+      <label class="ml-2">Mnemonic</label>
+    </div>
+    <!-- Share - Private Key -->
+    <div *ngIf="shareData.privateKey" class="custom-checkbox">
+      <input (change)="makeURL(this.shareFormGroup?.value)" type="checkbox" formControlName="privateKey">
+      <label class="ml-2">Private Key</label>
+    </div>
+    <!-- Share - Public Key -->
+    <div *ngIf="shareData.publicKey" class="custom-checkbox">
+      <input (change)="makeURL(this.shareFormGroup?.value)" type="checkbox" formControlName="publicKey">
+      <label class="ml-2">Public Key</label>
+    </div>
+    <!-- Share - Seed -->
+    <div *ngIf="shareData.seed" class="custom-checkbox">
+      <input (change)="makeURL(this.shareFormGroup?.value)" type="checkbox" formControlName="seed">
+      <label class="ml-2">Seed</label>
+    </div>
+    <!-- Share - WIF -->
+    <div *ngIf="shareData.wif" class="custom-checkbox">
+      <input (change)="makeURL(this.shareFormGroup?.value)" type="checkbox" formControlName="wif">
+      <label class="ml-2">WIF</label>
+    </div>
+    <!-- Share - XPrivate Key -->
+    <div *ngIf="shareData.xprivateKey" class="custom-checkbox">
+      <input (change)="makeURL(this.shareFormGroup?.value)" type="checkbox" formControlName="xprivateKey">
+      <label class="ml-2">XPrivate Key</label>
+    </div>
+    <!-- Share - XPublic Key -->
+    <div *ngIf="shareData.xpublicKey" class="custom-checkbox">
+      <input (change)="makeURL(this.shareFormGroup?.value)" type="checkbox" formControlName="xpublicKey">
+      <label class="ml-2">XPublic Key</label>
+    </div>
+    <!-- Share - Strict -->
+    <div *ngIf="shareData.strict" class="custom-checkbox">
+      <input (change)="makeURL(this.shareFormGroup?.value)" type="checkbox" formControlName="strict">
+      <label class="ml-2">Strict</label>
+    </div>
+    <!-- Share - BIP38 -->
+    <div *ngIf="shareData.bip38" class="custom-checkbox">
+      <input (change)="makeURL(this.shareFormGroup?.value)" type="checkbox" formControlName="bip38">
+      <label class="ml-2">BIP38</label>
+    </div>
+    <!-- Share - Passphrase -->
+    <div *ngIf="shareData.passphrase" class="custom-checkbox">
+      <input (change)="makeURL(this.shareFormGroup?.value)" type="checkbox" formControlName="passphrase">
+      <label class="ml-2">Passphrase</label>
+    </div>
+    <!-- Share - Language -->
+    <div *ngIf="shareData.language" class="custom-checkbox">
+      <input (change)="makeURL(this.shareFormGroup?.value)" type="checkbox" formControlName="language">
+      <label class="ml-2">Language</label>
+    </div>
+    <!-- Share - Public Key Type -->
+    <div *ngIf="shareData.publicKeyType" class="custom-checkbox">
+      <input (change)="makeURL(this.shareFormGroup?.value)" type="checkbox" formControlName="publicKeyType">
+      <label class="ml-2">Public Key Type</label>
+    </div>
+    <!-- Share - Cardano Type -->
+    <div *ngIf="shareData.cardanoType" class="custom-checkbox">
+      <input (change)="makeURL(this.shareFormGroup?.value)" type="checkbox" formControlName="cardanoType">
+      <label class="ml-2">Cardano Type</label>
+    </div>
+    <!-- Share - Staking Public Key -->
+    <div *ngIf="shareData.stakingPublicKey" class="custom-checkbox">
+      <input (change)="makeURL(this.shareFormGroup?.value)" type="checkbox" formControlName="stakingPublicKey">
+      <label class="ml-2">Staking Public Key</label>
+    </div>
+    <!-- Share - Address Type -->
+    <div *ngIf="shareData.addressType" class="custom-checkbox">
+      <input (change)="makeURL(this.shareFormGroup?.value)" type="checkbox" formControlName="addressType">
+      <label class="ml-2">Address Type</label>
+    </div>
+    <!-- Share - Mode -->
+    <div *ngIf="shareData.mode" class="custom-checkbox">
+      <input (change)="makeURL(this.shareFormGroup?.value)" type="checkbox" formControlName="mode">
+      <label class="ml-2">Mode</label>
+    </div>
+    <!-- Share - Mnemonic Type -->
+    <div *ngIf="shareData.mnemonicType" class="custom-checkbox">
+      <input (change)="makeURL(this.shareFormGroup?.value)" type="checkbox" formControlName="mnemonicType">
+      <label class="ml-2">Mnemonic Type</label>
+    </div>
+    <!-- Share - Payment ID -->
+    <div *ngIf="shareData.paymentID" class="custom-checkbox">
+      <input (change)="makeURL(this.shareFormGroup?.value)" type="checkbox" formControlName="paymentID">
+      <label class="ml-2">Payment ID</label>
+    </div>
+    <!-- Share - Derivation -->
+    <div *ngIf="shareData.derivation" class="custom-checkbox">
+      <input (change)="makeURL(this.shareFormGroup?.value)" type="checkbox" formControlName="derivation">
+      <label class="ml-2">Derivation</label>
+    </div>
+    <!-- Share - Path -->
+    <div *ngIf="shareData.path" class="custom-checkbox">
+      <input (change)="makeURL(this.shareFormGroup?.value)" type="checkbox" formControlName="path">
+      <label class="ml-2">Path</label>
+    </div>
+    <!-- Share - Account -->
+    <div *ngIf="shareData.account" class="custom-checkbox">
+      <input (change)="makeURL(this.shareFormGroup?.value)" type="checkbox" formControlName="account">
+      <label class="ml-2">Account</label>
+    </div>
+    <!-- Share - Change -->
+    <div *ngIf="shareData.change" class="custom-checkbox">
+      <input (change)="makeURL(this.shareFormGroup?.value)" type="checkbox" formControlName="change">
+      <label class="ml-2">Change</label>
+    </div>
+    <!-- Share - Role -->
+    <div *ngIf="shareData.role" class="custom-checkbox">
+      <input (change)="makeURL(this.shareFormGroup?.value)" type="checkbox" formControlName="role">
+      <label class="ml-2">Role</label>
+    </div>
+    <!-- Share - Address -->
+    <div *ngIf="shareData.address" class="custom-checkbox">
+      <input (change)="makeURL(this.shareFormGroup?.value)" type="checkbox" formControlName="address">
+      <label class="ml-2">Address</label>
+    </div>
+    <!-- Share - Script Semantics -->
+    <div *ngIf="shareData.semantic" class="custom-checkbox">
+      <input (change)="makeURL(this.shareFormGroup?.value)" type="checkbox" formControlName="semantic">
+      <label class="ml-2">Semantics</label>
+    </div>
+    <!-- Share - Minor -->
+    <div *ngIf="shareData.minor" class="custom-checkbox">
+      <input (change)="makeURL(this.shareFormGroup?.value)" type="checkbox" formControlName="minor">
+      <label class="ml-2">Minor</label>
+    </div>
+    <!-- Share - Major -->
+    <div *ngIf="shareData.major" class="custom-checkbox">
+      <input (change)="makeURL(this.shareFormGroup?.value)" type="checkbox" formControlName="major">
+      <label class="ml-2">Major</label>
+    </div>
+    <!-- Share - Format -->
+    <fieldset disabled>
+      <div *ngIf="shareData.format" class="custom-checkbox">
+        <input (change)="makeURL(this.shareFormGroup?.value)" type="checkbox" formControlName="format">
+        <label class="ml-2">Format</label>
+      </div>
+    </fieldset>
+    <!-- Share - Exclude -->
+    <div *ngIf="shareData.exclude" class="custom-checkbox">
+      <input (change)="makeURL(this.shareFormGroup?.value)" type="checkbox" formControlName="exclude">
+      <label class="ml-2">Exclude</label>
+    </div>
+    <!-- Share - Include -->
+    <div *ngIf="shareData.include" class="custom-checkbox">
+      <input (change)="makeURL(this.shareFormGroup?.value)" type="checkbox" formControlName="include">
+      <label class="ml-2">Include</label>
+    </div>
+    <!-- Share - Generate -->
+    <div class="custom-checkbox">
+      <input (change)="makeURL(this.shareFormGroup?.value)" type="checkbox" formControlName="generate">
+      <label class="ml-2">Generate</label>
+    </div>
+    <!-- Share - Save -->
+    <div class="custom-checkbox">
+      <input (change)="makeURL(this.shareFormGroup?.value)" type="checkbox" formControlName="save">
+      <label class="ml-2">Save</label>
+    </div>
+    <!-- Share - Clear -->
+    <div class="custom-checkbox">
+      <input (change)="makeURL(this.shareFormGroup?.value)" type="checkbox" formControlName="clear">
+      <label class="ml-2">Clear</label>
+    </div>
+  </form>
+  <div id="URL">{{ url }}</div>
+  <fieldset [disabled]="copyDisable">
+    <div class="flex justify-end h-full">
+      <button type="button" class="custom-button" (change)="copyURL(url)">{{ copyMessage }}</button>
+    </div>
+  </fieldset>
+</div>
