@@ -33,7 +33,7 @@ export class HDWallet {
   private passphrase: string | null;
   private mnemonic?: Mnemonic;
   private seed?: Seed;
-  private derivation?: Derivation;
+  public derivation?: Derivation;
 
   private semantic?: string;
   private mode?: string;
