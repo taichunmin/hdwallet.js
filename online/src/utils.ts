@@ -83,7 +83,7 @@ export function syntaxJSONHighlight(
   );
 }
 
-export function syntaxCSVHighlight(data: any[][]): string {
+export function syntaxCSVHighlight(data: any): string {
   let result: string = '';
   const pathRegex = /^m(\/(\d+(-\d+)?'?)?)+$/;
   function applyStyle(value: any): string {
@@ -105,7 +105,7 @@ export function syntaxCSVHighlight(data: any[][]): string {
       return String(value);
     }
   }
-  result = data.map(row => row.map(cell => applyStyle(cell)).join(', ')).join('\n');
+  result = Object.values(data).map(cell => applyStyle(cell)).join(', ');
   return result;
 }
 
@@ -181,7 +181,7 @@ export function getDateTimeStamp(): string {
   return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
 }
 
-export function saveAsJSON(data: any, name: string): void {
+export function saveAsJSON(data: DictionaryInterface[], name: string): void {
   const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
   const url: string = window.URL.createObjectURL(blob);
   const a: HTMLAnchorElement = document.createElement('a');
@@ -191,12 +191,18 @@ export function saveAsJSON(data: any, name: string): void {
   window.URL.revokeObjectURL(url);
 }
 
-export function saveAsCSV(data: any[][], name: string): void {
-  const csvContent: any = data.map(
-    (row: any[]): any => row.map((item: any): string => {
-      return (Array.isArray(item) || typeof item === 'object') ? JSON.stringify(item) : String(item).replace(/"/g, '""')
-    }).join(',')
-  ).join('\n');
+export function saveAsCSV(data: DictionaryInterface[], name: string): void {
+  const csvContent = [
+    Object.keys(data[0]).join(', '), ...data.map(row =>
+      Object.keys(data[0]).map(key => {
+        const value = row[key];
+        if (Array.isArray(value) || typeof value === 'object') {
+          return JSON.stringify(value);
+        }
+        return String(value);
+      }).join(', ')
+    )
+  ].join('\n');
   const blob = new Blob([csvContent], { type: 'text/csv' });
   const url: string = window.URL.createObjectURL(blob);
   const a: HTMLAnchorElement = document.createElement('a');
