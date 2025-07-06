@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.0.0-beta.4](https://github.com/hdwallet-io/hdwallet.js/tree/1.0.0-beta.4) (2025-07-02)
+
+[Full Changelog](https://github.com/hdwallet-io/hdwallet.js/compare/1.0.0-beta.3...1.0.0-beta.4)
+
+**Improvements:**
+
+- Drop: `Buffer.from` & use `toBuffer` function.
+
+**Fix Bugs:**
+
+- Fix: HDWallet derivation to public type.
+
 ## [1.0.0-beta.3](https://github.com/hdwallet-io/hdwallet.js/tree/1.0.0-beta.3) (2025-07-02)
 
 [Full Changelog](https://github.com/hdwallet-io/hdwallet.js/compare/1.0.0-beta.2...1.0.0-beta.3)
