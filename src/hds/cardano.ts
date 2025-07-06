@@ -60,35 +60,35 @@ export class CardanoHD extends BIP32HD {
       return d;
     };
 
-  if (this.cardanoType === Cardano.TYPES.BYRON_LEGACY) {
-    if (this.seed.length !== 32) {
-      throw new BaseError('Invalid seed length', {
-        expected: 32,
-        got: this.seed.length
-      });
-    }
-
-    const digestSize = 64;
-    const data = encode(this.seed);
-    let iteration = 1;
-
-    while (true) {
-      const label = toBuffer(`Root Seed Chain ${iteration}`);
-      const i = hmacSha512(data, label);
-
-      let il = sha512(i.slice(0, digestSize / 2));
-      const ir = i.slice(digestSize / 2);
-      il = toBuffer(tweakMasterKeyBits(il));
-
-      if (!areBitsSet(il[31], 0x20)) {
-        this.rootPrivateKey = (this.ecc as typeof EllipticCurveCryptography).PRIVATE_KEY.fromBytes(il);
-        this.rootChainCode = ir;
-        break;
+    if (this.cardanoType === Cardano.TYPES.BYRON_LEGACY) {
+      if (this.seed.length !== 64) {
+        throw new BaseError('Invalid seed length', {
+          expected: 64,
+          got: this.seed.length
+        });
       }
-      iteration++;
-    }
 
-  } else if ([Cardano.TYPES.BYRON_ICARUS, Cardano.TYPES.SHELLEY_ICARUS].includes(this.cardanoType)) {
+      const digestSize = 64;
+      const data = encode(this.seed);
+      let iteration = 1;
+
+      while (true) {
+        const label = toBuffer(`Root Seed Chain ${iteration}`);
+        const i = hmacSha512(data, label);
+
+        let il = sha512(i.slice(0, digestSize / 2));
+        const ir = i.slice(digestSize / 2);
+        il = toBuffer(tweakMasterKeyBits(il));
+
+        if (!areBitsSet(il[31], 0x20)) {
+          this.rootPrivateKey = (this.ecc as typeof EllipticCurveCryptography).PRIVATE_KEY.fromBytes(il);
+          this.rootChainCode = ir;
+          break;
+        }
+        iteration++;
+      }
+
+    } else if ([Cardano.TYPES.BYRON_ICARUS, Cardano.TYPES.SHELLEY_ICARUS].includes(this.cardanoType)) {
       if (this.seed.length < 16) {
         throw new BaseError('Invalid seed length', { expected: '>= 16', got: this.seed.length });
       }
@@ -114,7 +114,7 @@ export class CardanoHD extends BIP32HD {
       let kl = tweakMasterKeyBits(hmac.slice(0, hmacHalfLength));
       const kr = hmac.slice(hmacHalfLength);
 
-      const chainCode = hmacSha256(getHmac((this.ecc as typeof EllipticCurveCryptography).NAME), concatBytes(Buffer.from([0x01]), this.seed));
+      const chainCode = hmacSha256(getHmac((this.ecc as typeof EllipticCurveCryptography).NAME), concatBytes(toBuffer([0x01]), this.seed));
 
       this.rootPrivateKey = (this.ecc as typeof EllipticCurveCryptography).PRIVATE_KEY.fromBytes(concatBytes(kl, kr));
       this.rootChainCode = chainCode;
@@ -165,12 +165,12 @@ export class CardanoHD extends BIP32HD {
     if (this.privateKey) {
       let zHmac: Uint8Array, hmac: Uint8Array;
       if (index & 0x80000000) {
-        zHmac = hmacSha512(this.chainCode!, concatBytes(Buffer.from([0x00]), this.privateKey.getRaw(), indexBytes));
-        hmac = hmacSha512(this.chainCode!, concatBytes(Buffer.from([0x01]), this.privateKey.getRaw(), indexBytes));
+        zHmac = hmacSha512(this.chainCode!, concatBytes(toBuffer([0x00]), this.privateKey.getRaw(), indexBytes));
+        hmac = hmacSha512(this.chainCode!, concatBytes(toBuffer([0x01]), this.privateKey.getRaw(), indexBytes));
       } else {
         const pubRaw = this.publicKey!.getRawCompressed().slice(1);
-        zHmac = hmacSha512(this.chainCode!, concatBytes(Buffer.from([0x02]), pubRaw, indexBytes));
-        hmac = hmacSha512(this.chainCode!, concatBytes(Buffer.from([0x03]), pubRaw, indexBytes));
+        zHmac = hmacSha512(this.chainCode!, concatBytes(toBuffer([0x02]), pubRaw, indexBytes));
+        hmac = hmacSha512(this.chainCode!, concatBytes(toBuffer([0x03]), pubRaw, indexBytes));
       }
 
       const zl = zHmac.slice(0, digestHalf);
@@ -212,8 +212,8 @@ export class CardanoHD extends BIP32HD {
       }
 
       const pubRaw = this.publicKey!.getRawCompressed().slice(1);
-      const zHmac = hmacSha512(this.chainCode!, concatBytes(Buffer.from([0x02]), pubRaw, indexBytes));
-      const hmac = hmacSha512(this.chainCode!, concatBytes(Buffer.from([0x03]), pubRaw, indexBytes));
+      const zHmac = hmacSha512(this.chainCode!, concatBytes(toBuffer([0x02]), pubRaw, indexBytes));
+      const hmac = hmacSha512(this.chainCode!, concatBytes(toBuffer([0x03]), pubRaw, indexBytes));
 
       const zl = zHmac.slice(0, digestHalf);
       const tweak = isLegacy

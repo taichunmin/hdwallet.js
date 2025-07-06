@@ -12,7 +12,15 @@ import {
   PrivateKey,
   PublicKey
 } from '../eccs';
-import { getBytes, bytesToString, integerToBytes, bytesToInteger, ensureTypeMatch, concatBytes } from '../utils';
+import {
+  getBytes,
+  bytesToString,
+  integerToBytes,
+  bytesToInteger,
+  ensureTypeMatch,
+  concatBytes,
+  toBuffer
+} from '../utils';
 import { MoneroDerivation } from '../derivations';
 import { DerivationError, AddressError, NetworkError, PrivateKeyError, PublicKeyError, SeedError } from '../exceptions';
 import { HDAddressOptionsInterface, HDOptionsInterface } from '../interfaces';
@@ -155,7 +163,7 @@ export class MoneroHD extends HD {
     }
 
     const m = intDecode(scalarReduce(keccak256(concatBytes(
-      Buffer.from('SubAddr\x00', 'utf-8'),
+      toBuffer('SubAddr\x00', 'utf8'),
       this.viewPrivateKey.getRaw(),
       integerToBytes(majorIndex, 4, 'little'),
       integerToBytes(minorIndex, 4, 'little')
