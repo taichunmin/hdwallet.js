@@ -74,21 +74,22 @@ export class ShareComponent {
     this.url = url.toString();
   }
 
-  copyURL(url: string): void {
+  async copyURL(url: string): Promise<void> {
     this.copyDisable = true;
-    copyToClipboard(url).then((isCopied: boolean) => {
+
+    try {
+      const isCopied = await copyToClipboard(url);
       this.copyMessage = isCopied ? 'Copied' : 'Failed';
-      setTimeout((): void => {
-        this.copyDisable = false;
-        this.copyMessage = 'Copy';
-      }, 1000);
-    }).catch(() => {
+    } catch {
       this.copyMessage = 'Failed';
-      setTimeout((): void => {
-        this.copyDisable = false;
-        this.copyMessage = 'Copy';
-      }, 1000);
-    })
+    }
+    this.changeDetectorRef.detectChanges();
+
+    setTimeout(() => {
+      this.copyDisable = false;
+      this.copyMessage = 'Copy';
+      this.changeDetectorRef.detectChanges();
+    }, 1000);
   }
 
   normalizeKey(key: string): string {

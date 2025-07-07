@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { QRCodeComponent } from 'angularx-qrcode';
 
@@ -28,6 +28,11 @@ export class DonationComponent {
   selectedAddress: ComboboxInterface = this.addresses[68]; // Ethereum
   selectedTruncatedAddress: string | null = null;
 
+  constructor(
+    private changeDetectorRef: ChangeDetectorRef
+  ) {
+  }
+
   onAddressChange(address: ComboboxInterface): void {
     this.selectedAddress = address;
     this.selectedTruncatedAddress = this.getTruncatedAddress(
@@ -44,20 +49,21 @@ export class DonationComponent {
     return address;
   }
 
-  copyAddress(address: string): void {
+  async copyAddress(address: string): Promise<void> {
     this.copyDisable = true;
-    copyToClipboard(address).then((isCopied: boolean) => {
+
+    try {
+      const isCopied = await copyToClipboard(address);
       this.copyMessage = isCopied ? 'Copied' : 'Failed';
-      setTimeout((): void => {
-        this.copyDisable = false;
-        this.copyMessage = 'Copy';
-      }, 1000);
-    }).catch(() => {
+    } catch {
       this.copyMessage = 'Failed';
-      setTimeout((): void => {
-        this.copyDisable = false;
-        this.copyMessage = 'Copy';
-      }, 1000);
-    })
+    }
+    this.changeDetectorRef.detectChanges();
+
+    setTimeout(() => {
+      this.copyDisable = false;
+      this.copyMessage = 'Copy';
+      this.changeDetectorRef.detectChanges();
+    }, 1000);
   }
 }

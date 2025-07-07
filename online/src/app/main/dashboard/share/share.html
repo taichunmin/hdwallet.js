@@ -229,7 +229,7 @@
   <div id="URL">{{ url }}</div>
   <fieldset [disabled]="copyDisable">
     <div class="flex justify-end h-full">
-      <button type="button" class="custom-button" (change)="copyURL(url)">{{ copyMessage }}</button>
+      <button type="button" class="custom-button" (click)="copyURL(url)">{{ copyMessage }}</button>
     </div>
   </fieldset>
 </div>
