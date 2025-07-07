@@ -64,3 +64,47 @@ export interface PassphraseInterface {
   lowerCase: boolean;
   characters: boolean;
 }
+
+export interface DumpsInterface {
+  symbol: string;
+  network: string;
+  hd: string;
+  from: string;
+  client: string;
+  entropy: string;
+  mnemonic: string;
+  mnemonicType: string;
+  language?: string;
+  seed: string;
+  xprivateKey: string;
+  xpublicKey: string;
+  strict: boolean;
+  privateKey: string;
+  wif: string;
+  publicKey: string;
+  spendPrivateKey: string;
+  viewPrivateKey: string;
+  spendPublicKey: string;
+  derivation: string;
+  account: string;
+  change: string;
+  role: string;
+  address: string;
+  minor: string;
+  major: string;
+  path: string;
+  publicKeyType: string;
+  passphrase: string;
+  paymentID: string;
+  cardanoType: string;
+  addressType: string;
+  stakingPublicKey: string;
+  mode: string;
+  exclude: string;
+  include: string;
+  bip38: boolean;
+  customClient: string;
+  semantic: string;
+  format: 'json' | 'csv';
+  checksum?: boolean;
+}

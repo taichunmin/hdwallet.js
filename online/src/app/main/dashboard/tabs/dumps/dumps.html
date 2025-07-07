@@ -75,7 +75,7 @@
       <fieldset class="max-2xl:col-span-2">
         <label class="uppercase">Public Key Type</label>
         <div class="mt-2">
-          <custom-combobox [customOptions]="publicKeyTypes" formControlName="public_key_type"></custom-combobox>
+          <custom-combobox [customOptions]="publicKeyTypes" formControlName="publicKeyType"></custom-combobox>
         </div>
       </fieldset>
       <!-- BIP Entropy - Semantic -->
@@ -118,7 +118,7 @@
       <fieldset class="max-2xl:col-span-2 max-2xl:row-start-1 max-2xl:col-start-3">
         <label class="uppercase">Public Key Type</label>
         <div class="mt-2">
-          <custom-combobox [customOptions]="publicKeyTypes" formControlName="public_key_type"></custom-combobox>
+          <custom-combobox [customOptions]="publicKeyTypes" formControlName="publicKeyType"></custom-combobox>
         </div>
       </fieldset>
       <!-- BIP Mnemonic - Semantic -->
@@ -143,13 +143,13 @@
       <!-- BIP Private Key Input -->
       <fieldset class="col-span-full max-xl:col-span-4">
         <label class="uppercase">Private Key</label>
-        <input type="text" class="custom-input" formControlName="private_key">
+        <input type="text" class="custom-input" formControlName="privateKey">
       </fieldset>
       <!-- BIP Private Key - Public Key Type -->
       <fieldset class="max-xl:col-span-2">
         <label class="uppercase">Public Key Type</label>
         <div class="mt-2">
-          <custom-combobox [customOptions]="publicKeyTypes" formControlName="public_key_type"></custom-combobox>
+          <custom-combobox [customOptions]="publicKeyTypes" formControlName="publicKeyType"></custom-combobox>
         </div>
       </fieldset>
       <!-- BIP Private Key - Semantic -->
@@ -174,13 +174,13 @@
       <!-- BIP Public Key Input -->
       <fieldset class="col-span-full">
         <label class="uppercase">Public Key</label>
-        <input type="text" class="custom-input" formControlName="public_key">
+        <input type="text" class="custom-input" formControlName="publicKey">
       </fieldset>
       <!-- BIP Public Key - Public Key Type -->
       <fieldset class="max-xl:col-span-2">
         <label class="uppercase">Public Key Type</label>
         <div class="mt-2">
-          <custom-combobox [customOptions]="publicKeyTypes" formControlName="public_key_type"></custom-combobox>
+          <custom-combobox [customOptions]="publicKeyTypes" formControlName="publicKeyType"></custom-combobox>
         </div>
       </fieldset>
       <!-- BIP Public Key - Semantic -->
@@ -218,7 +218,7 @@
       <fieldset class="col-span-1 max-2xl:col-span-2 max-2xl:row-start-1 max-2xl:col-start-3">
         <label class="uppercase">Public Key Type</label>
         <div class="mt-2">
-          <custom-combobox [customOptions]="publicKeyTypes" formControlName="public_key_type"></custom-combobox>
+          <custom-combobox [customOptions]="publicKeyTypes" formControlName="publicKeyType"></custom-combobox>
         </div>
       </fieldset>
       <!-- BIP Seed - Semantic -->
@@ -241,8 +241,8 @@
     </div>
     <div class="grid grid-cols-7 gap-2.5">
       <!-- BIP WIF Input -->
-      <fieldset class="col-span-full">
-        <label class="uppercase">{{ dumpsFormGroup.get('bip38')?.value ? 'Encrypted Wallet Import Format' : 'Wallet Import Format' }}</label>
+      <fieldset class="col-span-full" [disabled]="dumpsFormGroup.get('bip38')?.value">
+        <label class="uppercase">{{ dumpsFormGroup.get('bip38')?.value ? 'Encrypted Wallet Import Format - Coming soon!' : 'Wallet Import Format' }}</label>
         <input type="text" class="custom-input" formControlName="wif">
       </fieldset>
       <div class="grid grid-cols-[auto_1fr] col-span-3 max-xl:col-span-full gap-2.5">
@@ -261,7 +261,7 @@
       <fieldset class="col-span-2 max-xl:col-span-3">
         <label class="uppercase">Public Key Type</label>
         <div class="mt-2">
-          <custom-combobox [customOptions]="publicKeyTypes" formControlName="public_key_type"></custom-combobox>
+          <custom-combobox [customOptions]="publicKeyTypes" formControlName="publicKeyType"></custom-combobox>
         </div>
       </fieldset>
       <!-- BIP WIF - Semantic -->
@@ -287,7 +287,7 @@
         <!-- BIP XPrivate Key Input -->
         <fieldset>
           <label class="uppercase">XPrivate Key</label>
-          <input type="text" class="custom-input" formControlName="xprivate_key">
+          <input type="text" class="custom-input" formControlName="xprivateKey">
         </fieldset>
         <!-- BIP XPrivate Key - Strict -->
         <div class="custom-checkbox pt-7">
@@ -299,7 +299,7 @@
       <fieldset class="max-xl:col-span-2">
         <label class="uppercase">Public Key Type</label>
         <div class="mt-2">
-          <custom-combobox [customOptions]="publicKeyTypes" formControlName="public_key_type"></custom-combobox>
+          <custom-combobox [customOptions]="publicKeyTypes" formControlName="publicKeyType"></custom-combobox>
         </div>
       </fieldset>
       <!-- BIP XPrivate Key - Semantic -->
@@ -325,7 +325,7 @@
         <!--  BIP XPublic Key Input  -->
         <fieldset>
           <label class="uppercase">XPublic Key</label>
-          <input type="text" class="custom-input" formControlName="xpublic_key">
+          <input type="text" class="custom-input" formControlName="xpublicKey">
         </fieldset>
         <!--  BIP XPublic Key - Strict  -->
         <div class="custom-checkbox pt-7">
@@ -337,7 +337,7 @@
       <fieldset class="max-xl:col-span-2">
         <label class="uppercase">Public Key Type</label>
         <div class="mt-2">
-          <custom-combobox [customOptions]="publicKeyTypes" formControlName="public_key_type"></custom-combobox>
+          <custom-combobox [customOptions]="publicKeyTypes" formControlName="publicKeyType"></custom-combobox>
         </div>
       </fieldset>
       <!-- BIP XPublic Key - Semantic -->
@@ -375,13 +375,13 @@
       <fieldset class="col-span-3 max-2xl:row-start-1 max-2xl:col-start-4">
         <label class="uppercase">Cardano Type</label>
         <div class="mt-2">
-          <custom-combobox [customOptions]="cardanoTypes" formControlName="cardano_type"></custom-combobox>
+          <custom-combobox [customOptions]="cardanoTypes" formControlName="cardanoType"></custom-combobox>
         </div>
       </fieldset>
       <!-- Cardano Entropy - Staking Public Key -->
-      <fieldset class="col-span-3 max-2xl:col-span-full" [disabled]="dumpsFormGroup.get('address_type')?.value !== 'payment'">
+      <fieldset class="col-span-3 max-2xl:col-span-full" [disabled]="dumpsFormGroup.get('addressType')?.value !== 'payment'">
         <label class="uppercase">Staking Public Key</label>
-        <input type="text" class="custom-input" formControlName="staking_public_key">
+        <input type="text" class="custom-input" formControlName="stakingPublicKey">
       </fieldset>
       <!-- Cardano Entropy - Passphrase -->
       <fieldset class="col-span-3 max-2xl:col-span-full">
@@ -396,10 +396,10 @@
         </div>
       </fieldset>
       <!-- Cardano Entropy - Address Type -->
-      <fieldset class="col-span-3" [disabled]="!['shelley-icarus', 'shelley-ledger'].includes(dumpsFormGroup.get('cardano_type')?.value)">
+      <fieldset class="col-span-3" [disabled]="!['shelley-icarus', 'shelley-ledger'].includes(dumpsFormGroup.get('cardanoType')?.value)">
         <label class="uppercase">Address Type</label>
         <div class="mt-2">
-          <custom-combobox [customOptions]="addressTypes" formControlName="address_type"></custom-combobox>
+          <custom-combobox [customOptions]="addressTypes" formControlName="addressType"></custom-combobox>
         </div>
       </fieldset>
     </div>
@@ -430,20 +430,20 @@
       <fieldset class="col-span-3 max-2xl:row-start-1 max-2xl:col-start-4">
         <label class="uppercase">Cardano Type</label>
         <div class="mt-2">
-          <custom-combobox [customOptions]="cardanoTypes" formControlName="cardano_type"></custom-combobox>
+          <custom-combobox [customOptions]="cardanoTypes" formControlName="cardanoType"></custom-combobox>
         </div>
       </fieldset>
       <!-- Cardano Mnemonic - Address Type -->
-      <fieldset class="col-span-3 max-2xl:row-start-5" [disabled]="!['shelley-icarus', 'shelley-ledger'].includes(dumpsFormGroup.get('cardano_type')?.value)">
+      <fieldset class="col-span-3 max-2xl:row-start-5" [disabled]="!['shelley-icarus', 'shelley-ledger'].includes(dumpsFormGroup.get('cardanoType')?.value)">
         <label class="uppercase">Address Type</label>
         <div class="mt-2">
-          <custom-combobox [customOptions]="addressTypes" formControlName="address_type"></custom-combobox>
+          <custom-combobox [customOptions]="addressTypes" formControlName="addressType"></custom-combobox>
         </div>
       </fieldset>
       <!-- Cardano Mnemonic - Staking Public Key -->
-      <fieldset  class="col-span-5 max-2xl:col-span-full" [disabled]="dumpsFormGroup.get('address_type')?.value !== 'payment'">
+      <fieldset  class="col-span-5 max-2xl:col-span-full" [disabled]="dumpsFormGroup.get('addressType')?.value !== 'payment'">
         <label class="uppercase">Staking Public Key</label>
-        <input type="text" class="custom-input" formControlName="staking_public_key">
+        <input type="text" class="custom-input" formControlName="stakingPublicKey">
       </fieldset>
       <!-- Cardano Mnemonic - Passphrase -->
       <fieldset class="col-span-4 max-2xl:col-span-full">
@@ -466,7 +466,7 @@
         <!-- Cardano Private key Input -->
         <fieldset>
           <label class="uppercase">Private Key</label>
-          <input type="text" class="custom-input" formControlName="private_key">
+          <input type="text" class="custom-input" formControlName="privateKey">
         </fieldset>
       </div>
       <div class="grid grid-cols-1 max-xl:grid-cols-2 xl:row-span-2 gap-2.5">
@@ -474,21 +474,21 @@
         <fieldset>
           <label class="uppercase">Cardano Type</label>
           <div class="mt-2">
-            <custom-combobox [customOptions]="cardanoTypes" formControlName="cardano_type"></custom-combobox>
+            <custom-combobox [customOptions]="cardanoTypes" formControlName="cardanoType"></custom-combobox>
           </div>
         </fieldset>
         <!-- Cardano Private key - Address Type -->
-        <fieldset [disabled]="!['shelley-icarus', 'shelley-ledger'].includes(dumpsFormGroup.get('cardano_type')?.value)">
+        <fieldset [disabled]="!['shelley-icarus', 'shelley-ledger'].includes(dumpsFormGroup.get('cardanoType')?.value)">
           <label class="uppercase">Address Type</label>
           <div class="mt-2">
-            <custom-combobox [customOptions]="addressTypes" formControlName="address_type"></custom-combobox>
+            <custom-combobox [customOptions]="addressTypes" formControlName="addressType"></custom-combobox>
           </div>
         </fieldset>
       </div>
       <!-- Cardano Private key - Staking Public Key -->
-      <fieldset class="xl:col-span-2" [disabled]="dumpsFormGroup.get('address_type')?.value !== 'payment'">
+      <fieldset class="xl:col-span-2" [disabled]="dumpsFormGroup.get('addressType')?.value !== 'payment'">
         <label class="uppercase">Staking Public Key</label>
-        <input type="text" class="custom-input" formControlName="staking_public_key">
+        <input type="text" class="custom-input" formControlName="stakingPublicKey">
       </fieldset>
     </div>
   </fieldset>
@@ -506,7 +506,7 @@
         <!-- Cardano Public Key Input -->
         <fieldset>
           <label class="uppercase">Public Key</label>
-          <input type="text" class="custom-input" formControlName="public_key">
+          <input type="text" class="custom-input" formControlName="publicKey">
         </fieldset>
       </div>
       <div class="grid grid-cols-1 max-xl:grid-cols-2 xl:row-span-2 gap-2.5">
@@ -514,21 +514,21 @@
         <fieldset>
           <label class="uppercase">Cardano Type</label>
           <div class="mt-2">
-            <custom-combobox [customOptions]="cardanoTypes" formControlName="cardano_type"></custom-combobox>
+            <custom-combobox [customOptions]="cardanoTypes" formControlName="cardanoType"></custom-combobox>
           </div>
         </fieldset>
         <!-- Cardano Public Key - Address Type -->
-        <fieldset [disabled]="!['shelley-icarus', 'shelley-ledger'].includes(dumpsFormGroup.get('cardano_type')?.value)">
+        <fieldset [disabled]="!['shelley-icarus', 'shelley-ledger'].includes(dumpsFormGroup.get('cardanoType')?.value)">
           <label class="uppercase">Address Type</label>
           <div class="mt-2">
-            <custom-combobox [customOptions]="addressTypes" formControlName="address_type"></custom-combobox>
+            <custom-combobox [customOptions]="addressTypes" formControlName="addressType"></custom-combobox>
           </div>
         </fieldset>
       </div>
       <!-- Cardano Public Key - Staking Public Key -->
-      <fieldset class="xl:col-span-2" [disabled]="dumpsFormGroup.get('address_type')?.value !== 'payment'">
+      <fieldset class="xl:col-span-2" [disabled]="dumpsFormGroup.get('addressType')?.value !== 'payment'">
         <label class="uppercase">Staking Public Key</label>
-        <input type="text" class="custom-input" formControlName="staking_public_key">
+        <input type="text" class="custom-input" formControlName="stakingPublicKey">
       </fieldset>
     </div>
   </fieldset>
@@ -558,20 +558,20 @@
       <fieldset class="col-span-3 max-2xl:row-start-1 max-2xl:col-start-4">
         <label class="uppercase">Cardano Type</label>
         <div class="mt-2">
-          <custom-combobox [customOptions]="cardanoTypes" formControlName="cardano_type"></custom-combobox>
+          <custom-combobox [customOptions]="cardanoTypes" formControlName="cardanoType"></custom-combobox>
         </div>
       </fieldset>
        <!-- Cardano Seed - Address Type -->
-      <fieldset class="col-span-3 max-2xl:row-start-5" [disabled]="!['shelley-icarus', 'shelley-ledger'].includes(dumpsFormGroup.get('cardano_type')?.value)">
+      <fieldset class="col-span-3 max-2xl:row-start-5" [disabled]="!['shelley-icarus', 'shelley-ledger'].includes(dumpsFormGroup.get('cardanoType')?.value)">
         <label class="uppercase">Address Type</label>
         <div class="mt-2">
-          <custom-combobox [customOptions]="addressTypes" formControlName="address_type"></custom-combobox>
+          <custom-combobox [customOptions]="addressTypes" formControlName="addressType"></custom-combobox>
         </div>
       </fieldset>
        <!-- Cardano Seed - Staking Public Key -->
-      <fieldset class="col-span-5 max-2xl:col-span-full" [disabled]="dumpsFormGroup.get('address_type')?.value !== 'payment'">
+      <fieldset class="col-span-5 max-2xl:col-span-full" [disabled]="dumpsFormGroup.get('addressType')?.value !== 'payment'">
         <label class="uppercase">Staking Public Key</label>
-        <input type="text" class="custom-input" formControlName="staking_public_key">
+        <input type="text" class="custom-input" formControlName="stakingPublicKey">
       </fieldset>
       <!-- Cardano Seed - Passphrase -->
        <fieldset class="col-span-4 max-2xl:col-span-full">
@@ -594,7 +594,7 @@
         <!-- Cardano XPrivate key Input -->
         <fieldset>
           <label class="uppercase">XPrivate Key</label>
-          <input type="text" class="custom-input" formControlName="xprivate_key">
+          <input type="text" class="custom-input" formControlName="xprivateKey">
         </fieldset>
         <!-- Cardano XPrivate key Strict -->
         <div class="custom-checkbox pt-7">
@@ -607,22 +607,22 @@
         <fieldset>
           <label class="uppercase">Cardano Type</label>
           <div class="mt-2">
-            <custom-combobox [customOptions]="cardanoTypes" formControlName="cardano_type"></custom-combobox>
+            <custom-combobox [customOptions]="cardanoTypes" formControlName="cardanoType"></custom-combobox>
           </div>
         </fieldset>
         <!-- Cardano XPrivate key - Address Type -->
-        <fieldset [disabled]="!['shelley-icarus', 'shelley-ledger'].includes(dumpsFormGroup.get('cardano_type')?.value)">
+        <fieldset [disabled]="!['shelley-icarus', 'shelley-ledger'].includes(dumpsFormGroup.get('cardanoType')?.value)">
           <label class="uppercase">Address Type</label>
           <div class="mt-2">
-            <custom-combobox [customOptions]="addressTypes" formControlName="address_type"></custom-combobox>
+            <custom-combobox [customOptions]="addressTypes" formControlName="addressType"></custom-combobox>
           </div>
         </fieldset>
       </div>
       <div class="xl:col-span-2">
         <!-- Cardano XPrivate key - Staking Public Key -->
-        <fieldset [disabled]="dumpsFormGroup.get('address_type')?.value !== 'payment'">
+        <fieldset [disabled]="dumpsFormGroup.get('addressType')?.value !== 'payment'">
           <label class="uppercase">Staking Public Key</label>
-          <input type="text" class="custom-input" formControlName="staking_public_key">
+          <input type="text" class="custom-input" formControlName="stakingPublicKey">
         </fieldset>
       </div>
     </div>
@@ -641,7 +641,7 @@
         <!-- Cardano XPublic Key Input -->
         <fieldset>
           <label class="uppercase">XPublic Key</label>
-          <input type="text" class="custom-input" formControlName="xpublic_key">
+          <input type="text" class="custom-input" formControlName="xpublicKey">
         </fieldset>
         <!-- Cardano XPublic Key Strict -->
         <div class="custom-checkbox pt-7">
@@ -654,22 +654,22 @@
         <fieldset>
           <label class="uppercase">Cardano Type</label>
           <div class="mt-2">
-            <custom-combobox [customOptions]="cardanoTypes" formControlName="cardano_type"></custom-combobox>
+            <custom-combobox [customOptions]="cardanoTypes" formControlName="cardanoType"></custom-combobox>
           </div>
         </fieldset>
         <!-- Cardano XPublic Key - Address Type -->
-        <fieldset [disabled]="!['shelley-icarus', 'shelley-ledger'].includes(dumpsFormGroup.get('cardano_type')?.value)">
+        <fieldset [disabled]="!['shelley-icarus', 'shelley-ledger'].includes(dumpsFormGroup.get('cardanoType')?.value)">
           <label class="uppercase">Address Type</label>
           <div class="mt-2">
-            <custom-combobox [customOptions]="addressTypes" formControlName="address_type"></custom-combobox>
+            <custom-combobox [customOptions]="addressTypes" formControlName="addressType"></custom-combobox>
           </div>
         </fieldset>
       </div>
       <div class="xl:col-span-2">
         <!-- Cardano XPublic Key - Staking Public Key -->
-        <fieldset [disabled]="dumpsFormGroup.get('address_type')?.value !== 'payment'">
+        <fieldset [disabled]="dumpsFormGroup.get('addressType')?.value !== 'payment'">
           <label class="uppercase">Staking Public Key</label>
-          <input type="text" class="custom-input" formControlName="staking_public_key">
+          <input type="text" class="custom-input" formControlName="stakingPublicKey">
         </fieldset>
       </div>
     </div>
@@ -707,7 +707,7 @@
       <fieldset class="col-span-2">
         <label class="uppercase">Public Key Type</label>
         <div class="mt-2">
-          <custom-combobox [customOptions]="publicKeyTypes" formControlName="public_key_type"></custom-combobox>
+          <custom-combobox [customOptions]="publicKeyTypes" formControlName="publicKeyType"></custom-combobox>
         </div>
       </fieldset>
     </div>
@@ -738,7 +738,7 @@
       <fieldset class="col-span-2 max-xl:row-start-1 max-xl:col-start-3">
         <label class="uppercase">Public Key Type</label>
         <div class="mt-2">
-          <custom-combobox [customOptions]="publicKeyTypes" formControlName="public_key_type"></custom-combobox>
+          <custom-combobox [customOptions]="publicKeyTypes" formControlName="publicKeyType"></custom-combobox>
         </div>
       </fieldset>
     </div>
@@ -756,13 +756,13 @@
       <!-- Electrum-V1 Private Key Input -->
       <fieldset class="col-span-3 max-xl:col-span-4">
         <label class="uppercase">Private Key</label>
-        <input type="text" class="custom-input" formControlName="private_key">
+        <input type="text" class="custom-input" formControlName="privateKey">
       </fieldset>
       <!-- Electrum-V1 Private Key - Public Key Type -->
       <fieldset class="max-xl:col-span-2">
         <label class="uppercase">Public Key Type</label>
         <div class="mt-2">
-          <custom-combobox [customOptions]="publicKeyTypes" formControlName="public_key_type"></custom-combobox>
+          <custom-combobox [customOptions]="publicKeyTypes" formControlName="publicKeyType"></custom-combobox>
         </div>
       </fieldset>
     </div>
@@ -780,13 +780,13 @@
       <!-- Electrum-V1 Public Key Input -->
       <fieldset class="col-span-3 max-xl:col-span-4">
         <label class="uppercase">Public Key</label>
-        <input type="text" class="custom-input" formControlName="public_key">
+        <input type="text" class="custom-input" formControlName="publicKey">
       </fieldset>
       <!-- Electrum-V1 Public Key - Public Key Type -->
       <fieldset class="max-xl:col-span-2">
         <label class="uppercase">Public Key Type</label>
         <div class="mt-2">
-          <custom-combobox [customOptions]="publicKeyTypes" formControlName="public_key_type"></custom-combobox>
+          <custom-combobox [customOptions]="publicKeyTypes" formControlName="publicKeyType"></custom-combobox>
         </div>
       </fieldset>
     </div>
@@ -817,7 +817,7 @@
       <fieldset class="col-span-2 max-xl:row-start-1 max-xl:col-start-3">
         <label class="uppercase">Public Key Type</label>
         <div class="mt-2">
-          <custom-combobox [customOptions]="publicKeyTypes" formControlName="public_key_type"></custom-combobox>
+          <custom-combobox [customOptions]="publicKeyTypes" formControlName="publicKeyType"></custom-combobox>
         </div>
       </fieldset>
     </div>
@@ -853,7 +853,7 @@
       <fieldset class="col-span-2">
         <label class="uppercase">Public Key Type</label>
         <div class="mt-2">
-          <custom-combobox [customOptions]="publicKeyTypes" formControlName="public_key_type"></custom-combobox>
+          <custom-combobox [customOptions]="publicKeyTypes" formControlName="publicKeyType"></custom-combobox>
         </div>
       </fieldset>
     </div>
@@ -898,14 +898,14 @@
       <fieldset class="col-span-3">
         <label class="uppercase">Mnemonic Type</label>
         <div class="mt-2">
-          <custom-combobox [customOptions]="mnemonicTypes" formControlName="mnemonic_type"></custom-combobox>
+          <custom-combobox [customOptions]="mnemonicTypes" formControlName="mnemonicType"></custom-combobox>
         </div>
       </fieldset>
       <!-- Electrum-V2 Entropy - Public Key Type -->
       <fieldset class="col-span-3">
         <label class="uppercase">Public Key Type</label>
         <div class="mt-2">
-          <custom-combobox [customOptions]="publicKeyTypes" formControlName="public_key_type"></custom-combobox>
+          <custom-combobox [customOptions]="publicKeyTypes" formControlName="publicKeyType"></custom-combobox>
         </div>
       </fieldset>
     </div>
@@ -943,14 +943,14 @@
       <fieldset class="col-span-3">
         <label class="uppercase">Mnemonic Type</label>
         <div class="mt-2">
-          <custom-combobox [customOptions]="mnemonicTypes" formControlName="mnemonic_type"></custom-combobox>
+          <custom-combobox [customOptions]="mnemonicTypes" formControlName="mnemonicType"></custom-combobox>
         </div>
       </fieldset>
       <!-- Electrum-V2 Mnemonic - Public Key Type -->
       <fieldset class="col-span-3">
         <label class="uppercase">Public Key Type</label>
         <div class="mt-2">
-          <custom-combobox [customOptions]="publicKeyTypes" formControlName="public_key_type"></custom-combobox>
+          <custom-combobox [customOptions]="publicKeyTypes" formControlName="publicKeyType"></custom-combobox>
         </div>
       </fieldset>
     </div>
@@ -988,7 +988,7 @@
         <fieldset class="col-span-3">
           <label class="uppercase">Public Key Type</label>
           <div class="mt-2">
-            <custom-combobox [customOptions]="publicKeyTypes" formControlName="public_key_type"></custom-combobox>
+            <custom-combobox [customOptions]="publicKeyTypes" formControlName="publicKeyType"></custom-combobox>
           </div>
         </fieldset>
     </div>
@@ -1025,7 +1025,7 @@
       <!-- Monero Entropy - Payment ID -->
       <fieldset class="col-span-3 max-xl:col-span-full">
         <label class="uppercase">Payment ID</label>
-        <input type="text" class="custom-input" placeholder="(Optional)" formControlName="payment_id">
+        <input type="text" class="custom-input" placeholder="(Optional)" formControlName="paymentID">
       </fieldset>
     </div>
   </fieldset>
@@ -1054,7 +1054,7 @@
       <!-- Monero Mnemonic - Payment ID -->
       <fieldset class="col-span-full max-xl:col-span-3 max-xl:row-start-1 max-xl:col-start-2">
         <label class="uppercase">Payment ID</label>
-        <input type="text" class="custom-input" placeholder="(Optional)" formControlName="payment_id">
+        <input type="text" class="custom-input" placeholder="(Optional)" formControlName="paymentID">
       </fieldset>
     </div>
   </fieldset>
@@ -1071,12 +1071,12 @@
       <!-- Monero Private Key - Private -->
       <fieldset>
         <label class="uppercase">Private Key</label>
-        <input type="text" class="custom-input" formControlName="private_key">
+        <input type="text" class="custom-input" formControlName="privateKey">
       </fieldset>
       <!-- Monero Private Key - Payment ID -->
       <fieldset>
         <label class="uppercase">Payment ID</label>
-        <input type="text" class="custom-input" placeholder="(Optional)" formControlName="payment_id">
+        <input type="text" class="custom-input" placeholder="(Optional)" formControlName="paymentID">
       </fieldset>
     </div>
   </fieldset>
@@ -1105,7 +1105,7 @@
       <!-- Monero Seed - Payment ID -->
       <fieldset class="col-span-full max-xl:col-span-3 max-xl:row-start-1 max-xl:col-start-2">
         <label class="uppercase">Payment ID</label>
-        <input type="text" class="custom-input" placeholder="(Optional)" formControlName="payment_id">
+        <input type="text" class="custom-input" placeholder="(Optional)" formControlName="paymentID">
       </fieldset>
     </div>
   </fieldset>
@@ -1122,12 +1122,12 @@
       <!-- Monero Spend Private Key - Spend Private Key -->
       <fieldset>
         <label class="uppercase">Spend Private Key</label>
-        <input type="text" class="custom-input" formControlName="spend_private_key">
+        <input type="text" class="custom-input" formControlName="spendPrivateKey">
       </fieldset>
       <!-- Monero Spend Private Key - Payment ID -->
       <fieldset>
         <label class="uppercase">Payment ID</label>
-        <input type="text" class="custom-input" placeholder="(Optional)" formControlName="payment_id">
+        <input type="text" class="custom-input" placeholder="(Optional)" formControlName="paymentID">
       </fieldset>
     </div>
   </fieldset>
@@ -1144,17 +1144,17 @@
       <!-- Monero Watch Only - View Private Key -->
       <fieldset class="col-span-full">
         <label class="uppercase">View Private Key</label>
-        <input type="text" class="custom-input" formControlName="view_private_key">
+        <input type="text" class="custom-input" formControlName="viewPrivateKey">
       </fieldset>
       <!-- Monero Watch Only - Spend Public Key -->
       <fieldset class="col-span-4 max-xl:col-span-full">
         <label class="uppercase">Spend Public Key</label>
-        <input type="text" class="custom-input" formControlName="spend_public_key">
+        <input type="text" class="custom-input" formControlName="spendPublicKey">
       </fieldset>
       <!-- Monero Watch Only - Payment ID -->
       <fieldset class="col-span-2 max-xl:col-span-full">
         <label class="uppercase">Payment ID</label>
-        <input type="text" class="custom-input" placeholder="(Optional)" formControlName="payment_id">
+        <input type="text" class="custom-input" placeholder="(Optional)" formControlName="paymentID">
       </fieldset>
     </div>
   </fieldset>
@@ -1221,7 +1221,7 @@
     <fieldset *ngIf="dumpsFormGroup.get('derivation')?.value === 'Custom'">
       <div class="grid grid-cols-3 gap-2.5">
         <!-- Derivation Custom - Path -->
-        <fieldset class="col-span-2 max-xl:col-span-full" [disabled]="dumpsFormGroup.get('custom_client')?.value">
+        <fieldset class="col-span-2 max-xl:col-span-full" [disabled]="dumpsFormGroup.get('customClient')?.value">
           <label class="uppercase">Path</label>
           <input type="text" class="custom-input" placeholder="m/0'/0" formControlName="path">
         </fieldset>
@@ -1229,7 +1229,7 @@
         <fieldset class="max-xl:col-span-full">
           <label class="uppercase">Client</label>
           <div class="mt-2">
-            <custom-combobox [customOptions]="customClients" formControlName="custom_client"></custom-combobox>
+            <custom-combobox [customOptions]="customClients" formControlName="customClient"></custom-combobox>
           </div>
         </fieldset>
       </div>

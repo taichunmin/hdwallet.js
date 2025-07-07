@@ -10,13 +10,18 @@ import { take } from 'rxjs/operators';
 
 import { Cryptocurrency, CRYPTOCURRENCIES, getCryptocurrency } from '@hdwallet/core/cryptocurrencies';
 import { Mnemonic, MNEMONICS } from '@hdwallet/core/mnemonics';
+import { Derivation, DERIVATIONS } from '@hdwallet/core/derivations';
+import { HDS } from '@hdwallet/core/hds';
+import { ENTROPIES } from '@hdwallet/core/entropies';
+import { SEEDS } from '@hdwallet/core/seeds';
+import { HDWallet } from '@hdwallet/core';
 
 import {
-  toLowerCase, toUpperCase, toTitleCase, replaceHyphen2Underscore, replaceUnderscore2Hyphen, getDateTimeStamp,
+  toLowerCase, toUpperCase, toTitleCase, replaceUnderscore2Hyphen, getDateTimeStamp,
   saveAsCSV, saveAsJSON, objectIsIncluded
 } from '../../../../../utils';
 import {
-  ComboboxInterface, DictionaryInterface, KeyValuePairInterface
+  ComboboxInterface, DictionaryInterface, DumpsInterface, KeyValuePairInterface
 } from '../../../../../interfaces';
 import { StorageService } from '../../../../services/storage/storage.service';
 import { CustomComboboxComponent } from '../../../../common/custom-combobox/custom-combobox.component';
@@ -153,18 +158,18 @@ export class DumpsComponent implements OnInit, AfterViewInit {
       client: ['BIP39', [Validators.required]],
       entropy: [null, [Validators.required, Validators.pattern(/^[a-fA-F0-9]+$/), Validators.minLength(32), Validators.maxLength(66)]],
       mnemonic: [null, [Validators.required]],
-      mnemonic_type: ['standard', [Validators.required]],
+      mnemonicType: ['standard', [Validators.required]],
       language: ['english', [Validators.required]],
       seed: [null, [Validators.required]],
-      xprivate_key: [null, [Validators.required]],
-      xpublic_key: [null, [Validators.required]],
+      xprivateKey: [null, [Validators.required]],
+      xpublicKey: [null, [Validators.required]],
       strict: [true, [Validators.required]],
-      private_key: [null, [Validators.required, Validators.pattern(/^[a-fA-F0-9]+$/)]],
+      privateKey: [null, [Validators.required, Validators.pattern(/^[a-fA-F0-9]+$/)]],
       wif: [null, [Validators.required]],
-      public_key: [null, [Validators.required, Validators.pattern(/^[a-fA-F0-9]+$/)]],
-      spend_private_key: [null, [Validators.required, Validators.pattern(/^[a-fA-F0-9]+$/)]],
-      view_private_key: [null, [Validators.required, Validators.pattern(/^[a-fA-F0-9]+$/)]],
-      spend_public_key: [null, [Validators.required, Validators.pattern(/^[a-fA-F0-9]+$/)]],
+      publicKey: [null, [Validators.required, Validators.pattern(/^[a-fA-F0-9]+$/)]],
+      spendPrivateKey: [null, [Validators.required, Validators.pattern(/^[a-fA-F0-9]+$/)]],
+      viewPrivateKey: [null, [Validators.required, Validators.pattern(/^[a-fA-F0-9]+$/)]],
+      spendPublicKey: [null, [Validators.required, Validators.pattern(/^[a-fA-F0-9]+$/)]],
       derivation: [this.currentAllowedDerivations[0], [Validators.required]],
       account: ['0', [Validators.required, Validators.pattern(/^\d+(-\d+)?$/), this.indexValidator]],
       change: ['external-chain', [Validators.required]],
@@ -172,18 +177,18 @@ export class DumpsComponent implements OnInit, AfterViewInit {
       address: ['0-10', [Validators.required, Validators.pattern(/^\d+(-\d+)?$/), this.indexValidator]],
       minor: ['1', [Validators.required, Validators.pattern(/^\d+(-\d+)?$/), this.indexValidator]],
       major: ['0-10', [Validators.required, Validators.pattern(/^\d+(-\d+)?$/), this.indexValidator]],
-      path: [null, [Validators.required, Validators.pattern(/^m(\/(\d+(-\d+)?'?)?)+$/), this.pathValidator]],
-      public_key_type: ['compressed', [Validators.required]],
+      path: ['m/0\'/0-1', [Validators.required, Validators.pattern(/^m(\/(\d+(-\d+)?'?)?)+$/), this.pathValidator]],
+      publicKeyType: ['compressed', [Validators.required]],
       passphrase: [null, [Validators.required]],
-      payment_id: [null, [Validators.pattern(/^[a-fA-F0-9]+$/), Validators.minLength(16), Validators.maxLength(16)]],
-      cardano_type: ['shelley-icarus', [Validators.required]],
-      address_type: ['payment', [Validators.required]],
-      staking_public_key: [null, [Validators.required]],
+      paymentID: [null, [Validators.pattern(/^[a-fA-F0-9]+$/), Validators.minLength(16), Validators.maxLength(16)]],
+      cardanoType: ['shelley-icarus', [Validators.required]],
+      addressType: ['payment', [Validators.required]],
+      stakingPublicKey: [null, [Validators.required]],
       mode: ['standard', [Validators.required]],
       exclude: ['root', [Validators.pattern(/^([a-zA-Z0-9_-]+(:[a-zA-Z0-9_-]+)?)(,[a-zA-Z0-9_-]+(:[a-zA-Z0-9_-]+)?)*$/)]],
-      include: [null, [Validators.pattern(/^([a-zA-Z0-9_-]+(:[a-zA-Z0-9_-]+)?)(,[a-zA-Z0-9_-]+(:[a-zA-Z0-9_-]+)?)*$/)]],
+      include: [null, [Validators.required, Validators.pattern(/^([a-zA-Z0-9_-]+(:[a-zA-Z0-9_-]+)?)(,[a-zA-Z0-9_-]+(:[a-zA-Z0-9_-]+)?)*$/)]],
       bip38: [false, [Validators.required]],
-      custom_client: [null, [Validators.required]],
+      customClient: [null, [Validators.required]],
       semantic: [this.cryptocurrency.DEFAULT_SEMANTIC, [Validators.required]],
       format: ['json', [Validators.required]]
     });
@@ -203,24 +208,26 @@ export class DumpsComponent implements OnInit, AfterViewInit {
 
   updateFormInclude(hd: string, symbol: string, emitEvent: boolean = true, timeout: number = 0) {
     if (hd === 'BIP32') {
-      this.updateFormGroup('include', 'at:path,addresses:p2pkh,public_key,wif', emitEvent, timeout);
+      this.updateFormGroup('include', 'at:path,addresses:p2pkh,public-key,wif', emitEvent, timeout);
     } else if (['BIP44', 'BIP49', 'BIP84', 'BIP86'].includes(hd)) {
-      this.updateFormGroup('include', 'at:path,address,public_key,wif', emitEvent, timeout);
+      this.updateFormGroup('include', 'at:path,address,public-key,wif', emitEvent, timeout);
     } else if (hd === 'BIP141') {
-      this.updateFormGroup('include', 'at:path,addresses:p2wpkh,public_key,wif', emitEvent, timeout);
+      this.updateFormGroup('include', 'at:path,addresses:p2wpkh,public-key,wif', emitEvent, timeout);
     } else if (hd === 'Cardano') {
-      this.updateFormGroup('include', 'at:path,address,public_key,private_key', emitEvent, timeout);
+      this.updateFormGroup('include', 'at:path,address,public-key,private-key', emitEvent, timeout);
     } else if (['Electrum-V1', 'Electrum-V2'].includes(hd)) {
-      this.updateFormGroup('include', 'at:change,at:address,address,public_key,wif', emitEvent, timeout);
+      this.updateFormGroup('include', 'at:change,at:address,address,public-key,wif', emitEvent, timeout);
     } else if (hd === 'Monero') {
       this.updateFormGroup('include', 'at:minor,at:major,sub_address', emitEvent, timeout);
     }
-    if (['BCH', 'SLP', 'XEC'].includes(symbol)) {
-      this.updateFormGroup('include', 'at:path,addresses:legacy-p2pkh,public_key,wif', emitEvent, timeout);
+    if (['ETH', 'ARB', 'OP', 'XDC'].includes(symbol)) {
+      this.updateFormGroup('include', 'at:path,address,public-key,private-key', emitEvent, timeout);
+    } else if (['BCH', 'SLP', 'XEC'].includes(symbol)) {
+      this.updateFormGroup('include', 'at:path,addresses:legacy-p2pkh,public-key,wif', emitEvent, timeout);
     } else if (symbol === 'AVAX') {
-      this.updateFormGroup('include', 'at:path,addresses:p-chain,public_key,wif', emitEvent, timeout);
+      this.updateFormGroup('include', 'at:path,addresses:p-chain,public-key,wif', emitEvent, timeout);
     } else if (symbol === 'BNB') {
-      this.updateFormGroup('include', 'at:path,addresses:chain,public_key,wif', emitEvent, timeout);
+      this.updateFormGroup('include', 'at:path,addresses:chain,public-key,private-key', emitEvent, timeout);
     }
   }
 
@@ -270,9 +277,9 @@ export class DumpsComponent implements OnInit, AfterViewInit {
       this.updateFormGroup('derivation', this.currentAllowedDerivations[0], emitEvent, timeout);
     }
     this.updateFormGroup('change', ['Electrum-V1', 'Electrum-V2'].includes(this.hd.value) ? '0' : 'external-chain', emitEvent, timeout);
-    this.updateFormGroup('public_key_type', ['Electrum-V1', 'Electrum-V2'].includes(this.hd.value) ? 'uncompressed' : 'compressed', emitEvent, timeout);
-    this.updateFormGroup('cardano_type', this.hd.value === 'Cardano' ? 'shelley-icarus' : null, emitEvent, timeout);
-    this.updateFormGroup('address_type', this.hd.value === 'Cardano' ? 'payment' : null, emitEvent, timeout);
+    this.updateFormGroup('publicKeyType', ['Electrum-V1', 'Electrum-V2'].includes(this.hd.value) ? 'uncompressed' : 'compressed', emitEvent, timeout);
+    this.updateFormGroup('cardanoType', this.hd.value === 'Cardano' ? 'shelley-icarus' : null, emitEvent, timeout);
+    this.updateFormGroup('addressType', this.hd.value === 'Cardano' ? 'payment' : null, emitEvent, timeout);
     this.semantics = this.getSemantics(this.hd.value);
     this.updateFormGroup('semantic', this.hd.value === 'BIP141' ? 'p2wpkh' : this.cryptocurrency.DEFAULT_SEMANTIC, emitEvent, timeout);
     this.updateFormInclude(this.hd.value, this.symbol, emitEvent, timeout);
@@ -298,17 +305,17 @@ export class DumpsComponent implements OnInit, AfterViewInit {
     }
   }
 
-  updateCardanoType(cardano_type: string, emitEvent: boolean = true, timeout: number = 0): void {
-    this.updateFormGroup('address_type', ['shelley-icarus', 'shelley-ledger'].includes(cardano_type) ? 'payment' : null, emitEvent, timeout);
+  updateCardanoType(cardanoType: string, emitEvent: boolean = true, timeout: number = 0): void {
+    this.updateFormGroup('addressType', ['shelley-icarus', 'shelley-ledger'].includes(cardanoType) ? 'payment' : null, emitEvent, timeout);
   }
 
   ngOnInit(): void {
     this.dumpsFormGroup.get('symbol')?.valueChanges.subscribe((symbol: string) => { this.updateSymbol(symbol, true, 1); });
     this.dumpsFormGroup.get('hd')?.valueChanges.subscribe((hd: string) => { this.updateHD(hd, true, 1); });
     this.dumpsFormGroup.get('from')?.valueChanges.subscribe((from: string) => {  this.updateFrom(from, true, 1); });
-    this.dumpsFormGroup.get('cardano_type')?.valueChanges.subscribe((cardano_type: string) => { this.updateCardanoType(cardano_type, true, 1); });
+    this.dumpsFormGroup.get('cardanoType')?.valueChanges.subscribe((cardanoType: string) => { this.updateCardanoType(cardanoType, true, 1); });
     this.dumpsFormGroup.get('client')?.valueChanges.subscribe((client: string) => { this.languages = this.getLanguages(client); });
-    this.dumpsFormGroup.get('custom_client')?.valueChanges.subscribe((custom_client: string) => { this.updateFormGroup('path', custom_client, true, 1); });
+    this.dumpsFormGroup.get('customClient')?.valueChanges.subscribe((customClient: string) => { this.updateFormGroup('path', customClient, true, 1); });
     this.dumpsFormGroup.get('derivation')?.valueChanges.subscribe((derivation: string) => {
       this.dumpsFormGroup.get('change')?.setValidators(
         derivation === 'Electrum' ? [Validators.required, Validators.pattern(/^\d+(-\d+)?$/), this.indexValidator] : [Validators.required]
@@ -363,19 +370,52 @@ export class DumpsComponent implements OnInit, AfterViewInit {
       this.updateFormGroup('symbol', this.cryptocurrency.SYMBOL, false);
       this.updateSymbol(this.cryptocurrency.SYMBOL, false, 0);
       this.activatedRoute.queryParams.pipe(take(1)).subscribe((queries: Params) => {
-        let queryParams: DictionaryInterface = replaceHyphen2Underscore(queries);
+        let queryParams: DictionaryInterface = replaceUnderscore2Hyphen(queries);
         for (let key of ['network', 'hd', 'from', 'derivation', 'format']) { queryParams = this.setQueryValues(queryParams, key); }
-        for (let key of this.getFromControls(this.dumpsFormGroup.get('from')?.value)) { queryParams = this.setQueryValues(queryParams, key); }
-        for (let key of this.getDerivationControls(this.dumpsFormGroup.get('derivation')?.value, this.dumpsFormGroup.get('from')?.value)) { queryParams = this.setQueryValues(queryParams, key); }
-        for (let key of this.getActionControls(this.dumpsFormGroup.get('format')?.value)) { queryParams = this.setQueryValues(queryParams, key); }
+        for (let key of this.getFromControls(this.dumpsFormGroup.get('from')?.value)) { queryParams = this.setQueryValues(queryParams, this.normalizeKey(key)); }
+        for (let key of this.getDerivationControls(this.dumpsFormGroup.get('derivation')?.value, this.dumpsFormGroup.get('from')?.value)) { queryParams = this.setQueryValues(queryParams, this.normalizeKey(key)); }
+        for (let key of this.getActionControls(this.dumpsFormGroup.get('format')?.value)) { queryParams = this.setQueryValues(queryParams, this.normalizeKey(key)); }
         for (let key of ['generate', 'save', 'clear']) { queryParams = this.setQueryValues(queryParams, key); }
         this.router.navigate(
           ['dumps', toLowerCase(this.ecc), this.cryptocurrency.SYMBOL], {
-            queryParams: replaceUnderscore2Hyphen(queryParams), replaceUrl: true
+            queryParams: queryParams, replaceUrl: true
           }
         );
       });
     });
+  }
+
+  normalizeKey(key: string): string {
+    if (key === 'mnemonicType') return 'mnemonic-type';
+    if (key === 'xprivateKey') return 'xprivate-key';
+    if (key === 'xpublicKey') return 'xpublic-key';
+    if (key === 'privateKey') return 'private-key';
+    if (key === 'publicKey') return 'public-key';
+    if (key === 'spendPrivateKey') return 'spend-private-key';
+    if (key === 'viewPrivateKey') return 'view-private-key';
+    if (key === 'spendPublicKey') return 'spend-public-key';
+    if (key === 'publicKeyType') return 'public-key-type';
+    if (key === 'paymentID') return 'payment-id';
+    if (key === 'cardanoType') return 'cardano-type';
+    if (key === 'addressType') return 'address-type';
+    if (key === 'stakingPublicKey') return 'staking-public-key';
+    if (key === 'customClient') return 'custom-client';
+    // Reverse
+    if (key === 'mnemonic-type') return 'mnemonicType';
+    if (key === 'xprivate-key') return 'xprivateKey';
+    if (key === 'xpublic-key') return 'xpublicKey';
+    if (key === 'private-key') return 'privateKey';
+    if (key === 'public-key') return 'publicKey';
+    if (key === 'spend-private-key') return 'spendPrivateKey';
+    if (key === 'view-private-key') return 'viewPrivateKey';
+    if (key === 'spend-public-key') return 'spendPublicKey';
+    if (key === 'public-key-type') return 'publicKeyType';
+    if (key === 'payment-id') return 'paymentID';
+    if (key === 'cardano-type') return 'cardanoType';
+    if (key === 'address-type') return 'addressType';
+    if (key === 'staking-public-key') return 'stakingPublicKey';
+    if (key === 'custom-client') return 'customClient';
+    return key.toLowerCase();
   }
 
   getNetworks(symbol: string): ComboboxInterface[] {
@@ -485,7 +525,7 @@ export class DumpsComponent implements OnInit, AfterViewInit {
     const hd: string = queryParams['hd'] ? queryParams['hd'] : this.dumpsFormGroup.get('hd')?.value
     const from: string = queryParams['from'] ? this.getFromGroupBoxName(queryParams['from'], hd) : this.dumpsFormGroup.get('from')?.value
     const client: string = queryParams['client'] ? queryParams['client'] : this.dumpsFormGroup.get('client')?.value
-    const cardano_type: string = queryParams['cardano_type'] ? queryParams['cardano_type'] : this.dumpsFormGroup.get('cardano_type')?.value
+    const cardanoType: string = queryParams['cardanoType'] ? queryParams['cardanoType'] : this.dumpsFormGroup.get('cardanoType')?.value
     const derivation: string = queryParams['derivation'] ? queryParams['derivation'] : this.dumpsFormGroup.get('derivation')?.value
     if (key === 'network' && queryParams[key]) {
       queryParams[key] = toLowerCase(queryParams[key]);
@@ -544,13 +584,13 @@ export class DumpsComponent implements OnInit, AfterViewInit {
         );
         this.groupBoxService.update(from, 'warning');
       }
-    } else if (key === 'mnemonic_type' && queryParams[key]) {
+    } else if (key === 'mnemonic-type' && queryParams[key]) {
       queryParams[key] = toLowerCase(queryParams[key]);
       if (mnemonicTypes.includes(queryParams[key])) {
-        this.updateFormGroup('mnemonic_type', queryParams[key], true);
+        this.updateFormGroup('mnemonicType', queryParams[key], true);
       } else {
         queryParams[key] = mnemonicTypes[0];
-        this.updateFormGroup('mnemonic_type', queryParams[key], true);
+        this.updateFormGroup('mnemonicType', queryParams[key], true);
         this.terminalService.update(
           `Unknown '${queries[key]}' mnemonic type, defaulting to '${queryParams[key]}'`, 'warning'
         );
@@ -571,16 +611,16 @@ export class DumpsComponent implements OnInit, AfterViewInit {
         );
         this.groupBoxService.update(from, 'warning');
       }
-    } else if (key === 'public_key_type' && queryParams[key]) {
+    } else if (key === 'public-key-type' && queryParams[key]) {
       queryParams[key] = toLowerCase(queryParams[key]);
       const publicKeyTypes: string[] = this.getPublicKeyTypes(hd).map(
         (item: ComboboxInterface) => item.value
       );
       if (publicKeyTypes.includes(queryParams[key])) {
-        this.updateFormGroup('public_key_type', queryParams[key], true);
+        this.updateFormGroup('publicKeyType', queryParams[key], true);
       } else {
         queryParams[key] = publicKeyTypes[0];
-        this.updateFormGroup('public_key_type', queryParams[key], true);
+        this.updateFormGroup('publicKeyType', queryParams[key], true);
         this.terminalService.update(
           `Wrong '${queries[key]}' public key type by ${hd} HD, defaulting to '${queryParams[key]}'`, 'warning'
         );
@@ -598,32 +638,32 @@ export class DumpsComponent implements OnInit, AfterViewInit {
         );
         this.groupBoxService.update(from, 'warning');
       }
-    } else if (key === 'cardano_type' && queryParams[key]) {
+    } else if (key === 'cardano-type' && queryParams[key]) {
       queryParams[key] = toLowerCase(queryParams[key]);
       const cardanoTypes: string[] = this.getCardanoTypes(from).map(
         (item: ComboboxInterface) => item.value
       );
       if (cardanoTypes.includes(queryParams[key])) {
-        this.updateFormGroup('cardano_type', queryParams[key], false);
+        this.updateFormGroup('cardanoType', queryParams[key], false);
         this.updateCardanoType(queryParams[key], false, 0);
       } else {
         queryParams[key] = 'shelley-icarus';
-        this.updateFormGroup('cardano_type', queryParams[key], false);
+        this.updateFormGroup('cardanoType', queryParams[key], false);
         this.updateCardanoType(queryParams[key], false, 0);
         this.terminalService.update(
           `Unknown '${queries[key]}' cardano type, defaulting to '${queryParams[key]}'`, 'warning'
         );
         this.groupBoxService.update(from, 'warning');
       }
-    } else if (key === 'address_type' && queryParams[key]) {
+    } else if (key === 'address-type' && queryParams[key]) {
       queryParams[key] = toLowerCase(queryParams[key]);
       if (addressTypes.includes(queryParams[key])) {
-        this.updateFormGroup('address_type', queryParams[key], true);
+        this.updateFormGroup('addressType', queryParams[key], true);
       } else {
         queryParams[key] = 'payment';
-        this.updateFormGroup('address_type', queryParams[key], true);
+        this.updateFormGroup('addressType', queryParams[key], true);
         this.terminalService.update(
-          `Wrong '${queries[key]}' address type for '${cardano_type}' cardano type, defaulting to '${queryParams[key]}'`, 'warning'
+          `Wrong '${queries[key]}' address type for '${cardanoType}' cardano type, defaulting to '${queryParams[key]}'`, 'warning'
         );
         this.groupBoxService.update(from, 'warning');
       }
@@ -782,10 +822,10 @@ export class DumpsComponent implements OnInit, AfterViewInit {
         );
       }
     } else if ([
-      'entropy', 'mnemonic', 'seed', 'xprivate_key', 'xpublic_key', 'private_key', 'wif', 'public_key', 'spend_private_key', 'view_private_key',
-      'spend_public_key', 'account', 'address', 'minor', 'major', 'path', 'passphrase', 'payment_id', 'staking_public_key', 'exclude', 'include'
+      'entropy', 'mnemonic', 'seed', 'xprivate-key', 'xpublic-key', 'private-key', 'wif', 'public-key', 'spend-private-key', 'view-private-key',
+      'spend-public-key', 'account', 'address', 'minor', 'major', 'path', 'passphrase', 'payment-id', 'staking-public-key', 'exclude', 'include'
     ].includes(key) && queryParams[key]) {
-      this.updateFormGroup(key, queryParams[key], true);
+      this.updateFormGroup(this.normalizeKey(key), queryParams[key], true);
     }
     return queryParams;
   }
@@ -914,20 +954,20 @@ export class DumpsComponent implements OnInit, AfterViewInit {
       const control: AbstractControl<any, any> | null = this.dumpsFormGroup.get(name);
       if (control?.invalid && control.errors) {
         if (control.errors['required']) {
-          this.terminalService.update(`${toTitleCase(toLowerCase(name, /_/g, '-'), /-/g, ' ')} is required`, 'error');
+          this.terminalService.update(`${toTitleCase(toLowerCase(this.normalizeKey(name), /_/g, '-'), /-/g, ' ')} is required`, 'error');
         }
         if (control.errors['minlength']) {
-          this.terminalService.update(`${toTitleCase(toLowerCase(name, /_/g, '-'), /-/g, ' ')} must be at least ${control.errors['minlength'].requiredLength} characters long`, 'error');
+          this.terminalService.update(`${toTitleCase(toLowerCase(this.normalizeKey(name), /_/g, '-'), /-/g, ' ')} must be at least ${control.errors['minlength'].requiredLength} characters long`, 'error');
         }
         if (control.errors['maxlength']) {
-          this.terminalService.update(`${toTitleCase(toLowerCase(name, /_/g, '-'), /-/g, ' ')} must be no more than ${control.errors['maxlength'].requiredLength} characters long`, 'error');
+          this.terminalService.update(`${toTitleCase(toLowerCase(this.normalizeKey(name), /_/g, '-'), /-/g, ' ')} must be no more than ${control.errors['maxlength'].requiredLength} characters long`, 'error');
         }
         if (control.errors['pattern']) {
-          this.terminalService.update(`${toTitleCase(toLowerCase(name, /_/g, '-'), /-/g, ' ')} has an invalid format`, 'error');
+          this.terminalService.update(`${toTitleCase(toLowerCase(this.normalizeKey(name), /_/g, '-'), /-/g, ' ')} has an invalid format`, 'error');
         }
         if (control.errors['comparison']) {
           this.terminalService.update(
-            `Invalid format for ${toTitleCase(toLowerCase(name, /_/g, '-'), /-/g, ' ')}: the second value (${control.errors['comparison'].secondNumber}) must be less than the first value (${control.errors['comparison'].firstNumber}).`, 'error'
+            `Invalid format for ${toTitleCase(toLowerCase(this.normalizeKey(name), /_/g, '-'), /-/g, ' ')}: the second value (${control.errors['comparison'].secondNumber}) must be less than the first value (${control.errors['comparison'].firstNumber}).`, 'error'
           );
         }
         return true;
@@ -939,109 +979,109 @@ export class DumpsComponent implements OnInit, AfterViewInit {
   getFromControls(from: string): string[] {
     let controls: string[] = [];
     if (from === 'bip-entropy') {
-      controls = ['client', 'entropy', 'language', 'public_key_type', 'semantic'];
+      controls = ['client', 'entropy', 'language', 'publicKeyType', 'semantic'];
     } else if (from === 'bip-mnemonic') {
-      controls = ['client', 'mnemonic', 'public_key_type', 'semantic'];
+      controls = ['client', 'mnemonic', 'publicKeyType', 'semantic'];
     } else if (from === 'bip-private-key') {
-      controls = ['private_key', 'public_key_type', 'semantic'];
+      controls = ['privateKey', 'publicKeyType', 'semantic'];
     } else if (from === 'bip-public-key') {
-      controls = ['public_key', 'public_key_type', 'semantic'];
+      controls = ['publicKey', 'publicKeyType', 'semantic'];
     } else if (from === 'bip-seed') {
-      controls = ['client', 'seed', 'public_key_type', 'semantic'];
+      controls = ['client', 'seed', 'publicKeyType', 'semantic'];
     } else if (from === 'bip-wif') {
-      controls = ['wif', 'bip38', 'public_key_type', 'semantic'];
+      controls = ['wif', 'bip38', 'publicKeyType', 'semantic'];
       if (this.dumpsFormGroup.get('bip38')?.value) { controls.push('passphrase'); }
     } else if (from === 'bip-xprivate-key') {
-      controls = ['xprivate_key', 'strict', 'public_key_type', 'semantic'];
+      controls = ['xprivateKey', 'strict', 'publicKeyType', 'semantic'];
     } else if (from === 'bip-xpublic-key') {
-      controls = ['xpublic_key', 'strict', 'public_key_type', 'semantic'];
+      controls = ['xpublicKey', 'strict', 'publicKeyType', 'semantic'];
     } else if (from === 'cardano-entropy') {
-      controls = ['client', 'entropy', 'cardano_type', 'language'];
-      if (['shelley-icarus', 'shelley-ledger'].includes(this.dumpsFormGroup.get('cardano_type')?.value)) {
-        if (this.dumpsFormGroup.get('address_type')?.value === 'payment') {
-          controls.push('staking_public_key');
+      controls = ['client', 'entropy', 'cardanoType', 'language'];
+      if (['shelley-icarus', 'shelley-ledger'].includes(this.dumpsFormGroup.get('cardanoType')?.value)) {
+        if (this.dumpsFormGroup.get('addressType')?.value === 'payment') {
+          controls.push('stakingPublicKey');
         }
-        controls.push('address_type');
+        controls.push('addressType');
       }
     } else if (from === 'cardano-mnemonic') {
-      controls = ['client', 'mnemonic', 'cardano_type'];
-      if (['shelley-icarus', 'shelley-ledger'].includes(this.dumpsFormGroup.get('cardano_type')?.value)) {
-        if (this.dumpsFormGroup.get('address_type')?.value === 'payment') {
-          controls.push('staking_public_key');
+      controls = ['client', 'mnemonic', 'cardanoType'];
+      if (['shelley-icarus', 'shelley-ledger'].includes(this.dumpsFormGroup.get('cardanoType')?.value)) {
+        if (this.dumpsFormGroup.get('addressType')?.value === 'payment') {
+          controls.push('stakingPublicKey');
         }
-        controls.push('address_type');
+        controls.push('addressType');
       }
     } else if (from === 'cardano-private-key') {
-      controls = ['private_key', 'cardano_type'];
-      if (['shelley-icarus', 'shelley-ledger'].includes(this.dumpsFormGroup.get('cardano_type')?.value)) {
-        if (this.dumpsFormGroup.get('address_type')?.value === 'payment') {
-          controls.push('staking_public_key');
+      controls = ['privateKey', 'cardanoType'];
+      if (['shelley-icarus', 'shelley-ledger'].includes(this.dumpsFormGroup.get('cardanoType')?.value)) {
+        if (this.dumpsFormGroup.get('addressType')?.value === 'payment') {
+          controls.push('stakingPublicKey');
         }
-        controls.push('address_type');
+        controls.push('addressType');
       }
     } else if (from === 'cardano-public-key') {
-      controls = ['public_key', 'cardano_type'];
-      if (['shelley-icarus', 'shelley-ledger'].includes(this.dumpsFormGroup.get('cardano_type')?.value)) {
-        if (this.dumpsFormGroup.get('address_type')?.value === 'payment') {
-          controls.push('staking_public_key');
+      controls = ['publicKey', 'cardanoType'];
+      if (['shelley-icarus', 'shelley-ledger'].includes(this.dumpsFormGroup.get('cardanoType')?.value)) {
+        if (this.dumpsFormGroup.get('addressType')?.value === 'payment') {
+          controls.push('stakingPublicKey');
         }
-        controls.push('address_type');
+        controls.push('addressType');
       }
     } else if (from === 'cardano-seed') {
-      controls = ['client', 'seed', 'cardano_type'];
-      if (['shelley-icarus', 'shelley-ledger'].includes(this.dumpsFormGroup.get('cardano_type')?.value)) {
-        if (this.dumpsFormGroup.get('address_type')?.value === 'payment') {
-          controls.push('staking_public_key');
+      controls = ['client', 'seed', 'cardanoType'];
+      if (['shelley-icarus', 'shelley-ledger'].includes(this.dumpsFormGroup.get('cardanoType')?.value)) {
+        if (this.dumpsFormGroup.get('addressType')?.value === 'payment') {
+          controls.push('stakingPublicKey');
         }
-        controls.push('address_type');
+        controls.push('addressType');
       }
     } else if (from === 'cardano-xprivate-key') {
-      controls = ['xprivate_key', 'strict', 'cardano_type'];
-      if (['shelley-icarus', 'shelley-ledger'].includes(this.dumpsFormGroup.get('cardano_type')?.value)) {
-        if (this.dumpsFormGroup.get('address_type')?.value === 'payment') {
-          controls.push('staking_public_key');
+      controls = ['xprivateKey', 'strict', 'cardanoType'];
+      if (['shelley-icarus', 'shelley-ledger'].includes(this.dumpsFormGroup.get('cardanoType')?.value)) {
+        if (this.dumpsFormGroup.get('addressType')?.value === 'payment') {
+          controls.push('stakingPublicKey');
         }
-        controls.push('address_type');
+        controls.push('addressType');
       }
     } else if (from === 'cardano-xpublic-key') {
-      controls = ['xpublic_key', 'strict', 'cardano_type'];
-      if (['shelley-icarus', 'shelley-ledger'].includes(this.dumpsFormGroup.get('cardano_type')?.value)) {
-        if (this.dumpsFormGroup.get('address_type')?.value === 'payment') {
-          controls.push('staking_public_key');
+      controls = ['xpublicKey', 'strict', 'cardanoType'];
+      if (['shelley-icarus', 'shelley-ledger'].includes(this.dumpsFormGroup.get('cardanoType')?.value)) {
+        if (this.dumpsFormGroup.get('addressType')?.value === 'payment') {
+          controls.push('stakingPublicKey');
         }
-        controls.push('address_type');
+        controls.push('addressType');
       }
     } else if (from === 'electrum-v1-entropy') {
-      controls = ['client', 'entropy', 'language', 'public_key_type']
+      controls = ['client', 'entropy', 'language', 'publicKeyType']
     } else if (from === 'electrum-v1-mnemonic') {
-      controls = ['client', 'mnemonic', 'public_key_type']
+      controls = ['client', 'mnemonic', 'publicKeyType']
     } else if (from === 'electrum-v1-private-key') {
-      controls = ['private_key', 'public_key_type']
+      controls = ['privateKey', 'publicKeyType']
     } else if (from === 'electrum-v1-public-key') {
-      controls = ['public_key', 'public_key_type']
+      controls = ['publicKey', 'publicKeyType']
     } else if (from === 'electrum-v1-seed') {
-      controls = ['client', 'seed', 'public_key_type']
+      controls = ['client', 'seed', 'publicKeyType']
     } else if (from === 'electrum-v1-wif') {
-      controls = ['wif', 'bip38', 'public_key_type']
+      controls = ['wif', 'bip38', 'publicKeyType']
       if (this.dumpsFormGroup.get('bip38')?.value) { controls.push('passphrase'); }
     } else if (from === 'electrum-v2-entropy') {
-      controls = ['client', 'entropy', 'mode', 'language', 'mnemonic_type', 'public_key_type']
+      controls = ['client', 'entropy', 'mode', 'language', 'mnemonic-type', 'publicKeyType']
     } else if (from === 'electrum-v2-mnemonic') {
-      controls = ['client', 'mnemonic', 'mode', 'mnemonic_type', 'public_key_type']
+      controls = ['client', 'mnemonic', 'mode', 'mnemonic-type', 'publicKeyType']
     }  else if (from === 'electrum-v2-seed') {
-      controls = ['client', 'seed', 'mode', 'public_key_type']
+      controls = ['client', 'seed', 'mode', 'publicKeyType']
     } else if (from === 'monero-entropy') {
-      controls = ['client', 'entropy', 'language', 'payment_id']
+      controls = ['client', 'entropy', 'language', 'paymentID']
     } else if (from === 'monero-mnemonic') {
-      controls = ['client', 'mnemonic', 'payment_id']
+      controls = ['client', 'mnemonic', 'paymentID']
     } else if (from === 'monero-private-key') {
-      controls = ['private_key', 'payment_id']
+      controls = ['privateKey', 'paymentID']
     } else if (from === 'monero-seed') {
-      controls = ['client', 'seed', 'payment_id']
+      controls = ['client', 'seed', 'paymentID']
     } else if (from === 'monero-spend-private-key') {
-      controls = ['spend_private_key', 'payment_id']
+      controls = ['spendPrivateKey', 'paymentID']
     } else if (from === 'monero-watch-only') {
-      controls = ['view_private_key', 'spend_public_key', 'payment_id']
+      controls = ['viewPrivateKey', 'spendPublicKey', 'paymentID']
     }
     return controls;
   }
@@ -1105,7 +1145,7 @@ export class DumpsComponent implements OnInit, AfterViewInit {
     });
   }
 
-  getDumps(data: any, dumpsType: 'generate' | 'save'): void {
+  getDumps(data: DumpsInterface, dumpsType: 'generate' | 'save'): any {
     this.isLoading = true;
 
     if (this.isInvalid(this.getFromControls(data.from))) {
@@ -1124,34 +1164,231 @@ export class DumpsComponent implements OnInit, AfterViewInit {
       return;
     }
 
-    // this.dumpsService.create(data, headers, `/from/${this.getFromNormalize(data.from)}`).subscribe({
-    //   next: (response: any): void => {
-    //     if (dumpsType === 'save') {
-    //       if (data.format == 'json') {
-    //         saveAsJSON(response, `customallet-${getDateTimeStamp()}`);
-    //       } else if (data.format == 'csv') {
-    //         saveAsCSV([response.csv_header, ...response.csv_data], `customallet-${getDateTimeStamp()}`);
-    //       }
-    //     }
-    //     this.terminalService.update(response, data.format);
-    //     this.groupBoxService.update(null, null);
-    //     this.isLoading = false;
-    //   },
-    //   error: (httpErrorResponse: HttpErrorResponse): void => {
-    //     this.terminalService.update(getErrorMessage(httpErrorResponse), 'error');
-    //     if (!httpErrorResponse.error.detail) {
-    //       this.groupBoxService.update('cryptocurrency', 'error');
-    //     } else if (httpErrorResponse.error.detail.error_id === 0) {
-    //       this.groupBoxService.update(data.from, 'error');
-    //     } else if (httpErrorResponse.error.detail.error_id === 1) {
-    //       this.groupBoxService.update('derivation', 'error');
-    //     } else if (httpErrorResponse.error.detail.error_id === 2) {
-    //       this.groupBoxService.update('action', 'error');
-    //     } else {
-    //       this.groupBoxService.update(null, null);
-    //     }
-    //     this.isLoading = false;
-    //   }
-    // });
+    let hdwallet: HDWallet;
+    const cryptocurrency: typeof Cryptocurrency = getCryptocurrency(data.symbol);
+    let semantic = data.semantic;
+    if (!semantic) {
+      if (['BIP32', 'BIP44', 'BIP86', 'Cardano'].includes(data.hd)) {
+        semantic = 'p2pkh';
+      } else if ('BIP49' === data.hd) {
+        semantic = 'p2wpkh-in-p2sh';
+      } if (['BIP84', 'BIP141'].includes(data.hd)) {
+        semantic = 'p2wpkh';
+      }
+    }
+
+    try {
+      hdwallet = new HDWallet(cryptocurrency, {
+        hd: HDS.getHDClass(data.hd),
+        network: data.network,
+        language: data.language,
+        publicKeyType: data.publicKeyType,
+        passphrase: data.passphrase,
+        cardanoType: data.cardanoType,
+        addressType: data.addressType,
+        stakingPublicKey: data.stakingPublicKey,
+        mode: data.mode,
+        mnemonicType: data.mnemonicType,
+        checksum: data.checksum,
+        paymentID: data?.paymentID,
+        semantic: semantic,
+      });
+
+      if (this.getFromNormalize(data.from) === 'entropy') {
+        const entropyClass = ENTROPIES.getEntropyClass(data.client);
+        hdwallet.fromEntropy(new entropyClass(data.entropy));
+      } else if (this.getFromNormalize(data.from) === 'mnemonic') {
+        const mnemonicClass = MNEMONICS.getMnemonicClass(data.client);
+        hdwallet.fromMnemonic(new mnemonicClass(data.mnemonic, { mnemonicType: data.mnemonicType }));
+      } else if (this.getFromNormalize(data.from) === 'seed') {
+        const seedClass = SEEDS.getSeedClass(data.client);
+        hdwallet.fromSeed(new seedClass(data.seed));
+      } else if (this.getFromNormalize(data.from) === 'xprivate-key') {
+        hdwallet.fromXPrivateKey(data.xprivateKey, true, data.strict);
+      } else if (this.getFromNormalize(data.from) === 'xpublic-key') {
+        hdwallet.fromXPublicKey(data.xpublicKey, true, data.strict);
+      } else if (this.getFromNormalize(data.from) === 'private-key') {
+        hdwallet.fromPrivateKey(data.privateKey);
+      } else if (this.getFromNormalize(data.from) === 'wif') {
+        let wif = data.wif;
+        // if (data.bip38) {
+        //   const bip38 = new BIP38(BIP38_CRYPTOCURRENCIES[cryptocurrency.NAME], data.network);
+        //   wif = bip38.decrypt(data.wif, data.passphrase);
+        // }
+        hdwallet.fromWIF(wif);
+
+      } else if (this.getFromNormalize(data.from) === 'public-key') {
+        hdwallet.fromPublicKey(data.publicKey);
+      } else if (this.getFromNormalize(data.from) === 'spend-private-key') {
+        hdwallet.fromSpendPrivateKey(data.spendPrivateKey);
+      } else if (this.getFromNormalize(data.from) === 'watch-only') {
+        hdwallet.fromWatchOnly(data.viewPrivateKey, data.spendPublicKey);
+      }
+      hdwallet.getDump();
+    } catch (e) {
+      this.terminalService.update((e as Error).message, 'error');
+      this.groupBoxService.update(data.from, 'error');
+      this.isLoading = false;
+      this.changeDetectorRef.detectChanges();
+      return;
+    }
+
+    try {
+      const shouldDerive = [
+        'entropy', 'mnemonic', 'seed', 'xprivate-key', 'xpublic-key', 'spend-private-key', 'watch-only'
+      ].includes(this.getFromNormalize(data.from)) || ([
+        'wif', 'private-key', 'public-key'
+      ].includes(this.getFromNormalize(data.from)) && [
+        'Electrum-V1', 'Monero'
+      ].includes(data.hd));
+      if (shouldDerive) {
+        const derivationClass = DERIVATIONS.getDerivationClass(data.derivation);
+        hdwallet.fromDerivation(new derivationClass({
+          coinType: cryptocurrency.COIN_TYPE,
+          account: data.account,
+          change: data.change,
+          role: data.role,
+          address: data.address,
+          path: data.path,
+          minor: data.minor,
+          major: data.major,
+          ecc: cryptocurrency.ECC.NAME
+        }));
+      }
+      let combinations = 1;
+      if (hdwallet['derivation']) {
+        for (const d of hdwallet['derivation'].getDerivations()) {
+          if (d.length === 3) {
+            combinations *= (d[1] - d[0]) + 1;
+          }
+        }
+      }
+    } catch (e) {
+      this.terminalService.update((e as Error).message, 'error');
+      this.groupBoxService.update('derivation', 'error');
+      this.isLoading = false;
+      this.changeDetectorRef.detectChanges();
+      return;
+    }
+
+    try {
+      const dumps: DictionaryInterface[] = [];
+      if (data.format === 'json' && !data.exclude.split(',').includes('root')) {
+        const newDump = hdwallet.getDump(['derivation', ...data.exclude.split(',')]);
+        this.terminalService.update(newDump, data.format);
+        dumps.push(newDump);
+      }
+
+      async function driveHelper(
+        derivations: Array<[number, number, boolean] | [number, boolean]>,
+        current: Array<[number, boolean]> = [],
+        terminal: any, groupBox: any
+      ): Promise<void> {
+
+        if (derivations.length === 0) {
+          let derivation: Derivation;
+
+          const derivationClass = DERIVATIONS.getDerivationClass(data.derivation);
+          if (['BIP44', 'BIP49', 'BIP84', 'BIP86'].includes(data.derivation)) {
+            derivation = new derivationClass({
+              coinType: cryptocurrency.COIN_TYPE,
+              account: current[2][0],
+              change: current[3][0],
+              address: current[4][0]
+            });
+          } else if (data.derivation === 'CIP1852') {
+            derivation = new derivationClass({
+              coinType: cryptocurrency.COIN_TYPE,
+              account: current[2][0],
+              change: current[3][0],
+              address: current[4][0]
+            });
+          } else if (data.derivation === 'Electrum') {
+            derivation = new derivationClass({
+              change: current[0][0],
+              address: current[1][0]
+            });
+          } else if (data.derivation === 'Monero') {
+            derivation = new derivationClass({
+              minor: current[0][0],
+              major: current[1][0]
+            });
+          } else if (data.derivation === 'HDW') {
+            derivation = new derivationClass({
+              account: current[0][0],
+              ecc: current[1][0],
+              address: current[2][0]
+            });
+          } else {
+            derivation = new derivationClass({
+              path: 'm/' + current.map(([v, hardened]) => hardened ? `${v}'` : v.toString()).join('/')
+            });
+          }
+          hdwallet.updateDerivation(derivation);
+
+          let newDump: DictionaryInterface = { };
+
+          if (data.format === 'csv') {
+            const dump = hdwallet.getDump(['root']);
+            for (const field of data.include.split(',')) {
+              const parts = field.split(':');
+              if (parts.length === 2) {
+                newDump[`${parts[0]}:${parts[1]}`] = dump[parts[0]][parts[1]];
+              } else {
+                newDump[`${parts[0]}`] = dump[parts[0]];
+              }
+            }
+          } else if (data.format === 'json') {
+             newDump = hdwallet.getDump(['root', ...(data.exclude ?? '').split(',')]);
+          }
+
+          dumps.push(newDump);
+          await new Promise(resolve => setTimeout(() => {
+            terminal.update(newDump, data.format);
+            resolve(null);
+          }, 0));
+          return;
+        }
+
+        if (derivations[0].length === 3) {
+          const [start, end, hardened] = derivations[0] as [number, number, boolean];
+          for (let value = start; value <= end; value++) {
+            await driveHelper(
+              derivations.slice(1), current.concat([[value, hardened]]), terminal, groupBox
+            );
+          }
+        } else {
+          const [value, hardened] = derivations[0] as [number, boolean];
+          await driveHelper(
+            derivations.slice(1), current.concat([[value, hardened]]), terminal, groupBox
+          );
+        }
+        return;
+      }
+
+      (async () => {
+        if (hdwallet.derivation) {
+          await driveHelper(
+            hdwallet.derivation.getDerivations(), [], this.terminalService, this.groupBoxService
+          );
+          if (dumpsType === 'save') {
+            if (data.format == 'json') {
+              saveAsJSON(dumps, `hdwallet-${getDateTimeStamp()}`);
+            } else if (data.format == 'csv') {
+              saveAsCSV(dumps, `hdwallet-${getDateTimeStamp()}`);
+            }
+          }
+          this.groupBoxService.update(null, null);
+          this.isLoading = false;
+          this.changeDetectorRef.detectChanges();
+        }
+      })();
+    } catch (e) {
+      this.terminalService.update((e as Error).message, 'error');
+      this.groupBoxService.update('action', 'error');
+      this.isLoading = false;
+      this.changeDetectorRef.detectChanges();
+      return;
+    }
   }
 }

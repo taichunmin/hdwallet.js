@@ -90,6 +90,10 @@ fieldset[disabled] .custom-button,
   background-color: rgba(25, 30, 36, 0.7);
 }
 
+fieldset[disabled] img {
+  opacity: 0.5;
+}
+
 .custom-button-success {
   font: 10pt "HDWallet";
   font-weight: normal;
@@ -200,6 +204,10 @@ input {
   font : 10pt 'Tahoma', sans-serif;
   letter-spacing: 1px;
   width: 100%;
+}
+
+input::placeholder {
+  color: rgba(255, 255, 255, 0.4);
 }
 
 .custom-radio {

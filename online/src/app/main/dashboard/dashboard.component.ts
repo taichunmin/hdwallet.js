@@ -1,8 +1,7 @@
 import {
   AfterViewInit, ChangeDetectorRef, Component, ElementRef, HostListener, Input, OnInit, Renderer2, ViewChild
 } from '@angular/core';
-import { NgClass, NgForOf, NgIf, NgOptimizedImage, NgStyle, Location } from '@angular/common';
-import { Router, RouterLink } from '@angular/router';
+import { NgClass, NgIf, Location } from '@angular/common';
 
 import { ToolsComponent } from './tabs/tools/tools.component';
 import { DumpsComponent } from './tabs/dumps/dumps.component';
@@ -11,7 +10,7 @@ import { CustomModalComponent } from '../../common/custom-modal/custom-modal.com
 import { DonationComponent } from './donation/donation.component';
 import { TerminalService } from '../../services/terminal/terminal.service';
 import { CustomComboboxComponent } from '../../common/custom-combobox/custom-combobox.component';
-import { ShareComponent } from './tabs/dumps/share/share.component';
+import { ShareComponent } from './share/share.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { StorageService } from '../../services/storage/storage.service';
 import { DisabledStateService } from '../../services/disabled-state/disabled-state.service';
@@ -28,14 +27,10 @@ import { toBoolean } from '../../../utils';
     CustomModalComponent,
     DonationComponent,
     ShareComponent,
-    NgForOf,
     NgIf,
     NgClass,
-    NgStyle,
-    RouterLink,
     CustomComboboxComponent,
-    ReactiveFormsModule,
-    NgOptimizedImage
+    ReactiveFormsModule
   ],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css'
@@ -50,6 +45,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   showMobileTerminal: boolean = window.innerWidth < 640;
   @Input() selectedTab: ComboboxInterface = this.tabs[0];
   @ViewChild('dashboard', { static: false }) dashboard!: ElementRef;
+  @ViewChild('donationModal', { static: false }) donationModal!: CustomModalComponent;
   @ViewChild('shareModal', { static: false }) shareModal!: CustomModalComponent;
   @ViewChild(ToolsComponent) toolsComponent!: ToolsComponent;
   @ViewChild(DumpsComponent) dumpsComponent!: DumpsComponent;
@@ -99,16 +95,29 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   }
 
   updateModalHeights(): void {
+    this.donationModal.customModalStyle = { height: this.dashboard.nativeElement.offsetHeight + 'px' };
     this.shareModal.customModalStyle = { height: this.dashboard.nativeElement.offsetHeight + 'px' };
+    const width = this.dashboard.nativeElement.offsetWidth;
+    const margin = width * 0.075;
+    this.donationModal.customContentStyle = {
+      'max-width': `${width - (margin * 2)}px`,
+      'margin': `0px ${margin}px`,
+      'top': `${window.innerWidth < 640 ? 5 : 15}%`
+    };
+    this.shareModal.customContentStyle = {
+      'max-width': `${width - (margin * 2)}px`,
+      'margin': `0px ${margin}px`,
+      'top': `${window.innerWidth < 640 ? 5 : 15}%`
+    };
     this.changeDetectorRef.detectChanges();
   }
 
   @ViewChild(ShareComponent) shareComponent!: ShareComponent;
 
   share(data: any): void {
-    // this.shareComponent.updateShareData(data);
+    this.shareComponent.updateShareData(data);
     this.shareModal.open();
-    this.renderer2.setProperty(this.main, 'scrollTop', 0);
+    // this.renderer2.setProperty(this.main, 'scrollTop', 0);
   }
 
   selectTab(selectedTab: ComboboxInterface): void {

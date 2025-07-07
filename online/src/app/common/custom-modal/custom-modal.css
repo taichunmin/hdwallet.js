@@ -9,12 +9,13 @@
 }
 
 .custom-modal-content {
-  position: relative;
-  margin: 15% auto;
+  position: fixed;
+  /*margin: 15% auto;*/
+  bottom: auto;
   padding: 16px;
   background: rgba(16, 21, 27);
   min-height: 25vh;
-  max-width: inherit;
+  /*max-width: inherit;*/
   border-radius: 5px;
 }
 

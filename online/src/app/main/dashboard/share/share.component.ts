@@ -51,10 +51,11 @@ export class ShareComponent {
     this.shareFormGroup = this.formBuilder.group(
       this.createGroupControls(this.shareData)
     );
-    this.makeURL(this.shareFormGroup?.value);
+    this.makeURL();
   }
 
-  makeURL(controls: DictionaryInterface): void {
+  makeURL(): void {
+    const controls = this.shareFormGroup?.value;
     this.changeDetectorRef.detectChanges();
     const ecc: string = controls['ecc'] ? toLowerCase(this.shareData['cryptoECC']) : 'all';
     const symbol: string = controls['symbol'] ? toUpperCase(this.shareData['symbol']) : 'BTC';

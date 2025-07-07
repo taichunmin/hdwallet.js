@@ -1,6 +1,6 @@
 # Changelog
 
-## [1.0.0-beta.4](https://github.com/hdwallet-io/hdwallet.js/tree/1.0.0-beta.4) (2025-07-02)
+## [1.0.0-beta.4](https://github.com/hdwallet-io/hdwallet.js/tree/1.0.0-beta.4) (2025-07-06)
 
 [Full Changelog](https://github.com/hdwallet-io/hdwallet.js/compare/1.0.0-beta.3...1.0.0-beta.4)
 

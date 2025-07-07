@@ -99,7 +99,7 @@ export const groupBox: GroupBoxInterface = {
   color: 'rgba(128, 128, 128, 0.25)',
   flag: null,
   flags: {
-    warning: 'rgba(255, 221, 0, 0.50)',
+    warning: 'rgba(221, 125, 10, 0.50)',
     error: 'rgba(255, 0, 0, 0.50)'
   }
 }

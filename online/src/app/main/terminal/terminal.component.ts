@@ -64,7 +64,7 @@ export class TerminalComponent implements AfterViewInit {
       if (data.json) {
         updatedData = `${currentData}\n${syntaxJSONHighlight(data.json)}`;
       } else if (data.csv) {
-        updatedData = `${currentData}\n${syntaxCSVHighlight(data.csv.csv_data)}`;
+        updatedData = `${currentData}\n${syntaxCSVHighlight(data.csv)}`;
       } else if (data.warning) {
         updatedData = `${currentData}\n<code style="color: rgb(221, 125, 10)">WARNING<code style="color: #FFFFFF">: ${data.warning}</code></code>`;
       } else if (data.error) {
@@ -92,7 +92,7 @@ export class TerminalComponent implements AfterViewInit {
   }
 
   limitLines(data: string): string {
-    const maxLines = 500;
+    const maxLines = 5000;
     const lines = data.split('\n');
     if (lines.length >= maxLines) {
       return lines.slice(-maxLines).join('\n');
