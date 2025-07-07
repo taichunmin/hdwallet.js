@@ -833,8 +833,8 @@
     </div>
     <div class="grid grid-cols-5 gap-2.5">
       <!-- Electrum-V1 WIF Input -->
-      <fieldset class="col-span-5">
-        <label class="uppercase">{{ dumpsFormGroup.get('bip38')?.value ? 'Encrypted Wallet Import Format' : 'Wallet Import Format' }}</label>
+      <fieldset class="col-span-5" [disabled]="dumpsFormGroup.get('bip38')?.value">
+        <label class="uppercase">{{ dumpsFormGroup.get('bip38')?.value ? 'Encrypted Wallet Import Format - Coming soon!' : 'Wallet Import Format' }}</label>
         <input type="text" class="custom-input" formControlName="wif">
       </fieldset>
       <div class="grid grid-cols-[auto_1fr] col-span-3 max-xl:col-span-5 gap-2.5">
