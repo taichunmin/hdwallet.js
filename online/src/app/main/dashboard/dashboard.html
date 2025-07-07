@@ -62,10 +62,9 @@
     </fieldset>
   </div>
 
-  <fieldset
+  <fieldset *ngIf="!terminalService.showTerminal()"
     [disabled]="!toBoolean(storageService.getStorage('disclaimer'))"
-    class="yo-footer flex-none default-font" style="margin-top: 5px"
-    [ngClass]="{'hidden': terminalService.showTerminal()}">
+    class="yo-footer flex-none default-font" style="margin-top: 5px">
     <div class="px-3" style="border-left: solid 3.5px #83b9ff">
       <h2 class="native-font uppercase">This project is 100% open-source code</h2>
       <small>Powered by <a class="customLink" style="width: 100%" target="_blank" href="https://talonlab.org">
@@ -74,10 +73,9 @@
     </div>
   </fieldset>
 
-  <fieldset
+  <fieldset *ngIf="!terminalService.showTerminal()"
     [disabled]="!toBoolean(storageService.getStorage('disclaimer'))"
-    class="yo-footer flex-none default-font"
-    [ngClass]="{'hidden': terminalService.showTerminal()}">
+    class="yo-footer flex-none default-font">
     <div class="overflow-x-auto">
       <table class="min-w-full">
         <thead style="border-bottom: 1px solid rgba(128, 128, 128, 0.25);">
