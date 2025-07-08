@@ -26,12 +26,6 @@ A complete Hierarchical Deterministic (HD) Wallet generator for 200+ cryptocurre
 | Addresses                     | ``Algorand``, ``Aptos``, ``Avalanche``, ``Cardano``, ``Cosmos``, ``EOS``, ``Ergo``, ``Ethereum``, ``Filecoin``, ``Harmony``, ``Icon``, ``Injective``, ``Monero``, ``MultiversX``, ``Nano``, ``Near``, ``Neo``, ``OKT-Chain``, ``P2PKH``, ``P2SH``, ``P2TR``, ``P2WPKH``, ``P2WPKH-In-P2SH``, ``P2WSH``, ``P2WSH-In-P2SH``, ``Ripple``, ``Solana``, ``Stellar``, ``Sui``, ``Tezos``, ``Tron``, ``XinFin``, ``Zilliqa`` |
 | Others                        | ``Wallet Import Format``, ``Serialization``                                                                                                                                                                                                                                                                                                                                                                           |
 
-### demo - https://hdwallet.online
-
-This demo is currently under active development. Some features may be incomplete or contain bugs. 
-
-![hdwallet.online](https://github.com/meherett/meherett/blob/master/demo.png)
-
 ## Installation
 
 Pick the build that matches your environment.
