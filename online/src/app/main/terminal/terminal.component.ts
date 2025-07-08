@@ -92,7 +92,7 @@ export class TerminalComponent implements AfterViewInit {
   }
 
   limitLines(data: string): string {
-    const maxLines = 2500;
+    const maxLines = 1000;
     const lines = data.split('\n');
     if (lines.length >= maxLines) {
       return lines.slice(-maxLines).join('\n');
