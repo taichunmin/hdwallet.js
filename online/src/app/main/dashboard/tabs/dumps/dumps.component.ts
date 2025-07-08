@@ -1381,6 +1381,11 @@ export class DumpsComponent implements OnInit, AfterViewInit {
           this.groupBoxService.update(null, null);
           this.isLoading = false;
           this.changeDetectorRef.detectChanges();
+        } else {
+          this.terminalService.update(hdwallet.getDump(data.exclude.split(',')), 'json');
+          this.groupBoxService.update(null, null);
+          this.isLoading = false;
+          this.changeDetectorRef.detectChanges();
         }
       })();
     } catch (e) {
